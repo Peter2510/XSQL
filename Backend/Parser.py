@@ -1,6 +1,11 @@
 from ply.yacc import  yacc
 from Lexer import tokens, lexer, errores, find_column
 
+## ahora el parser general
+
+
+
+
 
 # Parser ESTO PARA EL XML
 def p_element(p):
@@ -33,16 +38,25 @@ def parse(inp):
 
 # Data
 data = '''
-<Products>
-  <Product pid="p123">
-    <Name>gizmo</Name>
-    <Price>22.99</Price>
-  </Product>
-  <Product pid="p231">
-    <Name>gizmoPlus</Name>
-    <Price>99.99</Price>
-  </Product>
-</Products>
+<Bd>
+    <Products>
+    <Product pid="p123">
+        <Name>gizmo</Name>
+        <Price>22.99</Price>
+    </Product>
+    <Product pid="p231">
+        <Name>gizmoPlus</Name>
+        <Price>99.99</Price>
+    </Product>
+    </Products>
+</Bd>
+<Bd>
+</Bd>
+1
+0
+2023-12-31
+null
+2023-12-05 13:45:30
 '''
 
 # prueba

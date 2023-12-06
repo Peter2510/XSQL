@@ -1,25 +1,67 @@
 import re 
 import ply.lex as lex
-
+import datetime
 
 errores = []
 
 reserved = {
-
+    'BIT': 'BIT',
+    'Nchar': 'NCHAR',
+    'Nvarchar': 'NVARCHAR',
+    'Datetime': 'DATETIME',
+    'Date': 'DATE',
+    'PRIMARY' :'PRIMARY',
+    'KEY': 'KEY',
+    'NOT': 'NOT',
+    'NULL': 'NULL',
+    'REFERENCES': 'REFERENCES',
+    'FOREIGN': 'FOREIGN',
+    'CREATE': 'CREATE',
+    'TABLE': 'TABLE',
+    'FROM': 'FROM',
+    'WHERE': 'WHERE',
+    'UNIQUE': 'UNIQUE',
+    'ALTER':'ALTER',
+    'ADD':'ADD',
+    'DROP':'DROP'
 }
 
 
 tokens = [
     'MAYOR',
     'MENOR',
+    'MAS',
+    'MENOS',
+    'POR',
     'DIV',
     'ENTEROS',
     'DECIMALES',
     'CADENAS',
     'ID',
+    'BITPRIM',
+    'DATEPRIM',
+    'DATETIMEPRIM',
     'TAGABIERTO',
     'TAGCERRADO',
     'ATRIBUTOSTAG',
+    'PARENIZQ',
+    'PARENDER',
+    'LLAVEIZQ',
+    'LLAVEDER',
+    'DOSPUNTOS',
+    'PUNTOCOMA',
+    'COMA',
+    'MENORIGUAL',
+    'MAYORIGUAL',
+    'AND',
+    'OR',
+    'NOT',
+    'CORCHETEIZQ',
+    'CORCHETEDER',
+    'IGUAL',
+    'DIFERENTE',
+    'IGUALDAD',
+    'PUNTO'
 ]
 
 
@@ -35,6 +77,48 @@ def t_DECIMALES(t):
         t.value = 0
     return t
 ##  para enteros
+
+
+## para bits
+def t_BITPRIM(t):
+    r'1|0|null'
+    try:
+        if (t.value != None and t.value != 'null'):
+            t.value = int(t.value)
+        else:
+            t.value = 'null'
+    except ValueError:
+        print("Valor del entero demasiado grande %d", t.value)
+        t.value = 0
+    return t 
+
+
+
+
+# para las fechas
+
+# Token DATETIME
+def t_DATETIMEPRIM(t):
+    r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+    try:
+        t.value = datetime.datetime.strptime(t.value, '%Y-%m-%d %H:%M:%S')
+    except ValueError:
+        print("Error en la fecha y hora")
+        t.value = None
+    return t
+
+
+def t_DATEPRIM(t):
+    r'\d{4}-\d{2}-\d{2}'
+    try:
+        t.value = datetime.datetime.strptime(t.value, '%Y-%m-%d').date()
+    except ValueError:
+        print("Error en la fecha")
+        t.value = None
+    return t
+
+
+
 #Entero
 def t_ENTEROS(n):
     r'\d+'
@@ -47,7 +131,6 @@ def t_ENTEROS(n):
         print("Valor del entero demasiado grande %d", n.value)
         n.value = 0
     return n
-
 # para cadenas
 def t_CADENAS(t):
     r'(\".*?\")'
