@@ -7,13 +7,28 @@ errors = []
 
 # Conjunto palabras reservadas
 keywords = {
-    'SELECT': 'SELECT',
-    'FROM': 'FROM',
     'CREATE': 'CREATE',
     'DATA': 'DATA',
-    'WHERE': 'WHERE',
     'BASE': 'BASE',
     'TABLE': 'TABLE',
+    'ALTER': 'ALTER',
+    'DROP': 'DROP',
+    'TRUNCATE': 'TRUNCATE',
+        
+    'SELECT': 'SELECT',
+    'FROM': 'FROM',   
+    'WHERE': 'WHERE',
+    "UPDATE":"UPDATE",
+    "INSERT":"INSERT",
+    "DELETE":"DELETE",
+    
+    "CONCATENA":"CONCATENA",
+    "SUBSTRAER":"SUBSTRAER",
+    "HOY":"HOY",
+    "CONTAR":"CONTAR",
+    "SUMA":"SUMA",
+    "CAS":"CAS",
+    
     'NOT': 'NOT',
     'NULL': 'NULL',
     'PRIMARY': 'PRIMARY',
@@ -27,14 +42,13 @@ keywords = {
     'FUNCTION': 'FUNCTION',
     'IF': 'IF',
     'RETURN': 'RETURN',
-    'RETURNS': 'RETURN',
+    'RETURNS': 'RETURNS',
     'BEGIN': 'BEGIN',
     'END': 'END',
-    'ALTER': 'ALTER',
     'ADD': 'ADD',
-    'DROP': 'DROP',
     'DECLARE': 'DECLARE',
     'SET': 'SET'
+    
 }
 
 reserved = {
@@ -61,41 +75,7 @@ reserved = {
 
 
 tokens = [
-    'MAYOR',
-    'MENOR',
-    'MAS',
-    'MENOS',
     'POR',
-    'DIV',
-    'ENTEROS',
-    'DECIMALES',
-    'CADENAS',
-    'ID',
-    'BITPRIM',
-    'DATEPRIM',
-    'DATETIMEPRIM',
-    'TAGABIERTO',
-    'TAGCERRADO',
-    'ATRIBUTOSTAG',
-    'PARENIZQ',
-    'PARENDER',
-    'LLAVEIZQ',
-    'LLAVEDER',
-    'DOSPUNTOS',
-    'PUNTOCOMA',
-    'COMA',
-    'MENORIGUAL',
-    'MAYORIGUAL',
-    'AND',
-    'OR',
-    'NOT',
-    'CORCHETEIZQ',
-    'CORCHETEDER',
-    'IGUAL',
-    'DIFERENTE',
-    'IGUALDAD',
-    'PUNTO',
-        'POR',
     'SUMA',
     'DIVISION',
     'MENOS',
@@ -128,7 +108,7 @@ tokens = [
 
 # Patron de los tokens
 t_POR = r'\*'
-t_SUMA = r'\+'
+t_MAS = r'\+'
 t_DIVISION = r'\/'
 t_MENOS = r'\-'
 t_ASIGNACION = r'\='
@@ -293,12 +273,32 @@ def find_column(inp, tk):
     return (tk.lexpos-line_start)+1
 
 
+# Crear instancia del lexer
+lexer = lex.lex(reflags=re.IGNORECASE)
 
+# Ingresar la cadena de texto para analizar
+texto = '''CREATE FUNCTION Retornasuma(@ProductID int) 
+RETURNS int 
+AS 
+-- Returns the stock level for the product. 
+BEGIN 
+ DECLARE @ret int; 
+ SELECT @ret = SUM(Cantidad) 
+ FROM inventario 
+ WHERE ProductoId = @ProductID 
+ 
+ IF (@ret == NULL) 
+ SET @ret = 0; 
+ RETURN @ret; 
+END;
+'''
 
-lexer = lex.lex(reflags = re.IGNORECASE)
+# Configurar la entrada del lexer
+lexer.input(texto)
 
-
-
-
-
-
+# Iterar sobre los tokens generados
+while True:
+    token = lexer.token()
+    if not token:
+        break
+    print(token)
