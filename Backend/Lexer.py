@@ -5,13 +5,28 @@ errors = []
 
 # Conjunto palabras reservadas
 keywords = {
-    'SELECT': 'SELECT',
-    'FROM': 'FROM',
     'CREATE': 'CREATE',
     'DATA': 'DATA',
-    'WHERE': 'WHERE',
     'BASE': 'BASE',
     'TABLE': 'TABLE',
+    'ALTER': 'ALTER',
+    'DROP': 'DROP',
+    'TRUNCATE': 'TRUNCATE',
+        
+    'SELECT': 'SELECT',
+    'FROM': 'FROM',   
+    'WHERE': 'WHERE',
+    "UPDATE":"UPDATE",
+    "INSERT":"INSERT",
+    "DELETE":"DELETE",
+    
+    "CONCATENA":"CONCATENA",
+    "SUBSTRAER":"SUBSTRAER",
+    "HOY":"HOY",
+    "CONTAR":"CONTAR",
+    "SUMA":"SUMA",
+    "CAS":"CAS",
+    
     'NOT': 'NOT',
     'NULL': 'NULL',
     'PRIMARY': 'PRIMARY',
@@ -25,14 +40,13 @@ keywords = {
     'FUNCTION': 'FUNCTION',
     'IF': 'IF',
     'RETURN': 'RETURN',
-    'RETURNS': 'RETURN',
+    'RETURNS': 'RETURNS',
     'BEGIN': 'BEGIN',
     'END': 'END',
-    'ALTER': 'ALTER',
     'ADD': 'ADD',
-    'DROP': 'DROP',
     'DECLARE': 'DECLARE',
     'SET': 'SET'
+    
 }
 
 # Conjunto deTokens
@@ -137,21 +151,7 @@ def find_column(inp, tk):
 lexer = lex.lex(reflags=re.IGNORECASE)
 
 # Ingresar la cadena de texto para analizar
-texto = '''CREATE FUNCTION Retornasuma(@ProductID int) 
-RETURNS int 
-AS 
--- Returns the stock level for the product. 
-BEGIN 
- DECLARE @ret int; 
- SELECT @ret = SUM(Cantidad) 
- FROM inventario 
- WHERE ProductoId = @ProductID 
- 
- IF (@ret == NULL) 
- SET @ret = 0; 
- RETURN @ret; 
-END;
-'''
+texto = '''SELECT'''
 
 # Configurar la entrada del lexer
 lexer.input(texto)
