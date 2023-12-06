@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class CompilacionService {
 
 
-  readonly URL = 'http://127.0.0.1:3000/'
+  readonly URL = 'http://127.0.0.1:3000'
 
   constructor(private http: HttpClient) { }
 
@@ -16,6 +16,6 @@ export class CompilacionService {
   // metodo para enviar la info al server
 
   enviarInfo(data: string):Observable<string>{
-    return this.http.post<string>(this.URL+"/enviarData", data);
+    return this.http.post<string>(this.URL+"/compilar", JSON.stringify(data));
   }
 }

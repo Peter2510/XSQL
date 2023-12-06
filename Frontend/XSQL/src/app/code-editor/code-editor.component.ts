@@ -30,7 +30,7 @@ export class CodeEditorComponent implements OnInit{
 
 
   enviarData(){
-    console.log(this.valor);
+    this.servicio.enviarInfo("simon").subscribe();
 
   }
   ngOnInit(): void {

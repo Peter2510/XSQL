@@ -48,7 +48,8 @@ keywords = {
     'ADD': 'ADD',
     'DECLARE': 'DECLARE',
     'SET': 'SET',
-
+    
+    'int': 'INT',
     'bit': 'BIT',
     'Nchar': 'NCHAR',
     'Nvarchar': 'NVARCHAR',

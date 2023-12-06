@@ -12,7 +12,7 @@ def saludo():
 @app.route('/compilar',methods=["POST","GET"])
 def compilar():
     if request.method == "POST":
-        data = request.get_json
+        data = request.data
         print(data)
         return {'mensaje':'A COMPILAR'}
     else:
