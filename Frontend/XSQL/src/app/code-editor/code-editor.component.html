@@ -2,9 +2,9 @@
     <h1 style="text-align: center;">XSQL</h1>
     <div class="row">
       <div class="col-12 mt-4" style="height: 60vh">
-        <ngs-code-editor [theme]="theme" [codeModel]="codeModel" [options]="options" style="height: 100%">
+        <ngs-code-editor   [(ngModel)]="valor" [theme]="theme" [codeModel]="codeModel" [options]="options" style="height: 100%">
         </ngs-code-editor>
       </div>
-      <button>COMPILAR</button>
+      <button (click)="enviarData()">COMPILAR</button>
     </div>
   </div>

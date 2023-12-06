@@ -1,6 +1,8 @@
-import re
+import re 
 import ply.lex as lex
+import datetime
 
+errores = []
 errors = []
 
 # Conjunto palabras reservadas
@@ -45,11 +47,22 @@ keywords = {
     'END': 'END',
     'ADD': 'ADD',
     'DECLARE': 'DECLARE',
-    'SET': 'SET'
+    'SET': 'SET',
+   
+    'BIT': 'BIT',
+    'Nchar': 'NCHAR',
+    'Nvarchar': 'NVARCHAR',
+    'Datetime': 'DATETIME',
+    'Date': 'DATE',
+    'PRIMARY' :'PRIMARY',
+    'REFERENCES': 'REFERENCES',
+    'FOREIGN': 'FOREIGN',
+    'UNIQUE': 'UNIQUE',
     
 }
 
-# Conjunto deTokens
+
+
 tokens = [
     'POR',
     'MAS',
@@ -76,9 +89,13 @@ tokens = [
     'CORCHETE_IZQ',
     'CORCHETE_DER',
     'STR',
+    'BITPRIM',
+    'DECIMAL',
+    'ENTERO',
+    'ID_DECLARE',
     'ID',
-    'ID_DECLARE'
-] + list(keywords.values())
+]+ list(keywords.values())
+
 
 # Patron de los tokens
 t_POR = r'\*'
@@ -113,6 +130,7 @@ def t_comment(t):
     t.lexer.lineno += 1
 
 # IDENTIFICAR CADENAS DE TEXTO CON  COMILLAS DOBLES Y SIMPLES    
+
 def t_STR(t):
     r'(\"[\s\S]*?\")|(\'[\s\S]*?\')|(\`[\s\S]*?\`)'
     t.value = t.value[1:-1]
@@ -137,35 +155,102 @@ def t_ID_DECLARE(t):
     t.type = keywords.get(t.value, 'ID_DECLARE')
     return t
 
+## DECIMALES
+def t_DECIMAL(t):
+    r'\d+\.\d+'
+    try:
+        t.value = float(t.value)
+    except ValueError:
+        print("error en el decimal %d", t.value)
+        t.value = 0
+    return t
+
+# ENTERO
+def t_ENTERO(t):
+    r'\d+'
+    try:
+        t.value = int(t.value)
+    except ValueError:
+         print("Valor del entero demasiado grande %d", t.value)
+         t.value = 0
+    return t
+
+## para bits
+def t_BITPRIM(t):
+    r'1|0|null'
+    try:
+        if (t.value != None and t.value != 'null'):
+            t.value = int(t.value)
+        else:
+            t.value = 'null'
+    except ValueError:
+        print("Valor del entero demasiado grande %d", t.value)
+        t.value = 0
+    return t 
+
+
+# para las fechas
+
+# Token DATETIME
+def t_DATETIMEPRIM(t):
+    r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+    try:
+        t.value = datetime.datetime.strptime(t.value, '%Y-%m-%d %H:%M:%S')
+    except ValueError:
+        print("Error en la fecha y hora")
+        t.value = None
+    return t
+
+
+def t_DATEPRIM(t):
+    r'\d{4}-\d{2}-\d{2}'
+    try:
+        t.value = datetime.datetime.strptime(t.value, '%Y-%m-%d').date()
+    except ValueError:
+        print("Error en la fecha")
+        t.value = None
+    return t
+
+
+##Nueva linea
+
+def newline(t):
+    r'\n'
+    t.lexer.lineno +=len(t.value)
+
+
+## PARA LOS TAGS DEL XML
+def t_TAGABIERTO(t):
+    r'<[A-Za-z]+>'
+    return t
+
+def t_TAGCERRADO(t):
+    r'</[A-Za-z]+>'
+    return t
+
+def t_ATRIBUTOSTAG(t):
+    r'[A-Za-z]+="[^"]*"'
+    return t
+
+
+        #ignora lo demas
+        
 # WHIT_SPACE
-
 t_ignore = " \t\f\v"
-
-# SKIPLINE
-
-def t_skip_line(t):
-    r'\n+'
-    t.lexer.lineno += t.value.count('\n')
-    
-# ERROR
-
 def t_error(t):
-    #manejar error
     t.lexer.skip(1)
-    print('------------Error lexico',t)
-
+    
+##para columna
 def find_column(inp, tk):
-    line_start = inp.rfind('\n', 0, tk.lexpos) + 1
-    return (tk.lexpos - line_start) + 1
+    line_start = inp.rfind('\n', 0, tk.lexpos)+1
+    return (tk.lexpos-line_start)+1
 
 
 # Crear instancia del lexer
 lexer = lex.lex(reflags=re.IGNORECASE)
 
 # Ingresar la cadena de texto para analizar
-texto = '''
-SELECT 'HOLAMUNDO'
-'''
+texto = input('Ingresa el texto a parsear: ')
 
 # Configurar la entrada del lexer
 lexer.input(texto)
