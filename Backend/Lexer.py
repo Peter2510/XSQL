@@ -47,36 +47,23 @@ keywords = {
     'END': 'END',
     'ADD': 'ADD',
     'DECLARE': 'DECLARE',
-    'SET': 'SET'
-    
-}
+    'SET': 'SET',
 
-reserved = {
-    'BIT': 'BIT',
+    'bit': 'BIT',
     'Nchar': 'NCHAR',
     'Nvarchar': 'NVARCHAR',
     'Datetime': 'DATETIME',
     'Date': 'DATE',
-    'PRIMARY' :'PRIMARY',
-    'KEY': 'KEY',
-    'NOT': 'NOT',
-    'NULL': 'NULL',
     'REFERENCES': 'REFERENCES',
-    'FOREIGN': 'FOREIGN',
-    'CREATE': 'CREATE',
-    'TABLE': 'TABLE',
-    'FROM': 'FROM',
-    'WHERE': 'WHERE',
     'UNIQUE': 'UNIQUE',
-    'ALTER':'ALTER',
     'ADD':'ADD',
-    'DROP':'DROP'
 }
+
 
 
 tokens = [
     'POR',
-    'SUMA',
+    'MAS',
     'DIVISION',
     'MENOS',
     'ASIGNACION',
@@ -101,6 +88,16 @@ tokens = [
     'CORCHETE_DER',
     'ID',
     'ID_DECLARE'
+    'COMILLAINVERTIDA',
+    'ENTEROS',
+    'DECIMALES',
+    'CADENAS',
+    'BITPRIM',
+    'DATEPRIM',
+    'DATETIMEPRIM',
+    'TAGABIERTO',
+    'TAGCERRADO',
+    'ATRIBUTOSTAG',
 ]+ list(keywords.values())
 
 ## solo algo
@@ -277,28 +274,15 @@ def find_column(inp, tk):
 lexer = lex.lex(reflags=re.IGNORECASE)
 
 # Ingresar la cadena de texto para analizar
-texto = '''CREATE FUNCTION Retornasuma(@ProductID int) 
-RETURNS int 
-AS 
--- Returns the stock level for the product. 
-BEGIN 
- DECLARE @ret int; 
- SELECT @ret = SUM(Cantidad) 
- FROM inventario 
- WHERE ProductoId = @ProductID 
- 
- IF (@ret == NULL) 
- SET @ret = 0; 
- RETURN @ret; 
-END;
-'''
 
 # Configurar la entrada del lexer
-lexer.input(texto)
+##lexer.input(texto)
 
 # Iterar sobre los tokens generados
-while True:
-    token = lexer.token()
-    if not token:
-        break
-    print(token)
+##while True:
+##    token = lexer.token()
+##    if not token:
+ ##       break
+  ##  print(token)
+##
+##
