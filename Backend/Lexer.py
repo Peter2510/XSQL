@@ -52,7 +52,7 @@ keywords = {
 # Conjunto deTokens
 tokens = [
     'POR',
-    'SUMA',
+    'MAS',
     'DIVISION',
     'MENOS',
     'ASIGNACION',
@@ -81,7 +81,7 @@ tokens = [
 
 # Patron de los tokens
 t_POR = r'\*'
-t_SUMA = r'\+'
+t_MAS = r'\+'
 t_DIVISION = r'\/'
 t_MENOS = r'\-'
 t_ASIGNACION = r'\='
@@ -151,7 +151,19 @@ def find_column(inp, tk):
 lexer = lex.lex(reflags=re.IGNORECASE)
 
 # Ingresar la cadena de texto para analizar
-texto = '''SELECT'''
+texto = '''CREATE FUNCTION suma
+(
+@val1 AS int,
+@val2 AS int
+)
+RETURNS int
+AS
+BEGIN
+Declare @valor int
+Set @valor = @val1 + @val2
+RETURN @valor
+END
+'''
 
 # Configurar la entrada del lexer
 lexer.input(texto)
