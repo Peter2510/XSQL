@@ -75,6 +75,7 @@ tokens = [
     'NEGACION',
     'CORCHETE_IZQ',
     'CORCHETE_DER',
+    'STR',
     'ID',
     'ID_DECLARE'
 ] + list(keywords.values())
@@ -110,6 +111,17 @@ t_CORCHETE_DER = r'\]'
 def t_comment(t):
     r'\-\-.*'
     t.lexer.lineno += 1
+
+# IDENTIFICAR CADENAS DE TEXTO CON  COMILLAS DOBLES Y SIMPLES    
+def t_STR(t):
+    r'(\"[\s\S]*?\")|(\'[\s\S]*?\')|(\`[\s\S]*?\`)'
+    t.value = t.value[1:-1]
+    t.value = t.value.replace('\\"', '\"')
+    t.value = t.value.replace("\\'", "\'")
+    t.value = t.value.replace('\\\\', '\\')
+    t.value = t.value.replace('\\t', '\t')
+    t.value = t.value.replace('\\n', '\n')
+    return t
 
 # ID NORMAL
 
@@ -151,18 +163,8 @@ def find_column(inp, tk):
 lexer = lex.lex(reflags=re.IGNORECASE)
 
 # Ingresar la cadena de texto para analizar
-texto = '''CREATE FUNCTION suma
-(
-@val1 AS int,
-@val2 AS int
-)
-RETURNS int
-AS
-BEGIN
-Declare @valor int
-Set @valor = @val1 + @val2
-RETURN @valor
-END
+texto = '''
+SELECT 'HOLAMUNDO'
 '''
 
 # Configurar la entrada del lexer
