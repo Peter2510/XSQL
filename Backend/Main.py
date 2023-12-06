@@ -1,6 +1,6 @@
 from flask import Flask, request
 import json
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 CORS(app)
@@ -19,4 +19,4 @@ def compilar():
         return {'mensaje':'Error compilar'}
     
 if __name__ == "__main__":
-    app.run(debug=True,port=3000)
+    app.run(debug=True,port=3002)

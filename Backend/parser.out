@@ -1,0 +1,91 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> element
+Rule 1     element -> OPENTAG attributes CLOSETAG
+Rule 2     element -> OPENTAG CLOSETAG
+Rule 3     attributes -> ATTR attributes
+Rule 4     attributes -> ATTR
+
+Terminals, with rules where they appear
+
+ATTR                 : 3 4
+CLOSETAG             : 1 2
+OPENTAG              : 1 2
+error                : 
+
+Nonterminals, with rules where they appear
+
+attributes           : 1 3
+element              : 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . element
+    (1) element -> . OPENTAG attributes CLOSETAG
+    (2) element -> . OPENTAG CLOSETAG
+
+    OPENTAG         shift and go to state 2
+
+    element                        shift and go to state 1
+
+state 1
+
+    (0) S' -> element .
+
+
+
+state 2
+
+    (1) element -> OPENTAG . attributes CLOSETAG
+    (2) element -> OPENTAG . CLOSETAG
+    (3) attributes -> . ATTR attributes
+    (4) attributes -> . ATTR
+
+    CLOSETAG        shift and go to state 4
+    ATTR            shift and go to state 5
+
+    attributes                     shift and go to state 3
+
+state 3
+
+    (1) element -> OPENTAG attributes . CLOSETAG
+
+    CLOSETAG        shift and go to state 6
+
+
+state 4
+
+    (2) element -> OPENTAG CLOSETAG .
+
+    $end            reduce using rule 2 (element -> OPENTAG CLOSETAG .)
+
+
+state 5
+
+    (3) attributes -> ATTR . attributes
+    (4) attributes -> ATTR .
+    (3) attributes -> . ATTR attributes
+    (4) attributes -> . ATTR
+
+    CLOSETAG        reduce using rule 4 (attributes -> ATTR .)
+    ATTR            shift and go to state 5
+
+    attributes                     shift and go to state 7
+
+state 6
+
+    (1) element -> OPENTAG attributes CLOSETAG .
+
+    $end            reduce using rule 1 (element -> OPENTAG attributes CLOSETAG .)
+
+
+state 7
+
+    (3) attributes -> ATTR attributes .
+
+    CLOSETAG        reduce using rule 3 (attributes -> ATTR attributes .)
+
