@@ -7,14 +7,14 @@ CORS(app)
 
 @app.route('/saludo',methods=["GET"])
 def saludo():
-    return {'mensaje':'Hola mundssso'}
+    return {'mensaje':'Hola mundo!'}
 
 @app.route('/compilar',methods=["POST","GET"])
 def compilar():
     if request.method == "POST":
         data = request.get_json
         print(data)
-        return {'mensaje':'compiladosss'}
+        return {'mensaje':'A COMPILAR'}
     else:
         return {'mensaje':'Error compilar'}
     
