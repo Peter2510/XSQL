@@ -1,5 +1,5 @@
 from ..abstract.abstractas import Abstract
-from  ..manejadorXml import manejo as MANEJADOR
+from ..manejadorXml import manejo as MANEJADOR
 class createDB(Abstract):
     def __init__(self, fila, columna, nombre):
         self.nombre = nombre

@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<Database>
-    <Table name="prueba">
-        <Columns>
-            <Column name="producto" info="int not null" />
-            <Column name="area" info="varchar(100) not null" />
-        </Columns>
-    </Table>
-</Database>

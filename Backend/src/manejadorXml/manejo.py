@@ -3,21 +3,21 @@ import json
 import xml.etree.ElementTree as ET
 
 
-path = 'data/json/'
+path = 'src/data/json/'
 dataPath = path + 'databases'
-xml_path = 'data/xml/'
+xml_path = 'src/data/xml/'
 
 def initCheck():
-    if not os.path.exists('data'):
-        os.makedirs('data')
-    if not os.path.exists('data/json'):
-        os.makedirs('data/json')
-    if not os.path.exists('data/json/databases'):
+    if not os.path.exists('src/data'):
+        os.makedirs('src/data')
+    if not os.path.exists('src/data/json'):
+        os.makedirs('src/data/json')
+    if not os.path.exists('src/data/json/databases'):
         data = {}
-        with open('data/json/databases', 'w') as file:
+        with open('src/data/json/databases', 'w') as file:
             json.dump(data, file)
-    if not os.path.exists('data/xml'):
-       os.makedirs('data/xml')
+    if not os.path.exists('src/data/xml'):
+       os.makedirs('src/data/xml')
 
 
 def read(path: str) -> dict:
@@ -29,13 +29,17 @@ def write(path: str, data: dict):
         json.dump(data, file)
 
 def createDatabase(database: str) -> int:
+
     try:
         if not database.isidentifier():
             raise Exception()
         initCheck()
         data = read(dataPath)
+        print("path:",dataPath)
+
         if database in data:
             return 2
+        print(database)
         new = {database: {}}
         data.update(new)
         write(dataPath, data)
@@ -50,7 +54,7 @@ def update(database: str, table: str, register: dict, columns: list) -> int:
     ncol = None
     pkey = None
     pk = ""
-    with open('data/json/databases') as file:
+    with open('src/data/json/databases') as file:
         data = json.load(file)
         if not database in data:
             return 2
@@ -63,7 +67,7 @@ def update(database: str, table: str, register: dict, columns: list) -> int:
             else:
                 # defined pk
                 pkey = data[database][table]["PKEY"]            
-    with open('data/json/'+database+'-'+table) as file:
+    with open('src/data/json/'+database+'-'+table) as file:
         data = json.load(file)
         if hide:
             pk = columns[0]
@@ -77,7 +81,7 @@ def update(database: str, table: str, register: dict, columns: list) -> int:
                 data[pk][key] = register[key]
         dump = True
     if dump:
-        with open('data/json/'+database+'-'+table, 'w') as file:
+        with open('src/data/json/'+database+'-'+table, 'w') as file:
             json.dump(data, file)
         return 0
     else:
@@ -150,16 +154,17 @@ def convert_to_xml(database_name):
 
 
 
-nombre_bd = "hola"
-nombre_tabla = "prueba"
-columnas = {
-    "producto": "int not null",
-    "area": "varchar(100) not null"
-}
-
-#resultado2 = createDatabase(nombre_bd);
 
 
+def prueba():
+    nombre_bd = "sss3"
+    nombre_tabla = "prueba"
+    columnas = {
+        "producto": "int not null",
+        "area": "varchar(100) not null"
+    }
+    resultado2 = createDatabase(nombre_bd);
+prueba();
 #resultado = createTable(nombre_bd, nombre_tabla, columnas)
 
 #if resultado == 0:

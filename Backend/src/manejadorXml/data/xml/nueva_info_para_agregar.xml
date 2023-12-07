@@ -1,2 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<Database><Table name="nuevo"><Columns><Column name="columna1" info="int not null" /><Column name="columna2" info="varchar(50) not null" /></Columns></Table></Database>
