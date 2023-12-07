@@ -1,23 +1,31 @@
-from ply.yacc import  yacc
+import ply.yacc as yacc
 from Lexer import tokens, lexer, errores, find_column
 
-## ahora el parser general
+## establecer precedencias 
+
+precedence = (
+    ('left', 'MAS','MENOS'),
+    ('left', 'POR','DIVISION'),
+    ('left', 'COMPARACION','DISTINTO','MENOR_QUE','MAYOR_QUE','MENOR_O_IGUAL_QUE', 'MAYOR_O_IGUAL_QUE'),
+    ('left', 'OR','AND'),
+    ('left', 'PARENTESIS_IZQ','PARENTESIS_DER'),
+    ('left', 'AS')
+);
+
+
+## ahora el parser general s
+##############
+### SECCION GENERAL DE LAS INSTRUCCIONES
+def p_init(t):
+    '''
+    init : 
+    '''
+    t[0] = t[1]
+    
 
 
 
-
-
-# Parser ESTO PARA EL XML
-def p_element(p):
-    '''element : TAGABIERTO attributes TAGCERRADO
-               | TAGABIERTO TAGCERRADO'''
-    pass
-
-def p_attributes(p):
-    '''attributes : ATRIBUTOSTAG attributes
-                  | ATRIBUTOSTAG'''
-    pass
-
+## metodo de error
 def p_error(p):
     if p:
         print("Syntax error at '%s'" % p.value)
@@ -26,50 +34,14 @@ def p_error(p):
 
 
 ## generacion del parser
+input = ''
+
 def parse(inp):
-    global errores
+    global errors
     global parser
-    errores = []
+    errors = []
     parser = yacc.yacc()
     global input
     input = inp
     lexer.lineno = 1
     return parser.parse(inp)
-
-# Data
-data = '''
-<Bd>
-    <Products>
-    <Product pid="p123">
-        <Name>gizmo</Name>
-        <Price>22.99</Price>
-    </Product>
-    <Product pid="p231">
-        <Name>gizmoPlus</Name>
-        <Price>99.99</Price>
-    </Product>
-    </Products>
-</Bd>
-<Bd>
-</Bd>
-1
-0
-2023-12-31
-null
-2023-12-05 13:45:30
-'''
-
-# prueba
-
-
-def prueba(texto):
-    while True:
-        tok = lexer.token()
-        if not tok:
-            break
-        print(tok)
-
-
-
-lexer.input(data)
-prueba(data)

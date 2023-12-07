@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ATTR CLOSETAG OPENTAGelement : OPENTAG attributes CLOSETAG\n               | OPENTAG CLOSETAGattributes : ATTR attributes\n                  | ATTR'
+_lr_signature = 'initleftMASMENOSleftPORDIVISIONleftCOMPARACIONDISTINTOMENOR_QUEMAYOR_QUEMENOR_O_IGUAL_QUEMAYOR_O_IGUAL_QUEleftORANDleftPARENTESIS_IZQPARENTESIS_DERleftASADD ALTER AND ARROBA AS ASIGNACION BASE BEGIN BIT BITPRIM CAS COMA COMPARACION CONCATENA CONTAR CORCHETE_DER CORCHETE_IZQ CREATE DATA DATE DATETIME DECIMAL DECLARE DELETE DISTINTO DIVISION DOS_PUNTOS DROP END ENTERO EXEC FOREIGN FOREING FROM FUNCTION HOY ID ID_DECLARE IF INSERT KEY LLAVE_DER LLAVE_IZQ MAS MAYOR_O_IGUAL_QUE MAYOR_QUE MENOR_O_IGUAL_QUE MENOR_QUE MENOS NCHAR NEGACION NOT NULL NVARCHAR OR PARENTESIS_DER PARENTESIS_IZQ POR PRIMARY PROCEDURE PUNTO PUNTO_Y_COMA REFERENCE REFERENCES RETURN RETURNS SELECT SET STR SUBSTRAER SUMA TABLE TRUNCATE UPDATE VARCHAR WHERE\n    init : CREATE\n    '
     
-_lr_action_items = {'OPENTAG':([0,],[2,]),'$end':([1,4,6,],[0,-2,-1,]),'CLOSETAG':([2,3,5,7,],[4,6,-4,-3,]),'ATTR':([2,5,],[5,5,]),}
+_lr_action_items = {'CREATE':([0,],[2,]),'$end':([1,2,],[0,-1,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'element':([0,],[1,]),'attributes':([2,5,],[3,7,]),}
+_lr_goto_items = {'init':([0,],[1,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,9 +26,6 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> element","S'",1,None,None,None),
-  ('element -> OPENTAG attributes CLOSETAG','element',3,'p_element','Parser.py',28),
-  ('element -> OPENTAG CLOSETAG','element',2,'p_element','Parser.py',29),
-  ('attributes -> ATTR attributes','attributes',2,'p_attributes','Parser.py',33),
-  ('attributes -> ATTR','attributes',1,'p_attributes','Parser.py',34),
+  ("S' -> init","S'",1,None,None,None),
+  ('init -> CREATE','init',1,'p_init','Parser.py',24),
 ]

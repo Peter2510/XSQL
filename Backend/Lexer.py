@@ -7,7 +7,7 @@ errors = []
 
 # Conjunto palabras reservadas
 keywords = {
-    'CREATE': 'CREATE',
+    'CREATE | create': 'CREATE',
     'DATA': 'DATA',
     'BASE': 'BASE',
     'TABLE': 'TABLE',
@@ -56,9 +56,7 @@ keywords = {
     'Date': 'DATE',
     'PRIMARY' :'PRIMARY',
     'REFERENCES': 'REFERENCES',
-    'FOREIGN': 'FOREIGN',
-    'UNIQUE': 'UNIQUE',
-    
+    'FOREIGN': 'FOREIGN'    
 }
 
 
@@ -94,6 +92,7 @@ tokens = [
     'ENTERO',
     'ID_DECLARE',
     'ID',
+    'ARROBA'
 ]+ list(keywords.values())
 
 
@@ -122,6 +121,7 @@ t_AND = r'\&\&'
 t_NEGACION = r'\!'
 t_CORCHETE_IZQ = r'\['
 t_CORCHETE_DER = r'\]'
+t_ARROBA = r'\@'
 
 # COMENTARIO
 
@@ -220,17 +220,17 @@ def newline(t):
 
 
 ## PARA LOS TAGS DEL XML
-def t_TAGABIERTO(t):
-    r'<[A-Za-z]+>'
-    return t
+# def t_TAGABIERTO(t):
+#     r'<[A-Za-z]+>'
+#     return t
 
-def t_TAGCERRADO(t):
-    r'</[A-Za-z]+>'
-    return t
+# def t_TAGCERRADO(t):
+#     r'</[A-Za-z]+>'
+#     return t
 
-def t_ATRIBUTOSTAG(t):
-    r'[A-Za-z]+="[^"]*"'
-    return t
+# def t_ATRIBUTOSTAG(t):
+#     r'[A-Za-z]+="[^"]*"'
+#     return t
 
 
         #ignora lo demas
@@ -238,7 +238,7 @@ def t_ATRIBUTOSTAG(t):
 # WHIT_SPACE
 t_ignore = " \t\f\v"
 def t_error(t):
-    print("Error lexico, simbolo "+t.value[0]+" no  valido. en la linea: "+t.lexer.lineno+" y columna: "+find_column(t))
+    
     t.lexer.skip(1)
     
 ##para columna
@@ -250,15 +250,15 @@ def find_column(inp, tk):
 # Crear instancia del lexer
 lexer = lex.lex(reflags=re.IGNORECASE)
 
-# Ingresar la cadena de texto para analizar
-texto = 'Ingresa el texto a parsear: '
+# # Ingresar la cadena de texto para analizar
+# texto = 'SELECT : '
 
-# Configurar la entrada del lexer
-lexer.input(texto)
+# # Configurar la entrada del lexer
+# lexer.input(texto)
 
-# Iterar sobre los tokens generados
-while True:
-    token = lexer.token()
-    if not token:
-        break
-    print(token)
+# # Iterar sobre los tokens generados
+# while True:
+#     token = lexer.token()
+#     if not token:
+#         break
+#     print(token)
