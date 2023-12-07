@@ -238,6 +238,7 @@ def t_ATRIBUTOSTAG(t):
 # WHIT_SPACE
 t_ignore = " \t\f\v"
 def t_error(t):
+    print("Error lexico, simbolo "+t.value[0]+" no  valido. en la linea: "+t.lexer.lineno+" y columna: "+find_column(t))
     t.lexer.skip(1)
     
 ##para columna
@@ -250,7 +251,7 @@ def find_column(inp, tk):
 lexer = lex.lex(reflags=re.IGNORECASE)
 
 # Ingresar la cadena de texto para analizar
-texto = input('Ingresa el texto a parsear: ')
+texto = 'Ingresa el texto a parsear: '
 
 # Configurar la entrada del lexer
 lexer.input(texto)
