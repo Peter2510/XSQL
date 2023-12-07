@@ -3,7 +3,7 @@ from Lexer import tokens, lexer, errores, find_column
 import ply.yacc as yacc
 
 from src.expresiones.aritmeticas import Aritmeticas
-from src.expresiones.primitivos import primitivos
+from src.expresiones.primitivos import Primitivo
 from src.instrucciones.createdb import createDB
 from src.instrucciones.crearTabla import crearTabla
 ## establecer precedencias 
@@ -170,24 +170,24 @@ def p_nulidad_parametro3(t):# si es vacio puede ser null entonces es 1
     '''
     t[0] = '1'
     
-def p_restriccion_parametro(t):
+def p_restriccion_parametro(t): #primary -> 1
     '''
     restriccion_parametro : PRIMARY KEY
     '''
-    t[0] = 'primary'
+    t[0] = '0'
 
-def p_restriccion_parametro2(t):
+def p_restriccion_parametro2(t): # foranea -> 2
     '''
     restriccion_parametro : REFERENCES ID
     '''
     t[0] = f'forenea({t[2]})'
     
 
-def p_restriccion_parametro3(t):
+def p_restriccion_parametro3(t): #normal -> 0
     '''
     restriccion_parametro : 
     '''
-    t[0] = 'SIN RESTRICCION'
+    t[0] = '0'
 
 #### expresiuones nativas
 
@@ -195,16 +195,16 @@ def p_restriccion_parametro3(t):
 def p_exp_entero(t):
     '''expresion : ENTERO'''
     ### como funciones le mandas lo que es digamos
-    t[0]=primitivos(t.lineno(1), find_column(input, t.slice[1]),int(t[1]),'int')
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),int(t[1]),'int')
 ## para decimalees
 def p_exp_decimal(t):
     '''expresion : DECIMAL'''
-    t[0] = primitivos(t.lineno(1), find_column(input, t.slice[1]),float(t[1]),'decimal')
+    t[0] = Primitivo(t.lineno(1), find_column(input, t.slice[1]),float(t[1]),'decimal')
 
 ##para cadenas
 def p_exp_cadena(t):
     '''expresion : STR'''
-    t[0]=primitivos(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'texto')
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'texto')
 ##CREATE DATA BASE
 ##CREATE TABLE
 ##CREATE PROD
