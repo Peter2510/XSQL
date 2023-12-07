@@ -9,7 +9,6 @@ class crearTabla(Abstract):
     def interpretar(self, arbol, tabla):
         ## lo que hace de interfaz regresa el valor
         print("crear Tabla: ",self.nombre.valor)
-        for i in self.listaAtributos:
-            print(i.valor)
+     
         return self.nombre
     

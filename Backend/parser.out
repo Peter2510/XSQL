@@ -9,7 +9,6 @@ Unused terminals:
     AS
     ASIGNACION
     BEGIN
-    BIT
     BITPRIM
     CAS
     COMPARACION
@@ -17,8 +16,6 @@ Unused terminals:
     CONTAR
     CORCHETE_DER
     CORCHETE_IZQ
-    DATE
-    DATETIME
     DECLARE
     DELETE
     DISTINTO
@@ -36,7 +33,6 @@ Unused terminals:
     ID_DECLARE
     IF
     INSERT
-    KEY
     LLAVE_DER
     LLAVE_IZQ
     MAS
@@ -48,15 +44,12 @@ Unused terminals:
     NCHAR
     NEGACION
     NOT
-    NULL
     NVARCHAR
     OR
     POR
-    PRIMARY
     PROCEDURE
     PUNTO
     REFERENCE
-    REFERENCES
     RETURN
     RETURNS
     SELECT
@@ -65,7 +58,6 @@ Unused terminals:
     SUMA
     TRUNCATE
     UPDATE
-    VARCHAR
     WHERE
 
 Grammar
@@ -78,11 +70,22 @@ Rule 4     instruccion -> crearBaseDatos PUNTO_Y_COMA
 Rule 5     instruccion -> crearTabla PUNTO_Y_COMA
 Rule 6     crearBaseDatos -> CREATE DATA BASE expresion
 Rule 7     crearTabla -> CREATE TABLE expresion PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
-Rule 8     tablasEspecifico -> tablasEspecifico COMA expresion
-Rule 9     tablasEspecifico -> expresion
-Rule 10    expresion -> ENTERO
-Rule 11    expresion -> DECIMAL
-Rule 12    expresion -> STR
+Rule 8     tablasEspecifico -> tablasEspecifico COMA crearSentenciaTabla
+Rule 9     tablasEspecifico -> crearSentenciaTabla
+Rule 10    crearSentenciaTabla -> creacionNormalArtributoTabla
+Rule 11    crearSentenciaTabla -> creacionllavePrimaria
+Rule 12    crearSentenciaTabla -> creacionLlaveForanea
+Rule 13    creacionNormalArtributoTabla -> expresion tipodato NULL
+Rule 14    creacionllavePrimaria -> expresion tipodato PRIMARY KEY
+Rule 15    creacionLlaveForanea -> expresion tipodato REFERENCES expresion
+Rule 16    tipodato -> ENTERO
+Rule 17    tipodato -> BIT
+Rule 18    tipodato -> VARCHAR
+Rule 19    tipodato -> DATETIME
+Rule 20    tipodato -> DATE
+Rule 21    expresion -> ENTERO
+Rule 22    expresion -> DECIMAL
+Rule 23    expresion -> STR
 
 Terminals, with rules where they appear
 
@@ -94,7 +97,7 @@ AS                   :
 ASIGNACION           : 
 BASE                 : 6
 BEGIN                : 
-BIT                  : 
+BIT                  : 17
 BITPRIM              : 
 CAS                  : 
 COMA                 : 8
@@ -105,9 +108,9 @@ CORCHETE_DER         :
 CORCHETE_IZQ         : 
 CREATE               : 6 7
 DATA                 : 6
-DATE                 : 
-DATETIME             : 
-DECIMAL              : 11
+DATE                 : 20
+DATETIME             : 19
+DECIMAL              : 22
 DECLARE              : 
 DELETE               : 
 DISTINTO             : 
@@ -115,7 +118,7 @@ DIVISION             :
 DOS_PUNTOS           : 
 DROP                 : 
 END                  : 
-ENTERO               : 10
+ENTERO               : 16 21
 EXEC                 : 
 FOREIGN              : 
 FOREING              : 
@@ -126,7 +129,7 @@ ID                   :
 ID_DECLARE           : 
 IF                   : 
 INSERT               : 
-KEY                  : 
+KEY                  : 14
 LLAVE_DER            : 
 LLAVE_IZQ            : 
 MAS                  : 
@@ -138,41 +141,46 @@ MENOS                :
 NCHAR                : 
 NEGACION             : 
 NOT                  : 
-NULL                 : 
+NULL                 : 13
 NVARCHAR             : 
 OR                   : 
 PARENTESIS_DER       : 7
 PARENTESIS_IZQ       : 7
 POR                  : 
-PRIMARY              : 
+PRIMARY              : 14
 PROCEDURE            : 
 PUNTO                : 
 PUNTO_Y_COMA         : 4 5
 REFERENCE            : 
-REFERENCES           : 
+REFERENCES           : 15
 RETURN               : 
 RETURNS              : 
 SELECT               : 
 SET                  : 
-STR                  : 12
+STR                  : 23
 SUBSTRAER            : 
 SUMA                 : 
 TABLE                : 7
 TRUNCATE             : 
 UPDATE               : 
-VARCHAR              : 
+VARCHAR              : 18
 WHERE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
+creacionLlaveForanea : 12
+creacionNormalArtributoTabla : 10
+creacionllavePrimaria : 11
 crearBaseDatos       : 4
+crearSentenciaTabla  : 8 9
 crearTabla           : 5
-expresion            : 6 7 8 9
+expresion            : 6 7 13 14 15 15
 init                 : 0
 instruccion          : 2 3
 instrucciones        : 1 2
 tablasEspecifico     : 7 8
+tipodato             : 13 14 15
 
 Parsing method: LALR
 
@@ -282,9 +290,9 @@ state 10
 state 11
 
     (7) crearTabla -> CREATE TABLE . expresion PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
-    (10) expresion -> . ENTERO
-    (11) expresion -> . DECIMAL
-    (12) expresion -> . STR
+    (21) expresion -> . ENTERO
+    (22) expresion -> . DECIMAL
+    (23) expresion -> . STR
 
     ENTERO          shift and go to state 14
     DECIMAL         shift and go to state 15
@@ -295,9 +303,9 @@ state 11
 state 12
 
     (6) crearBaseDatos -> CREATE DATA BASE . expresion
-    (10) expresion -> . ENTERO
-    (11) expresion -> . DECIMAL
-    (12) expresion -> . STR
+    (21) expresion -> . ENTERO
+    (22) expresion -> . DECIMAL
+    (23) expresion -> . STR
 
     ENTERO          shift and go to state 14
     DECIMAL         shift and go to state 15
@@ -314,32 +322,47 @@ state 13
 
 state 14
 
-    (10) expresion -> ENTERO .
+    (21) expresion -> ENTERO .
 
-    PARENTESIS_IZQ  reduce using rule 10 (expresion -> ENTERO .)
-    PUNTO_Y_COMA    reduce using rule 10 (expresion -> ENTERO .)
-    PARENTESIS_DER  reduce using rule 10 (expresion -> ENTERO .)
-    COMA            reduce using rule 10 (expresion -> ENTERO .)
+    PARENTESIS_IZQ  reduce using rule 21 (expresion -> ENTERO .)
+    PUNTO_Y_COMA    reduce using rule 21 (expresion -> ENTERO .)
+    ENTERO          reduce using rule 21 (expresion -> ENTERO .)
+    BIT             reduce using rule 21 (expresion -> ENTERO .)
+    VARCHAR         reduce using rule 21 (expresion -> ENTERO .)
+    DATETIME        reduce using rule 21 (expresion -> ENTERO .)
+    DATE            reduce using rule 21 (expresion -> ENTERO .)
+    PARENTESIS_DER  reduce using rule 21 (expresion -> ENTERO .)
+    COMA            reduce using rule 21 (expresion -> ENTERO .)
 
 
 state 15
 
-    (11) expresion -> DECIMAL .
+    (22) expresion -> DECIMAL .
 
-    PARENTESIS_IZQ  reduce using rule 11 (expresion -> DECIMAL .)
-    PUNTO_Y_COMA    reduce using rule 11 (expresion -> DECIMAL .)
-    PARENTESIS_DER  reduce using rule 11 (expresion -> DECIMAL .)
-    COMA            reduce using rule 11 (expresion -> DECIMAL .)
+    PARENTESIS_IZQ  reduce using rule 22 (expresion -> DECIMAL .)
+    PUNTO_Y_COMA    reduce using rule 22 (expresion -> DECIMAL .)
+    ENTERO          reduce using rule 22 (expresion -> DECIMAL .)
+    BIT             reduce using rule 22 (expresion -> DECIMAL .)
+    VARCHAR         reduce using rule 22 (expresion -> DECIMAL .)
+    DATETIME        reduce using rule 22 (expresion -> DECIMAL .)
+    DATE            reduce using rule 22 (expresion -> DECIMAL .)
+    PARENTESIS_DER  reduce using rule 22 (expresion -> DECIMAL .)
+    COMA            reduce using rule 22 (expresion -> DECIMAL .)
 
 
 state 16
 
-    (12) expresion -> STR .
+    (23) expresion -> STR .
 
-    PARENTESIS_IZQ  reduce using rule 12 (expresion -> STR .)
-    PUNTO_Y_COMA    reduce using rule 12 (expresion -> STR .)
-    PARENTESIS_DER  reduce using rule 12 (expresion -> STR .)
-    COMA            reduce using rule 12 (expresion -> STR .)
+    PARENTESIS_IZQ  reduce using rule 23 (expresion -> STR .)
+    PUNTO_Y_COMA    reduce using rule 23 (expresion -> STR .)
+    ENTERO          reduce using rule 23 (expresion -> STR .)
+    BIT             reduce using rule 23 (expresion -> STR .)
+    VARCHAR         reduce using rule 23 (expresion -> STR .)
+    DATETIME        reduce using rule 23 (expresion -> STR .)
+    DATE            reduce using rule 23 (expresion -> STR .)
+    PARENTESIS_DER  reduce using rule 23 (expresion -> STR .)
+    COMA            reduce using rule 23 (expresion -> STR .)
 
 
 state 17
@@ -352,11 +375,17 @@ state 17
 state 18
 
     (7) crearTabla -> CREATE TABLE expresion PARENTESIS_IZQ . tablasEspecifico PARENTESIS_DER
-    (8) tablasEspecifico -> . tablasEspecifico COMA expresion
-    (9) tablasEspecifico -> . expresion
-    (10) expresion -> . ENTERO
-    (11) expresion -> . DECIMAL
-    (12) expresion -> . STR
+    (8) tablasEspecifico -> . tablasEspecifico COMA crearSentenciaTabla
+    (9) tablasEspecifico -> . crearSentenciaTabla
+    (10) crearSentenciaTabla -> . creacionNormalArtributoTabla
+    (11) crearSentenciaTabla -> . creacionllavePrimaria
+    (12) crearSentenciaTabla -> . creacionLlaveForanea
+    (13) creacionNormalArtributoTabla -> . expresion tipodato NULL
+    (14) creacionllavePrimaria -> . expresion tipodato PRIMARY KEY
+    (15) creacionLlaveForanea -> . expresion tipodato REFERENCES expresion
+    (21) expresion -> . ENTERO
+    (22) expresion -> . DECIMAL
+    (23) expresion -> . STR
 
     ENTERO          shift and go to state 14
     DECIMAL         shift and go to state 15
@@ -364,48 +393,205 @@ state 18
 
     expresion                      shift and go to state 19
     tablasEspecifico               shift and go to state 20
+    crearSentenciaTabla            shift and go to state 21
+    creacionNormalArtributoTabla   shift and go to state 22
+    creacionllavePrimaria          shift and go to state 23
+    creacionLlaveForanea           shift and go to state 24
 
 state 19
 
-    (9) tablasEspecifico -> expresion .
+    (13) creacionNormalArtributoTabla -> expresion . tipodato NULL
+    (14) creacionllavePrimaria -> expresion . tipodato PRIMARY KEY
+    (15) creacionLlaveForanea -> expresion . tipodato REFERENCES expresion
+    (16) tipodato -> . ENTERO
+    (17) tipodato -> . BIT
+    (18) tipodato -> . VARCHAR
+    (19) tipodato -> . DATETIME
+    (20) tipodato -> . DATE
 
-    PARENTESIS_DER  reduce using rule 9 (tablasEspecifico -> expresion .)
-    COMA            reduce using rule 9 (tablasEspecifico -> expresion .)
+    ENTERO          shift and go to state 26
+    BIT             shift and go to state 27
+    VARCHAR         shift and go to state 28
+    DATETIME        shift and go to state 29
+    DATE            shift and go to state 30
 
+    tipodato                       shift and go to state 25
 
 state 20
 
     (7) crearTabla -> CREATE TABLE expresion PARENTESIS_IZQ tablasEspecifico . PARENTESIS_DER
-    (8) tablasEspecifico -> tablasEspecifico . COMA expresion
+    (8) tablasEspecifico -> tablasEspecifico . COMA crearSentenciaTabla
 
-    PARENTESIS_DER  shift and go to state 21
-    COMA            shift and go to state 22
+    PARENTESIS_DER  shift and go to state 31
+    COMA            shift and go to state 32
 
 
 state 21
+
+    (9) tablasEspecifico -> crearSentenciaTabla .
+
+    PARENTESIS_DER  reduce using rule 9 (tablasEspecifico -> crearSentenciaTabla .)
+    COMA            reduce using rule 9 (tablasEspecifico -> crearSentenciaTabla .)
+
+
+state 22
+
+    (10) crearSentenciaTabla -> creacionNormalArtributoTabla .
+
+    PARENTESIS_DER  reduce using rule 10 (crearSentenciaTabla -> creacionNormalArtributoTabla .)
+    COMA            reduce using rule 10 (crearSentenciaTabla -> creacionNormalArtributoTabla .)
+
+
+state 23
+
+    (11) crearSentenciaTabla -> creacionllavePrimaria .
+
+    PARENTESIS_DER  reduce using rule 11 (crearSentenciaTabla -> creacionllavePrimaria .)
+    COMA            reduce using rule 11 (crearSentenciaTabla -> creacionllavePrimaria .)
+
+
+state 24
+
+    (12) crearSentenciaTabla -> creacionLlaveForanea .
+
+    PARENTESIS_DER  reduce using rule 12 (crearSentenciaTabla -> creacionLlaveForanea .)
+    COMA            reduce using rule 12 (crearSentenciaTabla -> creacionLlaveForanea .)
+
+
+state 25
+
+    (13) creacionNormalArtributoTabla -> expresion tipodato . NULL
+    (14) creacionllavePrimaria -> expresion tipodato . PRIMARY KEY
+    (15) creacionLlaveForanea -> expresion tipodato . REFERENCES expresion
+
+    NULL            shift and go to state 33
+    PRIMARY         shift and go to state 34
+    REFERENCES      shift and go to state 35
+
+
+state 26
+
+    (16) tipodato -> ENTERO .
+
+    NULL            reduce using rule 16 (tipodato -> ENTERO .)
+    PRIMARY         reduce using rule 16 (tipodato -> ENTERO .)
+    REFERENCES      reduce using rule 16 (tipodato -> ENTERO .)
+
+
+state 27
+
+    (17) tipodato -> BIT .
+
+    NULL            reduce using rule 17 (tipodato -> BIT .)
+    PRIMARY         reduce using rule 17 (tipodato -> BIT .)
+    REFERENCES      reduce using rule 17 (tipodato -> BIT .)
+
+
+state 28
+
+    (18) tipodato -> VARCHAR .
+
+    NULL            reduce using rule 18 (tipodato -> VARCHAR .)
+    PRIMARY         reduce using rule 18 (tipodato -> VARCHAR .)
+    REFERENCES      reduce using rule 18 (tipodato -> VARCHAR .)
+
+
+state 29
+
+    (19) tipodato -> DATETIME .
+
+    NULL            reduce using rule 19 (tipodato -> DATETIME .)
+    PRIMARY         reduce using rule 19 (tipodato -> DATETIME .)
+    REFERENCES      reduce using rule 19 (tipodato -> DATETIME .)
+
+
+state 30
+
+    (20) tipodato -> DATE .
+
+    NULL            reduce using rule 20 (tipodato -> DATE .)
+    PRIMARY         reduce using rule 20 (tipodato -> DATE .)
+    REFERENCES      reduce using rule 20 (tipodato -> DATE .)
+
+
+state 31
 
     (7) crearTabla -> CREATE TABLE expresion PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER .
 
     PUNTO_Y_COMA    reduce using rule 7 (crearTabla -> CREATE TABLE expresion PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER .)
 
 
-state 22
+state 32
 
-    (8) tablasEspecifico -> tablasEspecifico COMA . expresion
-    (10) expresion -> . ENTERO
-    (11) expresion -> . DECIMAL
-    (12) expresion -> . STR
+    (8) tablasEspecifico -> tablasEspecifico COMA . crearSentenciaTabla
+    (10) crearSentenciaTabla -> . creacionNormalArtributoTabla
+    (11) crearSentenciaTabla -> . creacionllavePrimaria
+    (12) crearSentenciaTabla -> . creacionLlaveForanea
+    (13) creacionNormalArtributoTabla -> . expresion tipodato NULL
+    (14) creacionllavePrimaria -> . expresion tipodato PRIMARY KEY
+    (15) creacionLlaveForanea -> . expresion tipodato REFERENCES expresion
+    (21) expresion -> . ENTERO
+    (22) expresion -> . DECIMAL
+    (23) expresion -> . STR
 
     ENTERO          shift and go to state 14
     DECIMAL         shift and go to state 15
     STR             shift and go to state 16
 
-    expresion                      shift and go to state 23
+    crearSentenciaTabla            shift and go to state 36
+    creacionNormalArtributoTabla   shift and go to state 22
+    creacionllavePrimaria          shift and go to state 23
+    creacionLlaveForanea           shift and go to state 24
+    expresion                      shift and go to state 19
 
-state 23
+state 33
 
-    (8) tablasEspecifico -> tablasEspecifico COMA expresion .
+    (13) creacionNormalArtributoTabla -> expresion tipodato NULL .
 
-    PARENTESIS_DER  reduce using rule 8 (tablasEspecifico -> tablasEspecifico COMA expresion .)
-    COMA            reduce using rule 8 (tablasEspecifico -> tablasEspecifico COMA expresion .)
+    PARENTESIS_DER  reduce using rule 13 (creacionNormalArtributoTabla -> expresion tipodato NULL .)
+    COMA            reduce using rule 13 (creacionNormalArtributoTabla -> expresion tipodato NULL .)
+
+
+state 34
+
+    (14) creacionllavePrimaria -> expresion tipodato PRIMARY . KEY
+
+    KEY             shift and go to state 37
+
+
+state 35
+
+    (15) creacionLlaveForanea -> expresion tipodato REFERENCES . expresion
+    (21) expresion -> . ENTERO
+    (22) expresion -> . DECIMAL
+    (23) expresion -> . STR
+
+    ENTERO          shift and go to state 14
+    DECIMAL         shift and go to state 15
+    STR             shift and go to state 16
+
+    expresion                      shift and go to state 38
+
+state 36
+
+    (8) tablasEspecifico -> tablasEspecifico COMA crearSentenciaTabla .
+
+    PARENTESIS_DER  reduce using rule 8 (tablasEspecifico -> tablasEspecifico COMA crearSentenciaTabla .)
+    COMA            reduce using rule 8 (tablasEspecifico -> tablasEspecifico COMA crearSentenciaTabla .)
+
+
+state 37
+
+    (14) creacionllavePrimaria -> expresion tipodato PRIMARY KEY .
+
+    PARENTESIS_DER  reduce using rule 14 (creacionllavePrimaria -> expresion tipodato PRIMARY KEY .)
+    COMA            reduce using rule 14 (creacionllavePrimaria -> expresion tipodato PRIMARY KEY .)
+
+
+state 38
+
+    (15) creacionLlaveForanea -> expresion tipodato REFERENCES expresion .
+
+    PARENTESIS_DER  reduce using rule 15 (creacionLlaveForanea -> expresion tipodato REFERENCES expresion .)
+    COMA            reduce using rule 15 (creacionLlaveForanea -> expresion tipodato REFERENCES expresion .)
 

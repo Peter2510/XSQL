@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftMASMENOSleftPORDIVISIONleftCOMPARACIONDISTINTOMENOR_QUEMAYOR_QUEMENOR_O_IGUAL_QUEMAYOR_O_IGUAL_QUEleftORANDleftPARENTESIS_IZQPARENTESIS_DERleftASADD ALTER AND ARROBA AS ASIGNACION BASE BEGIN BIT BITPRIM CAS COMA COMPARACION CONCATENA CONTAR CORCHETE_DER CORCHETE_IZQ CREATE DATA DATE DATETIME DECIMAL DECLARE DELETE DISTINTO DIVISION DOS_PUNTOS DROP END ENTERO EXEC FOREIGN FOREING FROM FUNCTION HOY ID ID_DECLARE IF INSERT KEY LLAVE_DER LLAVE_IZQ MAS MAYOR_O_IGUAL_QUE MAYOR_QUE MENOR_O_IGUAL_QUE MENOR_QUE MENOS NCHAR NEGACION NOT NULL NVARCHAR OR PARENTESIS_DER PARENTESIS_IZQ POR PRIMARY PROCEDURE PUNTO PUNTO_Y_COMA REFERENCE REFERENCES RETURN RETURNS SELECT SET STR SUBSTRAER SUMA TABLE TRUNCATE UPDATE VARCHAR WHERE\n    init : instrucciones\n    \n    instrucciones : instrucciones instruccion\n    \n    instrucciones : instruccion \n    \n    instruccion : crearBaseDatos PUNTO_Y_COMA\n                | crearTabla PUNTO_Y_COMA\n    \n    crearBaseDatos : CREATE DATA BASE expresion \n    \n    crearTabla : CREATE TABLE expresion PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER\n    \n    tablasEspecifico : tablasEspecifico COMA expresion\n    \n    tablasEspecifico :  expresion\n    expresion : ENTEROexpresion : DECIMALexpresion : STR'
+_lr_signature = 'leftMASMENOSleftPORDIVISIONleftCOMPARACIONDISTINTOMENOR_QUEMAYOR_QUEMENOR_O_IGUAL_QUEMAYOR_O_IGUAL_QUEleftORANDleftPARENTESIS_IZQPARENTESIS_DERleftASADD ALTER AND ARROBA AS ASIGNACION BASE BEGIN BIT BITPRIM CAS COMA COMPARACION CONCATENA CONTAR CORCHETE_DER CORCHETE_IZQ CREATE DATA DATE DATETIME DECIMAL DECLARE DELETE DISTINTO DIVISION DOS_PUNTOS DROP END ENTERO EXEC FOREIGN FOREING FROM FUNCTION HOY ID ID_DECLARE IF INSERT KEY LLAVE_DER LLAVE_IZQ MAS MAYOR_O_IGUAL_QUE MAYOR_QUE MENOR_O_IGUAL_QUE MENOR_QUE MENOS NCHAR NEGACION NOT NULL NVARCHAR OR PARENTESIS_DER PARENTESIS_IZQ POR PRIMARY PROCEDURE PUNTO PUNTO_Y_COMA REFERENCE REFERENCES RETURN RETURNS SELECT SET STR SUBSTRAER SUMA TABLE TRUNCATE UPDATE VARCHAR WHERE\n    init : instrucciones\n    \n    instrucciones : instrucciones instruccion\n    \n    instrucciones : instruccion \n    \n    instruccion : crearBaseDatos PUNTO_Y_COMA\n                | crearTabla PUNTO_Y_COMA\n    \n    crearBaseDatos : CREATE DATA BASE expresion \n    \n    crearTabla : CREATE TABLE expresion PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER\n    \n    tablasEspecifico : tablasEspecifico COMA crearSentenciaTabla\n    \n    tablasEspecifico :  crearSentenciaTabla\n    \n    crearSentenciaTabla :  creacionNormalArtributoTabla \n                        |  creacionllavePrimaria\n                        |  creacionLlaveForanea\n    \n    creacionNormalArtributoTabla : expresion tipodato NULL  \n    \n    creacionllavePrimaria :  expresion tipodato PRIMARY KEY\n    \n    creacionLlaveForanea :   expresion tipodato REFERENCES expresion\n    \n    tipodato : ENTERO\n             | BIT\n             | VARCHAR\n             | DATETIME\n             | DATE\n    expresion : ENTEROexpresion : DECIMALexpresion : STR'
     
-_lr_action_items = {'CREATE':([0,2,3,7,8,9,],[6,6,-3,-2,-4,-5,]),'$end':([1,2,3,7,8,9,],[0,-1,-3,-2,-4,-5,]),'PUNTO_Y_COMA':([4,5,14,15,16,17,21,],[8,9,-10,-11,-12,-6,-7,]),'DATA':([6,],[10,]),'TABLE':([6,],[11,]),'BASE':([10,],[12,]),'ENTERO':([11,12,18,22,],[14,14,14,14,]),'DECIMAL':([11,12,18,22,],[15,15,15,15,]),'STR':([11,12,18,22,],[16,16,16,16,]),'PARENTESIS_IZQ':([13,14,15,16,],[18,-10,-11,-12,]),'PARENTESIS_DER':([14,15,16,19,20,23,],[-10,-11,-12,-9,21,-8,]),'COMA':([14,15,16,19,20,23,],[-10,-11,-12,-9,22,-8,]),}
+_lr_action_items = {'CREATE':([0,2,3,7,8,9,],[6,6,-3,-2,-4,-5,]),'$end':([1,2,3,7,8,9,],[0,-1,-3,-2,-4,-5,]),'PUNTO_Y_COMA':([4,5,14,15,16,17,31,],[8,9,-21,-22,-23,-6,-7,]),'DATA':([6,],[10,]),'TABLE':([6,],[11,]),'BASE':([10,],[12,]),'ENTERO':([11,12,14,15,16,18,19,32,35,],[14,14,-21,-22,-23,14,26,14,14,]),'DECIMAL':([11,12,18,32,35,],[15,15,15,15,15,]),'STR':([11,12,18,32,35,],[16,16,16,16,16,]),'PARENTESIS_IZQ':([13,14,15,16,],[18,-21,-22,-23,]),'BIT':([14,15,16,19,],[-21,-22,-23,27,]),'VARCHAR':([14,15,16,19,],[-21,-22,-23,28,]),'DATETIME':([14,15,16,19,],[-21,-22,-23,29,]),'DATE':([14,15,16,19,],[-21,-22,-23,30,]),'PARENTESIS_DER':([14,15,16,20,21,22,23,24,33,36,37,38,],[-21,-22,-23,31,-9,-10,-11,-12,-13,-8,-14,-15,]),'COMA':([14,15,16,20,21,22,23,24,33,36,37,38,],[-21,-22,-23,32,-9,-10,-11,-12,-13,-8,-14,-15,]),'NULL':([25,26,27,28,29,30,],[33,-16,-17,-18,-19,-20,]),'PRIMARY':([25,26,27,28,29,30,],[34,-16,-17,-18,-19,-20,]),'REFERENCES':([25,26,27,28,29,30,],[35,-16,-17,-18,-19,-20,]),'KEY':([34,],[37,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'init':([0,],[1,]),'instrucciones':([0,],[2,]),'instruccion':([0,2,],[3,7,]),'crearBaseDatos':([0,2,],[4,4,]),'crearTabla':([0,2,],[5,5,]),'expresion':([11,12,18,22,],[13,17,19,23,]),'tablasEspecifico':([18,],[20,]),}
+_lr_goto_items = {'init':([0,],[1,]),'instrucciones':([0,],[2,]),'instruccion':([0,2,],[3,7,]),'crearBaseDatos':([0,2,],[4,4,]),'crearTabla':([0,2,],[5,5,]),'expresion':([11,12,18,32,35,],[13,17,19,19,38,]),'tablasEspecifico':([18,],[20,]),'crearSentenciaTabla':([18,32,],[21,36,]),'creacionNormalArtributoTabla':([18,32,],[22,22,]),'creacionllavePrimaria':([18,32,],[23,23,]),'creacionLlaveForanea':([18,32,],[24,24,]),'tipodato':([19,],[25,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -34,9 +34,20 @@ _lr_productions = [
   ('instruccion -> crearTabla PUNTO_Y_COMA','instruccion',2,'p_instruccionGeneral','Parser.py',57),
   ('crearBaseDatos -> CREATE DATA BASE expresion','crearBaseDatos',4,'p_crearBaseDatos','Parser.py',67),
   ('crearTabla -> CREATE TABLE expresion PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER','crearTabla',6,'p_crearTabla','Parser.py',76),
-  ('tablasEspecifico -> tablasEspecifico COMA expresion','tablasEspecifico',3,'p_tablasEspecifico','Parser.py',86),
-  ('tablasEspecifico -> expresion','tablasEspecifico',1,'p_tablasEspecifico2','Parser.py',93),
-  ('expresion -> ENTERO','expresion',1,'p_exp_entero','Parser.py',103),
-  ('expresion -> DECIMAL','expresion',1,'p_exp_decimal','Parser.py',108),
-  ('expresion -> STR','expresion',1,'p_exp_cadena','Parser.py',113),
+  ('tablasEspecifico -> tablasEspecifico COMA crearSentenciaTabla','tablasEspecifico',3,'p_tablasEspecifico','Parser.py',86),
+  ('tablasEspecifico -> crearSentenciaTabla','tablasEspecifico',1,'p_tablasEspecifico2','Parser.py',93),
+  ('crearSentenciaTabla -> creacionNormalArtributoTabla','crearSentenciaTabla',1,'p_atributosTablas','Parser.py',103),
+  ('crearSentenciaTabla -> creacionllavePrimaria','crearSentenciaTabla',1,'p_atributosTablas','Parser.py',104),
+  ('crearSentenciaTabla -> creacionLlaveForanea','crearSentenciaTabla',1,'p_atributosTablas','Parser.py',105),
+  ('creacionNormalArtributoTabla -> expresion tipodato NULL','creacionNormalArtributoTabla',3,'p_creacionNormalArtributoTabla','Parser.py',111),
+  ('creacionllavePrimaria -> expresion tipodato PRIMARY KEY','creacionllavePrimaria',4,'p_creacionllavePrimaria','Parser.py',118),
+  ('creacionLlaveForanea -> expresion tipodato REFERENCES expresion','creacionLlaveForanea',4,'p_creacionLlaveForanea','Parser.py',125),
+  ('tipodato -> ENTERO','tipodato',1,'p_tipodato','Parser.py',133),
+  ('tipodato -> BIT','tipodato',1,'p_tipodato','Parser.py',134),
+  ('tipodato -> VARCHAR','tipodato',1,'p_tipodato','Parser.py',135),
+  ('tipodato -> DATETIME','tipodato',1,'p_tipodato','Parser.py',136),
+  ('tipodato -> DATE','tipodato',1,'p_tipodato','Parser.py',137),
+  ('expresion -> ENTERO','expresion',1,'p_exp_entero','Parser.py',145),
+  ('expresion -> DECIMAL','expresion',1,'p_exp_decimal','Parser.py',150),
+  ('expresion -> STR','expresion',1,'p_exp_cadena','Parser.py',155),
 ]

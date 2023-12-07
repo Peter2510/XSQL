@@ -83,18 +83,68 @@ def p_crearTabla(t):
 ## PARA LAS TABLAS MAS ESPECIFICO
 def p_tablasEspecifico(t):
     '''
-    tablasEspecifico : tablasEspecifico COMA expresion
+    tablasEspecifico : tablasEspecifico COMA crearSentenciaTabla
     '''
     t[1].append(t[3])
     t[0] = t[1]
 
 def p_tablasEspecifico2(t):
     '''
-    tablasEspecifico :  expresion
+    tablasEspecifico :  crearSentenciaTabla
     '''
+    print(t[1])
+
     t[0] = [t[1]]
 
 
+######----------------------------------------
+## para los elementos de llaves y atributos()
+
+def p_atributosTablas(t):
+    '''
+    crearSentenciaTabla :  creacionNormalArtributoTabla 
+                        |  creacionllavePrimaria
+                        |  creacionLlaveForanea
+    '''
+    print(t[1])
+    t[0] = t[1]
+
+def p_creacionNormalArtributoTabla(t):
+    '''
+    creacionNormalArtributoTabla : expresion tipodato NULL  
+    '''
+    print(">>>>",t[1], t[2])
+    t[0] = t[1]
+
+def p_creacionllavePrimaria(t):
+    '''
+    creacionllavePrimaria :  expresion tipodato PRIMARY KEY
+    '''  
+    print(t[1], t[2])
+    t[0] = t[1]
+
+def p_creacionLlaveForanea(t):
+    '''
+    creacionLlaveForanea :   expresion tipodato REFERENCES expresion
+    '''
+    print(t[1], t[2],t[4])
+    t[0] = t[1]
+
+
+def p_nulidad(t):
+    '''
+    '''
+
+
+def p_tipodato(t):
+    '''
+    tipodato : ENTERO
+             | BIT
+             | VARCHAR
+             | DATETIME
+             | DATE
+    '''
+    t[0] = t[1]
 
 #### expresiuones nativas
 
