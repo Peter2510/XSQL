@@ -4,7 +4,7 @@ import json
 from flask_cors import CORS, cross_origin
 from flask.helpers import url_for
 from werkzeug.utils import redirect
-
+from Lexer import tokens, lexer, errores, find_column
 
 
 
@@ -20,12 +20,26 @@ def compilar():
     if request.method == "POST":
         entrada = request.data.decode("utf-8")
         entrada = json.loads(entrada)
-        print(entrada)
-        pars = parse(entrada)
-        return {'mensaje':pars}
+        print(entrada.lower())
+        pars = parse(entrada.lower())
+        for instr in pars:
+            instr.interpretar(None, None)
+
+
+
+        # ### solo prueba de esto
+        # def prueba(texto):
+        #     while True:
+        #         tok = lexer.token()
+        #         if not tok:
+        #             break
+        #         print(tok)
+        # lexer.input(entrada)
+        # prueba(entrada)
+        # ##########3
+        return {'mensaje':entrada}
     else:
         return {'mensaje':'Error al compilar'}
-    
            
 if __name__ == "__main__":
     app.run(debug=True,port=3000)

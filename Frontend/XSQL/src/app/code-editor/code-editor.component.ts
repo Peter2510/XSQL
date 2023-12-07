@@ -28,13 +28,14 @@ export class CodeEditorComponent implements OnInit{
 
   constructor(private servicio:CompilacionService){}
 
+
+
   ejecutar(){
     this.servicio.ejecutarSQL(this.codeModel.value).subscribe(da=>{
       console.log(da)
     })
-    
-  }
 
+  }
   ngOnInit(): void {
   }
 }

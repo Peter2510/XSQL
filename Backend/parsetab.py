@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'initleftMASMENOSleftPORDIVISIONleftCOMPARACIONDISTINTOMENOR_QUEMAYOR_QUEMENOR_O_IGUAL_QUEMAYOR_O_IGUAL_QUEleftORANDleftPARENTESIS_IZQPARENTESIS_DERleftASADD ALTER AND ARROBA AS ASIGNACION BASE BEGIN BIT BITPRIM CAS COMA COMPARACION CONCATENA CONTAR CORCHETE_DER CORCHETE_IZQ CREATE DATA DATE DATETIME DECIMAL DECLARE DELETE DISTINTO DIVISION DOS_PUNTOS DROP END ENTERO EXEC FOREIGN FOREING FROM FUNCTION HOY ID ID_DECLARE IF INSERT KEY LLAVE_DER LLAVE_IZQ MAS MAYOR_O_IGUAL_QUE MAYOR_QUE MENOR_O_IGUAL_QUE MENOR_QUE MENOS NCHAR NEGACION NOT NULL NVARCHAR OR PARENTESIS_DER PARENTESIS_IZQ POR PRIMARY PROCEDURE PUNTO PUNTO_Y_COMA REFERENCE REFERENCES RETURN RETURNS SELECT SET STR SUBSTRAER SUMA TABLE TRUNCATE UPDATE VARCHAR WHERE\n    init : CREATE\n    '
+_lr_signature = 'leftMASMENOSleftPORDIVISIONleftCOMPARACIONDISTINTOMENOR_QUEMAYOR_QUEMENOR_O_IGUAL_QUEMAYOR_O_IGUAL_QUEleftORANDleftPARENTESIS_IZQPARENTESIS_DERleftASADD ALTER AND ARROBA AS ASIGNACION BASE BEGIN BITPRIM CAS COMA COMPARACION CONCATENA CONTAR CORCHETE_DER CORCHETE_IZQ CREATE DATA DATE DATEPRIM DATETIME DATETIMEPRIM DECIMAL DECLARE DELETE DISTINTO DIVISION DOS_PUNTOS DROP END ENTERO EXEC FOREIGN FOREING FROM FUNCTION HOY ID ID_DECLARE IF INSERT KEY LLAVE_DER LLAVE_IZQ MAS MAYOR_O_IGUAL_QUE MAYOR_QUE MENOR_O_IGUAL_QUE MENOR_QUE MENOS NCHAR NEGACION NOT NULL NVARCHAR OR PARENTESIS_DER PARENTESIS_IZQ POR PRIMARY PROCEDURE PUNTO PUNTO_Y_COMA REFERENCE REFERENCES RETURN RETURNS R_BIT R_DECIMAL R_INT SELECT SET STR SUBSTRAER SUMA TABLE TRUNCATE UPDATE USAR VARCHAR WHERE\n    init : instrucciones\n    \n    instrucciones : instrucciones instruccion\n    \n    instrucciones : instruccion \n    \n    instruccion : crearBaseDatos PUNTO_Y_COMA\n                | crearTabla PUNTO_Y_COMA\n    \n    crearBaseDatos : CREATE DATA BASE ID \n    \n    crearTabla : CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER\n    \n    tablasEspecifico : tablasEspecifico COMA columnaDefinicion\n    \n    tablasEspecifico :  columnaDefinicion\n    \n    columnaDefinicion : ID tipo_dato nulidad_parametro restriccion_parametro\n    \n    tipo_dato : R_INT\n    \n    tipo_dato : R_DECIMAL\n    \n    tipo_dato : R_BIT\n    \n    tipo_dato : DATETIME\n    \n    tipo_dato : DATE\n    \n    tipo_dato : VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER\n    \n    tipo_dato : NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER\n    \n    tipo_dato : NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER\n    \n    nulidad_parametro : NULL\n    \n    nulidad_parametro : NOT NULL\n    \n    nulidad_parametro : \n    \n    restriccion_parametro : PRIMARY KEY\n    \n    restriccion_parametro : REFERENCES ID\n    \n    restriccion_parametro : \n    expresion : ENTEROexpresion : DECIMALexpresion : STR'
     
-_lr_action_items = {'CREATE':([0,],[2,]),'$end':([1,2,],[0,-1,]),}
+_lr_action_items = {'CREATE':([0,2,3,7,8,9,],[6,6,-3,-2,-4,-5,]),'$end':([1,2,3,7,8,9,],[0,-1,-3,-2,-4,-5,]),'PUNTO_Y_COMA':([4,5,14,28,],[8,9,-6,-7,]),'DATA':([6,],[10,]),'TABLE':([6,],[11,]),'BASE':([10,],[12,]),'ID':([11,12,15,29,39,],[13,14,16,16,48,]),'PARENTESIS_IZQ':([13,25,26,27,],[15,33,34,35,]),'R_INT':([16,],[20,]),'R_DECIMAL':([16,],[21,]),'R_BIT':([16,],[22,]),'DATETIME':([16,],[23,]),'DATE':([16,],[24,]),'VARCHAR':([16,],[25,]),'NVARCHAR':([16,],[26,]),'NCHAR':([16,],[27,]),'PARENTESIS_DER':([17,18,19,20,21,22,23,24,30,31,36,37,40,41,42,43,44,45,46,47,48,49,50,51,],[28,-9,-21,-11,-12,-13,-14,-15,-24,-19,-8,-10,-20,49,-25,-26,-27,50,51,-22,-23,-16,-17,-18,]),'COMA':([17,18,19,20,21,22,23,24,30,31,36,37,40,47,48,49,50,51,],[29,-9,-21,-11,-12,-13,-14,-15,-24,-19,-8,-10,-20,-22,-23,-16,-17,-18,]),'NULL':([19,20,21,22,23,24,32,49,50,51,],[31,-11,-12,-13,-14,-15,40,-16,-17,-18,]),'NOT':([19,20,21,22,23,24,49,50,51,],[32,-11,-12,-13,-14,-15,-16,-17,-18,]),'PRIMARY':([19,20,21,22,23,24,30,31,40,49,50,51,],[-21,-11,-12,-13,-14,-15,38,-19,-20,-16,-17,-18,]),'REFERENCES':([19,20,21,22,23,24,30,31,40,49,50,51,],[-21,-11,-12,-13,-14,-15,39,-19,-20,-16,-17,-18,]),'ENTERO':([33,34,35,],[42,42,42,]),'DECIMAL':([33,34,35,],[43,43,43,]),'STR':([33,34,35,],[44,44,44,]),'KEY':([38,],[47,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'init':([0,],[1,]),}
+_lr_goto_items = {'init':([0,],[1,]),'instrucciones':([0,],[2,]),'instruccion':([0,2,],[3,7,]),'crearBaseDatos':([0,2,],[4,4,]),'crearTabla':([0,2,],[5,5,]),'tablasEspecifico':([15,],[17,]),'columnaDefinicion':([15,29,],[18,36,]),'tipo_dato':([16,],[19,]),'nulidad_parametro':([19,],[30,]),'restriccion_parametro':([30,],[37,]),'expresion':([33,34,35,],[41,45,46,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,5 +27,31 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> init","S'",1,None,None,None),
-  ('init -> CREATE','init',1,'p_init','Parser.py',24),
+  ('init -> instrucciones','init',1,'p_init','Parser.py',27),
+  ('instrucciones -> instrucciones instruccion','instrucciones',2,'p_instruccionesListado','Parser.py',34),
+  ('instrucciones -> instruccion','instrucciones',1,'p_instruccionSimple','Parser.py',44),
+  ('instruccion -> crearBaseDatos PUNTO_Y_COMA','instruccion',2,'p_instruccionGeneral','Parser.py',56),
+  ('instruccion -> crearTabla PUNTO_Y_COMA','instruccion',2,'p_instruccionGeneral','Parser.py',57),
+  ('crearBaseDatos -> CREATE DATA BASE ID','crearBaseDatos',4,'p_crearBaseDatos','Parser.py',67),
+  ('crearTabla -> CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER','crearTabla',6,'p_crearTabla','Parser.py',76),
+  ('tablasEspecifico -> tablasEspecifico COMA columnaDefinicion','tablasEspecifico',3,'p_tablasEspecifico','Parser.py',86),
+  ('tablasEspecifico -> columnaDefinicion','tablasEspecifico',1,'p_tablasEspecifico2','Parser.py',93),
+  ('columnaDefinicion -> ID tipo_dato nulidad_parametro restriccion_parametro','columnaDefinicion',4,'p_columnaDefinicion','Parser.py',99),
+  ('tipo_dato -> R_INT','tipo_dato',1,'p_tipo_dato','Parser.py',108),
+  ('tipo_dato -> R_DECIMAL','tipo_dato',1,'p_tipo_dato2','Parser.py',114),
+  ('tipo_dato -> R_BIT','tipo_dato',1,'p_tipo_dato3','Parser.py',120),
+  ('tipo_dato -> DATETIME','tipo_dato',1,'p_tipo_dato4','Parser.py',126),
+  ('tipo_dato -> DATE','tipo_dato',1,'p_tipo_dato5','Parser.py',132),
+  ('tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER','tipo_dato',4,'p_tipo_dato6','Parser.py',138),
+  ('tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER','tipo_dato',4,'p_tipo_dato7','Parser.py',144),
+  ('tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER','tipo_dato',4,'p_tipo_dato8','Parser.py',150),
+  ('nulidad_parametro -> NULL','nulidad_parametro',1,'p_nulidad_parametro','Parser.py',157),
+  ('nulidad_parametro -> NOT NULL','nulidad_parametro',2,'p_nulidad_parametro2','Parser.py',163),
+  ('nulidad_parametro -> <empty>','nulidad_parametro',0,'p_nulidad_parametro3','Parser.py',169),
+  ('restriccion_parametro -> PRIMARY KEY','restriccion_parametro',2,'p_restriccion_parametro','Parser.py',175),
+  ('restriccion_parametro -> REFERENCES ID','restriccion_parametro',2,'p_restriccion_parametro2','Parser.py',181),
+  ('restriccion_parametro -> <empty>','restriccion_parametro',0,'p_restriccion_parametro3','Parser.py',187),
+  ('expresion -> ENTERO','expresion',1,'p_exp_entero','Parser.py',195),
+  ('expresion -> DECIMAL','expresion',1,'p_exp_decimal','Parser.py',200),
+  ('expresion -> STR','expresion',1,'p_exp_cadena','Parser.py',205),
 ]

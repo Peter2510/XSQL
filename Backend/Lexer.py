@@ -14,6 +14,7 @@ keywords = {
     'alter': 'ALTER',
     'drop': 'DROP',
     'truncate': 'TRUNCATE',
+    'usar': 'USAR',
         
         
     'select': 'SELECT',
@@ -36,9 +37,7 @@ keywords = {
     'foreing': 'FOREING',
     'key': 'KEY',
     'reference': 'REFERENCE',
-    'varchar': 'VARCHAR',
-    'nchar': 'NCHAR',
-    'nvarchar': 'NVARCHAR',
+    
     'procedure': 'PROCEDURE',
     'as': 'AS',
     'exec': 'EXEC',
@@ -51,10 +50,16 @@ keywords = {
     'add': 'ADD',
     'declare': 'DECLARE',
     'set': 'SET',
-    'bit': 'BIT',
+    
+    'varchar': 'VARCHAR',
+    'nchar': 'NCHAR',
+    'nvarchar': 'NVARCHAR',
+    'int': 'R_INT',
+    'bit': 'R_BIT',
+    'decimal': 'R_DECIMAL',
     'datetime': 'DATETIME',
     'date': 'DATE',
-    'primary': 'PRIMARY',
+    
     'references': 'REFERENCES',
     'foreign': 'FOREIGN'  
 }
@@ -88,6 +93,8 @@ tokens = [
     'CORCHETE_DER',
     'STR',
     'BITPRIM',
+    'DATETIMEPRIM',
+    'DATEPRIM',
     'DECIMAL',
     'ENTERO',
     'ID_DECLARE',
