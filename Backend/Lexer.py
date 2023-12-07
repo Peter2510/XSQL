@@ -15,6 +15,7 @@ keywords = {
     'DROP': 'DROP',
     'TRUNCATE': 'TRUNCATE',
         
+        
     'SELECT': 'SELECT',
     'FROM': 'FROM',   
     'WHERE': 'WHERE',
@@ -48,16 +49,15 @@ keywords = {
     'ADD': 'ADD',
     'DECLARE': 'DECLARE',
     'SET': 'SET',
-    
-    'int': 'INT',
-    'bit': 'BIT',
+   
+    'BIT': 'BIT',
     'Nchar': 'NCHAR',
     'Nvarchar': 'NVARCHAR',
     'Datetime': 'DATETIME',
     'Date': 'DATE',
+    'PRIMARY' :'PRIMARY',
     'REFERENCES': 'REFERENCES',
-    'UNIQUE': 'UNIQUE',
-    'ADD':'ADD',
+    'FOREIGN': 'FOREIGN'    
 }
 
 
@@ -87,21 +87,14 @@ tokens = [
     'NEGACION',
     'CORCHETE_IZQ',
     'CORCHETE_DER',
-    'ID',
-    'ID_DECLARE'
-    'COMILLAINVERTIDA',
-    'ENTEROS',
-    'DECIMALES',
-    'CADENAS',
+    'STR',
     'BITPRIM',
-    'DATEPRIM',
-    'DATETIMEPRIM',
-    'TAGABIERTO',
-    'TAGCERRADO',
-    'ATRIBUTOSTAG',
+    'DECIMAL',
+    'ENTERO',
+    'ID_DECLARE',
+    'ID',
+    'ARROBA'
 ]+ list(keywords.values())
-
-## solo algo
 
 
 # Patron de los tokens
@@ -129,12 +122,25 @@ t_AND = r'\&\&'
 t_NEGACION = r'\!'
 t_CORCHETE_IZQ = r'\['
 t_CORCHETE_DER = r'\]'
+t_ARROBA = r'\@'
 
 # COMENTARIO
 
 def t_comment(t):
     r'\-\-.*'
     t.lexer.lineno += 1
+
+# IDENTIFICAR CADENAS DE TEXTO CON  COMILLAS DOBLES Y SIMPLES    
+
+def t_STR(t):
+    r'(\"[\s\S]*?\")|(\'[\s\S]*?\')|(\`[\s\S]*?\`)'
+    t.value = t.value[1:-1]
+    t.value = t.value.replace('\\"', '\"')
+    t.value = t.value.replace("\\'", "\'")
+    t.value = t.value.replace('\\\\', '\\')
+    t.value = t.value.replace('\\t', '\t')
+    t.value = t.value.replace('\\n', '\n')
+    return t
 
 # ID NORMAL
 
@@ -150,22 +156,25 @@ def t_ID_DECLARE(t):
     t.type = keywords.get(t.value, 'ID_DECLARE')
     return t
 
-
-
-
-
-### EXPRESIONES --------
-## decimales
-def t_DECIMALES(t):
+## DECIMALES
+def t_DECIMAL(t):
     r'\d+\.\d+'
     try:
         t.value = float(t.value)
     except ValueError:
-        print("error en el decimal")
+        print("error en el decimal %d", t.value)
         t.value = 0
     return t
-##  para enteros
 
+# ENTERO
+def t_ENTERO(t):
+    r'\d+'
+    try:
+        t.value = int(t.value)
+    except ValueError:
+         print("Valor del entero demasiado grande %d", t.value)
+         t.value = 0
+    return t
 
 ## para bits
 def t_BITPRIM(t):
@@ -179,8 +188,6 @@ def t_BITPRIM(t):
         print("Valor del entero demasiado grande %d", t.value)
         t.value = 0
     return t 
-
-
 
 
 # para las fechas
@@ -206,40 +213,7 @@ def t_DATEPRIM(t):
     return t
 
 
-
-#Entero
-def t_ENTEROS(n):
-    r'\d+'
-    try:
-        if(n.value != None):
-            n.value = int(n.value)
-        else:
-            n.value = 'nothing'
-    except ValueError:
-        print("Valor del entero demasiado grande %d", n.value)
-        n.value = 0
-    return n
-# para cadenas
-def t_CADENAS(t):
-    r'(\".*?\")'
-    ##qiita comiillas
-    t.value = t.value[1:-1]
-    ##remplaza valores
-    t.value = t.value.replace('\\t', '\t')
-    t.value = t.value.replace('\\n', '\n')
-    t.value = t.value.replace('\\"', '\"')
-    t.value = t.value.replace("\\'", "\'")
-    t.value = t.value.replace('\\\\', '\\')
-    return t
-
-##comentario de linea
-def t_comentarioSimple(t):
-    r'\-\-.*'
-    ## solo agrega
-    t.lexer.lineno+=1
-
-
-    ##nueva linea
+##Nueva linea
 
 def newline(t):
     r'\n'
@@ -247,24 +221,27 @@ def newline(t):
 
 
 ## PARA LOS TAGS DEL XML
-def t_TAGABIERTO(t):
-    r'<[A-Za-z]+>'
-    return t
+# def t_TAGABIERTO(t):
+#     r'<[A-Za-z]+>'
+#     return t
 
-def t_TAGCERRADO(t):
-    r'</[A-Za-z]+>'
-    return t
+# def t_TAGCERRADO(t):
+#     r'</[A-Za-z]+>'
+#     return t
 
-def t_ATRIBUTOSTAG(t):
-    r'[A-Za-z]+="[^"]*"'
-    return t
+# def t_ATRIBUTOSTAG(t):
+#     r'[A-Za-z]+="[^"]*"'
+#     return t
 
 
-    #ignora lo demas
+        #ignora lo demas
+        
 # WHIT_SPACE
 t_ignore = " \t\f\v"
 def t_error(t):
+    
     t.lexer.skip(1)
+    
 ##para columna
 def find_column(inp, tk):
     line_start = inp.rfind('\n', 0, tk.lexpos)+1
@@ -274,16 +251,15 @@ def find_column(inp, tk):
 # Crear instancia del lexer
 lexer = lex.lex(reflags=re.IGNORECASE)
 
-# Ingresar la cadena de texto para analizar
+# # Ingresar la cadena de texto para analizar
+# texto = 'SELECT : '
 
-# Configurar la entrada del lexer
-##lexer.input(texto)
+# # Configurar la entrada del lexer
+# lexer.input(texto)
 
-# Iterar sobre los tokens generados
-##while True:
-##    token = lexer.token()
-##    if not token:
- ##       break
-  ##  print(token)
-##
-##
+# # Iterar sobre los tokens generados
+# while True:
+#     token = lexer.token()
+#     if not token:
+#         break
+#     print(token)

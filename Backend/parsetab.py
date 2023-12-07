@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'ATTR CLOSETAG OPENTAGelement : OPENTAG attributes CLOSETAG\n               | OPENTAG CLOSETAGattributes : ATTR attributes\n                  | ATTR'
+_lr_signature = 'leftMASMENOSleftPORDIVISIONleftCOMPARACIONDISTINTOMENOR_QUEMAYOR_QUEMENOR_O_IGUAL_QUEMAYOR_O_IGUAL_QUEleftORANDleftPARENTESIS_IZQPARENTESIS_DERleftASADD ALTER AND ARROBA AS ASIGNACION BASE BEGIN BIT BITPRIM CAS COMA COMPARACION CONCATENA CONTAR CORCHETE_DER CORCHETE_IZQ CREATE DATA DATE DATETIME DECIMAL DECLARE DELETE DISTINTO DIVISION DOS_PUNTOS DROP END ENTERO EXEC FOREIGN FOREING FROM FUNCTION HOY ID ID_DECLARE IF INSERT KEY LLAVE_DER LLAVE_IZQ MAS MAYOR_O_IGUAL_QUE MAYOR_QUE MENOR_O_IGUAL_QUE MENOR_QUE MENOS NCHAR NEGACION NOT NULL NVARCHAR OR PARENTESIS_DER PARENTESIS_IZQ POR PRIMARY PROCEDURE PUNTO PUNTO_Y_COMA REFERENCE REFERENCES RETURN RETURNS SELECT SET STR SUBSTRAER SUMA TABLE TRUNCATE UPDATE VARCHAR WHERE\n    init : instrucciones\n    \n    instrucciones : instrucciones instruccion\n    \n    instrucciones : instruccion \n    \n    instruccion : crearBaseDatos PUNTO_Y_COMA\n                | crearTabla PUNTO_Y_COMA\n    \n    crearBaseDatos : CREATE DATA BASE expresion \n    \n    crearTabla : CREATE TABLE expresion PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER\n    \n    tablasEspecifico : tablasEspecifico COMA expresion\n    \n    tablasEspecifico :  expresion\n    expresion : ENTEROexpresion : DECIMALexpresion : STR'
     
-_lr_action_items = {'OPENTAG':([0,],[2,]),'$end':([1,4,6,],[0,-2,-1,]),'CLOSETAG':([2,3,5,7,],[4,6,-4,-3,]),'ATTR':([2,5,],[5,5,]),}
+_lr_action_items = {'CREATE':([0,2,3,7,8,9,],[6,6,-3,-2,-4,-5,]),'$end':([1,2,3,7,8,9,],[0,-1,-3,-2,-4,-5,]),'PUNTO_Y_COMA':([4,5,14,15,16,17,21,],[8,9,-10,-11,-12,-6,-7,]),'DATA':([6,],[10,]),'TABLE':([6,],[11,]),'BASE':([10,],[12,]),'ENTERO':([11,12,18,22,],[14,14,14,14,]),'DECIMAL':([11,12,18,22,],[15,15,15,15,]),'STR':([11,12,18,22,],[16,16,16,16,]),'PARENTESIS_IZQ':([13,14,15,16,],[18,-10,-11,-12,]),'PARENTESIS_DER':([14,15,16,19,20,23,],[-10,-11,-12,-9,21,-8,]),'COMA':([14,15,16,19,20,23,],[-10,-11,-12,-9,22,-8,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'element':([0,],[1,]),'attributes':([2,5,],[3,7,]),}
+_lr_goto_items = {'init':([0,],[1,]),'instrucciones':([0,],[2,]),'instruccion':([0,2,],[3,7,]),'crearBaseDatos':([0,2,],[4,4,]),'crearTabla':([0,2,],[5,5,]),'expresion':([11,12,18,22,],[13,17,19,23,]),'tablasEspecifico':([18,],[20,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,9 +26,17 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> element","S'",1,None,None,None),
-  ('element -> OPENTAG attributes CLOSETAG','element',3,'p_element','Parser.py',28),
-  ('element -> OPENTAG CLOSETAG','element',2,'p_element','Parser.py',29),
-  ('attributes -> ATTR attributes','attributes',2,'p_attributes','Parser.py',33),
-  ('attributes -> ATTR','attributes',1,'p_attributes','Parser.py',34),
+  ("S' -> init","S'",1,None,None,None),
+  ('init -> instrucciones','init',1,'p_init','Parser.py',27),
+  ('instrucciones -> instrucciones instruccion','instrucciones',2,'p_instruccionesListado','Parser.py',34),
+  ('instrucciones -> instruccion','instrucciones',1,'p_instruccionSimple','Parser.py',44),
+  ('instruccion -> crearBaseDatos PUNTO_Y_COMA','instruccion',2,'p_instruccionGeneral','Parser.py',56),
+  ('instruccion -> crearTabla PUNTO_Y_COMA','instruccion',2,'p_instruccionGeneral','Parser.py',57),
+  ('crearBaseDatos -> CREATE DATA BASE expresion','crearBaseDatos',4,'p_crearBaseDatos','Parser.py',67),
+  ('crearTabla -> CREATE TABLE expresion PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER','crearTabla',6,'p_crearTabla','Parser.py',76),
+  ('tablasEspecifico -> tablasEspecifico COMA expresion','tablasEspecifico',3,'p_tablasEspecifico','Parser.py',86),
+  ('tablasEspecifico -> expresion','tablasEspecifico',1,'p_tablasEspecifico2','Parser.py',93),
+  ('expresion -> ENTERO','expresion',1,'p_exp_entero','Parser.py',103),
+  ('expresion -> DECIMAL','expresion',1,'p_exp_decimal','Parser.py',108),
+  ('expresion -> STR','expresion',1,'p_exp_cadena','Parser.py',113),
 ]

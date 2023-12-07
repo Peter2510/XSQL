@@ -1,5 +1,4 @@
-from abstract.abtsractas import Abstract
-
+from ..abstract.abstractas import Abstract
 
 class primitivos(Abstract):
     def __init__(self, fila, columna, valor, tipo):
@@ -9,6 +8,7 @@ class primitivos(Abstract):
 
     def interpretar(self, arbol, tabla):
         ## lo que hace de interfaz regresa el valor
+        print("valor: ",self.valor)
         return self.valor
     
     def getTipo(self):
