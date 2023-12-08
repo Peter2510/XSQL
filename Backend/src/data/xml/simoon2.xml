@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Database name="simoon2">
+    <Table name="tabla1">
+        <Atributo1A>aas</Atributo1A>
+        <Atributo2A>sfs</Atributo2A>
+    </Table>
+    <Table name="tabla2">
+        <Atributo1B>daas</Atributo1B>
+        <Atributo2B>sssfs</Atributo2B>
+    </Table>
+</Database>

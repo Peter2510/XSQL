@@ -1,11 +1,18 @@
-from src.manejadorXml import obtener
+import obtener
 Databases = []
+Databases2 = []
 
 
 
 def load():
-    global Databases
-    Databases = obtener.importFileFromXML("Databases")
+    global Databases2
+    Databases2 = obtener.importAllXMLsInDirectory("../data/xml/")
+    print(type(Databases2))
+    print(Databases2[0])
+    print(Databases2[1]['tables'][1]['data']['Atributo1B'])
+    print(Databases2)
+    print(type(Databases2[1]['tables'][1]['data']))
+    
 
 
 def createDatabase(name):
@@ -16,8 +23,21 @@ def createDatabase(name):
     obtener.exportFileToXML(Databases, "Databases")
 
 
-# Cargar datos existentes
-load()
+# Exportar a XML
+data_to_export = {
+    'tabla1': {"Atributo1A": "aas", "Atributo2A": "sfs"},
+    'tabla2': {"Atributo1B": "daas", "Atributo2B": "sssfs"}
+}
 
-# Crear una nueva base de datos
-createDatabase("NombreDeLaBaseDeDatos")
+#Obtener.exportDataToXML(data_to_export, "simoon2")
+
+# Importar desde XML
+#data_imported = obtener.importFileFromXML("nuevo")
+#print(data_imported)  # Esto imprimirá el diccionario importado desde el archivo XML
+
+
+#directory_to_import = "../data/xml/"
+#imported_data = obtener.importAllXMLsInDirectory(directory_to_import)
+#print(imported_data)
+
+load();
