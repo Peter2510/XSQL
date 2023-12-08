@@ -1,4 +1,6 @@
 from flask import Flask, request
+from src.ejecucion.Ejecutar import Ejec
+from src.ejecucion.environment import Environment
 from Parser import *
 import json
 from flask_cors import CORS, cross_origin
@@ -18,14 +20,15 @@ def saludo():
 @app.route('/ejecutar',methods=["POST","GET"])
 def compilar():
     if request.method == "POST":
+        env = Environment(None)
         entrada = request.data.decode("utf-8")
         entrada = json.loads(entrada)
-        print(entrada.lower())
         pars = parse(entrada.lower())
-        for instr in pars:
-            instr.interpretar(None, None)
-
-
+        iniciarEjecucion = Ejec(pars)
+        _res = iniciarEjecucion.execute(env)
+        print(_res,"---------------------------- FINNNNNNNNNNN -------------")
+     
+        
 
         # ### solo prueba de esto
         # def prueba(texto):
