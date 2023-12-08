@@ -1,15 +1,12 @@
 import obtener
 Databases = []
-Databases2 = []
-
 
 
 def load():
-    global Databases2
-    Databases2 = obtener.importAllXMLsInDirectory("../data/xml/")
-    print(type(Databases2))
-    print(Databases2[0])
-    print(Databases2)
+    global Databases
+    Databases = obtener.importAllXMLsInDirectory("../data/xml/")
+    print(type(Databases))
+    print(Databases)
     
 
 
@@ -18,13 +15,16 @@ def createDatabase(name):
     database["name"] = name
     database["tables"] = []
     Databases.append(database)
-    obtener.exportDataToXML({'tabla1': {"Atributo1A": "aas", "Atributo2A": "sfs"}}, name)
+    obtener.exportDataToXML( {
+    'tabla1': {"producto": "nuevo", "precio": 1},
+    'tabla2': {"producto": "simon", "precio": 3}
+}      , name)
 
 
 # Exportar a XML
 data_to_export = {
-    'tabla1': {"Atributo1A": "aas", "Atributo2A": "sfs"},
-    'tabla2': {"Atributo1B": "daas", "Atributo2B": "sssfs"}
+    'tabla1': {"producto": "nuevo", "precio": 1},
+    'tabla2': {"producto": "simon", "precio": 3}
 }
 
 #Obtener.exportDataToXML(data_to_export, "simoon2")
@@ -40,4 +40,9 @@ data_to_export = {
 
 load();
 
-createDatabase("nuevaDB")
+createDatabase("primera")
+print(Databases)
+for i in Databases:
+    print(i["name"])
+    for j in i["tables"]:
+        print(j["data"]['producto'])

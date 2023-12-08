@@ -35,11 +35,10 @@ def createDatabase(database: str) -> int:
             raise Exception()
         initCheck()
         data = read(dataPath)
-        print("path:",dataPath)
 
         if database in data:
             return 2
-        print(database)
+
         new = {database: {}}
         data.update(new)
         write(dataPath, data)
@@ -173,16 +172,15 @@ createDatabaseXML("NombreDeLaBaseDeDatos")
 
 
 
-def prueba():
-    nombre_bd = "sss3"
-    nombre_tabla = "prueba"
-    columnas = {
-        "producto": "int not null",
-        "area": "varchar(100) not null"
-    }
-    resultado2 = createDatabase(nombre_bd);
-createDatabaseXML("ss32")
-
+# def prueba():
+#     nombre_bd = "sss3"
+#     nombre_tabla = "prueba"
+#     columnas = {
+#         "producto": "int not null",
+#         "area": "varchar(100) not null"
+#     }
+#     resultado2 = createDatabase(nombre_bd);
+# prueba();
 #resultado = createTable(nombre_bd, nombre_tabla, columnas)
 
 #if resultado == 0:

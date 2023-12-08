@@ -12,10 +12,13 @@ class createDB(Abstract):
 
         if not isinstance(nombre,str):
             return {'Error': 'El nombre indicado de la base de datos no es una cadena.', 'Fila':self.fila, 'Columna': self.columna }
-        resultado = manejo.createDatabase(nombre)
+        resultado = manejo.createDatabase(nombre) #CREA EL ARCHIVO
+        print(resultado)
         if (resultado == 0):
             #Se creo la base de datos correctamente.
-           # environment.createDataBase(nombre)#Guardamos la metadata en el entorno global.
+            #LO GUARDA EN MEMORIA
+            environment.createDataBase(nombre)#Guardamos la metadata en el entorno global.
+            
             return 'La base de datos ' + self.nombre + ' ha sido creada.' 
         elif resultado == 1:
             #Error al crear

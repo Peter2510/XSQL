@@ -2,11 +2,6 @@ import xml.etree.ElementTree as ET
 
 import os 
 
-
-
-
-
-
 def exportAllXMLsInDirectory(directory):
     try:
         for filename in os.listdir(directory):
