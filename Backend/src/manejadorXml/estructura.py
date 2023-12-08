@@ -9,9 +9,7 @@ def load():
     Databases2 = obtener.importAllXMLsInDirectory("../data/xml/")
     print(type(Databases2))
     print(Databases2[0])
-    print(Databases2[1]['tables'][1]['data']['Atributo1B'])
     print(Databases2)
-    print(type(Databases2[1]['tables'][1]['data']))
     
 
 
@@ -20,7 +18,7 @@ def createDatabase(name):
     database["name"] = name
     database["tables"] = []
     Databases.append(database)
-    obtener.exportFileToXML(Databases, "Databases")
+    obtener.exportDataToXML({'tabla1': {"Atributo1A": "aas", "Atributo2A": "sfs"}}, name)
 
 
 # Exportar a XML
@@ -41,3 +39,5 @@ data_to_export = {
 #print(imported_data)
 
 load();
+
+createDatabase("nuevaDB")
