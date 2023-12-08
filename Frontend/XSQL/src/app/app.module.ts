@@ -1,15 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CodeEditorComponent } from './code-editor/code-editor.component';
-import { CodeEditorModule } from '@ngstack/code-editor';
-import {HttpClientModule} from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-
 
 @NgModule({
   declarations: [
@@ -19,10 +15,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    CodeEditorModule.forRoot(),
-    HttpClientModule,
-    FormsModule,
-    BrowserAnimationsModule
+    CodemirrorModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
