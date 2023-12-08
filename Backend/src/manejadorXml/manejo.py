@@ -152,6 +152,23 @@ def convert_to_xml(database_name):
 
 
 
+def createDatabaseXML(database_name):
+    try:
+        root = ET.Element("Database")
+        tree = ET.ElementTree(root)
+        
+        database = ET.SubElement(root, "Name")
+        database.text = database_name
+        
+        tree.write(f"data/xml/{database_name}.xml", encoding="utf-8", xml_declaration=True)
+        
+        print(f"La base de datos '{database_name}' se ha creado en formato XML correctamente.")
+    except Exception as e:
+        print(f"Error al crear la base de datos en formato XML: {str(e)}")
+
+# Aquí llamas a la función para crear la base de datos en formato XML
+createDatabaseXML("NombreDeLaBaseDeDatos")
+
 
 
 

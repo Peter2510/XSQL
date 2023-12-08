@@ -6,6 +6,8 @@ from src.expresiones.aritmeticas import Aritmeticas
 from src.expresiones.primitivos import Primitivo
 from src.instrucciones.createdb import createDB
 from src.instrucciones.crearTabla import crearTabla
+
+from src.expresiones.relacional import Relacional
 ## establecer precedencias 
 
 precedence = (
@@ -55,6 +57,7 @@ def p_instruccionGeneral(t):
     '''
     instruccion : crearBaseDatos PUNTO_Y_COMA
                 | crearTabla PUNTO_Y_COMA
+                | expresion
     '''
     ### falta manipular
     t[0] = t[1]
@@ -191,6 +194,60 @@ def p_restriccion_parametro3(t): #normal -> 0
 
 #### expresiuones nativas
 
+
+def p_expRelacional(t):
+    '''
+    expresion : expresion MENOR_QUE expresion
+                | expresion MAYOR_QUE expresion
+                | expresion MENOR_O_IGUAL_QUE expresion
+                | expresion MAYOR_O_IGUAL_QUE expresion
+                | expresion COMPARACION expresion
+                | expresion DISTINTO expresion
+    '''
+    if (t[2] == '<'):
+        t[0] = Relacional(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '<')
+    elif (t[2] == '>'):
+        t[0] = Relacional(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '>')
+    elif (t[2] == '<='):
+        t[0] = Relacional(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '<=')
+    elif (t[2] == '>='):
+        t[0] = Relacional(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '>=')
+    elif (t[2] == '!='):
+        t[0] = Relacional(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '!=')
+    elif (t[2] == '=='):
+        t[0] = Relacional(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '==')
+
+def p_logica(t):
+    '''
+    expresion : expresion AND expresion
+                | expresion OR expresion
+    '''
+
+    if (t[2] == '&&'):
+        t[0] = t[1]
+    elif (t[2]== '||'):
+        t[0]=t[1]
+
+
+
+def p_expAritmetica(t):
+    '''
+    expresion : expresion MAS expresion
+                | expresion MENOS expresion
+                | expresion POR expresion
+                | expresion DIVISION expresion
+                | PARENTESIS_IZQ expresion PARENTESIS_DER
+    '''
+    if (t[2] == '+'):
+        t[0] = Aritmeticas(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '+')
+    elif (t[2] == '-'):
+        t[0] = Aritmeticas(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '-')
+    elif (t[2] == '*'):
+        t[0] = Aritmeticas(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '*')
+    elif (t[2] == '/'):
+        t[0] = Aritmeticas(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '/')
+    elif (t[1] == '(' and t[3] == ')' ):
+        t[0] =t[2]
 ### para enteros 
 def p_exp_entero(t):
     '''expresion : ENTERO'''
@@ -234,14 +291,18 @@ def parse(inp):
 
 
 data = '''
-CREATE DATA BASE 2502;
+4+(7*3)
+4/2
+444+32.3-3+4*4*3+3/3*"s"
+"s"==1
 '''
 
 # prueba
 
 
-#instrucciones = parse(data)
+instrucciones = parse(data)
 
 ## ciclo para que muestre
-#instrucciones.interpretar(None, None)
+for ist in instrucciones:
+    ist.interpretar(None)
 #instrucciones[1].interpretar(None, None)

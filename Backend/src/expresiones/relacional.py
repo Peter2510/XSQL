@@ -1,8 +1,8 @@
 
 
-from ..abstract.abstractas import Abstract
+from ..abstract.expresion import Expression
 
-class Relacional(Abstract):
+class Relacional(Expression):
     def __init__(self, fila, columna, opIzq, opDer, tipoOp):
         super().__init__(fila, columna)
         self.opIzq = opIzq
@@ -10,25 +10,110 @@ class Relacional(Abstract):
         self.tipoOp = tipoOp
     
 
-    def interpretar(self, arbol, tabla):
-        ## esto es como una funcion que se deriva, asi obtienes los numeros como tal
-        izq = self.opIzq.interpretar(arbol, tabla)
-        der = self.opDer.interpretar(arbol, tabla)
+    def interpretar(self, environment):
+        izq = self.opIzq.interpretar(environment)
+        der = self.opDer.interpretar(environment)
+
+        print(izq)
+        print(der)
+
         if self.tipoOp == '==':
-            return izq+der
+            if isinstance(izq, (int, float)) and isinstance(der, (int, float)):
+                return retornoValor(izq, der, '==')
+            elif isinstance(izq, (str)) and isinstance(der, (str)):
+                return retornoValor(izq, der, '==')
+            else:
+                print("Error semántico: No se pueden comparar los valores.")
+                return None
         elif self.tipoOp == '!=':
-            return izq-der
+            if isinstance(izq, (int, float)) and isinstance(der, (int, float)):
+                return retornoValor(izq, der, '!=')
+            elif isinstance(izq, (str)) and isinstance(der, (str)):
+                return retornoValor(izq, der, '!=')
+            else:
+                print("Error semántico: No se pueden comparar(distinto) los valores.")
+                return None
         elif self.tipoOp == '>':
-            return izq*der
+            if isinstance(izq, (int, float)) and isinstance(der, (int, float)):
+                return retornoValor(izq, der, '>')
+            elif isinstance(izq, (str)) and isinstance(der, (str)):
+                return retornoValor(izq, der, '>')
+            else:
+                print("Error semántico: No se pueden comparar(mayor) los valores.")
+                return None
         elif self.tipoOp == '<':
-            return izq/der
+            if isinstance(izq, (int, float)) and isinstance(der, (int, float)):
+                return retornoValor(izq, der, '<')
+            elif isinstance(izq, (str)) and isinstance(der, (str)):
+                return retornoValor(izq, der, '<')
+            else:
+                print("Error semántico: No se pueden comparar(menor) los valores.")
+                return None
         elif self.tipoOp == '>=':
-            return izq*der
+            if isinstance(izq, (int, float)) and isinstance(der, (int, float)):
+                return retornoValor(izq, der, '>=')
+            elif isinstance(izq, (str)) and isinstance(der, (str)):
+                return retornoValor(izq, der, '>=')
+            else:
+                print("Error semántico: No se pueden comparar(mayorque) los valores.")
+                return None
         elif self.tipoOp == '<=':
-            return izq*der
+            if isinstance(izq, (int, float)) and isinstance(der, (int, float)):
+                return retornoValor(izq, der, '<=')
+            elif isinstance(izq, (str)) and isinstance(der, (str)):
+                return retornoValor(izq, der, '<=')
+            else:
+                print("Error semántico: No se pueden comparar(menor que) los valores.")
+                return None
         elif self.tipoOp == '&&':
-            return izq*der
+            if isinstance(izq, (int, float)) and isinstance(der, (int, float)):
+                return izq == der
+            elif isinstance(izq, (str)) and isinstance(der, (str)):
+                return izq == der
+            else:
+                print("Error semántico: No se pueden comparar los valores.")
+                return None
         elif self.tipoOp == '||':
-            return izq*der
-        elif self.tipoOp == '!':
-            return izq*der
+            if isinstance(izq, (int, float)) and isinstance(der, (int, float)):
+                return izq == der
+            elif isinstance(izq, (str)) and isinstance(der, (str)):
+                return izq == der
+            else:
+                print("Error semántico: No se pueden comparar los valores.")
+                return None
+  
+    
+
+    ### seccion para los casteos
+
+    def retornoValor(op1, op2, tipoOp):
+        if(tipoOp == '=='):
+            if (op1 == op2):
+                return 1
+            else: 
+                return 0
+        elif(tipoOp == '!='):
+            if (op1 != op2):
+                return 1
+            else: 
+                return 0
+        elif(tipoOp == '>'):
+            if (op1 > op2):
+                return 1
+            else: 
+                return 0
+        elif(tipoOp == '<'):
+            if (op1 < op2):
+                return 1
+            else: 
+                return 0
+        elif(tipoOp == '>='):
+            if (op1 >= op2):
+                return 1
+            else: 
+                return 0
+        elif(tipoOp == '<='):
+            if (op1 <= op2):
+                return 1
+            else: 
+                return 0

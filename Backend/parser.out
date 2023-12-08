@@ -4,14 +4,12 @@ Unused terminals:
 
     ADD
     ALTER
-    AND
     ARROBA
     AS
     ASIGNACION
     BEGIN
     BITPRIM
     CAS
-    COMPARACION
     CONCATENA
     CONTAR
     CORCHETE_DER
@@ -20,8 +18,6 @@ Unused terminals:
     DATETIMEPRIM
     DECLARE
     DELETE
-    DISTINTO
-    DIVISION
     DOS_PUNTOS
     DROP
     END
@@ -36,15 +32,7 @@ Unused terminals:
     INSERT
     LLAVE_DER
     LLAVE_IZQ
-    MAS
-    MAYOR_O_IGUAL_QUE
-    MAYOR_QUE
-    MENOR_O_IGUAL_QUE
-    MENOR_QUE
-    MENOS
     NEGACION
-    OR
-    POR
     PROCEDURE
     PUNTO
     REFERENCE
@@ -67,127 +55,141 @@ Rule 2     instrucciones -> instrucciones instruccion
 Rule 3     instrucciones -> instruccion
 Rule 4     instruccion -> crearBaseDatos PUNTO_Y_COMA
 Rule 5     instruccion -> crearTabla PUNTO_Y_COMA
-Rule 6     crearBaseDatos -> CREATE DATA BASE ID
-Rule 7     crearTabla -> CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
-Rule 8     tablasEspecifico -> tablasEspecifico COMA columnaDefinicion
-Rule 9     tablasEspecifico -> columnaDefinicion
-Rule 10    columnaDefinicion -> ID tipo_dato nulidad_parametro restriccion_parametro
-Rule 11    tipo_dato -> R_INT
-Rule 12    tipo_dato -> R_DECIMAL
-Rule 13    tipo_dato -> R_BIT
-Rule 14    tipo_dato -> DATETIME
-Rule 15    tipo_dato -> DATE
-Rule 16    tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
-Rule 17    tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
-Rule 18    tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
-Rule 19    nulidad_parametro -> NULL
-Rule 20    nulidad_parametro -> NOT NULL
-Rule 21    nulidad_parametro -> <empty>
-Rule 22    restriccion_parametro -> PRIMARY KEY
-Rule 23    restriccion_parametro -> REFERENCES ID
-Rule 24    restriccion_parametro -> <empty>
-Rule 25    expresion -> ENTERO
-Rule 26    expresion -> DECIMAL
-Rule 27    expresion -> STR
+Rule 6     instruccion -> expresion
+Rule 7     crearBaseDatos -> CREATE DATA BASE ID
+Rule 8     crearTabla -> CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
+Rule 9     tablasEspecifico -> tablasEspecifico COMA columnaDefinicion
+Rule 10    tablasEspecifico -> columnaDefinicion
+Rule 11    columnaDefinicion -> ID tipo_dato nulidad_parametro restriccion_parametro
+Rule 12    tipo_dato -> R_INT
+Rule 13    tipo_dato -> R_DECIMAL
+Rule 14    tipo_dato -> R_BIT
+Rule 15    tipo_dato -> DATETIME
+Rule 16    tipo_dato -> DATE
+Rule 17    tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
+Rule 18    tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
+Rule 19    tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
+Rule 20    nulidad_parametro -> NULL
+Rule 21    nulidad_parametro -> NOT NULL
+Rule 22    nulidad_parametro -> <empty>
+Rule 23    restriccion_parametro -> PRIMARY KEY
+Rule 24    restriccion_parametro -> REFERENCES ID
+Rule 25    restriccion_parametro -> <empty>
+Rule 26    expresion -> expresion MENOR_QUE expresion
+Rule 27    expresion -> expresion MAYOR_QUE expresion
+Rule 28    expresion -> expresion MENOR_O_IGUAL_QUE expresion
+Rule 29    expresion -> expresion MAYOR_O_IGUAL_QUE expresion
+Rule 30    expresion -> expresion COMPARACION expresion
+Rule 31    expresion -> expresion DISTINTO expresion
+Rule 32    expresion -> expresion AND expresion
+Rule 33    expresion -> expresion OR expresion
+Rule 34    expresion -> expresion MAS expresion
+Rule 35    expresion -> expresion MENOS expresion
+Rule 36    expresion -> expresion POR expresion
+Rule 37    expresion -> expresion DIVISION expresion
+Rule 38    expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER
+Rule 39    expresion -> ENTERO
+Rule 40    expresion -> DECIMAL
+Rule 41    expresion -> STR
 
 Terminals, with rules where they appear
 
 ADD                  : 
 ALTER                : 
-AND                  : 
+AND                  : 32
 ARROBA               : 
 AS                   : 
 ASIGNACION           : 
-BASE                 : 6
+BASE                 : 7
 BEGIN                : 
 BITPRIM              : 
 CAS                  : 
-COMA                 : 8
-COMPARACION          : 
+COMA                 : 9
+COMPARACION          : 30
 CONCATENA            : 
 CONTAR               : 
 CORCHETE_DER         : 
 CORCHETE_IZQ         : 
-CREATE               : 6 7
-DATA                 : 6
-DATE                 : 15
+CREATE               : 7 8
+DATA                 : 7
+DATE                 : 16
 DATEPRIM             : 
-DATETIME             : 14
+DATETIME             : 15
 DATETIMEPRIM         : 
-DECIMAL              : 26
+DECIMAL              : 40
 DECLARE              : 
 DELETE               : 
-DISTINTO             : 
-DIVISION             : 
+DISTINTO             : 31
+DIVISION             : 37
 DOS_PUNTOS           : 
 DROP                 : 
 END                  : 
-ENTERO               : 25
+ENTERO               : 39
 EXEC                 : 
 FOREIGN              : 
 FOREING              : 
 FROM                 : 
 FUNCTION             : 
 HOY                  : 
-ID                   : 6 7 10 23
+ID                   : 7 8 11 24
 ID_DECLARE           : 
 IF                   : 
 INSERT               : 
-KEY                  : 22
+KEY                  : 23
 LLAVE_DER            : 
 LLAVE_IZQ            : 
-MAS                  : 
-MAYOR_O_IGUAL_QUE    : 
-MAYOR_QUE            : 
-MENOR_O_IGUAL_QUE    : 
-MENOR_QUE            : 
-MENOS                : 
-NCHAR                : 18
+MAS                  : 34
+MAYOR_O_IGUAL_QUE    : 29
+MAYOR_QUE            : 27
+MENOR_O_IGUAL_QUE    : 28
+MENOR_QUE            : 26
+MENOS                : 35
+NCHAR                : 19
 NEGACION             : 
-NOT                  : 20
-NULL                 : 19 20
-NVARCHAR             : 17
-OR                   : 
-PARENTESIS_DER       : 7 16 17 18
-PARENTESIS_IZQ       : 7 16 17 18
-POR                  : 
-PRIMARY              : 22
+NOT                  : 21
+NULL                 : 20 21
+NVARCHAR             : 18
+OR                   : 33
+PARENTESIS_DER       : 8 17 18 19 38
+PARENTESIS_IZQ       : 8 17 18 19 38
+POR                  : 36
+PRIMARY              : 23
 PROCEDURE            : 
 PUNTO                : 
 PUNTO_Y_COMA         : 4 5
 REFERENCE            : 
-REFERENCES           : 23
+REFERENCES           : 24
 RETURN               : 
 RETURNS              : 
-R_BIT                : 13
-R_DECIMAL            : 12
-R_INT                : 11
+R_BIT                : 14
+R_DECIMAL            : 13
+R_INT                : 12
 SELECT               : 
 SET                  : 
-STR                  : 27
+STR                  : 41
 SUBSTRAER            : 
 SUMA                 : 
-TABLE                : 7
+TABLE                : 8
 TRUNCATE             : 
 UPDATE               : 
 USAR                 : 
-VARCHAR              : 16
+VARCHAR              : 17
 WHERE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
-columnaDefinicion    : 8 9
+columnaDefinicion    : 9 10
 crearBaseDatos       : 4
 crearTabla           : 5
-expresion            : 16 17 18
+expresion            : 6 17 18 19 26 26 27 27 28 28 29 29 30 30 31 31 32 32 33 33 34 34 35 35 36 36 37 37 38
 init                 : 0
 instruccion          : 2 3
 instrucciones        : 1 2
-nulidad_parametro    : 10
-restriccion_parametro : 10
-tablasEspecifico     : 7 8
-tipo_dato            : 10
+nulidad_parametro    : 11
+restriccion_parametro : 11
+tablasEspecifico     : 8 9
+tipo_dato            : 11
 
 Parsing method: LALR
 
@@ -199,16 +201,38 @@ state 0
     (3) instrucciones -> . instruccion
     (4) instruccion -> . crearBaseDatos PUNTO_Y_COMA
     (5) instruccion -> . crearTabla PUNTO_Y_COMA
-    (6) crearBaseDatos -> . CREATE DATA BASE ID
-    (7) crearTabla -> . CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
+    (6) instruccion -> . expresion
+    (7) crearBaseDatos -> . CREATE DATA BASE ID
+    (8) crearTabla -> . CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
 
-    CREATE          shift and go to state 6
+    CREATE          shift and go to state 7
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
 
     init                           shift and go to state 1
     instrucciones                  shift and go to state 2
     instruccion                    shift and go to state 3
     crearBaseDatos                 shift and go to state 4
     crearTabla                     shift and go to state 5
+    expresion                      shift and go to state 6
 
 state 1
 
@@ -222,21 +246,47 @@ state 2
     (2) instrucciones -> instrucciones . instruccion
     (4) instruccion -> . crearBaseDatos PUNTO_Y_COMA
     (5) instruccion -> . crearTabla PUNTO_Y_COMA
-    (6) crearBaseDatos -> . CREATE DATA BASE ID
-    (7) crearTabla -> . CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
+    (6) instruccion -> . expresion
+    (7) crearBaseDatos -> . CREATE DATA BASE ID
+    (8) crearTabla -> . CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
 
     $end            reduce using rule 1 (init -> instrucciones .)
-    CREATE          shift and go to state 6
+    CREATE          shift and go to state 7
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
 
-    instruccion                    shift and go to state 7
+    instruccion                    shift and go to state 12
     crearBaseDatos                 shift and go to state 4
     crearTabla                     shift and go to state 5
+    expresion                      shift and go to state 6
 
 state 3
 
     (3) instrucciones -> instruccion .
 
     CREATE          reduce using rule 3 (instrucciones -> instruccion .)
+    PARENTESIS_IZQ  reduce using rule 3 (instrucciones -> instruccion .)
+    ENTERO          reduce using rule 3 (instrucciones -> instruccion .)
+    DECIMAL         reduce using rule 3 (instrucciones -> instruccion .)
+    STR             reduce using rule 3 (instrucciones -> instruccion .)
     $end            reduce using rule 3 (instrucciones -> instruccion .)
 
 
@@ -244,449 +294,1672 @@ state 4
 
     (4) instruccion -> crearBaseDatos . PUNTO_Y_COMA
 
-    PUNTO_Y_COMA    shift and go to state 8
+    PUNTO_Y_COMA    shift and go to state 13
 
 
 state 5
 
     (5) instruccion -> crearTabla . PUNTO_Y_COMA
 
-    PUNTO_Y_COMA    shift and go to state 9
+    PUNTO_Y_COMA    shift and go to state 14
 
 
 state 6
 
-    (6) crearBaseDatos -> CREATE . DATA BASE ID
-    (7) crearTabla -> CREATE . TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
+    (6) instruccion -> expresion .
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
 
-    DATA            shift and go to state 10
-    TABLE           shift and go to state 11
+    CREATE          reduce using rule 6 (instruccion -> expresion .)
+    PARENTESIS_IZQ  reduce using rule 6 (instruccion -> expresion .)
+    ENTERO          reduce using rule 6 (instruccion -> expresion .)
+    DECIMAL         reduce using rule 6 (instruccion -> expresion .)
+    STR             reduce using rule 6 (instruccion -> expresion .)
+    $end            reduce using rule 6 (instruccion -> expresion .)
+    MENOR_QUE       shift and go to state 15
+    MAYOR_QUE       shift and go to state 16
+    MENOR_O_IGUAL_QUE shift and go to state 17
+    MAYOR_O_IGUAL_QUE shift and go to state 18
+    COMPARACION     shift and go to state 19
+    DISTINTO        shift and go to state 20
+    AND             shift and go to state 21
+    OR              shift and go to state 22
+    MAS             shift and go to state 23
+    MENOS           shift and go to state 24
+    POR             shift and go to state 25
+    DIVISION        shift and go to state 26
 
 
 state 7
 
-    (2) instrucciones -> instrucciones instruccion .
+    (7) crearBaseDatos -> CREATE . DATA BASE ID
+    (8) crearTabla -> CREATE . TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
 
-    CREATE          reduce using rule 2 (instrucciones -> instrucciones instruccion .)
-    $end            reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    DATA            shift and go to state 27
+    TABLE           shift and go to state 28
 
 
 state 8
 
-    (4) instruccion -> crearBaseDatos PUNTO_Y_COMA .
+    (38) expresion -> PARENTESIS_IZQ . expresion PARENTESIS_DER
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
 
-    CREATE          reduce using rule 4 (instruccion -> crearBaseDatos PUNTO_Y_COMA .)
-    $end            reduce using rule 4 (instruccion -> crearBaseDatos PUNTO_Y_COMA .)
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
 
+    expresion                      shift and go to state 29
 
 state 9
 
-    (5) instruccion -> crearTabla PUNTO_Y_COMA .
+    (39) expresion -> ENTERO .
 
-    CREATE          reduce using rule 5 (instruccion -> crearTabla PUNTO_Y_COMA .)
-    $end            reduce using rule 5 (instruccion -> crearTabla PUNTO_Y_COMA .)
+    MENOR_QUE       reduce using rule 39 (expresion -> ENTERO .)
+    MAYOR_QUE       reduce using rule 39 (expresion -> ENTERO .)
+    MENOR_O_IGUAL_QUE reduce using rule 39 (expresion -> ENTERO .)
+    MAYOR_O_IGUAL_QUE reduce using rule 39 (expresion -> ENTERO .)
+    COMPARACION     reduce using rule 39 (expresion -> ENTERO .)
+    DISTINTO        reduce using rule 39 (expresion -> ENTERO .)
+    AND             reduce using rule 39 (expresion -> ENTERO .)
+    OR              reduce using rule 39 (expresion -> ENTERO .)
+    MAS             reduce using rule 39 (expresion -> ENTERO .)
+    MENOS           reduce using rule 39 (expresion -> ENTERO .)
+    POR             reduce using rule 39 (expresion -> ENTERO .)
+    DIVISION        reduce using rule 39 (expresion -> ENTERO .)
+    CREATE          reduce using rule 39 (expresion -> ENTERO .)
+    PARENTESIS_IZQ  reduce using rule 39 (expresion -> ENTERO .)
+    ENTERO          reduce using rule 39 (expresion -> ENTERO .)
+    DECIMAL         reduce using rule 39 (expresion -> ENTERO .)
+    STR             reduce using rule 39 (expresion -> ENTERO .)
+    $end            reduce using rule 39 (expresion -> ENTERO .)
+    PARENTESIS_DER  reduce using rule 39 (expresion -> ENTERO .)
 
 
 state 10
 
-    (6) crearBaseDatos -> CREATE DATA . BASE ID
+    (40) expresion -> DECIMAL .
 
-    BASE            shift and go to state 12
+    MENOR_QUE       reduce using rule 40 (expresion -> DECIMAL .)
+    MAYOR_QUE       reduce using rule 40 (expresion -> DECIMAL .)
+    MENOR_O_IGUAL_QUE reduce using rule 40 (expresion -> DECIMAL .)
+    MAYOR_O_IGUAL_QUE reduce using rule 40 (expresion -> DECIMAL .)
+    COMPARACION     reduce using rule 40 (expresion -> DECIMAL .)
+    DISTINTO        reduce using rule 40 (expresion -> DECIMAL .)
+    AND             reduce using rule 40 (expresion -> DECIMAL .)
+    OR              reduce using rule 40 (expresion -> DECIMAL .)
+    MAS             reduce using rule 40 (expresion -> DECIMAL .)
+    MENOS           reduce using rule 40 (expresion -> DECIMAL .)
+    POR             reduce using rule 40 (expresion -> DECIMAL .)
+    DIVISION        reduce using rule 40 (expresion -> DECIMAL .)
+    CREATE          reduce using rule 40 (expresion -> DECIMAL .)
+    PARENTESIS_IZQ  reduce using rule 40 (expresion -> DECIMAL .)
+    ENTERO          reduce using rule 40 (expresion -> DECIMAL .)
+    DECIMAL         reduce using rule 40 (expresion -> DECIMAL .)
+    STR             reduce using rule 40 (expresion -> DECIMAL .)
+    $end            reduce using rule 40 (expresion -> DECIMAL .)
+    PARENTESIS_DER  reduce using rule 40 (expresion -> DECIMAL .)
 
 
 state 11
 
-    (7) crearTabla -> CREATE TABLE . ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
+    (41) expresion -> STR .
 
-    ID              shift and go to state 13
+    MENOR_QUE       reduce using rule 41 (expresion -> STR .)
+    MAYOR_QUE       reduce using rule 41 (expresion -> STR .)
+    MENOR_O_IGUAL_QUE reduce using rule 41 (expresion -> STR .)
+    MAYOR_O_IGUAL_QUE reduce using rule 41 (expresion -> STR .)
+    COMPARACION     reduce using rule 41 (expresion -> STR .)
+    DISTINTO        reduce using rule 41 (expresion -> STR .)
+    AND             reduce using rule 41 (expresion -> STR .)
+    OR              reduce using rule 41 (expresion -> STR .)
+    MAS             reduce using rule 41 (expresion -> STR .)
+    MENOS           reduce using rule 41 (expresion -> STR .)
+    POR             reduce using rule 41 (expresion -> STR .)
+    DIVISION        reduce using rule 41 (expresion -> STR .)
+    CREATE          reduce using rule 41 (expresion -> STR .)
+    PARENTESIS_IZQ  reduce using rule 41 (expresion -> STR .)
+    ENTERO          reduce using rule 41 (expresion -> STR .)
+    DECIMAL         reduce using rule 41 (expresion -> STR .)
+    STR             reduce using rule 41 (expresion -> STR .)
+    $end            reduce using rule 41 (expresion -> STR .)
+    PARENTESIS_DER  reduce using rule 41 (expresion -> STR .)
 
 
 state 12
 
-    (6) crearBaseDatos -> CREATE DATA BASE . ID
+    (2) instrucciones -> instrucciones instruccion .
 
-    ID              shift and go to state 14
+    CREATE          reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    PARENTESIS_IZQ  reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    ENTERO          reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    DECIMAL         reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    STR             reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    $end            reduce using rule 2 (instrucciones -> instrucciones instruccion .)
 
 
 state 13
 
-    (7) crearTabla -> CREATE TABLE ID . PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
+    (4) instruccion -> crearBaseDatos PUNTO_Y_COMA .
 
-    PARENTESIS_IZQ  shift and go to state 15
+    CREATE          reduce using rule 4 (instruccion -> crearBaseDatos PUNTO_Y_COMA .)
+    PARENTESIS_IZQ  reduce using rule 4 (instruccion -> crearBaseDatos PUNTO_Y_COMA .)
+    ENTERO          reduce using rule 4 (instruccion -> crearBaseDatos PUNTO_Y_COMA .)
+    DECIMAL         reduce using rule 4 (instruccion -> crearBaseDatos PUNTO_Y_COMA .)
+    STR             reduce using rule 4 (instruccion -> crearBaseDatos PUNTO_Y_COMA .)
+    $end            reduce using rule 4 (instruccion -> crearBaseDatos PUNTO_Y_COMA .)
 
 
 state 14
 
-    (6) crearBaseDatos -> CREATE DATA BASE ID .
+    (5) instruccion -> crearTabla PUNTO_Y_COMA .
 
-    PUNTO_Y_COMA    reduce using rule 6 (crearBaseDatos -> CREATE DATA BASE ID .)
+    CREATE          reduce using rule 5 (instruccion -> crearTabla PUNTO_Y_COMA .)
+    PARENTESIS_IZQ  reduce using rule 5 (instruccion -> crearTabla PUNTO_Y_COMA .)
+    ENTERO          reduce using rule 5 (instruccion -> crearTabla PUNTO_Y_COMA .)
+    DECIMAL         reduce using rule 5 (instruccion -> crearTabla PUNTO_Y_COMA .)
+    STR             reduce using rule 5 (instruccion -> crearTabla PUNTO_Y_COMA .)
+    $end            reduce using rule 5 (instruccion -> crearTabla PUNTO_Y_COMA .)
 
 
 state 15
 
-    (7) crearTabla -> CREATE TABLE ID PARENTESIS_IZQ . tablasEspecifico PARENTESIS_DER
-    (8) tablasEspecifico -> . tablasEspecifico COMA columnaDefinicion
-    (9) tablasEspecifico -> . columnaDefinicion
-    (10) columnaDefinicion -> . ID tipo_dato nulidad_parametro restriccion_parametro
+    (26) expresion -> expresion MENOR_QUE . expresion
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
 
-    ID              shift and go to state 16
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
 
-    tablasEspecifico               shift and go to state 17
-    columnaDefinicion              shift and go to state 18
+    expresion                      shift and go to state 30
 
 state 16
 
-    (10) columnaDefinicion -> ID . tipo_dato nulidad_parametro restriccion_parametro
-    (11) tipo_dato -> . R_INT
-    (12) tipo_dato -> . R_DECIMAL
-    (13) tipo_dato -> . R_BIT
-    (14) tipo_dato -> . DATETIME
-    (15) tipo_dato -> . DATE
-    (16) tipo_dato -> . VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
-    (17) tipo_dato -> . NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
-    (18) tipo_dato -> . NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
+    (27) expresion -> expresion MAYOR_QUE . expresion
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
 
-    R_INT           shift and go to state 20
-    R_DECIMAL       shift and go to state 21
-    R_BIT           shift and go to state 22
-    DATETIME        shift and go to state 23
-    DATE            shift and go to state 24
-    VARCHAR         shift and go to state 25
-    NVARCHAR        shift and go to state 26
-    NCHAR           shift and go to state 27
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
 
-    tipo_dato                      shift and go to state 19
+    expresion                      shift and go to state 31
 
 state 17
 
-    (7) crearTabla -> CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico . PARENTESIS_DER
-    (8) tablasEspecifico -> tablasEspecifico . COMA columnaDefinicion
+    (28) expresion -> expresion MENOR_O_IGUAL_QUE . expresion
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
 
-    PARENTESIS_DER  shift and go to state 28
-    COMA            shift and go to state 29
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
 
+    expresion                      shift and go to state 32
 
 state 18
 
-    (9) tablasEspecifico -> columnaDefinicion .
+    (29) expresion -> expresion MAYOR_O_IGUAL_QUE . expresion
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
 
-    PARENTESIS_DER  reduce using rule 9 (tablasEspecifico -> columnaDefinicion .)
-    COMA            reduce using rule 9 (tablasEspecifico -> columnaDefinicion .)
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
 
+    expresion                      shift and go to state 33
 
 state 19
 
-    (10) columnaDefinicion -> ID tipo_dato . nulidad_parametro restriccion_parametro
-    (19) nulidad_parametro -> . NULL
-    (20) nulidad_parametro -> . NOT NULL
-    (21) nulidad_parametro -> .
+    (30) expresion -> expresion COMPARACION . expresion
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
 
-    NULL            shift and go to state 31
-    NOT             shift and go to state 32
-    PRIMARY         reduce using rule 21 (nulidad_parametro -> .)
-    REFERENCES      reduce using rule 21 (nulidad_parametro -> .)
-    PARENTESIS_DER  reduce using rule 21 (nulidad_parametro -> .)
-    COMA            reduce using rule 21 (nulidad_parametro -> .)
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
 
-    nulidad_parametro              shift and go to state 30
+    expresion                      shift and go to state 34
 
 state 20
 
-    (11) tipo_dato -> R_INT .
+    (31) expresion -> expresion DISTINTO . expresion
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
 
-    NULL            reduce using rule 11 (tipo_dato -> R_INT .)
-    NOT             reduce using rule 11 (tipo_dato -> R_INT .)
-    PRIMARY         reduce using rule 11 (tipo_dato -> R_INT .)
-    REFERENCES      reduce using rule 11 (tipo_dato -> R_INT .)
-    PARENTESIS_DER  reduce using rule 11 (tipo_dato -> R_INT .)
-    COMA            reduce using rule 11 (tipo_dato -> R_INT .)
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
 
+    expresion                      shift and go to state 35
 
 state 21
 
-    (12) tipo_dato -> R_DECIMAL .
+    (32) expresion -> expresion AND . expresion
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
 
-    NULL            reduce using rule 12 (tipo_dato -> R_DECIMAL .)
-    NOT             reduce using rule 12 (tipo_dato -> R_DECIMAL .)
-    PRIMARY         reduce using rule 12 (tipo_dato -> R_DECIMAL .)
-    REFERENCES      reduce using rule 12 (tipo_dato -> R_DECIMAL .)
-    PARENTESIS_DER  reduce using rule 12 (tipo_dato -> R_DECIMAL .)
-    COMA            reduce using rule 12 (tipo_dato -> R_DECIMAL .)
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
 
+    expresion                      shift and go to state 36
 
 state 22
 
-    (13) tipo_dato -> R_BIT .
+    (33) expresion -> expresion OR . expresion
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
 
-    NULL            reduce using rule 13 (tipo_dato -> R_BIT .)
-    NOT             reduce using rule 13 (tipo_dato -> R_BIT .)
-    PRIMARY         reduce using rule 13 (tipo_dato -> R_BIT .)
-    REFERENCES      reduce using rule 13 (tipo_dato -> R_BIT .)
-    PARENTESIS_DER  reduce using rule 13 (tipo_dato -> R_BIT .)
-    COMA            reduce using rule 13 (tipo_dato -> R_BIT .)
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
 
+    expresion                      shift and go to state 37
 
 state 23
 
-    (14) tipo_dato -> DATETIME .
+    (34) expresion -> expresion MAS . expresion
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
 
-    NULL            reduce using rule 14 (tipo_dato -> DATETIME .)
-    NOT             reduce using rule 14 (tipo_dato -> DATETIME .)
-    PRIMARY         reduce using rule 14 (tipo_dato -> DATETIME .)
-    REFERENCES      reduce using rule 14 (tipo_dato -> DATETIME .)
-    PARENTESIS_DER  reduce using rule 14 (tipo_dato -> DATETIME .)
-    COMA            reduce using rule 14 (tipo_dato -> DATETIME .)
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
 
+    expresion                      shift and go to state 38
 
 state 24
 
-    (15) tipo_dato -> DATE .
+    (35) expresion -> expresion MENOS . expresion
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
 
-    NULL            reduce using rule 15 (tipo_dato -> DATE .)
-    NOT             reduce using rule 15 (tipo_dato -> DATE .)
-    PRIMARY         reduce using rule 15 (tipo_dato -> DATE .)
-    REFERENCES      reduce using rule 15 (tipo_dato -> DATE .)
-    PARENTESIS_DER  reduce using rule 15 (tipo_dato -> DATE .)
-    COMA            reduce using rule 15 (tipo_dato -> DATE .)
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
 
+    expresion                      shift and go to state 39
 
 state 25
 
-    (16) tipo_dato -> VARCHAR . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (36) expresion -> expresion POR . expresion
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
 
-    PARENTESIS_IZQ  shift and go to state 33
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
 
+    expresion                      shift and go to state 40
 
 state 26
 
-    (17) tipo_dato -> NVARCHAR . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (37) expresion -> expresion DIVISION . expresion
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
 
-    PARENTESIS_IZQ  shift and go to state 34
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
 
+    expresion                      shift and go to state 41
 
 state 27
 
-    (18) tipo_dato -> NCHAR . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (7) crearBaseDatos -> CREATE DATA . BASE ID
 
-    PARENTESIS_IZQ  shift and go to state 35
+    BASE            shift and go to state 42
 
 
 state 28
 
-    (7) crearTabla -> CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER .
+    (8) crearTabla -> CREATE TABLE . ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
 
-    PUNTO_Y_COMA    reduce using rule 7 (crearTabla -> CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER .)
+    ID              shift and go to state 43
 
 
 state 29
 
-    (8) tablasEspecifico -> tablasEspecifico COMA . columnaDefinicion
-    (10) columnaDefinicion -> . ID tipo_dato nulidad_parametro restriccion_parametro
+    (38) expresion -> PARENTESIS_IZQ expresion . PARENTESIS_DER
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
 
-    ID              shift and go to state 16
+    PARENTESIS_DER  shift and go to state 44
+    MENOR_QUE       shift and go to state 15
+    MAYOR_QUE       shift and go to state 16
+    MENOR_O_IGUAL_QUE shift and go to state 17
+    MAYOR_O_IGUAL_QUE shift and go to state 18
+    COMPARACION     shift and go to state 19
+    DISTINTO        shift and go to state 20
+    AND             shift and go to state 21
+    OR              shift and go to state 22
+    MAS             shift and go to state 23
+    MENOS           shift and go to state 24
+    POR             shift and go to state 25
+    DIVISION        shift and go to state 26
 
-    columnaDefinicion              shift and go to state 36
 
 state 30
 
-    (10) columnaDefinicion -> ID tipo_dato nulidad_parametro . restriccion_parametro
-    (22) restriccion_parametro -> . PRIMARY KEY
-    (23) restriccion_parametro -> . REFERENCES ID
-    (24) restriccion_parametro -> .
+    (26) expresion -> expresion MENOR_QUE expresion .
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
 
-    PRIMARY         shift and go to state 38
-    REFERENCES      shift and go to state 39
-    PARENTESIS_DER  reduce using rule 24 (restriccion_parametro -> .)
-    COMA            reduce using rule 24 (restriccion_parametro -> .)
+    MENOR_QUE       reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    MAYOR_QUE       reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    MENOR_O_IGUAL_QUE reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    MAYOR_O_IGUAL_QUE reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    COMPARACION     reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    DISTINTO        reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    MAS             reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    MENOS           reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    POR             reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    DIVISION        reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    CREATE          reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    PARENTESIS_IZQ  reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    ENTERO          reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    DECIMAL         reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    STR             reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    $end            reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    PARENTESIS_DER  reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .)
+    AND             shift and go to state 21
+    OR              shift and go to state 22
 
-    restriccion_parametro          shift and go to state 37
+  ! AND             [ reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .) ]
+  ! OR              [ reduce using rule 26 (expresion -> expresion MENOR_QUE expresion .) ]
+  ! MENOR_QUE       [ shift and go to state 15 ]
+  ! MAYOR_QUE       [ shift and go to state 16 ]
+  ! MENOR_O_IGUAL_QUE [ shift and go to state 17 ]
+  ! MAYOR_O_IGUAL_QUE [ shift and go to state 18 ]
+  ! COMPARACION     [ shift and go to state 19 ]
+  ! DISTINTO        [ shift and go to state 20 ]
+  ! MAS             [ shift and go to state 23 ]
+  ! MENOS           [ shift and go to state 24 ]
+  ! POR             [ shift and go to state 25 ]
+  ! DIVISION        [ shift and go to state 26 ]
+
 
 state 31
 
-    (19) nulidad_parametro -> NULL .
+    (27) expresion -> expresion MAYOR_QUE expresion .
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
 
-    PRIMARY         reduce using rule 19 (nulidad_parametro -> NULL .)
-    REFERENCES      reduce using rule 19 (nulidad_parametro -> NULL .)
-    PARENTESIS_DER  reduce using rule 19 (nulidad_parametro -> NULL .)
-    COMA            reduce using rule 19 (nulidad_parametro -> NULL .)
+    MENOR_QUE       reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    MAYOR_QUE       reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    MENOR_O_IGUAL_QUE reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    MAYOR_O_IGUAL_QUE reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    COMPARACION     reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    DISTINTO        reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    MAS             reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    MENOS           reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    POR             reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    DIVISION        reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    CREATE          reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    PARENTESIS_IZQ  reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    ENTERO          reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    DECIMAL         reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    STR             reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    $end            reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    PARENTESIS_DER  reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .)
+    AND             shift and go to state 21
+    OR              shift and go to state 22
+
+  ! AND             [ reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .) ]
+  ! OR              [ reduce using rule 27 (expresion -> expresion MAYOR_QUE expresion .) ]
+  ! MENOR_QUE       [ shift and go to state 15 ]
+  ! MAYOR_QUE       [ shift and go to state 16 ]
+  ! MENOR_O_IGUAL_QUE [ shift and go to state 17 ]
+  ! MAYOR_O_IGUAL_QUE [ shift and go to state 18 ]
+  ! COMPARACION     [ shift and go to state 19 ]
+  ! DISTINTO        [ shift and go to state 20 ]
+  ! MAS             [ shift and go to state 23 ]
+  ! MENOS           [ shift and go to state 24 ]
+  ! POR             [ shift and go to state 25 ]
+  ! DIVISION        [ shift and go to state 26 ]
 
 
 state 32
 
-    (20) nulidad_parametro -> NOT . NULL
+    (28) expresion -> expresion MENOR_O_IGUAL_QUE expresion .
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
 
-    NULL            shift and go to state 40
+    MENOR_QUE       reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    MAYOR_QUE       reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    MENOR_O_IGUAL_QUE reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    MAYOR_O_IGUAL_QUE reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    COMPARACION     reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    DISTINTO        reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    MAS             reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    MENOS           reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    POR             reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    DIVISION        reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    CREATE          reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    PARENTESIS_IZQ  reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    ENTERO          reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    DECIMAL         reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    STR             reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    $end            reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    PARENTESIS_DER  reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
+    AND             shift and go to state 21
+    OR              shift and go to state 22
+
+  ! AND             [ reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .) ]
+  ! OR              [ reduce using rule 28 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .) ]
+  ! MENOR_QUE       [ shift and go to state 15 ]
+  ! MAYOR_QUE       [ shift and go to state 16 ]
+  ! MENOR_O_IGUAL_QUE [ shift and go to state 17 ]
+  ! MAYOR_O_IGUAL_QUE [ shift and go to state 18 ]
+  ! COMPARACION     [ shift and go to state 19 ]
+  ! DISTINTO        [ shift and go to state 20 ]
+  ! MAS             [ shift and go to state 23 ]
+  ! MENOS           [ shift and go to state 24 ]
+  ! POR             [ shift and go to state 25 ]
+  ! DIVISION        [ shift and go to state 26 ]
 
 
 state 33
 
-    (16) tipo_dato -> VARCHAR PARENTESIS_IZQ . expresion PARENTESIS_DER
-    (25) expresion -> . ENTERO
-    (26) expresion -> . DECIMAL
-    (27) expresion -> . STR
+    (29) expresion -> expresion MAYOR_O_IGUAL_QUE expresion .
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
 
-    ENTERO          shift and go to state 42
-    DECIMAL         shift and go to state 43
-    STR             shift and go to state 44
+    MENOR_QUE       reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    MAYOR_QUE       reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    MENOR_O_IGUAL_QUE reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    MAYOR_O_IGUAL_QUE reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    COMPARACION     reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    DISTINTO        reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    MAS             reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    MENOS           reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    POR             reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    DIVISION        reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    CREATE          reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    PARENTESIS_IZQ  reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    ENTERO          reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    DECIMAL         reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    STR             reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    $end            reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    PARENTESIS_DER  reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
+    AND             shift and go to state 21
+    OR              shift and go to state 22
 
-    expresion                      shift and go to state 41
+  ! AND             [ reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .) ]
+  ! OR              [ reduce using rule 29 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .) ]
+  ! MENOR_QUE       [ shift and go to state 15 ]
+  ! MAYOR_QUE       [ shift and go to state 16 ]
+  ! MENOR_O_IGUAL_QUE [ shift and go to state 17 ]
+  ! MAYOR_O_IGUAL_QUE [ shift and go to state 18 ]
+  ! COMPARACION     [ shift and go to state 19 ]
+  ! DISTINTO        [ shift and go to state 20 ]
+  ! MAS             [ shift and go to state 23 ]
+  ! MENOS           [ shift and go to state 24 ]
+  ! POR             [ shift and go to state 25 ]
+  ! DIVISION        [ shift and go to state 26 ]
+
 
 state 34
 
-    (17) tipo_dato -> NVARCHAR PARENTESIS_IZQ . expresion PARENTESIS_DER
-    (25) expresion -> . ENTERO
-    (26) expresion -> . DECIMAL
-    (27) expresion -> . STR
+    (30) expresion -> expresion COMPARACION expresion .
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
 
-    ENTERO          shift and go to state 42
-    DECIMAL         shift and go to state 43
-    STR             shift and go to state 44
+    MENOR_QUE       reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    MAYOR_QUE       reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    MENOR_O_IGUAL_QUE reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    MAYOR_O_IGUAL_QUE reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    COMPARACION     reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    DISTINTO        reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    MAS             reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    MENOS           reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    POR             reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    DIVISION        reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    CREATE          reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    PARENTESIS_IZQ  reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    ENTERO          reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    DECIMAL         reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    STR             reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    $end            reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    PARENTESIS_DER  reduce using rule 30 (expresion -> expresion COMPARACION expresion .)
+    AND             shift and go to state 21
+    OR              shift and go to state 22
 
-    expresion                      shift and go to state 45
+  ! AND             [ reduce using rule 30 (expresion -> expresion COMPARACION expresion .) ]
+  ! OR              [ reduce using rule 30 (expresion -> expresion COMPARACION expresion .) ]
+  ! MENOR_QUE       [ shift and go to state 15 ]
+  ! MAYOR_QUE       [ shift and go to state 16 ]
+  ! MENOR_O_IGUAL_QUE [ shift and go to state 17 ]
+  ! MAYOR_O_IGUAL_QUE [ shift and go to state 18 ]
+  ! COMPARACION     [ shift and go to state 19 ]
+  ! DISTINTO        [ shift and go to state 20 ]
+  ! MAS             [ shift and go to state 23 ]
+  ! MENOS           [ shift and go to state 24 ]
+  ! POR             [ shift and go to state 25 ]
+  ! DIVISION        [ shift and go to state 26 ]
+
 
 state 35
 
-    (18) tipo_dato -> NCHAR PARENTESIS_IZQ . expresion PARENTESIS_DER
-    (25) expresion -> . ENTERO
-    (26) expresion -> . DECIMAL
-    (27) expresion -> . STR
+    (31) expresion -> expresion DISTINTO expresion .
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
 
-    ENTERO          shift and go to state 42
-    DECIMAL         shift and go to state 43
-    STR             shift and go to state 44
+    MENOR_QUE       reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    MAYOR_QUE       reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    MENOR_O_IGUAL_QUE reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    MAYOR_O_IGUAL_QUE reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    COMPARACION     reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    DISTINTO        reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    MAS             reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    MENOS           reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    POR             reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    DIVISION        reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    CREATE          reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    PARENTESIS_IZQ  reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    ENTERO          reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    DECIMAL         reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    STR             reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    $end            reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    PARENTESIS_DER  reduce using rule 31 (expresion -> expresion DISTINTO expresion .)
+    AND             shift and go to state 21
+    OR              shift and go to state 22
 
-    expresion                      shift and go to state 46
+  ! AND             [ reduce using rule 31 (expresion -> expresion DISTINTO expresion .) ]
+  ! OR              [ reduce using rule 31 (expresion -> expresion DISTINTO expresion .) ]
+  ! MENOR_QUE       [ shift and go to state 15 ]
+  ! MAYOR_QUE       [ shift and go to state 16 ]
+  ! MENOR_O_IGUAL_QUE [ shift and go to state 17 ]
+  ! MAYOR_O_IGUAL_QUE [ shift and go to state 18 ]
+  ! COMPARACION     [ shift and go to state 19 ]
+  ! DISTINTO        [ shift and go to state 20 ]
+  ! MAS             [ shift and go to state 23 ]
+  ! MENOS           [ shift and go to state 24 ]
+  ! POR             [ shift and go to state 25 ]
+  ! DIVISION        [ shift and go to state 26 ]
+
 
 state 36
 
-    (8) tablasEspecifico -> tablasEspecifico COMA columnaDefinicion .
+    (32) expresion -> expresion AND expresion .
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
 
-    PARENTESIS_DER  reduce using rule 8 (tablasEspecifico -> tablasEspecifico COMA columnaDefinicion .)
-    COMA            reduce using rule 8 (tablasEspecifico -> tablasEspecifico COMA columnaDefinicion .)
+    MENOR_QUE       reduce using rule 32 (expresion -> expresion AND expresion .)
+    MAYOR_QUE       reduce using rule 32 (expresion -> expresion AND expresion .)
+    MENOR_O_IGUAL_QUE reduce using rule 32 (expresion -> expresion AND expresion .)
+    MAYOR_O_IGUAL_QUE reduce using rule 32 (expresion -> expresion AND expresion .)
+    COMPARACION     reduce using rule 32 (expresion -> expresion AND expresion .)
+    DISTINTO        reduce using rule 32 (expresion -> expresion AND expresion .)
+    AND             reduce using rule 32 (expresion -> expresion AND expresion .)
+    OR              reduce using rule 32 (expresion -> expresion AND expresion .)
+    MAS             reduce using rule 32 (expresion -> expresion AND expresion .)
+    MENOS           reduce using rule 32 (expresion -> expresion AND expresion .)
+    POR             reduce using rule 32 (expresion -> expresion AND expresion .)
+    DIVISION        reduce using rule 32 (expresion -> expresion AND expresion .)
+    CREATE          reduce using rule 32 (expresion -> expresion AND expresion .)
+    PARENTESIS_IZQ  reduce using rule 32 (expresion -> expresion AND expresion .)
+    ENTERO          reduce using rule 32 (expresion -> expresion AND expresion .)
+    DECIMAL         reduce using rule 32 (expresion -> expresion AND expresion .)
+    STR             reduce using rule 32 (expresion -> expresion AND expresion .)
+    $end            reduce using rule 32 (expresion -> expresion AND expresion .)
+    PARENTESIS_DER  reduce using rule 32 (expresion -> expresion AND expresion .)
+
+  ! MENOR_QUE       [ shift and go to state 15 ]
+  ! MAYOR_QUE       [ shift and go to state 16 ]
+  ! MENOR_O_IGUAL_QUE [ shift and go to state 17 ]
+  ! MAYOR_O_IGUAL_QUE [ shift and go to state 18 ]
+  ! COMPARACION     [ shift and go to state 19 ]
+  ! DISTINTO        [ shift and go to state 20 ]
+  ! AND             [ shift and go to state 21 ]
+  ! OR              [ shift and go to state 22 ]
+  ! MAS             [ shift and go to state 23 ]
+  ! MENOS           [ shift and go to state 24 ]
+  ! POR             [ shift and go to state 25 ]
+  ! DIVISION        [ shift and go to state 26 ]
 
 
 state 37
 
-    (10) columnaDefinicion -> ID tipo_dato nulidad_parametro restriccion_parametro .
+    (33) expresion -> expresion OR expresion .
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
 
-    PARENTESIS_DER  reduce using rule 10 (columnaDefinicion -> ID tipo_dato nulidad_parametro restriccion_parametro .)
-    COMA            reduce using rule 10 (columnaDefinicion -> ID tipo_dato nulidad_parametro restriccion_parametro .)
+    MENOR_QUE       reduce using rule 33 (expresion -> expresion OR expresion .)
+    MAYOR_QUE       reduce using rule 33 (expresion -> expresion OR expresion .)
+    MENOR_O_IGUAL_QUE reduce using rule 33 (expresion -> expresion OR expresion .)
+    MAYOR_O_IGUAL_QUE reduce using rule 33 (expresion -> expresion OR expresion .)
+    COMPARACION     reduce using rule 33 (expresion -> expresion OR expresion .)
+    DISTINTO        reduce using rule 33 (expresion -> expresion OR expresion .)
+    AND             reduce using rule 33 (expresion -> expresion OR expresion .)
+    OR              reduce using rule 33 (expresion -> expresion OR expresion .)
+    MAS             reduce using rule 33 (expresion -> expresion OR expresion .)
+    MENOS           reduce using rule 33 (expresion -> expresion OR expresion .)
+    POR             reduce using rule 33 (expresion -> expresion OR expresion .)
+    DIVISION        reduce using rule 33 (expresion -> expresion OR expresion .)
+    CREATE          reduce using rule 33 (expresion -> expresion OR expresion .)
+    PARENTESIS_IZQ  reduce using rule 33 (expresion -> expresion OR expresion .)
+    ENTERO          reduce using rule 33 (expresion -> expresion OR expresion .)
+    DECIMAL         reduce using rule 33 (expresion -> expresion OR expresion .)
+    STR             reduce using rule 33 (expresion -> expresion OR expresion .)
+    $end            reduce using rule 33 (expresion -> expresion OR expresion .)
+    PARENTESIS_DER  reduce using rule 33 (expresion -> expresion OR expresion .)
+
+  ! MENOR_QUE       [ shift and go to state 15 ]
+  ! MAYOR_QUE       [ shift and go to state 16 ]
+  ! MENOR_O_IGUAL_QUE [ shift and go to state 17 ]
+  ! MAYOR_O_IGUAL_QUE [ shift and go to state 18 ]
+  ! COMPARACION     [ shift and go to state 19 ]
+  ! DISTINTO        [ shift and go to state 20 ]
+  ! AND             [ shift and go to state 21 ]
+  ! OR              [ shift and go to state 22 ]
+  ! MAS             [ shift and go to state 23 ]
+  ! MENOS           [ shift and go to state 24 ]
+  ! POR             [ shift and go to state 25 ]
+  ! DIVISION        [ shift and go to state 26 ]
 
 
 state 38
 
-    (22) restriccion_parametro -> PRIMARY . KEY
+    (34) expresion -> expresion MAS expresion .
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
 
-    KEY             shift and go to state 47
+    MAS             reduce using rule 34 (expresion -> expresion MAS expresion .)
+    MENOS           reduce using rule 34 (expresion -> expresion MAS expresion .)
+    CREATE          reduce using rule 34 (expresion -> expresion MAS expresion .)
+    PARENTESIS_IZQ  reduce using rule 34 (expresion -> expresion MAS expresion .)
+    ENTERO          reduce using rule 34 (expresion -> expresion MAS expresion .)
+    DECIMAL         reduce using rule 34 (expresion -> expresion MAS expresion .)
+    STR             reduce using rule 34 (expresion -> expresion MAS expresion .)
+    $end            reduce using rule 34 (expresion -> expresion MAS expresion .)
+    PARENTESIS_DER  reduce using rule 34 (expresion -> expresion MAS expresion .)
+    MENOR_QUE       shift and go to state 15
+    MAYOR_QUE       shift and go to state 16
+    MENOR_O_IGUAL_QUE shift and go to state 17
+    MAYOR_O_IGUAL_QUE shift and go to state 18
+    COMPARACION     shift and go to state 19
+    DISTINTO        shift and go to state 20
+    AND             shift and go to state 21
+    OR              shift and go to state 22
+    POR             shift and go to state 25
+    DIVISION        shift and go to state 26
+
+  ! MENOR_QUE       [ reduce using rule 34 (expresion -> expresion MAS expresion .) ]
+  ! MAYOR_QUE       [ reduce using rule 34 (expresion -> expresion MAS expresion .) ]
+  ! MENOR_O_IGUAL_QUE [ reduce using rule 34 (expresion -> expresion MAS expresion .) ]
+  ! MAYOR_O_IGUAL_QUE [ reduce using rule 34 (expresion -> expresion MAS expresion .) ]
+  ! COMPARACION     [ reduce using rule 34 (expresion -> expresion MAS expresion .) ]
+  ! DISTINTO        [ reduce using rule 34 (expresion -> expresion MAS expresion .) ]
+  ! AND             [ reduce using rule 34 (expresion -> expresion MAS expresion .) ]
+  ! OR              [ reduce using rule 34 (expresion -> expresion MAS expresion .) ]
+  ! POR             [ reduce using rule 34 (expresion -> expresion MAS expresion .) ]
+  ! DIVISION        [ reduce using rule 34 (expresion -> expresion MAS expresion .) ]
+  ! MAS             [ shift and go to state 23 ]
+  ! MENOS           [ shift and go to state 24 ]
 
 
 state 39
 
-    (23) restriccion_parametro -> REFERENCES . ID
+    (35) expresion -> expresion MENOS expresion .
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
 
-    ID              shift and go to state 48
+    MAS             reduce using rule 35 (expresion -> expresion MENOS expresion .)
+    MENOS           reduce using rule 35 (expresion -> expresion MENOS expresion .)
+    CREATE          reduce using rule 35 (expresion -> expresion MENOS expresion .)
+    PARENTESIS_IZQ  reduce using rule 35 (expresion -> expresion MENOS expresion .)
+    ENTERO          reduce using rule 35 (expresion -> expresion MENOS expresion .)
+    DECIMAL         reduce using rule 35 (expresion -> expresion MENOS expresion .)
+    STR             reduce using rule 35 (expresion -> expresion MENOS expresion .)
+    $end            reduce using rule 35 (expresion -> expresion MENOS expresion .)
+    PARENTESIS_DER  reduce using rule 35 (expresion -> expresion MENOS expresion .)
+    MENOR_QUE       shift and go to state 15
+    MAYOR_QUE       shift and go to state 16
+    MENOR_O_IGUAL_QUE shift and go to state 17
+    MAYOR_O_IGUAL_QUE shift and go to state 18
+    COMPARACION     shift and go to state 19
+    DISTINTO        shift and go to state 20
+    AND             shift and go to state 21
+    OR              shift and go to state 22
+    POR             shift and go to state 25
+    DIVISION        shift and go to state 26
+
+  ! MENOR_QUE       [ reduce using rule 35 (expresion -> expresion MENOS expresion .) ]
+  ! MAYOR_QUE       [ reduce using rule 35 (expresion -> expresion MENOS expresion .) ]
+  ! MENOR_O_IGUAL_QUE [ reduce using rule 35 (expresion -> expresion MENOS expresion .) ]
+  ! MAYOR_O_IGUAL_QUE [ reduce using rule 35 (expresion -> expresion MENOS expresion .) ]
+  ! COMPARACION     [ reduce using rule 35 (expresion -> expresion MENOS expresion .) ]
+  ! DISTINTO        [ reduce using rule 35 (expresion -> expresion MENOS expresion .) ]
+  ! AND             [ reduce using rule 35 (expresion -> expresion MENOS expresion .) ]
+  ! OR              [ reduce using rule 35 (expresion -> expresion MENOS expresion .) ]
+  ! POR             [ reduce using rule 35 (expresion -> expresion MENOS expresion .) ]
+  ! DIVISION        [ reduce using rule 35 (expresion -> expresion MENOS expresion .) ]
+  ! MAS             [ shift and go to state 23 ]
+  ! MENOS           [ shift and go to state 24 ]
 
 
 state 40
 
-    (20) nulidad_parametro -> NOT NULL .
+    (36) expresion -> expresion POR expresion .
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
 
-    PRIMARY         reduce using rule 20 (nulidad_parametro -> NOT NULL .)
-    REFERENCES      reduce using rule 20 (nulidad_parametro -> NOT NULL .)
-    PARENTESIS_DER  reduce using rule 20 (nulidad_parametro -> NOT NULL .)
-    COMA            reduce using rule 20 (nulidad_parametro -> NOT NULL .)
+    MAS             reduce using rule 36 (expresion -> expresion POR expresion .)
+    MENOS           reduce using rule 36 (expresion -> expresion POR expresion .)
+    POR             reduce using rule 36 (expresion -> expresion POR expresion .)
+    DIVISION        reduce using rule 36 (expresion -> expresion POR expresion .)
+    CREATE          reduce using rule 36 (expresion -> expresion POR expresion .)
+    PARENTESIS_IZQ  reduce using rule 36 (expresion -> expresion POR expresion .)
+    ENTERO          reduce using rule 36 (expresion -> expresion POR expresion .)
+    DECIMAL         reduce using rule 36 (expresion -> expresion POR expresion .)
+    STR             reduce using rule 36 (expresion -> expresion POR expresion .)
+    $end            reduce using rule 36 (expresion -> expresion POR expresion .)
+    PARENTESIS_DER  reduce using rule 36 (expresion -> expresion POR expresion .)
+    MENOR_QUE       shift and go to state 15
+    MAYOR_QUE       shift and go to state 16
+    MENOR_O_IGUAL_QUE shift and go to state 17
+    MAYOR_O_IGUAL_QUE shift and go to state 18
+    COMPARACION     shift and go to state 19
+    DISTINTO        shift and go to state 20
+    AND             shift and go to state 21
+    OR              shift and go to state 22
+
+  ! MENOR_QUE       [ reduce using rule 36 (expresion -> expresion POR expresion .) ]
+  ! MAYOR_QUE       [ reduce using rule 36 (expresion -> expresion POR expresion .) ]
+  ! MENOR_O_IGUAL_QUE [ reduce using rule 36 (expresion -> expresion POR expresion .) ]
+  ! MAYOR_O_IGUAL_QUE [ reduce using rule 36 (expresion -> expresion POR expresion .) ]
+  ! COMPARACION     [ reduce using rule 36 (expresion -> expresion POR expresion .) ]
+  ! DISTINTO        [ reduce using rule 36 (expresion -> expresion POR expresion .) ]
+  ! AND             [ reduce using rule 36 (expresion -> expresion POR expresion .) ]
+  ! OR              [ reduce using rule 36 (expresion -> expresion POR expresion .) ]
+  ! MAS             [ shift and go to state 23 ]
+  ! MENOS           [ shift and go to state 24 ]
+  ! POR             [ shift and go to state 25 ]
+  ! DIVISION        [ shift and go to state 26 ]
 
 
 state 41
 
-    (16) tipo_dato -> VARCHAR PARENTESIS_IZQ expresion . PARENTESIS_DER
+    (37) expresion -> expresion DIVISION expresion .
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
 
-    PARENTESIS_DER  shift and go to state 49
+    MAS             reduce using rule 37 (expresion -> expresion DIVISION expresion .)
+    MENOS           reduce using rule 37 (expresion -> expresion DIVISION expresion .)
+    POR             reduce using rule 37 (expresion -> expresion DIVISION expresion .)
+    DIVISION        reduce using rule 37 (expresion -> expresion DIVISION expresion .)
+    CREATE          reduce using rule 37 (expresion -> expresion DIVISION expresion .)
+    PARENTESIS_IZQ  reduce using rule 37 (expresion -> expresion DIVISION expresion .)
+    ENTERO          reduce using rule 37 (expresion -> expresion DIVISION expresion .)
+    DECIMAL         reduce using rule 37 (expresion -> expresion DIVISION expresion .)
+    STR             reduce using rule 37 (expresion -> expresion DIVISION expresion .)
+    $end            reduce using rule 37 (expresion -> expresion DIVISION expresion .)
+    PARENTESIS_DER  reduce using rule 37 (expresion -> expresion DIVISION expresion .)
+    MENOR_QUE       shift and go to state 15
+    MAYOR_QUE       shift and go to state 16
+    MENOR_O_IGUAL_QUE shift and go to state 17
+    MAYOR_O_IGUAL_QUE shift and go to state 18
+    COMPARACION     shift and go to state 19
+    DISTINTO        shift and go to state 20
+    AND             shift and go to state 21
+    OR              shift and go to state 22
+
+  ! MENOR_QUE       [ reduce using rule 37 (expresion -> expresion DIVISION expresion .) ]
+  ! MAYOR_QUE       [ reduce using rule 37 (expresion -> expresion DIVISION expresion .) ]
+  ! MENOR_O_IGUAL_QUE [ reduce using rule 37 (expresion -> expresion DIVISION expresion .) ]
+  ! MAYOR_O_IGUAL_QUE [ reduce using rule 37 (expresion -> expresion DIVISION expresion .) ]
+  ! COMPARACION     [ reduce using rule 37 (expresion -> expresion DIVISION expresion .) ]
+  ! DISTINTO        [ reduce using rule 37 (expresion -> expresion DIVISION expresion .) ]
+  ! AND             [ reduce using rule 37 (expresion -> expresion DIVISION expresion .) ]
+  ! OR              [ reduce using rule 37 (expresion -> expresion DIVISION expresion .) ]
+  ! MAS             [ shift and go to state 23 ]
+  ! MENOS           [ shift and go to state 24 ]
+  ! POR             [ shift and go to state 25 ]
+  ! DIVISION        [ shift and go to state 26 ]
 
 
 state 42
 
-    (25) expresion -> ENTERO .
+    (7) crearBaseDatos -> CREATE DATA BASE . ID
 
-    PARENTESIS_DER  reduce using rule 25 (expresion -> ENTERO .)
+    ID              shift and go to state 45
 
 
 state 43
 
-    (26) expresion -> DECIMAL .
+    (8) crearTabla -> CREATE TABLE ID . PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
 
-    PARENTESIS_DER  reduce using rule 26 (expresion -> DECIMAL .)
+    PARENTESIS_IZQ  shift and go to state 46
 
 
 state 44
 
-    (27) expresion -> STR .
+    (38) expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .
 
-    PARENTESIS_DER  reduce using rule 27 (expresion -> STR .)
+    MENOR_QUE       reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    MAYOR_QUE       reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    MENOR_O_IGUAL_QUE reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    MAYOR_O_IGUAL_QUE reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    COMPARACION     reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    DISTINTO        reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    AND             reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    OR              reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    MAS             reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    MENOS           reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    POR             reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    DIVISION        reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    CREATE          reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    PARENTESIS_IZQ  reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    ENTERO          reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    DECIMAL         reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    STR             reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    $end            reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    PARENTESIS_DER  reduce using rule 38 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
 
 
 state 45
 
-    (17) tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion . PARENTESIS_DER
+    (7) crearBaseDatos -> CREATE DATA BASE ID .
 
-    PARENTESIS_DER  shift and go to state 50
+    PUNTO_Y_COMA    reduce using rule 7 (crearBaseDatos -> CREATE DATA BASE ID .)
 
 
 state 46
 
-    (18) tipo_dato -> NCHAR PARENTESIS_IZQ expresion . PARENTESIS_DER
+    (8) crearTabla -> CREATE TABLE ID PARENTESIS_IZQ . tablasEspecifico PARENTESIS_DER
+    (9) tablasEspecifico -> . tablasEspecifico COMA columnaDefinicion
+    (10) tablasEspecifico -> . columnaDefinicion
+    (11) columnaDefinicion -> . ID tipo_dato nulidad_parametro restriccion_parametro
 
-    PARENTESIS_DER  shift and go to state 51
+    ID              shift and go to state 47
 
+    tablasEspecifico               shift and go to state 48
+    columnaDefinicion              shift and go to state 49
 
 state 47
 
-    (22) restriccion_parametro -> PRIMARY KEY .
+    (11) columnaDefinicion -> ID . tipo_dato nulidad_parametro restriccion_parametro
+    (12) tipo_dato -> . R_INT
+    (13) tipo_dato -> . R_DECIMAL
+    (14) tipo_dato -> . R_BIT
+    (15) tipo_dato -> . DATETIME
+    (16) tipo_dato -> . DATE
+    (17) tipo_dato -> . VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
+    (18) tipo_dato -> . NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
+    (19) tipo_dato -> . NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
 
-    PARENTESIS_DER  reduce using rule 22 (restriccion_parametro -> PRIMARY KEY .)
-    COMA            reduce using rule 22 (restriccion_parametro -> PRIMARY KEY .)
+    R_INT           shift and go to state 51
+    R_DECIMAL       shift and go to state 52
+    R_BIT           shift and go to state 53
+    DATETIME        shift and go to state 54
+    DATE            shift and go to state 55
+    VARCHAR         shift and go to state 56
+    NVARCHAR        shift and go to state 57
+    NCHAR           shift and go to state 58
 
+    tipo_dato                      shift and go to state 50
 
 state 48
 
-    (23) restriccion_parametro -> REFERENCES ID .
+    (8) crearTabla -> CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico . PARENTESIS_DER
+    (9) tablasEspecifico -> tablasEspecifico . COMA columnaDefinicion
 
-    PARENTESIS_DER  reduce using rule 23 (restriccion_parametro -> REFERENCES ID .)
-    COMA            reduce using rule 23 (restriccion_parametro -> REFERENCES ID .)
+    PARENTESIS_DER  shift and go to state 59
+    COMA            shift and go to state 60
 
 
 state 49
 
-    (16) tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .
+    (10) tablasEspecifico -> columnaDefinicion .
 
-    NULL            reduce using rule 16 (tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    NOT             reduce using rule 16 (tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    PRIMARY         reduce using rule 16 (tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    REFERENCES      reduce using rule 16 (tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    PARENTESIS_DER  reduce using rule 16 (tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    COMA            reduce using rule 16 (tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    PARENTESIS_DER  reduce using rule 10 (tablasEspecifico -> columnaDefinicion .)
+    COMA            reduce using rule 10 (tablasEspecifico -> columnaDefinicion .)
 
 
 state 50
 
-    (17) tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .
+    (11) columnaDefinicion -> ID tipo_dato . nulidad_parametro restriccion_parametro
+    (20) nulidad_parametro -> . NULL
+    (21) nulidad_parametro -> . NOT NULL
+    (22) nulidad_parametro -> .
 
-    NULL            reduce using rule 17 (tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    NOT             reduce using rule 17 (tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    PRIMARY         reduce using rule 17 (tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    REFERENCES      reduce using rule 17 (tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    PARENTESIS_DER  reduce using rule 17 (tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    COMA            reduce using rule 17 (tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    NULL            shift and go to state 62
+    NOT             shift and go to state 63
+    PRIMARY         reduce using rule 22 (nulidad_parametro -> .)
+    REFERENCES      reduce using rule 22 (nulidad_parametro -> .)
+    PARENTESIS_DER  reduce using rule 22 (nulidad_parametro -> .)
+    COMA            reduce using rule 22 (nulidad_parametro -> .)
 
+    nulidad_parametro              shift and go to state 61
 
 state 51
 
-    (18) tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .
+    (12) tipo_dato -> R_INT .
 
-    NULL            reduce using rule 18 (tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    NOT             reduce using rule 18 (tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    PRIMARY         reduce using rule 18 (tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    REFERENCES      reduce using rule 18 (tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    PARENTESIS_DER  reduce using rule 18 (tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    COMA            reduce using rule 18 (tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    NULL            reduce using rule 12 (tipo_dato -> R_INT .)
+    NOT             reduce using rule 12 (tipo_dato -> R_INT .)
+    PRIMARY         reduce using rule 12 (tipo_dato -> R_INT .)
+    REFERENCES      reduce using rule 12 (tipo_dato -> R_INT .)
+    PARENTESIS_DER  reduce using rule 12 (tipo_dato -> R_INT .)
+    COMA            reduce using rule 12 (tipo_dato -> R_INT .)
+
+
+state 52
+
+    (13) tipo_dato -> R_DECIMAL .
+
+    NULL            reduce using rule 13 (tipo_dato -> R_DECIMAL .)
+    NOT             reduce using rule 13 (tipo_dato -> R_DECIMAL .)
+    PRIMARY         reduce using rule 13 (tipo_dato -> R_DECIMAL .)
+    REFERENCES      reduce using rule 13 (tipo_dato -> R_DECIMAL .)
+    PARENTESIS_DER  reduce using rule 13 (tipo_dato -> R_DECIMAL .)
+    COMA            reduce using rule 13 (tipo_dato -> R_DECIMAL .)
+
+
+state 53
+
+    (14) tipo_dato -> R_BIT .
+
+    NULL            reduce using rule 14 (tipo_dato -> R_BIT .)
+    NOT             reduce using rule 14 (tipo_dato -> R_BIT .)
+    PRIMARY         reduce using rule 14 (tipo_dato -> R_BIT .)
+    REFERENCES      reduce using rule 14 (tipo_dato -> R_BIT .)
+    PARENTESIS_DER  reduce using rule 14 (tipo_dato -> R_BIT .)
+    COMA            reduce using rule 14 (tipo_dato -> R_BIT .)
+
+
+state 54
+
+    (15) tipo_dato -> DATETIME .
+
+    NULL            reduce using rule 15 (tipo_dato -> DATETIME .)
+    NOT             reduce using rule 15 (tipo_dato -> DATETIME .)
+    PRIMARY         reduce using rule 15 (tipo_dato -> DATETIME .)
+    REFERENCES      reduce using rule 15 (tipo_dato -> DATETIME .)
+    PARENTESIS_DER  reduce using rule 15 (tipo_dato -> DATETIME .)
+    COMA            reduce using rule 15 (tipo_dato -> DATETIME .)
+
+
+state 55
+
+    (16) tipo_dato -> DATE .
+
+    NULL            reduce using rule 16 (tipo_dato -> DATE .)
+    NOT             reduce using rule 16 (tipo_dato -> DATE .)
+    PRIMARY         reduce using rule 16 (tipo_dato -> DATE .)
+    REFERENCES      reduce using rule 16 (tipo_dato -> DATE .)
+    PARENTESIS_DER  reduce using rule 16 (tipo_dato -> DATE .)
+    COMA            reduce using rule 16 (tipo_dato -> DATE .)
+
+
+state 56
+
+    (17) tipo_dato -> VARCHAR . PARENTESIS_IZQ expresion PARENTESIS_DER
+
+    PARENTESIS_IZQ  shift and go to state 64
+
+
+state 57
+
+    (18) tipo_dato -> NVARCHAR . PARENTESIS_IZQ expresion PARENTESIS_DER
+
+    PARENTESIS_IZQ  shift and go to state 65
+
+
+state 58
+
+    (19) tipo_dato -> NCHAR . PARENTESIS_IZQ expresion PARENTESIS_DER
+
+    PARENTESIS_IZQ  shift and go to state 66
+
+
+state 59
+
+    (8) crearTabla -> CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER .
+
+    PUNTO_Y_COMA    reduce using rule 8 (crearTabla -> CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER .)
+
+
+state 60
+
+    (9) tablasEspecifico -> tablasEspecifico COMA . columnaDefinicion
+    (11) columnaDefinicion -> . ID tipo_dato nulidad_parametro restriccion_parametro
+
+    ID              shift and go to state 47
+
+    columnaDefinicion              shift and go to state 67
+
+state 61
+
+    (11) columnaDefinicion -> ID tipo_dato nulidad_parametro . restriccion_parametro
+    (23) restriccion_parametro -> . PRIMARY KEY
+    (24) restriccion_parametro -> . REFERENCES ID
+    (25) restriccion_parametro -> .
+
+    PRIMARY         shift and go to state 69
+    REFERENCES      shift and go to state 70
+    PARENTESIS_DER  reduce using rule 25 (restriccion_parametro -> .)
+    COMA            reduce using rule 25 (restriccion_parametro -> .)
+
+    restriccion_parametro          shift and go to state 68
+
+state 62
+
+    (20) nulidad_parametro -> NULL .
+
+    PRIMARY         reduce using rule 20 (nulidad_parametro -> NULL .)
+    REFERENCES      reduce using rule 20 (nulidad_parametro -> NULL .)
+    PARENTESIS_DER  reduce using rule 20 (nulidad_parametro -> NULL .)
+    COMA            reduce using rule 20 (nulidad_parametro -> NULL .)
+
+
+state 63
+
+    (21) nulidad_parametro -> NOT . NULL
+
+    NULL            shift and go to state 71
+
+
+state 64
+
+    (17) tipo_dato -> VARCHAR PARENTESIS_IZQ . expresion PARENTESIS_DER
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
+
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
+
+    expresion                      shift and go to state 72
+
+state 65
+
+    (18) tipo_dato -> NVARCHAR PARENTESIS_IZQ . expresion PARENTESIS_DER
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
+
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
+
+    expresion                      shift and go to state 73
+
+state 66
+
+    (19) tipo_dato -> NCHAR PARENTESIS_IZQ . expresion PARENTESIS_DER
+    (26) expresion -> . expresion MENOR_QUE expresion
+    (27) expresion -> . expresion MAYOR_QUE expresion
+    (28) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion COMPARACION expresion
+    (31) expresion -> . expresion DISTINTO expresion
+    (32) expresion -> . expresion AND expresion
+    (33) expresion -> . expresion OR expresion
+    (34) expresion -> . expresion MAS expresion
+    (35) expresion -> . expresion MENOS expresion
+    (36) expresion -> . expresion POR expresion
+    (37) expresion -> . expresion DIVISION expresion
+    (38) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (39) expresion -> . ENTERO
+    (40) expresion -> . DECIMAL
+    (41) expresion -> . STR
+
+    PARENTESIS_IZQ  shift and go to state 8
+    ENTERO          shift and go to state 9
+    DECIMAL         shift and go to state 10
+    STR             shift and go to state 11
+
+    expresion                      shift and go to state 74
+
+state 67
+
+    (9) tablasEspecifico -> tablasEspecifico COMA columnaDefinicion .
+
+    PARENTESIS_DER  reduce using rule 9 (tablasEspecifico -> tablasEspecifico COMA columnaDefinicion .)
+    COMA            reduce using rule 9 (tablasEspecifico -> tablasEspecifico COMA columnaDefinicion .)
+
+
+state 68
+
+    (11) columnaDefinicion -> ID tipo_dato nulidad_parametro restriccion_parametro .
+
+    PARENTESIS_DER  reduce using rule 11 (columnaDefinicion -> ID tipo_dato nulidad_parametro restriccion_parametro .)
+    COMA            reduce using rule 11 (columnaDefinicion -> ID tipo_dato nulidad_parametro restriccion_parametro .)
+
+
+state 69
+
+    (23) restriccion_parametro -> PRIMARY . KEY
+
+    KEY             shift and go to state 75
+
+
+state 70
+
+    (24) restriccion_parametro -> REFERENCES . ID
+
+    ID              shift and go to state 76
+
+
+state 71
+
+    (21) nulidad_parametro -> NOT NULL .
+
+    PRIMARY         reduce using rule 21 (nulidad_parametro -> NOT NULL .)
+    REFERENCES      reduce using rule 21 (nulidad_parametro -> NOT NULL .)
+    PARENTESIS_DER  reduce using rule 21 (nulidad_parametro -> NOT NULL .)
+    COMA            reduce using rule 21 (nulidad_parametro -> NOT NULL .)
+
+
+state 72
+
+    (17) tipo_dato -> VARCHAR PARENTESIS_IZQ expresion . PARENTESIS_DER
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
+
+    PARENTESIS_DER  shift and go to state 77
+    MENOR_QUE       shift and go to state 15
+    MAYOR_QUE       shift and go to state 16
+    MENOR_O_IGUAL_QUE shift and go to state 17
+    MAYOR_O_IGUAL_QUE shift and go to state 18
+    COMPARACION     shift and go to state 19
+    DISTINTO        shift and go to state 20
+    AND             shift and go to state 21
+    OR              shift and go to state 22
+    MAS             shift and go to state 23
+    MENOS           shift and go to state 24
+    POR             shift and go to state 25
+    DIVISION        shift and go to state 26
+
+
+state 73
+
+    (18) tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion . PARENTESIS_DER
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
+
+    PARENTESIS_DER  shift and go to state 78
+    MENOR_QUE       shift and go to state 15
+    MAYOR_QUE       shift and go to state 16
+    MENOR_O_IGUAL_QUE shift and go to state 17
+    MAYOR_O_IGUAL_QUE shift and go to state 18
+    COMPARACION     shift and go to state 19
+    DISTINTO        shift and go to state 20
+    AND             shift and go to state 21
+    OR              shift and go to state 22
+    MAS             shift and go to state 23
+    MENOS           shift and go to state 24
+    POR             shift and go to state 25
+    DIVISION        shift and go to state 26
+
+
+state 74
+
+    (19) tipo_dato -> NCHAR PARENTESIS_IZQ expresion . PARENTESIS_DER
+    (26) expresion -> expresion . MENOR_QUE expresion
+    (27) expresion -> expresion . MAYOR_QUE expresion
+    (28) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (29) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . COMPARACION expresion
+    (31) expresion -> expresion . DISTINTO expresion
+    (32) expresion -> expresion . AND expresion
+    (33) expresion -> expresion . OR expresion
+    (34) expresion -> expresion . MAS expresion
+    (35) expresion -> expresion . MENOS expresion
+    (36) expresion -> expresion . POR expresion
+    (37) expresion -> expresion . DIVISION expresion
+
+    PARENTESIS_DER  shift and go to state 79
+    MENOR_QUE       shift and go to state 15
+    MAYOR_QUE       shift and go to state 16
+    MENOR_O_IGUAL_QUE shift and go to state 17
+    MAYOR_O_IGUAL_QUE shift and go to state 18
+    COMPARACION     shift and go to state 19
+    DISTINTO        shift and go to state 20
+    AND             shift and go to state 21
+    OR              shift and go to state 22
+    MAS             shift and go to state 23
+    MENOS           shift and go to state 24
+    POR             shift and go to state 25
+    DIVISION        shift and go to state 26
+
+
+state 75
+
+    (23) restriccion_parametro -> PRIMARY KEY .
+
+    PARENTESIS_DER  reduce using rule 23 (restriccion_parametro -> PRIMARY KEY .)
+    COMA            reduce using rule 23 (restriccion_parametro -> PRIMARY KEY .)
+
+
+state 76
+
+    (24) restriccion_parametro -> REFERENCES ID .
+
+    PARENTESIS_DER  reduce using rule 24 (restriccion_parametro -> REFERENCES ID .)
+    COMA            reduce using rule 24 (restriccion_parametro -> REFERENCES ID .)
+
+
+state 77
+
+    (17) tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .
+
+    NULL            reduce using rule 17 (tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    NOT             reduce using rule 17 (tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    PRIMARY         reduce using rule 17 (tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    REFERENCES      reduce using rule 17 (tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    PARENTESIS_DER  reduce using rule 17 (tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    COMA            reduce using rule 17 (tipo_dato -> VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+
+
+state 78
+
+    (18) tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .
+
+    NULL            reduce using rule 18 (tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    NOT             reduce using rule 18 (tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    PRIMARY         reduce using rule 18 (tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    REFERENCES      reduce using rule 18 (tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    PARENTESIS_DER  reduce using rule 18 (tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    COMA            reduce using rule 18 (tipo_dato -> NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+
+
+state 79
+
+    (19) tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .
+
+    NULL            reduce using rule 19 (tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    NOT             reduce using rule 19 (tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    PRIMARY         reduce using rule 19 (tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    REFERENCES      reduce using rule 19 (tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    PARENTESIS_DER  reduce using rule 19 (tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    COMA            reduce using rule 19 (tipo_dato -> NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER .)
 
