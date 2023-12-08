@@ -7,7 +7,7 @@ class crearTabla(Abstract):
         self.listaAtributos = listaAtributos
         super().__init__(fila, columna)
 
-    def interpretar(self, arbol, tabla):
+    def interpretar(self, environment):
         ## lo que hace de interfaz regresa el valor
         print("crear Tabla: ",self.nombre)
         print("con esto: ")

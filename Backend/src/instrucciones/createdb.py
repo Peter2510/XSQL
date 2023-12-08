@@ -15,7 +15,7 @@ class createDB(Abstract):
         resultado = manejo.createDatabase(nombre)
         if (resultado == 0):
             #Se creo la base de datos correctamente.
-            environment.createDataBase(nombre)#Guardamos la metadata en el entorno global.
+           # environment.createDataBase(nombre)#Guardamos la metadata en el entorno global.
             return 'La base de datos ' + self.nombre + ' ha sido creada.' 
         elif resultado == 1:
             #Error al crear
