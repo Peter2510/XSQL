@@ -24,13 +24,16 @@ export class CodeEditorComponent implements OnInit{
     }, fontSize: 15
   };
 
-
   valor:any
+
   constructor(private servicio:CompilacionService){}
 
 
-  enviarData(){
-    console.log(this.valor);
+
+  ejecutar(){
+    this.servicio.ejecutarSQL(this.codeModel.value).subscribe(da=>{
+      console.log(da)
+    })
 
   }
   ngOnInit(): void {
