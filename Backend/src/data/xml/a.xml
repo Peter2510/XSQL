@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Database name="a"><Table name="tabla1"><producto>nuevo</producto><precio>1</precio></Table><Table name="tabla2"><producto>simon</producto><precio>3</precio></Table></Database>
