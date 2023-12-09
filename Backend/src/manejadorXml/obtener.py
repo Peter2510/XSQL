@@ -32,7 +32,9 @@ def exportDataToXML(data, name):
                 element.text = str(value)
         
         tree = ET.ElementTree(root)
-        tree.write(f"../data/xml/{name}.xml", encoding="utf-8", xml_declaration=True)
+     ## si usas la otra clase de create dale con este ./src/data/xml/
+     ## sino../data/xml/
+        tree.write(f"./src/data/xml/{name}.xml", encoding="utf-8", xml_declaration=True)
         print(f"Datos exportados a {name}.xml exitosamente.")
     except Exception as e:
         print(f"Error al exportar datos a XML: {str(e)}")

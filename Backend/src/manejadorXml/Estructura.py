@@ -1,24 +1,32 @@
-import obtener
+from ..manejadorXml import obtener
 Databases = []
 
 
 def load():
     global Databases
-    Databases = obtener.importAllXMLsInDirectory("../data/xml/")
+    ## llamarlo como desde la clase que necesitamos
+    Databases = obtener.importAllXMLsInDirectory("./src/data/xml/")
     print(type(Databases))
     print(Databases)
     
 
 
 def createDatabase(name):
-    database = {}
-    database["name"] = name
-    database["tables"] = []
-    Databases.append(database)
-    obtener.exportDataToXML( {
-    'tabla1': {"producto": "nuevo", "precio": 1},
-    'tabla2': {"producto": "simon", "precio": 3}
-}      , name)
+    try:
+        database = {}
+        database["name"] = name
+        database["tables"] = []
+        for nombre in Databases:
+            if (nombre["name"] == name):
+                return 2
+        Databases.append(database)
+        obtener.exportDataToXML( {
+            'tabla1': {"producto": "nuevo", "precio": 1},
+            'tabla2': {"producto": "simon", "precio": 3}
+        }      , name)
+        return 0
+    except:
+        return 1
 
 
 # Exportar a XML

@@ -1,5 +1,7 @@
 from ..abstract.abstractas import Abstract
-from ..manejadorXml import manejo 
+from ..manejadorXml import manejo, Estructura 
+
+
 
 class createDB(Abstract):
     
@@ -12,13 +14,15 @@ class createDB(Abstract):
 
         if not isinstance(nombre,str):
             return {'Error': 'El nombre indicado de la base de datos no es una cadena.', 'Fila':self.fila, 'Columna': self.columna }
-        resultado = manejo.createDatabase(nombre) #CREA EL ARCHIVO
-        print(resultado)
+       
+        Estructura.load();
+        print("<<",Estructura.Databases)
+        resultado  = Estructura.createDatabase(nombre);
+        #resultado = manejo.createDatabase(nombre) #CREA EL ARCHIVO
         if (resultado == 0):
             #Se creo la base de datos correctamente.
             #LO GUARDA EN MEMORIA
-            environment.createDataBase(nombre)#Guardamos la metadata en el entorno global.
-            
+          #  environment.createDataBase(nombre)#Guardamos la metadata en el entorno global.
             return 'La base de datos ' + self.nombre + ' ha sido creada.' 
         elif resultado == 1:
             #Error al crear
