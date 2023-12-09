@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { TreeModule } from '@bugsplat/angular-tree-component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TextEditorComponent } from './text-editor/text-editor.component';
@@ -36,6 +36,7 @@ import { DataBasesComponent } from './data-bases/data-bases.component';
     FormsModule,
     CodemirrorModule,
     HttpClientModule,
+    TreeModule
   ],
   providers: [],
   bootstrap: [AppComponent],
