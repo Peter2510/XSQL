@@ -57,9 +57,10 @@ def p_instruccionGeneral(t):
     '''
     instruccion : crearBaseDatos PUNTO_Y_COMA
                 | crearTabla PUNTO_Y_COMA
-                | funcion_usuario PUNTO_Y_COMA
-                | procedure
+                | crear_funcion_usuario PUNTO_Y_COMA
+                | crear_procedure
                 | llamada_procedure
+                | expresion_case
     '''
     ### falta manipular
     t[0] = t[1]
@@ -267,14 +268,20 @@ def p_exp_cadena(t):
     '''expresion : STR'''
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'texto')
 
-#id variable
-def p_exp_cadena2(t):
-    '''expresion : ID_DECLARE'''
+## id
+def p_exp_id(t):
+    '''expresion : ID'''
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'id')
+
+#id variable
+def p_exp_id_declare(t):
+    '''expresion : ID_DECLARE'''
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'id_declare')
     
 def p_null(t):
     '''expresion : NULL'''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'null')    
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'null')
+    
 
 ##CREATE DATA BASE
 ##CREATE TABLE
@@ -287,7 +294,7 @@ def p_null(t):
 
 def p_funcion_usuario(t):
     ''' 
-    funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
+    crear_funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
     '''
     print('FUNCION DEL USUARIO:',t[3],"parametros",t[5],"tipo dato fn",t[8],t[11])
 
@@ -443,35 +450,12 @@ def p_parametro_llamada_funcion(t): # id
     t[0] = [t[1]]
     print('parametro llamada funcion',t[1])
     
-#lista parametros de llamado de funciones
-def p_parametros_llamado_funcion(t):
-    '''
-    parametros_llamado_funcion : parametros_llamado_funcion COMA parametro_llamado_funcion
-    '''
-    t[1].append(t[3])
-    t[0] = t[1]
-    
-#parametros de llamado de funciones    
-def p_parametros_llamado_funcion2(t):
-    '''
-    parametros_llamado_funcion :  parametro_llamado_funcion
-    '''
-    t[0] = [t[1]]
-    
-#parametro de llamado de funciones
-def p_parametro_llamado_funcion(t): # expresion
-    '''
-    parametro_llamado_funcion : expresion
-    '''
-    t[0] = [t[1]]
-    print('parametro llamado funcion',t[1])
-    
 
     #PROCEDURES
     
 def p_procedure(t):
     '''
-    procedure : CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END PUNTO_Y_COMA
+    crear_procedure : CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END PUNTO_Y_COMA
     '''
     print("procedure",t[3],"parametros",t[5],t[9])
      
@@ -594,8 +578,29 @@ def p_expresion_else_if(t):
     t[0] = t[4]
 
 
-# CASE
+#case 
+def p_expresion_case(p):
+    '''
+    expresion_case : CASE when_clauses ELSE expresion END expresion
+    '''
+    p[0] = p[4]
+    print("en case con else")
+    
+#case 2
+def p_expresion_case2(p):
+    '''
+    expresion_case : CASE when_clauses END expresion
+    '''
+    p[0] = p[4]
+    print("en case sin else")
 
+def p_when_clauses(p):
+    '''
+    when_clauses : WHEN expresion THEN expresion
+                 | when_clauses WHEN expresion THEN expresion
+    '''
+    p[0] = (p[2], p[4]) if len(p) == 5 else (p[2], p[4], p[1])
+    
 
 ## metodo de error
 def p_error(p):
@@ -620,23 +625,19 @@ def parse(inp):
 
 
 data = '''
-CREATE FUNCTION Retornasuma(@ProductID int) 
-RETURNS int 
-AS 
--- Returns the stock level for the product. 
-BEGIN 
- DECLARE @ret int; 
 
- IF @ret <= NULL THEN
-    SET @A = @ProductID + 1/2; 
-ELSEIF @B <= NULL THEN
-    SET @C = @ProductID + 1/2;
- ELSE 
-    SET @D = @ProductID + 1/2;
- RETURN @ret; 
- END IF;
- 
-END;
+CASE 
+    WHEN 1==1 
+        THEN 'UNO IGUAL 1'
+    WHEN 1==2 
+        THEN 'UNO IGUAL 2'
+    WHEN 1==3 
+        THEN 'UNO IGUAL 3'
+    WHEN 1==4 
+        THEN 'UNO IGUAL 4'
+    else 'NADA'
+    END validacion
+
 '''
 
 # prueba

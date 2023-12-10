@@ -49,6 +49,8 @@ keywords = {
     'return': 'RETURN',
     'returns': 'RETURNS',
     'begin': 'BEGIN',
+    'case': 'CASE',
+    'when': 'WHEN',
     'end': 'END',
     'add': 'ADD',
     'declare': 'DECLARE',
