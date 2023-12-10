@@ -58,6 +58,7 @@ def p_instruccionGeneral(t):
     instruccion : crearBaseDatos PUNTO_Y_COMA
                 | crearTabla PUNTO_Y_COMA
                 | expresion
+                | funcion_usuario PUNTO_Y_COMA
     '''
     ### falta manipular
     t[0] = t[1]
@@ -262,10 +263,94 @@ def p_exp_decimal(t):
 def p_exp_cadena(t):
     '''expresion : STR'''
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'texto')
+
+#id varialbe
+def p_exp_cadena(t):
+    '''expresion : ID_DECLARE'''
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'id')
 ##CREATE DATA BASE
 ##CREATE TABLE
 ##CREATE PROD
 ##CREATE FUNC
+
+        ########################## SSL
+
+        #FUNCIONES
+
+def p_funcion_usuario(t):
+    ''' 
+    funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones RETURN expresion PUNTO_Y_COMA END 
+    '''
+    print('FUNCION DEL USUARIO:',t[3],"parametros",t[5],"tipo dato fn",t[8],t[11],"retorna:",t[13].valor)
+
+
+##PARAMETROS DE LAS FUNCIONES
+def p_parametros_funcion(t):
+    '''
+    parametros_funcion : parametros_funcion parametro_funcion
+    '''
+    t[1].append(t[3])
+    t[0] = t[1]
+
+def p_parametros_funcion2(t):
+    '''
+    parametros_funcion :  parametro_funcion
+    '''
+    t[0] = [t[1]]
+    
+#parametro de una funcion
+def p_parametro_funcion(t): # @id tipoDato 
+    '''
+    parametro_funcion : ID_DECLARE tipo_dato_parametro 
+    '''
+    t[0] = [t[1]]
+    print('parametro funcion',t[1],t[2])
+    
+#tipo de dato del parametro 
+def p_tipo_dato_parametro(t):
+    '''
+    tipo_dato_parametro : R_INT
+                        | R_DECIMAL
+                        | R_BIT
+    '''
+    t[0] = t[1]
+    
+    
+#sentencias de las funciones
+def p_sentencias_funciones(t):
+    '''
+    sentencias_funciones : sentencias_funciones sentencia_funcion
+    '''
+    t[1].append(t[2])
+    t[0] = t[1]
+
+#sentencia de las funciones
+def p_sentencias_funciones1(t):
+    '''
+    sentencias_funciones : sentencia_funcion
+    '''
+    t[0] = [t[1]]
+    
+def p_sentencia_funcion(t):
+    '''
+    sentencia_funcion : declaracion_variable
+    '''
+    t[0] = [t[1]]
+    
+def p_declaracion_variable(t):
+    '''
+    declaracion_variable : DECLARE ID_DECLARE tipo_dato_parametro PUNTO_Y_COMA
+    '''
+    t[0] = [t[1]]
+    print("declaracion varialbe",t[2],t[3])
+    
+
+
+#PROCEDIMIENTOS
+
+# IF
+
+# CASE
 
 
 ## metodo de error
@@ -291,18 +376,39 @@ def parse(inp):
 
 
 data = '''
-4+(7*3)
-4/2
-444+32.3-3+4*4*3+3/3*"s"
-"s"==1
+CREATE FUNCTION Retornasuma(@ProductID int) 
+RETURNS int 
+AS 
+-- Returns the stock level for the product. 
+BEGIN 
+DECLARE @a int; 
+DECLARE @b int; 
+DECLARE @c int; 
+DECLARE @d int; 
+DECLARE @e int; 
+RETURN @ret;
+END;
+
+CREATE FUNCTION pedr(@ProductID int) 
+RETURNS int 
+AS 
+-- Returns the stock level for the product. 
+BEGIN 
+DECLARE @a int; 
+DECLARE @b int; 
+DECLARE @c int; 
+DECLARE @d int; 
+DECLARE @e int; 
+RETURN @ret;
+END;
 '''
 
 # prueba
 
 
-instrucciones = parse(data)
+instrucciones = parse(data.lower())
 
 ## ciclo para que muestre
-for ist in instrucciones:
-    ist.interpretar(None)
+##for ist in instrucciones:
+##    ist.interpretar(None)
 #instrucciones[1].interpretar(None, None)
