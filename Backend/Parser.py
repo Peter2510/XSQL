@@ -287,7 +287,7 @@ def p_funcion_usuario(t):
 ##PARAMETROS DE LAS FUNCIONES
 def p_parametros_funcion(t):
     '''
-    parametros_funcion : parametros_funcion parametro_funcion
+    parametros_funcion : parametros_funcion  COMA parametro_funcion
     '''
     t[1].append(t[3])
     t[0] = t[1]
@@ -309,10 +309,16 @@ def p_parametro_funcion(t): # @id tipoDato
 #tipo de dato del parametro 
 def p_tipo_dato_parametro(t):
     '''
-    tipo_dato_parametro : tipo_dato
+    tipo_dato_parametro : R_INT
     '''
     t[0] = t[1]
     
+#tipo de dato de la variable
+def p_tipo_dato_variable_funcion(t):
+    '''
+    tipo_dato_variable : tipo_dato
+    '''
+    t[0] = t[1]
     
 #sentencias de las funciones
 def p_sentencias_funciones(t):
@@ -340,7 +346,7 @@ def p_sentencia_funcion(t):
 #declarar variable
 def p_declaracion_variable(t):
     '''
-    declaracion_variable : DECLARE ID_DECLARE tipo_dato_parametro PUNTO_Y_COMA
+    declaracion_variable : DECLARE ID_DECLARE tipo_dato_variable PUNTO_Y_COMA
     '''
     t[0] = [t[1]]
     print("declaracion varialbe",t[2],t[3])
@@ -353,7 +359,12 @@ def p_set_variable_funcion(t):
     print("set_variable_funcion","variable:",t[2],"valor:",t[4])
 
 
-#PROCEDIMIENTOS
+#PROCEDURES
+# def p_procedure(t):
+#     '''
+#     procedure : CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_procedure END PUNTO_Y_COMA
+#     '''
+#     print("procedure",t[3],"parametros",t[5])
 
 # IF
 
@@ -383,13 +394,13 @@ def parse(inp):
 
 
 data = '''
-CREATE FUNCTION Retornasuma(@ProductID int) 
+CREATE FUNCTION Retornasuma(@ProductID INT, @OrderQty INT, @OrderDate INT) 
 RETURNS int 
 AS 
 -- Returns the stock level for the product. 
 BEGIN 
-DECLARE @a varchar(10); 
-DECLARE @b int; 
+DECLARE @a DECIMAL; 
+DECLARE @b DATE; 
 DECLARE @c int; 
 DECLARE @d int; 
 DECLARE @e int; 
