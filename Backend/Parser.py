@@ -309,9 +309,7 @@ def p_parametro_funcion(t): # @id tipoDato
 #tipo de dato del parametro 
 def p_tipo_dato_parametro(t):
     '''
-    tipo_dato_parametro : R_INT
-                        | R_DECIMAL
-                        | R_BIT
+    tipo_dato_parametro : tipo_dato
     '''
     t[0] = t[1]
     
@@ -331,12 +329,15 @@ def p_sentencias_funciones1(t):
     '''
     t[0] = [t[1]]
     
+#sentecias dentro de las funciones    
 def p_sentencia_funcion(t):
     '''
     sentencia_funcion : declaracion_variable
+                        | set_variable_funcion
     '''
     t[0] = [t[1]]
     
+#declarar variable
 def p_declaracion_variable(t):
     '''
     declaracion_variable : DECLARE ID_DECLARE tipo_dato_parametro PUNTO_Y_COMA
@@ -344,6 +345,12 @@ def p_declaracion_variable(t):
     t[0] = [t[1]]
     print("declaracion varialbe",t[2],t[3])
     
+def p_set_variable_funcion(t):
+    '''
+    set_variable_funcion : SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA
+    '''
+    t[0] = [t[1]]
+    print("set_variable_funcion","variable:",t[2],"valor:",t[4])
 
 
 #PROCEDIMIENTOS
@@ -381,26 +388,15 @@ RETURNS int
 AS 
 -- Returns the stock level for the product. 
 BEGIN 
-DECLARE @a int; 
+DECLARE @a varchar(10); 
 DECLARE @b int; 
 DECLARE @c int; 
 DECLARE @d int; 
 DECLARE @e int; 
+Set @valor = @val1 + @val2;
 RETURN @ret;
 END;
 
-CREATE FUNCTION pedr(@ProductID int) 
-RETURNS int 
-AS 
--- Returns the stock level for the product. 
-BEGIN 
-DECLARE @a int; 
-DECLARE @b int; 
-DECLARE @c int; 
-DECLARE @d int; 
-DECLARE @e int; 
-RETURN @ret;
-END;
 '''
 
 # prueba
