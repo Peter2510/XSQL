@@ -627,8 +627,12 @@ AS
 BEGIN 
  DECLARE @ret int; 
 
- IF @ret == NULL THEN
- SET @ret = 0; 
+ IF @ret <= NULL THEN
+    SET @A = @ProductID + 1/2; 
+ELSEIF @B <= NULL THEN
+    SET @C = @ProductID + 1/2;
+ ELSE 
+    SET @D = @ProductID + 1/2;
  RETURN @ret; 
  END IF;
  

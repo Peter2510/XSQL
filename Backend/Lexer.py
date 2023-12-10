@@ -45,7 +45,7 @@ keywords = {
     'if': 'IF',
     'then': 'THEN',
     'else': 'ELSE',
-    'ELSEIF': 'ELSEIF',
+    'elseif': 'ELSEIF',
     'return': 'RETURN',
     'returns': 'RETURNS',
     'begin': 'BEGIN',
