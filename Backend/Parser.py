@@ -338,18 +338,41 @@ def p_sentencias_funciones1(t):
 #sentecias dentro de las funciones    
 def p_sentencia_funcion(t):
     '''
-    sentencia_funcion : declaracion_variable
+    sentencia_funcion : declaracion_variables
                         | set_variable_funcion
+    '''
+    t[0] = [t[1]]
+    
+#declare varias variables
+def p_declaracion_variables(t):
+    '''
+    declaracion_variables :  DECLARE lista_declaracion_variables PUNTO_Y_COMA
+    '''
+    t[0] = t[1]
+      
+    
+#lista de declaracion de variables
+def p_lista_declaracion_variables(t):
+    '''
+    lista_declaracion_variables : lista_declaracion_variables COMA declaracion_variable
+    '''
+    t[1].append(t[3])
+    t[0] = t[1]
+    
+#declaracion de una sola variable    
+def p_lista_declaracion_variables2(t):
+    '''
+    lista_declaracion_variables :  declaracion_variable
     '''
     t[0] = [t[1]]
     
 #declarar variable
 def p_declaracion_variable(t):
     '''
-    declaracion_variable : DECLARE ID_DECLARE tipo_dato_variable PUNTO_Y_COMA
+    declaracion_variable : ID_DECLARE tipo_dato_variable 
     '''
     t[0] = [t[1]]
-    print("declaracion varialbe",t[2],t[3])
+    print("declaracion varialbe",t[1],t[2])
     
 def p_set_variable_funcion(t):
     '''
@@ -399,19 +422,17 @@ RETURNS int
 AS 
 -- Returns the stock level for the product. 
 BEGIN 
-DECLARE @a DECIMAL; 
-DECLARE @b DATE; 
-DECLARE @c int; 
+DECLARE @MyVariable INT;
+SET @MyVariable = 1;
+DECLARE @c int, @d int, @e int; 
 DECLARE @d int; 
 DECLARE @e int; 
 Set @valor = @val1 + @val2;
 RETURN @ret;
 END;
-
 '''
 
 # prueba
-
 
 instrucciones = parse(data.lower())
 

@@ -91,10 +91,13 @@ Rule 47    tipo_dato_parametro -> R_INT
 Rule 48    tipo_dato_variable -> tipo_dato
 Rule 49    sentencias_funciones -> sentencias_funciones sentencia_funcion
 Rule 50    sentencias_funciones -> sentencia_funcion
-Rule 51    sentencia_funcion -> declaracion_variable
+Rule 51    sentencia_funcion -> declaracion_variables
 Rule 52    sentencia_funcion -> set_variable_funcion
-Rule 53    declaracion_variable -> DECLARE ID_DECLARE tipo_dato_variable PUNTO_Y_COMA
-Rule 54    set_variable_funcion -> SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA
+Rule 53    declaracion_variables -> DECLARE lista_declaracion_variables PUNTO_Y_COMA
+Rule 54    lista_declaracion_variables -> lista_declaracion_variables COMA declaracion_variable
+Rule 55    lista_declaracion_variables -> declaracion_variable
+Rule 56    declaracion_variable -> ID_DECLARE tipo_dato_variable
+Rule 57    set_variable_funcion -> SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA
 
 Terminals, with rules where they appear
 
@@ -103,12 +106,12 @@ ALTER                :
 AND                  : 33
 ARROBA               : 
 AS                   : 43
-ASIGNACION           : 54
+ASIGNACION           : 57
 BASE                 : 8
 BEGIN                : 43
 BITPRIM              : 
 CAS                  : 
-COMA                 : 10 44
+COMA                 : 10 44 54
 COMPARACION          : 31
 CONCATENA            : 
 CONTAR               : 
@@ -136,7 +139,7 @@ FROM                 :
 FUNCTION             : 43
 HOY                  : 
 ID                   : 8 9 12 25 43
-ID_DECLARE           : 42 46 53 54
+ID_DECLARE           : 42 46 56 57
 IF                   : 
 INSERT               : 
 KEY                  : 24
@@ -160,7 +163,7 @@ POR                  : 37
 PRIMARY              : 24
 PROCEDURE            : 
 PUNTO                : 
-PUNTO_Y_COMA         : 4 5 7 43 53 54
+PUNTO_Y_COMA         : 4 5 7 43 53 57
 REFERENCE            : 
 REFERENCES           : 25
 RETURN               : 43
@@ -169,7 +172,7 @@ R_BIT                : 15
 R_DECIMAL            : 14
 R_INT                : 13 47
 SELECT               : 
-SET                  : 54
+SET                  : 57
 STR                  : 
 SUBSTRAER            : 
 SUMA                 : 
@@ -186,12 +189,14 @@ Nonterminals, with rules where they appear
 columnaDefinicion    : 10 11
 crearBaseDatos       : 4
 crearTabla           : 5
-declaracion_variable : 51
-expresion            : 6 18 19 20 27 27 28 28 29 29 30 30 31 31 32 32 33 33 34 34 35 35 36 36 37 37 38 38 39 43 54
+declaracion_variable : 54 55
+declaracion_variables : 51
+expresion            : 6 18 19 20 27 27 28 28 29 29 30 30 31 31 32 32 33 33 34 34 35 35 36 36 37 37 38 38 39 43 57
 funcion_usuario      : 7
 init                 : 0
 instruccion          : 2 3
 instrucciones        : 1 2
+lista_declaracion_variables : 53 54
 nulidad_parametro    : 12
 parametro_funcion    : 44 45
 parametros_funcion   : 43 44
@@ -202,7 +207,7 @@ set_variable_funcion : 52
 tablasEspecifico     : 9 10
 tipo_dato            : 12 48
 tipo_dato_parametro  : 43 46
-tipo_dato_variable   : 53
+tipo_dato_variable   : 56
 
 Parsing method: LALR
 
@@ -2149,34 +2154,34 @@ state 96
     (43) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN . sentencias_funciones RETURN expresion PUNTO_Y_COMA END
     (49) sentencias_funciones -> . sentencias_funciones sentencia_funcion
     (50) sentencias_funciones -> . sentencia_funcion
-    (51) sentencia_funcion -> . declaracion_variable
+    (51) sentencia_funcion -> . declaracion_variables
     (52) sentencia_funcion -> . set_variable_funcion
-    (53) declaracion_variable -> . DECLARE ID_DECLARE tipo_dato_variable PUNTO_Y_COMA
-    (54) set_variable_funcion -> . SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA
+    (53) declaracion_variables -> . DECLARE lista_declaracion_variables PUNTO_Y_COMA
+    (57) set_variable_funcion -> . SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA
 
     DECLARE         shift and go to state 101
     SET             shift and go to state 102
 
     sentencias_funciones           shift and go to state 97
     sentencia_funcion              shift and go to state 98
-    declaracion_variable           shift and go to state 99
+    declaracion_variables          shift and go to state 99
     set_variable_funcion           shift and go to state 100
 
 state 97
 
     (43) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones . RETURN expresion PUNTO_Y_COMA END
     (49) sentencias_funciones -> sentencias_funciones . sentencia_funcion
-    (51) sentencia_funcion -> . declaracion_variable
+    (51) sentencia_funcion -> . declaracion_variables
     (52) sentencia_funcion -> . set_variable_funcion
-    (53) declaracion_variable -> . DECLARE ID_DECLARE tipo_dato_variable PUNTO_Y_COMA
-    (54) set_variable_funcion -> . SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA
+    (53) declaracion_variables -> . DECLARE lista_declaracion_variables PUNTO_Y_COMA
+    (57) set_variable_funcion -> . SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA
 
     RETURN          shift and go to state 103
     DECLARE         shift and go to state 101
     SET             shift and go to state 102
 
     sentencia_funcion              shift and go to state 104
-    declaracion_variable           shift and go to state 99
+    declaracion_variables          shift and go to state 99
     set_variable_funcion           shift and go to state 100
 
 state 98
@@ -2190,11 +2195,11 @@ state 98
 
 state 99
 
-    (51) sentencia_funcion -> declaracion_variable .
+    (51) sentencia_funcion -> declaracion_variables .
 
-    RETURN          reduce using rule 51 (sentencia_funcion -> declaracion_variable .)
-    DECLARE         reduce using rule 51 (sentencia_funcion -> declaracion_variable .)
-    SET             reduce using rule 51 (sentencia_funcion -> declaracion_variable .)
+    RETURN          reduce using rule 51 (sentencia_funcion -> declaracion_variables .)
+    DECLARE         reduce using rule 51 (sentencia_funcion -> declaracion_variables .)
+    SET             reduce using rule 51 (sentencia_funcion -> declaracion_variables .)
 
 
 state 100
@@ -2208,16 +2213,21 @@ state 100
 
 state 101
 
-    (53) declaracion_variable -> DECLARE . ID_DECLARE tipo_dato_variable PUNTO_Y_COMA
+    (53) declaracion_variables -> DECLARE . lista_declaracion_variables PUNTO_Y_COMA
+    (54) lista_declaracion_variables -> . lista_declaracion_variables COMA declaracion_variable
+    (55) lista_declaracion_variables -> . declaracion_variable
+    (56) declaracion_variable -> . ID_DECLARE tipo_dato_variable
 
-    ID_DECLARE      shift and go to state 105
+    ID_DECLARE      shift and go to state 107
 
+    lista_declaracion_variables    shift and go to state 105
+    declaracion_variable           shift and go to state 106
 
 state 102
 
-    (54) set_variable_funcion -> SET . ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA
+    (57) set_variable_funcion -> SET . ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA
 
-    ID_DECLARE      shift and go to state 106
+    ID_DECLARE      shift and go to state 108
 
 
 state 103
@@ -2245,7 +2255,7 @@ state 103
     DECIMAL         shift and go to state 11
     ID_DECLARE      shift and go to state 12
 
-    expresion                      shift and go to state 107
+    expresion                      shift and go to state 109
 
 state 104
 
@@ -2258,7 +2268,24 @@ state 104
 
 state 105
 
-    (53) declaracion_variable -> DECLARE ID_DECLARE . tipo_dato_variable PUNTO_Y_COMA
+    (53) declaracion_variables -> DECLARE lista_declaracion_variables . PUNTO_Y_COMA
+    (54) lista_declaracion_variables -> lista_declaracion_variables . COMA declaracion_variable
+
+    PUNTO_Y_COMA    shift and go to state 110
+    COMA            shift and go to state 111
+
+
+state 106
+
+    (55) lista_declaracion_variables -> declaracion_variable .
+
+    PUNTO_Y_COMA    reduce using rule 55 (lista_declaracion_variables -> declaracion_variable .)
+    COMA            reduce using rule 55 (lista_declaracion_variables -> declaracion_variable .)
+
+
+state 107
+
+    (56) declaracion_variable -> ID_DECLARE . tipo_dato_variable
     (48) tipo_dato_variable -> . tipo_dato
     (13) tipo_dato -> . R_INT
     (14) tipo_dato -> . R_DECIMAL
@@ -2278,107 +2305,19 @@ state 105
     NVARCHAR        shift and go to state 65
     NCHAR           shift and go to state 66
 
-    tipo_dato_variable             shift and go to state 108
-    tipo_dato                      shift and go to state 109
-
-state 106
-
-    (54) set_variable_funcion -> SET ID_DECLARE . ASIGNACION expresion PUNTO_Y_COMA
-
-    ASIGNACION      shift and go to state 110
-
-
-state 107
-
-    (43) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones RETURN expresion . PUNTO_Y_COMA END
-    (27) expresion -> expresion . MENOR_QUE expresion
-    (28) expresion -> expresion . MAYOR_QUE expresion
-    (29) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
-    (30) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
-    (31) expresion -> expresion . COMPARACION expresion
-    (32) expresion -> expresion . DISTINTO expresion
-    (33) expresion -> expresion . AND expresion
-    (34) expresion -> expresion . OR expresion
-    (35) expresion -> expresion . MAS expresion
-    (36) expresion -> expresion . MENOS expresion
-    (37) expresion -> expresion . POR expresion
-    (38) expresion -> expresion . DIVISION expresion
-
-    PUNTO_Y_COMA    shift and go to state 111
-    MENOR_QUE       shift and go to state 16
-    MAYOR_QUE       shift and go to state 17
-    MENOR_O_IGUAL_QUE shift and go to state 18
-    MAYOR_O_IGUAL_QUE shift and go to state 19
-    COMPARACION     shift and go to state 20
-    DISTINTO        shift and go to state 21
-    AND             shift and go to state 22
-    OR              shift and go to state 23
-    MAS             shift and go to state 24
-    MENOS           shift and go to state 25
-    POR             shift and go to state 26
-    DIVISION        shift and go to state 27
-
+    tipo_dato_variable             shift and go to state 112
+    tipo_dato                      shift and go to state 113
 
 state 108
 
-    (53) declaracion_variable -> DECLARE ID_DECLARE tipo_dato_variable . PUNTO_Y_COMA
+    (57) set_variable_funcion -> SET ID_DECLARE . ASIGNACION expresion PUNTO_Y_COMA
 
-    PUNTO_Y_COMA    shift and go to state 112
+    ASIGNACION      shift and go to state 114
 
 
 state 109
 
-    (48) tipo_dato_variable -> tipo_dato .
-
-    PUNTO_Y_COMA    reduce using rule 48 (tipo_dato_variable -> tipo_dato .)
-
-
-state 110
-
-    (54) set_variable_funcion -> SET ID_DECLARE ASIGNACION . expresion PUNTO_Y_COMA
-    (27) expresion -> . expresion MENOR_QUE expresion
-    (28) expresion -> . expresion MAYOR_QUE expresion
-    (29) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
-    (30) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
-    (31) expresion -> . expresion COMPARACION expresion
-    (32) expresion -> . expresion DISTINTO expresion
-    (33) expresion -> . expresion AND expresion
-    (34) expresion -> . expresion OR expresion
-    (35) expresion -> . expresion MAS expresion
-    (36) expresion -> . expresion MENOS expresion
-    (37) expresion -> . expresion POR expresion
-    (38) expresion -> . expresion DIVISION expresion
-    (39) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
-    (40) expresion -> . ENTERO
-    (41) expresion -> . DECIMAL
-    (42) expresion -> . ID_DECLARE
-
-    PARENTESIS_IZQ  shift and go to state 9
-    ENTERO          shift and go to state 10
-    DECIMAL         shift and go to state 11
-    ID_DECLARE      shift and go to state 12
-
-    expresion                      shift and go to state 113
-
-state 111
-
-    (43) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones RETURN expresion PUNTO_Y_COMA . END
-
-    END             shift and go to state 114
-
-
-state 112
-
-    (53) declaracion_variable -> DECLARE ID_DECLARE tipo_dato_variable PUNTO_Y_COMA .
-
-    RETURN          reduce using rule 53 (declaracion_variable -> DECLARE ID_DECLARE tipo_dato_variable PUNTO_Y_COMA .)
-    DECLARE         reduce using rule 53 (declaracion_variable -> DECLARE ID_DECLARE tipo_dato_variable PUNTO_Y_COMA .)
-    SET             reduce using rule 53 (declaracion_variable -> DECLARE ID_DECLARE tipo_dato_variable PUNTO_Y_COMA .)
-
-
-state 113
-
-    (54) set_variable_funcion -> SET ID_DECLARE ASIGNACION expresion . PUNTO_Y_COMA
+    (43) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones RETURN expresion . PUNTO_Y_COMA END
     (27) expresion -> expresion . MENOR_QUE expresion
     (28) expresion -> expresion . MAYOR_QUE expresion
     (29) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
@@ -2407,18 +2346,125 @@ state 113
     DIVISION        shift and go to state 27
 
 
+state 110
+
+    (53) declaracion_variables -> DECLARE lista_declaracion_variables PUNTO_Y_COMA .
+
+    RETURN          reduce using rule 53 (declaracion_variables -> DECLARE lista_declaracion_variables PUNTO_Y_COMA .)
+    DECLARE         reduce using rule 53 (declaracion_variables -> DECLARE lista_declaracion_variables PUNTO_Y_COMA .)
+    SET             reduce using rule 53 (declaracion_variables -> DECLARE lista_declaracion_variables PUNTO_Y_COMA .)
+
+
+state 111
+
+    (54) lista_declaracion_variables -> lista_declaracion_variables COMA . declaracion_variable
+    (56) declaracion_variable -> . ID_DECLARE tipo_dato_variable
+
+    ID_DECLARE      shift and go to state 107
+
+    declaracion_variable           shift and go to state 116
+
+state 112
+
+    (56) declaracion_variable -> ID_DECLARE tipo_dato_variable .
+
+    PUNTO_Y_COMA    reduce using rule 56 (declaracion_variable -> ID_DECLARE tipo_dato_variable .)
+    COMA            reduce using rule 56 (declaracion_variable -> ID_DECLARE tipo_dato_variable .)
+
+
+state 113
+
+    (48) tipo_dato_variable -> tipo_dato .
+
+    PUNTO_Y_COMA    reduce using rule 48 (tipo_dato_variable -> tipo_dato .)
+    COMA            reduce using rule 48 (tipo_dato_variable -> tipo_dato .)
+
+
 state 114
+
+    (57) set_variable_funcion -> SET ID_DECLARE ASIGNACION . expresion PUNTO_Y_COMA
+    (27) expresion -> . expresion MENOR_QUE expresion
+    (28) expresion -> . expresion MAYOR_QUE expresion
+    (29) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
+    (30) expresion -> . expresion MAYOR_O_IGUAL_QUE expresion
+    (31) expresion -> . expresion COMPARACION expresion
+    (32) expresion -> . expresion DISTINTO expresion
+    (33) expresion -> . expresion AND expresion
+    (34) expresion -> . expresion OR expresion
+    (35) expresion -> . expresion MAS expresion
+    (36) expresion -> . expresion MENOS expresion
+    (37) expresion -> . expresion POR expresion
+    (38) expresion -> . expresion DIVISION expresion
+    (39) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (40) expresion -> . ENTERO
+    (41) expresion -> . DECIMAL
+    (42) expresion -> . ID_DECLARE
+
+    PARENTESIS_IZQ  shift and go to state 9
+    ENTERO          shift and go to state 10
+    DECIMAL         shift and go to state 11
+    ID_DECLARE      shift and go to state 12
+
+    expresion                      shift and go to state 117
+
+state 115
+
+    (43) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones RETURN expresion PUNTO_Y_COMA . END
+
+    END             shift and go to state 118
+
+
+state 116
+
+    (54) lista_declaracion_variables -> lista_declaracion_variables COMA declaracion_variable .
+
+    PUNTO_Y_COMA    reduce using rule 54 (lista_declaracion_variables -> lista_declaracion_variables COMA declaracion_variable .)
+    COMA            reduce using rule 54 (lista_declaracion_variables -> lista_declaracion_variables COMA declaracion_variable .)
+
+
+state 117
+
+    (57) set_variable_funcion -> SET ID_DECLARE ASIGNACION expresion . PUNTO_Y_COMA
+    (27) expresion -> expresion . MENOR_QUE expresion
+    (28) expresion -> expresion . MAYOR_QUE expresion
+    (29) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
+    (30) expresion -> expresion . MAYOR_O_IGUAL_QUE expresion
+    (31) expresion -> expresion . COMPARACION expresion
+    (32) expresion -> expresion . DISTINTO expresion
+    (33) expresion -> expresion . AND expresion
+    (34) expresion -> expresion . OR expresion
+    (35) expresion -> expresion . MAS expresion
+    (36) expresion -> expresion . MENOS expresion
+    (37) expresion -> expresion . POR expresion
+    (38) expresion -> expresion . DIVISION expresion
+
+    PUNTO_Y_COMA    shift and go to state 119
+    MENOR_QUE       shift and go to state 16
+    MAYOR_QUE       shift and go to state 17
+    MENOR_O_IGUAL_QUE shift and go to state 18
+    MAYOR_O_IGUAL_QUE shift and go to state 19
+    COMPARACION     shift and go to state 20
+    DISTINTO        shift and go to state 21
+    AND             shift and go to state 22
+    OR              shift and go to state 23
+    MAS             shift and go to state 24
+    MENOS           shift and go to state 25
+    POR             shift and go to state 26
+    DIVISION        shift and go to state 27
+
+
+state 118
 
     (43) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones RETURN expresion PUNTO_Y_COMA END .
 
     PUNTO_Y_COMA    reduce using rule 43 (funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones RETURN expresion PUNTO_Y_COMA END .)
 
 
-state 115
+state 119
 
-    (54) set_variable_funcion -> SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA .
+    (57) set_variable_funcion -> SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA .
 
-    RETURN          reduce using rule 54 (set_variable_funcion -> SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA .)
-    DECLARE         reduce using rule 54 (set_variable_funcion -> SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA .)
-    SET             reduce using rule 54 (set_variable_funcion -> SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA .)
+    RETURN          reduce using rule 57 (set_variable_funcion -> SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA .)
+    DECLARE         reduce using rule 57 (set_variable_funcion -> SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA .)
+    SET             reduce using rule 57 (set_variable_funcion -> SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA .)
 
