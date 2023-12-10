@@ -21,7 +21,7 @@ export class TextEditorComponent implements OnInit, EditorComponent {
   @ViewChild('cm') cm: any;
 
   codeMirrorOptions: any = {
-    theme: 'abcdef',
+    theme: 'dracula',
     mode:'text/x-mysql',
     lineNumbers: true,
     //lineWrapping: true,
