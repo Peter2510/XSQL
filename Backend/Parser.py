@@ -116,7 +116,7 @@ def p_tipo_dato(t):
 
 def p_tipo_dato2(t):
     '''
-    tipo_dato : R_DECIMAL
+    tipo_dato : R_DECIMAL PARENTESIS_IZQ expresion COMA expresion PARENTESIS_DER
     '''
     t[0] = 'decimal'
     
@@ -183,7 +183,7 @@ def p_restriccion_parametro(t): #primary -> 1
 
 def p_restriccion_parametro2(t): # foranea -> 2
     '''
-    restriccion_parametro : REFERENCES ID
+    restriccion_parametro : REFERENCES ID PARENTESIS_IZQ ID PARENTESIS_DER
     '''
     t[0] = f'forenea({t[2]})'
     
@@ -564,8 +564,16 @@ def parse(inp):
 
 
 data = '''
-EXEC inicializacomisiones @Ciudad =`Guatemala` ,@Departamento = `Guatemala`;
-EXEC AK "Guatemala" , "Guatemala";
+CREATE TABLE tbdetallefactura (
+ iddetallefac inT PRIMARY KEY,
+ idfactura int REFERENCES tbfactura(idfactura),
+ product_no int REFERENCES products (product_no),
+ price decimal(10,2) NOT NULL,
+ cantidad decimal(10,2) NOT NULL
+ 
+);
+ 
+
 '''
 
 # prueba
