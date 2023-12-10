@@ -59,6 +59,7 @@ def p_instruccionGeneral(t):
                 | crearTabla PUNTO_Y_COMA
                 | funcion_usuario PUNTO_Y_COMA
                 | procedure
+                | llamada_procedure
     '''
     ### falta manipular
     t[0] = t[1]
@@ -434,8 +435,32 @@ def p_parametro_llamada_funcion(t): # id
     t[0] = [t[1]]
     print('parametro llamada funcion',t[1])
     
+#lista parametros de llamado de funciones
+def p_parametros_llamado_funcion(t):
+    '''
+    parametros_llamado_funcion : parametros_llamado_funcion COMA parametro_llamado_funcion
+    '''
+    t[1].append(t[3])
+    t[0] = t[1]
+    
+#parametros de llamado de funciones    
+def p_parametros_llamado_funcion2(t):
+    '''
+    parametros_llamado_funcion :  parametro_llamado_funcion
+    '''
+    t[0] = [t[1]]
+    
+#parametro de llamado de funciones
+def p_parametro_llamado_funcion(t): # expresion
+    '''
+    parametro_llamado_funcion : expresion
+    '''
+    t[0] = [t[1]]
+    print('parametro llamado funcion',t[1])
+    
 
-#PROCEDURES
+    #PROCEDURES
+    
 def p_procedure(t):
     '''
     procedure : CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END PUNTO_Y_COMA
@@ -464,28 +489,52 @@ def p_parametro_procedure(t): # @id tipoDato
     t[0] = [t[1]]
     print('parametro procedure',t[1],t[2])
     
-#lista parametros de llamado de funciones
-def p_parametros_llamado_funcion(t):
+#llamada procedure
+def p_llamada_procedure(t):
     '''
-    parametros_llamado_funcion : parametros_llamado_funcion COMA parametro_llamado_funcion
+    llamada_procedure : EXEC ID lista_variables_procedure PUNTO_Y_COMA
+    '''
+    print("llamada_procedure_1",t[2])
+    
+#lista_variables_procedure
+def p_lista_variables_procedure(t):
+    '''
+    lista_variables_procedure : lista_variables_procedure COMA variable_procedure
     '''
     t[1].append(t[3])
     t[0] = t[1]
     
-#parametros de llamado de funciones    
-def p_parametros_llamado_funcion2(t):
+#lista_variables_procedure
+def p_lista_variables_procedure2(t):
     '''
-    parametros_llamado_funcion :  parametro_llamado_funcion
+    lista_variables_procedure : variable_procedure
     '''
     t[0] = [t[1]]
     
-#parametro de llamado de funciones
-def p_parametro_llamado_funcion(t): # expresion
+#variable_procedure
+def p_variable_procedure(t):
     '''
-    parametro_llamado_funcion : expresion
+    variable_procedure : valor_variable_procedure
     '''
     t[0] = [t[1]]
-    print('parametro llamado funcion',t[1])
+    print("variable_procedure",t[1])
+    
+#valor_variable_procedure
+def p_valor_variable_procedure(t):
+    '''
+    valor_variable_procedure : ID_DECLARE ASIGNACION expresion
+    '''
+    t[0] = t[1]
+    print("valor_variable_procedure",t[3])
+    
+#valor_variable_procedure
+def p_valor_variable_procedure2(t):
+    '''
+    valor_variable_procedure : expresion
+    '''
+    t[0] = t[1]
+    print("valor_variable_procedure",t[1])
+    
              
 # IF
 
@@ -515,13 +564,8 @@ def parse(inp):
 
 
 data = '''
-CREATE PROCEDURE inicializacomisiones (@Ciudad nvarchar(30), 
-@Departamento varchar(10))
-AS
-begin
-DECLARE @Ciudad nvarchar(30);
-RETURN @Ciudad;
-END;
+EXEC inicializacomisiones @Ciudad =`Guatemala` ,@Departamento = `Guatemala`;
+EXEC AK "Guatemala" , "Guatemala";
 '''
 
 # prueba
