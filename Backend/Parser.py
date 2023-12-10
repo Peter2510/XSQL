@@ -57,8 +57,8 @@ def p_instruccionGeneral(t):
     '''
     instruccion : crearBaseDatos PUNTO_Y_COMA
                 | crearTabla PUNTO_Y_COMA
-                | expresion
                 | funcion_usuario PUNTO_Y_COMA
+                | procedure
     '''
     ### falta manipular
     t[0] = t[1]
@@ -383,12 +383,35 @@ def p_set_variable_funcion(t):
 
 
 #PROCEDURES
-# def p_procedure(t):
-#     '''
-#     procedure : CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_procedure END PUNTO_Y_COMA
-#     '''
-#     print("procedure",t[3],"parametros",t[5])
+def p_procedure(t):
+    '''
+    procedure : CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END PUNTO_Y_COMA
+    '''
+    print("procedure",t[3],"parametros",t[5],t[9])
+     
+#parametros de los procedures
+def p_parametros_procedure(t):
+    '''
+    parametros_procedure : parametros_procedure COMA parametro_procedure
+    '''
+    t[1].append(t[3])
+    t[0] = t[1]
 
+def p_parametros_procedure2(t):
+    '''
+    parametros_procedure :  parametro_procedure
+    '''
+    t[0] = [t[1]]
+    
+#parametro de un procedure
+def p_parametro_procedure(t): # @id tipoDato 
+    '''
+    parametro_procedure : ID_DECLARE tipo_dato 
+    '''
+    t[0] = [t[1]]
+    print('parametro procedure',t[1],t[2])
+    
+     
 # IF
 
 # CASE
@@ -417,18 +440,11 @@ def parse(inp):
 
 
 data = '''
-CREATE FUNCTION Retornasuma(@ProductID INT, @OrderQty INT, @OrderDate INT) 
-RETURNS int 
-AS 
--- Returns the stock level for the product. 
-BEGIN 
-DECLARE @MyVariable INT;
-SET @MyVariable = 1;
-DECLARE @c int, @d int, @e int; 
-DECLARE @d int; 
-DECLARE @e int; 
-Set @valor = @val1 + @val2;
-RETURN @ret;
+CREATE PROCEDURE inicializacomisiones (@Ciudad nvarchar(30), 
+@Departamento varchar(10))
+AS
+begin
+SET @ret = 0; 
 END;
 '''
 
