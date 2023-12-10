@@ -250,12 +250,14 @@ def p_expAritmetica(t):
         t[0] = Aritmeticas(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '/')
     elif (t[1] == '(' and t[3] == ')' ):
         t[0] =t[2]
+
 ### para enteros 
 def p_exp_entero(t):
     '''expresion : ENTERO'''
     ### como funciones le mandas lo que es digamos
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),int(t[1]),'int')
-## para decimalees
+
+## para decimales
 def p_exp_decimal(t):
     '''expresion : DECIMAL'''
     t[0] = Primitivo(t.lineno(1), find_column(input, t.slice[1]),float(t[1]),'decimal')
@@ -265,10 +267,15 @@ def p_exp_cadena(t):
     '''expresion : STR'''
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'texto')
 
-#id varialbe
+#id variable
 def p_exp_cadena2(t):
     '''expresion : ID_DECLARE'''
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'id')
+    
+def p_null(t):
+    '''expresion : NULL'''
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'null')    
+
 ##CREATE DATA BASE
 ##CREATE TABLE
 ##CREATE PROD
@@ -342,6 +349,7 @@ def p_sentencia_funcion(t):
     sentencia_funcion : declaracion_variables
                     | set_variable_funcion
                     | return
+                    | expresion_if
     '''
     t[0] = [t[1]]
     
@@ -534,9 +542,57 @@ def p_valor_variable_procedure2(t):
     '''
     t[0] = t[1]
     print("valor_variable_procedure",t[1])
+                
+#if
+def p_if(t): 
+    '''
+    expresion_if : IF expresion THEN cuerpo_if_else END IF PUNTO_Y_COMA
+    '''
+    t[0] = t[1]
+    print("if",t[2],t[4])
+
+def p_if2(t):
+    '''
+    expresion_if : IF expresion THEN cuerpo_if_else expresion_else END IF PUNTO_Y_COMA
+    '''    
+    t[0] = t[1]
+    print("if",t[2],t[4],t[5])
     
-             
-# IF
+def p_if3(t):
+    '''
+    expresion_if : IF expresion THEN cuerpo_if_else expresion_else_if expresion_else END IF PUNTO_Y_COMA
+    '''    
+    t[0] = t[1]
+    print("if",t[2],t[4],t[5],t[6])
+
+def p_if4(t):
+    '''
+    expresion_if : IF expresion THEN cuerpo_if_else expresion_else_if END IF PUNTO_Y_COMA
+    '''
+    t[0] = t[1]
+    print("if",t[2],t[4],t[5])
+
+# cuerpo del if
+def p_cuerpo_if_else(t):
+    '''
+    cuerpo_if_else : sentencias_funciones
+    '''
+    t[0] = t[1]
+    
+# expresion else
+def p_expresion_else(t):
+    '''
+    expresion_else : ELSE cuerpo_if_else
+    '''
+    t[0] = t[2]
+
+# expresion else if
+def p_expresion_else_if(t):
+    '''
+    expresion_else_if : ELSEIF expresion THEN cuerpo_if_else
+    '''
+    t[0] = t[4]
+
 
 # CASE
 
@@ -564,16 +620,19 @@ def parse(inp):
 
 
 data = '''
-CREATE TABLE tbdetallefactura (
- iddetallefac inT PRIMARY KEY,
- idfactura int REFERENCES tbfactura(idfactura),
- product_no int REFERENCES products (product_no),
- price decimal(10,2) NOT NULL,
- cantidad decimal(10,2) NOT NULL
- 
-);
- 
+CREATE FUNCTION Retornasuma(@ProductID int) 
+RETURNS int 
+AS 
+-- Returns the stock level for the product. 
+BEGIN 
+ DECLARE @ret int; 
 
+ IF @ret == NULL THEN
+ SET @ret = 0; 
+ RETURN @ret; 
+ END IF;
+ 
+END;
 '''
 
 # prueba
