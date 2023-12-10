@@ -99,7 +99,8 @@ tokens = [
     'ENTERO',
     'ID_DECLARE',
     'ID',
-    'ARROBA'
+    'ARROBA',
+    'COMILLASIMPLE'
 ]+ list(keywords.values())
 
 
@@ -129,6 +130,7 @@ t_NEGACION = r'\!'
 t_CORCHETE_IZQ = r'\['
 t_CORCHETE_DER = r'\]'
 t_ARROBA = r'\@'
+t_COMILLASIMPLE = r"\'"
 
 # COMENTARIO
 

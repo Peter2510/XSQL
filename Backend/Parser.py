@@ -58,6 +58,8 @@ def p_instruccionGeneral(t):
     instruccion : crearBaseDatos PUNTO_Y_COMA
                 | crearTabla PUNTO_Y_COMA
                 | expresion
+                | crearProcemieniento PUNTO_Y_COMA
+                | crearFuncion PUNTO_Y_COMA
     '''
     ### falta manipular
     t[0] = t[1]
@@ -192,6 +194,118 @@ def p_restriccion_parametro3(t): #normal -> 0
     '''
     t[0] = '0'
 
+
+
+
+
+
+
+###############
+## SECCION DE CREACION DE PROCEDIMIENTOS COMENTAR SI ES NECESARIO FALTA IMPLEMENTARLO CON LA PILA PERO JALA 
+###############
+### poner sentenciasDML
+def p_crearProcemieniento(t):
+    '''
+        crearProcemieniento : opcionesMetodos PROCEDURE expresion PARENTESIS_IZQ parametros PARENTESIS_DER AS BEGIN  END
+    '''
+def p_opcionesMetodos(t):
+    '''
+    opcionesMetodos : ALTER 
+                    |  CREATE
+    '''
+
+## metodo para la ejecucion
+def p_ejecucionMetodos(t):
+    '''
+    ejecucionMetodos :    EXEC expresion forma1EjecucionMetodo PUNTO_Y_COMA
+                        | EXEC expresion forma2EjecucionMetodo PUNTO_Y_COMA
+    '''
+
+
+
+### con @expresion = 'expresion', ...
+def p_forrma1EjecucionMetodo1(t):
+    '''
+    forma1EjecucionMetodo : forma1EjecucionMetodo COMA ARROBA expresion ASIGNACION COMILLASIMPLE expresion COMILLASIMPLE
+                            | ARROBA expresion ASIGNACION COMILLASIMPLE expresion COMILLASIMPLE
+    '''
+## por si acaso es nulo
+def p_forrma1EjecucionMetodo2(t):
+    '''
+    forma1EjecucionMetodo : 
+     '''
+
+### con 'expresion1','expresion2', ...
+
+def p_forrma2EjecucionMetodo1(t):
+    '''
+    forma2EjecucionMetodo : forma2EjecucionMetodo COMA COMILLASIMPLE expresion COMILLASIMPLE
+                            | COMILLASIMPLE expresion COMILLASIMPLE
+    ''' 
+    
+## si es nulo:
+def p_forrma2EjecucionMetodo2(t):
+    '''
+    forma2EjecucionMetodo : 
+    ''' 
+
+## creacion de funciones
+### poner sentenciasDML
+def p_creacionFunciones(t):
+    
+    '''
+    crearFuncion : CREATE FUNCTION expresion PARENTESIS_IZQ parametros PARENTESIS_DER RETURN tipo_dato AS BEGIN
+    '''
+    print("jala")
+
+
+### seccion de alter
+def p_alterTable(t):
+    '''
+    alterTable : ALTER TABLE expresion opcionAlter PUNTO_Y_COMA
+    '''
+
+def p_opcionesAlter(t):
+    '''
+    opcionAlter : ADD expresion tipo_dato
+                | DROP expresion 
+    '''
+
+## seccion del drop 
+## para el drop bueno no se si se elmina metodos y funciones ?
+def p_drop(t):
+    '''
+    opcionDrop : DROP DATA BASE expresion
+                | DROP TABLE expresion
+
+    '''
+
+### seccion para el truncate creo que solo se puede en tablas
+
+def p_truncate(t):
+    '''
+    opcionTruncate : TRUNCATE expresion
+    ''' 
+
+#### SECCION DE PARAMETROS
+def p_parametros1(t):
+    '''
+    parametros : parametros ARROBA expresion tipo_dato
+    '''
+
+def p_parametros2(t):
+    '''
+    parametros : ARROBA expresion tipo_dato
+    '''
+
+## en caso que venga nada
+def p_parametros3(t):
+    '''
+    parametros : 
+    '''
+#### FIN DE  SECCION DE PARAMETROS
+
+
 #### expresiuones nativas
 
 
@@ -262,6 +376,8 @@ def p_exp_decimal(t):
 def p_exp_cadena(t):
     '''expresion : STR'''
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'texto')
+
+    
 ##CREATE DATA BASE
 ##CREATE TABLE
 ##CREATE PROD
