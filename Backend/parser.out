@@ -82,7 +82,7 @@ Rule 40    expresion -> ENTERO
 Rule 41    expresion -> DECIMAL
 Rule 42    expresion -> STR
 Rule 43    expresion -> ID_DECLARE
-Rule 44    funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones PUNTO_Y_COMA END
+Rule 44    funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END
 Rule 45    parametros_funcion -> parametros_funcion COMA parametro_funcion
 Rule 46    parametros_funcion -> parametro_funcion
 Rule 47    parametro_funcion -> ID_DECLARE tipo_dato_parametro
@@ -100,7 +100,7 @@ Rule 58    declaracion_variable -> ID_DECLARE tipo_dato_variable
 Rule 59    set_variable_funcion -> SET ID_DECLARE ASIGNACION asignacion_set PUNTO_Y_COMA
 Rule 60    asignacion_set -> expresion
 Rule 61    asignacion_set -> llamada_funcion
-Rule 62    return -> RETURN expresion
+Rule 62    return -> RETURN expresion PUNTO_Y_COMA
 Rule 63    llamada_funcion -> ID PARENTESIS_IZQ parametros_llamada_funcion PARENTESIS_DER
 Rule 64    llamada_funcion -> ID PARENTESIS_IZQ PARENTESIS_DER
 Rule 65    parametros_llamada_funcion -> parametros_llamada_funcion COMA parametro_llamada_funcion
@@ -178,7 +178,7 @@ POR                  : 37
 PRIMARY              : 24
 PROCEDURE            : 68
 PUNTO                : 
-PUNTO_Y_COMA         : 4 5 6 44 55 59 68
+PUNTO_Y_COMA         : 4 5 6 55 59 62 68
 REFERENCE            : 
 REFERENCES           : 25
 RETURN               : 62
@@ -248,7 +248,7 @@ state 0
     (7) instruccion -> . procedure
     (8) crearBaseDatos -> . CREATE DATA BASE ID
     (9) crearTabla -> . CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
-    (44) funcion_usuario -> . CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones PUNTO_Y_COMA END
+    (44) funcion_usuario -> . CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END
     (68) procedure -> . CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END PUNTO_Y_COMA
 
     CREATE          shift and go to state 8
@@ -277,7 +277,7 @@ state 2
     (7) instruccion -> . procedure
     (8) crearBaseDatos -> . CREATE DATA BASE ID
     (9) crearTabla -> . CREATE TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
-    (44) funcion_usuario -> . CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones PUNTO_Y_COMA END
+    (44) funcion_usuario -> . CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END
     (68) procedure -> . CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END PUNTO_Y_COMA
 
     $end            reduce using rule 1 (init -> instrucciones .)
@@ -330,7 +330,7 @@ state 8
 
     (8) crearBaseDatos -> CREATE . DATA BASE ID
     (9) crearTabla -> CREATE . TABLE ID PARENTESIS_IZQ tablasEspecifico PARENTESIS_DER
-    (44) funcion_usuario -> CREATE . FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones PUNTO_Y_COMA END
+    (44) funcion_usuario -> CREATE . FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END
     (68) procedure -> CREATE . PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END PUNTO_Y_COMA
 
     DATA            shift and go to state 13
@@ -387,7 +387,7 @@ state 14
 
 state 15
 
-    (44) funcion_usuario -> CREATE FUNCTION . ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones PUNTO_Y_COMA END
+    (44) funcion_usuario -> CREATE FUNCTION . ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END
 
     ID              shift and go to state 19
 
@@ -415,7 +415,7 @@ state 18
 
 state 19
 
-    (44) funcion_usuario -> CREATE FUNCTION ID . PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones PUNTO_Y_COMA END
+    (44) funcion_usuario -> CREATE FUNCTION ID . PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END
 
     PARENTESIS_IZQ  shift and go to state 23
 
@@ -448,7 +448,7 @@ state 22
 
 state 23
 
-    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ . parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones PUNTO_Y_COMA END
+    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ . parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END
     (45) parametros_funcion -> . parametros_funcion COMA parametro_funcion
     (46) parametros_funcion -> . parametro_funcion
     (47) parametro_funcion -> . ID_DECLARE tipo_dato_parametro
@@ -512,7 +512,7 @@ state 27
 
 state 28
 
-    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion . PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones PUNTO_Y_COMA END
+    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion . PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END
     (45) parametros_funcion -> parametros_funcion . COMA parametro_funcion
 
     PARENTESIS_DER  shift and go to state 45
@@ -696,7 +696,7 @@ state 44
 
 state 45
 
-    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER . RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones PUNTO_Y_COMA END
+    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER . RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END
 
     RETURNS         shift and go to state 59
 
@@ -879,7 +879,7 @@ state 58
 
 state 59
 
-    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS . tipo_dato_parametro AS BEGIN sentencias_funciones PUNTO_Y_COMA END
+    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS . tipo_dato_parametro AS BEGIN sentencias_funciones END
     (48) tipo_dato_parametro -> . R_INT
 
     R_INT           shift and go to state 48
@@ -1018,10 +1018,6 @@ state 69
     MENOS           reduce using rule 40 (expresion -> ENTERO .)
     POR             reduce using rule 40 (expresion -> ENTERO .)
     DIVISION        reduce using rule 40 (expresion -> ENTERO .)
-    END             reduce using rule 40 (expresion -> ENTERO .)
-    DECLARE         reduce using rule 40 (expresion -> ENTERO .)
-    SET             reduce using rule 40 (expresion -> ENTERO .)
-    RETURN          reduce using rule 40 (expresion -> ENTERO .)
     PUNTO_Y_COMA    reduce using rule 40 (expresion -> ENTERO .)
     COMA            reduce using rule 40 (expresion -> ENTERO .)
 
@@ -1043,10 +1039,6 @@ state 70
     MENOS           reduce using rule 41 (expresion -> DECIMAL .)
     POR             reduce using rule 41 (expresion -> DECIMAL .)
     DIVISION        reduce using rule 41 (expresion -> DECIMAL .)
-    END             reduce using rule 41 (expresion -> DECIMAL .)
-    DECLARE         reduce using rule 41 (expresion -> DECIMAL .)
-    SET             reduce using rule 41 (expresion -> DECIMAL .)
-    RETURN          reduce using rule 41 (expresion -> DECIMAL .)
     PUNTO_Y_COMA    reduce using rule 41 (expresion -> DECIMAL .)
     COMA            reduce using rule 41 (expresion -> DECIMAL .)
 
@@ -1068,10 +1060,6 @@ state 71
     MENOS           reduce using rule 42 (expresion -> STR .)
     POR             reduce using rule 42 (expresion -> STR .)
     DIVISION        reduce using rule 42 (expresion -> STR .)
-    END             reduce using rule 42 (expresion -> STR .)
-    DECLARE         reduce using rule 42 (expresion -> STR .)
-    SET             reduce using rule 42 (expresion -> STR .)
-    RETURN          reduce using rule 42 (expresion -> STR .)
     PUNTO_Y_COMA    reduce using rule 42 (expresion -> STR .)
     COMA            reduce using rule 42 (expresion -> STR .)
 
@@ -1093,10 +1081,6 @@ state 72
     MENOS           reduce using rule 43 (expresion -> ID_DECLARE .)
     POR             reduce using rule 43 (expresion -> ID_DECLARE .)
     DIVISION        reduce using rule 43 (expresion -> ID_DECLARE .)
-    END             reduce using rule 43 (expresion -> ID_DECLARE .)
-    DECLARE         reduce using rule 43 (expresion -> ID_DECLARE .)
-    SET             reduce using rule 43 (expresion -> ID_DECLARE .)
-    RETURN          reduce using rule 43 (expresion -> ID_DECLARE .)
     PUNTO_Y_COMA    reduce using rule 43 (expresion -> ID_DECLARE .)
     COMA            reduce using rule 43 (expresion -> ID_DECLARE .)
 
@@ -1165,7 +1149,7 @@ state 74
 
 state 75
 
-    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro . AS BEGIN sentencias_funciones PUNTO_Y_COMA END
+    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro . AS BEGIN sentencias_funciones END
 
     AS              shift and go to state 95
 
@@ -1180,7 +1164,7 @@ state 76
     (54) sentencia_funcion -> . return
     (55) declaracion_variables -> . DECLARE lista_declaracion_variables PUNTO_Y_COMA
     (59) set_variable_funcion -> . SET ID_DECLARE ASIGNACION asignacion_set PUNTO_Y_COMA
-    (62) return -> . RETURN expresion
+    (62) return -> . RETURN expresion PUNTO_Y_COMA
 
     DECLARE         shift and go to state 101
     SET             shift and go to state 102
@@ -1628,7 +1612,7 @@ state 94
 
 state 95
 
-    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS . BEGIN sentencias_funciones PUNTO_Y_COMA END
+    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS . BEGIN sentencias_funciones END
 
     BEGIN           shift and go to state 117
 
@@ -1642,7 +1626,7 @@ state 96
     (54) sentencia_funcion -> . return
     (55) declaracion_variables -> . DECLARE lista_declaracion_variables PUNTO_Y_COMA
     (59) set_variable_funcion -> . SET ID_DECLARE ASIGNACION asignacion_set PUNTO_Y_COMA
-    (62) return -> . RETURN expresion
+    (62) return -> . RETURN expresion PUNTO_Y_COMA
 
     END             shift and go to state 118
     DECLARE         shift and go to state 101
@@ -1662,7 +1646,6 @@ state 97
     DECLARE         reduce using rule 51 (sentencias_funciones -> sentencia_funcion .)
     SET             reduce using rule 51 (sentencias_funciones -> sentencia_funcion .)
     RETURN          reduce using rule 51 (sentencias_funciones -> sentencia_funcion .)
-    PUNTO_Y_COMA    reduce using rule 51 (sentencias_funciones -> sentencia_funcion .)
 
 
 state 98
@@ -1673,7 +1656,6 @@ state 98
     DECLARE         reduce using rule 52 (sentencia_funcion -> declaracion_variables .)
     SET             reduce using rule 52 (sentencia_funcion -> declaracion_variables .)
     RETURN          reduce using rule 52 (sentencia_funcion -> declaracion_variables .)
-    PUNTO_Y_COMA    reduce using rule 52 (sentencia_funcion -> declaracion_variables .)
 
 
 state 99
@@ -1684,7 +1666,6 @@ state 99
     DECLARE         reduce using rule 53 (sentencia_funcion -> set_variable_funcion .)
     SET             reduce using rule 53 (sentencia_funcion -> set_variable_funcion .)
     RETURN          reduce using rule 53 (sentencia_funcion -> set_variable_funcion .)
-    PUNTO_Y_COMA    reduce using rule 53 (sentencia_funcion -> set_variable_funcion .)
 
 
 state 100
@@ -1695,7 +1676,6 @@ state 100
     DECLARE         reduce using rule 54 (sentencia_funcion -> return .)
     SET             reduce using rule 54 (sentencia_funcion -> return .)
     RETURN          reduce using rule 54 (sentencia_funcion -> return .)
-    PUNTO_Y_COMA    reduce using rule 54 (sentencia_funcion -> return .)
 
 
 state 101
@@ -1719,7 +1699,7 @@ state 102
 
 state 103
 
-    (62) return -> RETURN . expresion
+    (62) return -> RETURN . expresion PUNTO_Y_COMA
     (27) expresion -> . expresion MENOR_QUE expresion
     (28) expresion -> . expresion MAYOR_QUE expresion
     (29) expresion -> . expresion MENOR_O_IGUAL_QUE expresion
@@ -1763,10 +1743,6 @@ state 104
     MENOS           reduce using rule 39 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
     POR             reduce using rule 39 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
     DIVISION        reduce using rule 39 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    END             reduce using rule 39 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    DECLARE         reduce using rule 39 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    SET             reduce using rule 39 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
-    RETURN          reduce using rule 39 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
     PUNTO_Y_COMA    reduce using rule 39 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
     COMA            reduce using rule 39 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
 
@@ -1798,10 +1774,6 @@ state 105
     MENOS           reduce using rule 27 (expresion -> expresion MENOR_QUE expresion .)
     POR             reduce using rule 27 (expresion -> expresion MENOR_QUE expresion .)
     DIVISION        reduce using rule 27 (expresion -> expresion MENOR_QUE expresion .)
-    END             reduce using rule 27 (expresion -> expresion MENOR_QUE expresion .)
-    DECLARE         reduce using rule 27 (expresion -> expresion MENOR_QUE expresion .)
-    SET             reduce using rule 27 (expresion -> expresion MENOR_QUE expresion .)
-    RETURN          reduce using rule 27 (expresion -> expresion MENOR_QUE expresion .)
     PUNTO_Y_COMA    reduce using rule 27 (expresion -> expresion MENOR_QUE expresion .)
     COMA            reduce using rule 27 (expresion -> expresion MENOR_QUE expresion .)
     AND             shift and go to state 87
@@ -1848,10 +1820,6 @@ state 106
     MENOS           reduce using rule 28 (expresion -> expresion MAYOR_QUE expresion .)
     POR             reduce using rule 28 (expresion -> expresion MAYOR_QUE expresion .)
     DIVISION        reduce using rule 28 (expresion -> expresion MAYOR_QUE expresion .)
-    END             reduce using rule 28 (expresion -> expresion MAYOR_QUE expresion .)
-    DECLARE         reduce using rule 28 (expresion -> expresion MAYOR_QUE expresion .)
-    SET             reduce using rule 28 (expresion -> expresion MAYOR_QUE expresion .)
-    RETURN          reduce using rule 28 (expresion -> expresion MAYOR_QUE expresion .)
     PUNTO_Y_COMA    reduce using rule 28 (expresion -> expresion MAYOR_QUE expresion .)
     COMA            reduce using rule 28 (expresion -> expresion MAYOR_QUE expresion .)
     AND             shift and go to state 87
@@ -1898,10 +1866,6 @@ state 107
     MENOS           reduce using rule 29 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
     POR             reduce using rule 29 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
     DIVISION        reduce using rule 29 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
-    END             reduce using rule 29 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
-    DECLARE         reduce using rule 29 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
-    SET             reduce using rule 29 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
-    RETURN          reduce using rule 29 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
     PUNTO_Y_COMA    reduce using rule 29 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
     COMA            reduce using rule 29 (expresion -> expresion MENOR_O_IGUAL_QUE expresion .)
     AND             shift and go to state 87
@@ -1948,10 +1912,6 @@ state 108
     MENOS           reduce using rule 30 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
     POR             reduce using rule 30 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
     DIVISION        reduce using rule 30 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
-    END             reduce using rule 30 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
-    DECLARE         reduce using rule 30 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
-    SET             reduce using rule 30 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
-    RETURN          reduce using rule 30 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
     PUNTO_Y_COMA    reduce using rule 30 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
     COMA            reduce using rule 30 (expresion -> expresion MAYOR_O_IGUAL_QUE expresion .)
     AND             shift and go to state 87
@@ -1998,10 +1958,6 @@ state 109
     MENOS           reduce using rule 31 (expresion -> expresion COMPARACION expresion .)
     POR             reduce using rule 31 (expresion -> expresion COMPARACION expresion .)
     DIVISION        reduce using rule 31 (expresion -> expresion COMPARACION expresion .)
-    END             reduce using rule 31 (expresion -> expresion COMPARACION expresion .)
-    DECLARE         reduce using rule 31 (expresion -> expresion COMPARACION expresion .)
-    SET             reduce using rule 31 (expresion -> expresion COMPARACION expresion .)
-    RETURN          reduce using rule 31 (expresion -> expresion COMPARACION expresion .)
     PUNTO_Y_COMA    reduce using rule 31 (expresion -> expresion COMPARACION expresion .)
     COMA            reduce using rule 31 (expresion -> expresion COMPARACION expresion .)
     AND             shift and go to state 87
@@ -2048,10 +2004,6 @@ state 110
     MENOS           reduce using rule 32 (expresion -> expresion DISTINTO expresion .)
     POR             reduce using rule 32 (expresion -> expresion DISTINTO expresion .)
     DIVISION        reduce using rule 32 (expresion -> expresion DISTINTO expresion .)
-    END             reduce using rule 32 (expresion -> expresion DISTINTO expresion .)
-    DECLARE         reduce using rule 32 (expresion -> expresion DISTINTO expresion .)
-    SET             reduce using rule 32 (expresion -> expresion DISTINTO expresion .)
-    RETURN          reduce using rule 32 (expresion -> expresion DISTINTO expresion .)
     PUNTO_Y_COMA    reduce using rule 32 (expresion -> expresion DISTINTO expresion .)
     COMA            reduce using rule 32 (expresion -> expresion DISTINTO expresion .)
     AND             shift and go to state 87
@@ -2100,10 +2052,6 @@ state 111
     MENOS           reduce using rule 33 (expresion -> expresion AND expresion .)
     POR             reduce using rule 33 (expresion -> expresion AND expresion .)
     DIVISION        reduce using rule 33 (expresion -> expresion AND expresion .)
-    END             reduce using rule 33 (expresion -> expresion AND expresion .)
-    DECLARE         reduce using rule 33 (expresion -> expresion AND expresion .)
-    SET             reduce using rule 33 (expresion -> expresion AND expresion .)
-    RETURN          reduce using rule 33 (expresion -> expresion AND expresion .)
     PUNTO_Y_COMA    reduce using rule 33 (expresion -> expresion AND expresion .)
     COMA            reduce using rule 33 (expresion -> expresion AND expresion .)
 
@@ -2150,10 +2098,6 @@ state 112
     MENOS           reduce using rule 34 (expresion -> expresion OR expresion .)
     POR             reduce using rule 34 (expresion -> expresion OR expresion .)
     DIVISION        reduce using rule 34 (expresion -> expresion OR expresion .)
-    END             reduce using rule 34 (expresion -> expresion OR expresion .)
-    DECLARE         reduce using rule 34 (expresion -> expresion OR expresion .)
-    SET             reduce using rule 34 (expresion -> expresion OR expresion .)
-    RETURN          reduce using rule 34 (expresion -> expresion OR expresion .)
     PUNTO_Y_COMA    reduce using rule 34 (expresion -> expresion OR expresion .)
     COMA            reduce using rule 34 (expresion -> expresion OR expresion .)
 
@@ -2190,10 +2134,6 @@ state 113
     PARENTESIS_DER  reduce using rule 35 (expresion -> expresion MAS expresion .)
     MAS             reduce using rule 35 (expresion -> expresion MAS expresion .)
     MENOS           reduce using rule 35 (expresion -> expresion MAS expresion .)
-    END             reduce using rule 35 (expresion -> expresion MAS expresion .)
-    DECLARE         reduce using rule 35 (expresion -> expresion MAS expresion .)
-    SET             reduce using rule 35 (expresion -> expresion MAS expresion .)
-    RETURN          reduce using rule 35 (expresion -> expresion MAS expresion .)
     PUNTO_Y_COMA    reduce using rule 35 (expresion -> expresion MAS expresion .)
     COMA            reduce using rule 35 (expresion -> expresion MAS expresion .)
     MENOR_QUE       shift and go to state 81
@@ -2240,10 +2180,6 @@ state 114
     PARENTESIS_DER  reduce using rule 36 (expresion -> expresion MENOS expresion .)
     MAS             reduce using rule 36 (expresion -> expresion MENOS expresion .)
     MENOS           reduce using rule 36 (expresion -> expresion MENOS expresion .)
-    END             reduce using rule 36 (expresion -> expresion MENOS expresion .)
-    DECLARE         reduce using rule 36 (expresion -> expresion MENOS expresion .)
-    SET             reduce using rule 36 (expresion -> expresion MENOS expresion .)
-    RETURN          reduce using rule 36 (expresion -> expresion MENOS expresion .)
     PUNTO_Y_COMA    reduce using rule 36 (expresion -> expresion MENOS expresion .)
     COMA            reduce using rule 36 (expresion -> expresion MENOS expresion .)
     MENOR_QUE       shift and go to state 81
@@ -2292,10 +2228,6 @@ state 115
     MENOS           reduce using rule 37 (expresion -> expresion POR expresion .)
     POR             reduce using rule 37 (expresion -> expresion POR expresion .)
     DIVISION        reduce using rule 37 (expresion -> expresion POR expresion .)
-    END             reduce using rule 37 (expresion -> expresion POR expresion .)
-    DECLARE         reduce using rule 37 (expresion -> expresion POR expresion .)
-    SET             reduce using rule 37 (expresion -> expresion POR expresion .)
-    RETURN          reduce using rule 37 (expresion -> expresion POR expresion .)
     PUNTO_Y_COMA    reduce using rule 37 (expresion -> expresion POR expresion .)
     COMA            reduce using rule 37 (expresion -> expresion POR expresion .)
     MENOR_QUE       shift and go to state 81
@@ -2342,10 +2274,6 @@ state 116
     MENOS           reduce using rule 38 (expresion -> expresion DIVISION expresion .)
     POR             reduce using rule 38 (expresion -> expresion DIVISION expresion .)
     DIVISION        reduce using rule 38 (expresion -> expresion DIVISION expresion .)
-    END             reduce using rule 38 (expresion -> expresion DIVISION expresion .)
-    DECLARE         reduce using rule 38 (expresion -> expresion DIVISION expresion .)
-    SET             reduce using rule 38 (expresion -> expresion DIVISION expresion .)
-    RETURN          reduce using rule 38 (expresion -> expresion DIVISION expresion .)
     PUNTO_Y_COMA    reduce using rule 38 (expresion -> expresion DIVISION expresion .)
     COMA            reduce using rule 38 (expresion -> expresion DIVISION expresion .)
     MENOR_QUE       shift and go to state 81
@@ -2373,7 +2301,7 @@ state 116
 
 state 117
 
-    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN . sentencias_funciones PUNTO_Y_COMA END
+    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN . sentencias_funciones END
     (50) sentencias_funciones -> . sentencias_funciones sentencia_funcion
     (51) sentencias_funciones -> . sentencia_funcion
     (52) sentencia_funcion -> . declaracion_variables
@@ -2381,7 +2309,7 @@ state 117
     (54) sentencia_funcion -> . return
     (55) declaracion_variables -> . DECLARE lista_declaracion_variables PUNTO_Y_COMA
     (59) set_variable_funcion -> . SET ID_DECLARE ASIGNACION asignacion_set PUNTO_Y_COMA
-    (62) return -> . RETURN expresion
+    (62) return -> . RETURN expresion PUNTO_Y_COMA
 
     DECLARE         shift and go to state 101
     SET             shift and go to state 102
@@ -2408,7 +2336,6 @@ state 119
     DECLARE         reduce using rule 50 (sentencias_funciones -> sentencias_funciones sentencia_funcion .)
     SET             reduce using rule 50 (sentencias_funciones -> sentencias_funciones sentencia_funcion .)
     RETURN          reduce using rule 50 (sentencias_funciones -> sentencias_funciones sentencia_funcion .)
-    PUNTO_Y_COMA    reduce using rule 50 (sentencias_funciones -> sentencias_funciones sentencia_funcion .)
 
 
 state 120
@@ -2462,7 +2389,7 @@ state 123
 
 state 124
 
-    (62) return -> RETURN expresion .
+    (62) return -> RETURN expresion . PUNTO_Y_COMA
     (27) expresion -> expresion . MENOR_QUE expresion
     (28) expresion -> expresion . MAYOR_QUE expresion
     (29) expresion -> expresion . MENOR_O_IGUAL_QUE expresion
@@ -2476,11 +2403,7 @@ state 124
     (37) expresion -> expresion . POR expresion
     (38) expresion -> expresion . DIVISION expresion
 
-    END             reduce using rule 62 (return -> RETURN expresion .)
-    DECLARE         reduce using rule 62 (return -> RETURN expresion .)
-    SET             reduce using rule 62 (return -> RETURN expresion .)
-    RETURN          reduce using rule 62 (return -> RETURN expresion .)
-    PUNTO_Y_COMA    reduce using rule 62 (return -> RETURN expresion .)
+    PUNTO_Y_COMA    shift and go to state 132
     MENOR_QUE       shift and go to state 81
     MAYOR_QUE       shift and go to state 82
     MENOR_O_IGUAL_QUE shift and go to state 83
@@ -2497,16 +2420,16 @@ state 124
 
 state 125
 
-    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones . PUNTO_Y_COMA END
+    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones . END
     (50) sentencias_funciones -> sentencias_funciones . sentencia_funcion
     (52) sentencia_funcion -> . declaracion_variables
     (53) sentencia_funcion -> . set_variable_funcion
     (54) sentencia_funcion -> . return
     (55) declaracion_variables -> . DECLARE lista_declaracion_variables PUNTO_Y_COMA
     (59) set_variable_funcion -> . SET ID_DECLARE ASIGNACION asignacion_set PUNTO_Y_COMA
-    (62) return -> . RETURN expresion
+    (62) return -> . RETURN expresion PUNTO_Y_COMA
 
-    PUNTO_Y_COMA    shift and go to state 132
+    END             shift and go to state 133
     DECLARE         shift and go to state 101
     SET             shift and go to state 102
     RETURN          shift and go to state 103
@@ -2532,7 +2455,6 @@ state 127
     DECLARE         reduce using rule 55 (declaracion_variables -> DECLARE lista_declaracion_variables PUNTO_Y_COMA .)
     SET             reduce using rule 55 (declaracion_variables -> DECLARE lista_declaracion_variables PUNTO_Y_COMA .)
     RETURN          reduce using rule 55 (declaracion_variables -> DECLARE lista_declaracion_variables PUNTO_Y_COMA .)
-    PUNTO_Y_COMA    reduce using rule 55 (declaracion_variables -> DECLARE lista_declaracion_variables PUNTO_Y_COMA .)
 
 
 state 128
@@ -2542,7 +2464,7 @@ state 128
 
     ID_DECLARE      shift and go to state 122
 
-    declaracion_variable           shift and go to state 133
+    declaracion_variable           shift and go to state 134
 
 state 129
 
@@ -2590,20 +2512,30 @@ state 131
     DECIMAL         shift and go to state 70
     STR             shift and go to state 71
     ID_DECLARE      shift and go to state 72
-    ID              shift and go to state 137
+    ID              shift and go to state 138
 
-    asignacion_set                 shift and go to state 134
-    expresion                      shift and go to state 135
-    llamada_funcion                shift and go to state 136
+    asignacion_set                 shift and go to state 135
+    expresion                      shift and go to state 136
+    llamada_funcion                shift and go to state 137
 
 state 132
 
-    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones PUNTO_Y_COMA . END
+    (62) return -> RETURN expresion PUNTO_Y_COMA .
 
-    END             shift and go to state 138
+    END             reduce using rule 62 (return -> RETURN expresion PUNTO_Y_COMA .)
+    DECLARE         reduce using rule 62 (return -> RETURN expresion PUNTO_Y_COMA .)
+    SET             reduce using rule 62 (return -> RETURN expresion PUNTO_Y_COMA .)
+    RETURN          reduce using rule 62 (return -> RETURN expresion PUNTO_Y_COMA .)
 
 
 state 133
+
+    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END .
+
+    PUNTO_Y_COMA    reduce using rule 44 (funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END .)
+
+
+state 134
 
     (56) lista_declaracion_variables -> lista_declaracion_variables COMA declaracion_variable .
 
@@ -2611,14 +2543,14 @@ state 133
     COMA            reduce using rule 56 (lista_declaracion_variables -> lista_declaracion_variables COMA declaracion_variable .)
 
 
-state 134
+state 135
 
     (59) set_variable_funcion -> SET ID_DECLARE ASIGNACION asignacion_set . PUNTO_Y_COMA
 
     PUNTO_Y_COMA    shift and go to state 139
 
 
-state 135
+state 136
 
     (60) asignacion_set -> expresion .
     (27) expresion -> expresion . MENOR_QUE expresion
@@ -2649,26 +2581,19 @@ state 135
     DIVISION        shift and go to state 92
 
 
-state 136
+state 137
 
     (61) asignacion_set -> llamada_funcion .
 
     PUNTO_Y_COMA    reduce using rule 61 (asignacion_set -> llamada_funcion .)
 
 
-state 137
+state 138
 
     (63) llamada_funcion -> ID . PARENTESIS_IZQ parametros_llamada_funcion PARENTESIS_DER
     (64) llamada_funcion -> ID . PARENTESIS_IZQ PARENTESIS_DER
 
     PARENTESIS_IZQ  shift and go to state 140
-
-
-state 138
-
-    (44) funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones PUNTO_Y_COMA END .
-
-    PUNTO_Y_COMA    reduce using rule 44 (funcion_usuario -> CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones PUNTO_Y_COMA END .)
 
 
 state 139
@@ -2679,7 +2604,6 @@ state 139
     DECLARE         reduce using rule 59 (set_variable_funcion -> SET ID_DECLARE ASIGNACION asignacion_set PUNTO_Y_COMA .)
     SET             reduce using rule 59 (set_variable_funcion -> SET ID_DECLARE ASIGNACION asignacion_set PUNTO_Y_COMA .)
     RETURN          reduce using rule 59 (set_variable_funcion -> SET ID_DECLARE ASIGNACION asignacion_set PUNTO_Y_COMA .)
-    PUNTO_Y_COMA    reduce using rule 59 (set_variable_funcion -> SET ID_DECLARE ASIGNACION asignacion_set PUNTO_Y_COMA .)
 
 
 state 140

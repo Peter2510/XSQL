@@ -279,7 +279,7 @@ def p_exp_cadena2(t):
 
 def p_funcion_usuario(t):
     ''' 
-    funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones PUNTO_Y_COMA END 
+    funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
     '''
     print('FUNCION DEL USUARIO:',t[3],"parametros",t[5],"tipo dato fn",t[8],t[11])
 
@@ -393,7 +393,7 @@ def p_asignacion_set(t):
 # RETURN
 def p_return(t):
     '''
-    return : RETURN expresion 
+    return : RETURN expresion PUNTO_Y_COMA
     '''
     t[0] = t[2]
     print("return",t[2])
@@ -515,13 +515,12 @@ def parse(inp):
 
 
 data = '''
-CREATE PROCEDURE ActualizarSaldoCliente(
-    @clienteId INT,
-    @monto DECIMAL)
+CREATE PROCEDURE inicializacomisiones (@Ciudad nvarchar(30), 
+@Departamento varchar(10))
 AS
-BEGIN
-    DECLARE @saldo DECIMAL;
-    SET @saldo = hola(4);
+begin
+DECLARE @Ciudad nvarchar(30);
+RETURN @Ciudad;
 END;
 '''
 
