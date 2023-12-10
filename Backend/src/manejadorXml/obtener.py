@@ -21,23 +21,25 @@ def exportAllXMLsInDirectory(directory):
 
 def exportDataToXML(data, name):
     try:
+        table_name = data['name']
+        table_data = data['data']
+
         root = ET.Element("Database")
-        root.set("name",name)
-        for table_name, table_data in data.items():
-            table = ET.SubElement(root, "Table")
-            table.set("name", table_name)
-            
-            for key, value in table_data.items():
-                element = ET.SubElement(table, key)
-                element.text = str(value)
-        
+        root.set("name", name)
+
+        table = ET.SubElement(root, "Table")
+        table.set("name", table_name)
+
+        for key, value in table_data.items():
+            element = ET.SubElement(table, key)
+            element.text = str(value)
+
         tree = ET.ElementTree(root)
-     ## si usas la otra clase de create dale con este ./src/data/xml/
-     ## sino../data/xml/
         tree.write(f"./src/data/xml/{name}.xml", encoding="utf-8", xml_declaration=True)
         print(f"Datos exportados a {name}.xml exitosamente.")
     except Exception as e:
         print(f"Error al exportar datos a XML: {str(e)}")
+
 
 
 
