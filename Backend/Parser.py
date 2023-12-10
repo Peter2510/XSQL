@@ -265,7 +265,7 @@ def p_exp_cadena(t):
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'texto')
 
 #id varialbe
-def p_exp_cadena(t):
+def p_exp_cadena2(t):
     '''expresion : ID_DECLARE'''
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'id')
 ##CREATE DATA BASE
@@ -279,9 +279,9 @@ def p_exp_cadena(t):
 
 def p_funcion_usuario(t):
     ''' 
-    funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones RETURN expresion PUNTO_Y_COMA END 
+    funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones PUNTO_Y_COMA END 
     '''
-    print('FUNCION DEL USUARIO:',t[3],"parametros",t[5],"tipo dato fn",t[8],t[11],"retorna:",t[13].valor)
+    print('FUNCION DEL USUARIO:',t[3],"parametros",t[5],"tipo dato fn",t[8],t[11])
 
 
 ##PARAMETROS DE LAS FUNCIONES
@@ -339,7 +339,8 @@ def p_sentencias_funciones1(t):
 def p_sentencia_funcion(t):
     '''
     sentencia_funcion : declaracion_variables
-                        | set_variable_funcion
+                    | set_variable_funcion
+                    | return
     '''
     t[0] = [t[1]]
     
@@ -376,11 +377,63 @@ def p_declaracion_variable(t):
     
 def p_set_variable_funcion(t):
     '''
-    set_variable_funcion : SET ID_DECLARE ASIGNACION expresion PUNTO_Y_COMA
+    set_variable_funcion : SET ID_DECLARE ASIGNACION asignacion_set PUNTO_Y_COMA
     '''
     t[0] = [t[1]]
     print("set_variable_funcion","variable:",t[2],"valor:",t[4])
+    
+#asignacion set
+def p_asignacion_set(t):
+    '''
+    asignacion_set : expresion
+                   | llamada_funcion
+    '''
+    t[0] = t[1]
+    
+# RETURN
+def p_return(t):
+    '''
+    return : RETURN expresion 
+    '''
+    t[0] = t[2]
+    print("return",t[2])
+    
+#llamada de una funcion
+def p_llamada_funcion(t):
+    '''
+    llamada_funcion : ID PARENTESIS_IZQ parametros_llamada_funcion PARENTESIS_DER
+    '''
+    print("llamada_funcion",t[1],"parametros",t[3])
+    
+#llamada de una funcion
+def p_llamada_funcion2(t):
+    '''
+    llamada_funcion : ID PARENTESIS_IZQ PARENTESIS_DER
+    '''
+    print("llamada_funcion",t[1]," SIN parametros")
+    
+#parametros de la llamada de una funcion
+def p_parametros_llamada_funcion(t):
+    '''
+    parametros_llamada_funcion : parametros_llamada_funcion COMA parametro_llamada_funcion
+    '''
+    t[1].append(t[3])
+    t[0] = t[1]
 
+def p_parametros_llamada_funcion2(t):
+    '''
+    parametros_llamada_funcion :  parametro_llamada_funcion
+    '''
+    t[0] = [t[1]]
+    
+#parametro de la llamada de una funcion
+def p_parametro_llamada_funcion(t): # id
+    '''
+    parametro_llamada_funcion : expresion
+    '''
+    t[0] = [t[1]]
+    print('parametro llamada funcion',t[1])
+    
 
 #PROCEDURES
 def p_procedure(t):
@@ -411,7 +464,29 @@ def p_parametro_procedure(t): # @id tipoDato
     t[0] = [t[1]]
     print('parametro procedure',t[1],t[2])
     
-     
+#lista parametros de llamado de funciones
+def p_parametros_llamado_funcion(t):
+    '''
+    parametros_llamado_funcion : parametros_llamado_funcion COMA parametro_llamado_funcion
+    '''
+    t[1].append(t[3])
+    t[0] = t[1]
+    
+#parametros de llamado de funciones    
+def p_parametros_llamado_funcion2(t):
+    '''
+    parametros_llamado_funcion :  parametro_llamado_funcion
+    '''
+    t[0] = [t[1]]
+    
+#parametro de llamado de funciones
+def p_parametro_llamado_funcion(t): # expresion
+    '''
+    parametro_llamado_funcion : expresion
+    '''
+    t[0] = [t[1]]
+    print('parametro llamado funcion',t[1])
+             
 # IF
 
 # CASE
@@ -420,7 +495,7 @@ def p_parametro_procedure(t): # @id tipoDato
 ## metodo de error
 def p_error(p):
     if p:
-        print("Syntax error at '%s'" % p.value)
+        print("Syntax error at '%s'" % p.value,p.lineno,find_column(input, p))
     else:
         print("Syntax error at EOF")
 
@@ -440,11 +515,13 @@ def parse(inp):
 
 
 data = '''
-CREATE PROCEDURE inicializacomisiones (@Ciudad nvarchar(30), 
-@Departamento varchar(10))
+CREATE PROCEDURE ActualizarSaldoCliente(
+    @clienteId INT,
+    @monto DECIMAL)
 AS
-begin
-SET @ret = 0; 
+BEGIN
+    DECLARE @saldo DECIMAL;
+    SET @saldo = hola(4);
 END;
 '''
 
