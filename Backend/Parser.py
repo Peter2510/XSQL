@@ -58,9 +58,13 @@ def p_instruccionGeneral(t):
     instruccion : crearBaseDatos PUNTO_Y_COMA
                 | crearTabla PUNTO_Y_COMA
                 | crear_funcion_usuario PUNTO_Y_COMA
-                | crear_procedure
-                | llamada_procedure
+                | crear_procedure PUNTO_Y_COMA
+                | llamada_procedure PUNTO_Y_COMA
                 | expresion_case
+                | alter_procedure PUNTO_Y_COMA
+                | opcionTruncate PUNTO_Y_COMA
+                | opcionDrop PUNTO_Y_COMA
+                | alterTable PUNTO_Y_COMA
     '''
     ### falta manipular
     t[0] = t[1]
@@ -194,6 +198,86 @@ def p_restriccion_parametro3(t): #normal -> 0
     restriccion_parametro : 
     '''
     t[0] = '0'
+
+
+
+###############
+## SECCION DE CREACION DE PROCEDIMIENTOS COMENTAR SI ES NECESARIO FALTA IMPLEMENTARLO CON LA PILA PERO JALA 
+###############
+### poner sentenciasDML
+# def p_crearProcemieniento(t):
+#     '''
+#         crearProcemieniento : opcionesMetodos PROCEDURE expresion PARENTESIS_IZQ parametros PARENTESIS_DER AS BEGIN  END
+#     '''
+# def p_opcionesMetodos(t):
+#     '''
+#     opcionesMetodos : ALTER 
+#                     |  CREATE
+#     '''
+
+## metodo para la ejecucion
+# def p_ejecucionMetodos(t):
+#     '''
+#     ejecucionMetodos :    EXEC expresion forma1EjecucionMetodo PUNTO_Y_COMA
+#                         | EXEC expresion forma2EjecucionMetodo PUNTO_Y_COMA
+#     '''
+
+
+
+### con @expresion = 'expresion', ...
+# 
+
+### seccion de alter
+#Alter table tbfactura drop column tipotarjeta 
+#DROP TABLE tbproducts
+def p_alterTable(t):
+    '''
+    alterTable : ALTER TABLE expresion opcionAlter 
+    '''
+    print("ALTER TABLE",t[3],t[4])
+
+def p_opcionesAlter(t):
+    '''
+    opcionAlter : ADD  COLUMN expresion tipo_dato
+                | DROP COLUMN expresion 
+                
+    '''
+
+## seccion del drop 
+## para el drop bueno no se si se elmina metodos y funciones ?
+def p_drop(t):
+    '''
+    opcionDrop : DROP DATA BASE expresion
+                | DROP TABLE expresion
+    '''
+    print("DROP",t[2],t[3])
+
+### seccion para el truncate creo que solo se puede en tablas
+
+def p_truncate(t):
+    '''
+    opcionTruncate : TRUNCATE TABLE expresion
+    ''' 
+    print("TRUNCATE",t[2])
+
+#### SECCION DE PARAMETROS
+def p_parametros1(t):
+    '''
+    parametros : parametros ARROBA expresion tipo_dato
+    '''
+
+def p_parametros2(t):
+    '''
+    parametros : ARROBA expresion tipo_dato
+    '''
+
+## en caso que venga nada
+def p_parametros3(t):
+    '''
+    parametros : 
+    '''
+#### FIN DE  SECCION DE PARAMETROS
+
 
 #### expresiuones nativas
 
@@ -453,13 +537,21 @@ def p_parametro_llamada_funcion(t): # id
     print('parametro llamada funcion',t[1])
     
 
-    #PROCEDURES
+#PROCEDURES
     
+#CREAR PROCEDURE
 def p_procedure(t):
     '''
-    crear_procedure : CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END PUNTO_Y_COMA
+    crear_procedure : CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END 
     '''
-    print("procedure",t[3],"parametros",t[5],t[9])
+    print("CREATE PROCEDURE",t[3],"parametros",t[5],t[9])
+    
+#ALTER PROCEDURE
+def p_alter_procedure(t):
+    '''
+    alter_procedure : ALTER PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END 
+    '''
+    print("ALTER procedure",t[3],"parametros",t[5],t[9])
      
 #parametros de los procedures
 def p_parametros_procedure(t):
@@ -486,10 +578,11 @@ def p_parametro_procedure(t): # @id tipoDato
 #llamada procedure
 def p_llamada_procedure(t):
     '''
-    llamada_procedure : EXEC ID lista_variables_procedure PUNTO_Y_COMA
+    llamada_procedure : EXEC ID lista_variables_procedure
     '''
     print("llamada_procedure_1",t[2])
     
+   
 #lista_variables_procedure
 def p_lista_variables_procedure(t):
     '''
@@ -499,7 +592,7 @@ def p_lista_variables_procedure(t):
     t[0] = t[1]
     
 #lista_variables_procedure
-def p_lista_variables_procedure2(t):
+def p_lista_variables_procedure3(t):
     '''
     lista_variables_procedure : variable_procedure
     '''
@@ -528,6 +621,27 @@ def p_valor_variable_procedure2(t):
     '''
     t[0] = t[1]
     print("valor_variable_procedure",t[1])
+    
+#llamada procedure2
+def p_llamada_procedure2(t):
+    '''
+    llamada_procedure : EXEC ID lista_variables_procedure2
+    '''
+    print("llamada_procedure_1",t[2])
+    
+def p_lista_variables_procedure2(t):
+    '''
+    lista_variables_procedure2 : lista_variables_procedure2 COMA expresion
+    '''
+    t[1].append(t[3])
+    t[0] = t[1]
+    
+    
+def p_lista_variables_procedure4(t):
+    '''
+    lista_variables_procedure2 : expresion
+    '''
+    t[0] = [t[1]]
                 
 #if
 def p_if(t): 
@@ -628,17 +742,10 @@ def parse(inp):
 
 data = '''
 
-CASE 
-    WHEN 1==1 
-        THEN 'UNO IGUAL 1'
-    WHEN 1==2 
-        THEN 'UNO IGUAL 2'
-    WHEN 1==3 
-        THEN 'UNO IGUAL 3'
-    WHEN 1==4 
-        THEN 'UNO IGUAL 4'
-    else 'NADA'
-    END validacion
+Alter table products add column inventario decimal(10,2);
+Alter table tbfactura add column formapago int;
+Alter table tbfactura add column tipotarjeta int;
+
 
 '''
 
