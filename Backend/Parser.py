@@ -263,7 +263,7 @@ def p_exp_decimal(t):
     '''expresion : DECIMAL'''
     t[0] = Primitivo(t.lineno(1), find_column(input, t.slice[1]),float(t[1]),'decimal')
 
-##para cadenas
+##para cadenas 
 def p_exp_cadena(t):
     '''expresion : STR'''
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'texto')
@@ -282,6 +282,8 @@ def p_null(t):
     '''expresion : NULL'''
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'null')
     
+    ###AGREGAR EL LLAMADO DE FUNCIONES 
+    
 
 ##CREATE DATA BASE
 ##CREATE TABLE
@@ -292,7 +294,7 @@ def p_null(t):
 
         #FUNCIONES
 
-def p_funcion_usuario(t):
+def p_funcion_usuario(t):  #id @df
     ''' 
     crear_funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
     '''
