@@ -67,7 +67,9 @@ keywords = {
     'date': 'DATE',
     
     'references': 'REFERENCES',
-    'foreign': 'FOREIGN'  
+    'foreign': 'FOREIGN',
+    'values': 'VALUES',
+    'into': 'INTO'
 }
 
 
