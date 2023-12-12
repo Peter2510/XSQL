@@ -121,7 +121,7 @@ def p_tipo_dato(t):
 
 def p_tipo_dato2(t):
     '''
-    tipo_dato : R_DECIMAL PARENTESIS_IZQ expresion COMA expresion PARENTESIS_DER
+    tipo_dato : R_DECIMAL
     '''
     t[0] = 'decimal'
     
@@ -188,7 +188,7 @@ def p_restriccion_parametro(t): #primary -> 1
 
 def p_restriccion_parametro2(t): # foranea -> 2
     '''
-    restriccion_parametro : REFERENCES ID PARENTESIS_IZQ ID PARENTESIS_DER
+    restriccion_parametro : REFERENCE ID PARENTESIS_IZQ ID PARENTESIS_DER
     '''
     t[0] = f'forenea({t[2]})'
     
@@ -568,12 +568,20 @@ def p_parametros_procedure2(t):
     t[0] = [t[1]]
     
 #parametro de un procedure
-def p_parametro_procedure(t): # @id tipoDato 
+def p_parametro_procedure(t): # @id AS tipoDato 
     '''
     parametro_procedure : ID_DECLARE tipo_dato 
     '''
     t[0] = [t[1]]
-    print('parametro procedure',t[1],t[2])
+    print('parametro procedure SIMPLE',t[1],t[2])
+    
+def p_parametro_procedure2(t): # @id AS tipoDato 
+    '''
+    parametro_procedure : ID_DECLARE AS tipo_dato 
+    '''
+    t[0] = [t[1]]
+    print('parametro procedure CON AS',t[1],t[2])
+
     
 #llamada procedure
 def p_llamada_procedure(t):
@@ -741,10 +749,20 @@ def parse(inp):
 
 
 data = '''
-
-Alter table products add column inventario decimal(10,2);
-Alter table tbfactura add column formapago int;
-Alter table tbfactura add column tipotarjeta int;
+CREATE PROCEDURE sp_nuevoprocedimiento(@MONTO AS 
+DECIMAL,@IDFACTURA INT)
+AS
+BEGIN 
+DECLARE @IVA DECIMAL;
+ DECLARE @ISR DECIMAL;
+ 
+ SET @IVA = @MONTO - @MONTO/1.12;
+ IF @MONTO > 2000 THEN 
+ SET @ISR = @MONTO *0.07;
+ELSE
+ SET @ISR = @MONTO *0.10;
+ END IF;
+end;
 
 
 '''
