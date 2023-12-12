@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='utf-8'?>
-<Database name="miDB">
-    <Table name="empleados">
-        <id>INTEGER</id>
-        <nombre>VARCHAR(50)</nombre>
-        <edad>BIGINT</edad>
-    </Table>
-</Database>

@@ -20,10 +20,7 @@ def createDatabase(name):
             if (nombre["name"] == name):
                 return 2
         Databases.append(database)
-        obtener.exportDataToXML( {
-            'tabla1': {"producto": "nuevo", "precio": 1},
-            'tabla2': {"producto": "simon", "precio": 3}
-        }      , name)
+        obtener.exportDataToXML( {} , name)
         return 0
     except:
         return 1
@@ -37,24 +34,25 @@ data_to_export = {
 
 
 ##metodo para crear tablas:
-import json
 
-import json
 
+##### VER BIEN CON LO DEL EXPORT
 def crearTabla(nombreDB, nombreTabla, parametros):
     tabla = {}
-    tabla["name"] = nombreTabla
-
+    print(type(parametros), "+++++++")
     # Comprobar si parametros es una cadena JSON y convertirla a un diccionario si es necesario
-    if isinstance(parametros, str):
-        try:
-            parametros = json.loads(parametros)
-        except json.JSONDecodeError as e:
-            print(f"Error en el formato JSON: {e}")
-            return
+    if isinstance(parametros, list):
+        tabla["data"] = []
+ 
+        for parametro in parametros:
+            if isinstance(parametro, dict):
+                print(parametro,"++++++++++++")
+                tabla["data"].append(parametro)
+
 
     # para las columnas
-    tabla["data"] = parametros
+    tabla["name"]= nombreTabla
+    print(tabla["name"], "bbb")
 
     # agregar las tablas 
     for bases in Databases:

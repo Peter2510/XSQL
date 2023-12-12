@@ -1,5 +1,5 @@
 import xml.etree.ElementTree as ET
-
+import json
 import os 
 
 def exportAllXMLsInDirectory(directory):
@@ -21,18 +21,29 @@ def exportAllXMLsInDirectory(directory):
 
 def exportDataToXML(data, name):
     try:
-        table_name = data['name']
-        table_data = data['data']
-
         root = ET.Element("Database")
         root.set("name", name)
+        print(type(data), "<<<<<<<<<<,")
 
-        table = ET.SubElement(root, "Table")
-        table.set("name", table_name)
+        if (data != {}):
+            table = ET.SubElement(root, "Table")
+            table.set("name", data['name'])
+            
+            for entry in data['data']:
 
-        for key, value in table_data.items():
-            element = ET.SubElement(table, key)
-            element.text = str(value)
+                principal = ET.SubElement(table, "Principal")
+                principal.set("name", entry['nombre'])
+
+                data_element = ET.SubElement(principal, "Atributo1")
+                data_element.set("tipo", entry['data']['tipo'])
+
+                data_element2 = ET.SubElement(principal, "Atributo2")
+                data_element2.set("nulidad", str(entry['data']['nulidad']))
+
+                data_element3 = ET.SubElement(principal, "Atributo3")
+                data_element3.set("restricciones", str(entry['data']['restricciones']))
+
+
 
         tree = ET.ElementTree(root)
         tree.write(f"./src/data/xml/{name}.xml", encoding="utf-8", xml_declaration=True)
@@ -61,28 +72,35 @@ def importFileFromXML(name):
 
 def importAllXMLsInDirectory(directory):
     try:
-        xml_data = {}
+        xml_data = []
         for filename in os.listdir(directory):
             if filename.endswith(".xml"):
                 file_path = os.path.join(directory, filename)
                 tree = ET.parse(file_path)
                 root = tree.getroot()
 
-                table_data = {}
+                database_name = root.get("name")
+                database_tables = []
                 for table in root.findall("Table"):
                     table_name = table.get("name")
-                    data = {}
-                    for child in table:
-                        data[child.tag] = child.text
-                    table_data[table_name] = data
-                
-                xml_data[filename.split(".")[0]] = table_data
-                converted_list = [
-            {'name': database_name, 'tables': [{'name': table_name, 'data': table_data} for table_name, table_data in tables.items()]} if tables else {'name': database_name, 'tables': []}
-            for database_name, tables in xml_data.items()
-            ]
-        return converted_list
+                    table_data = []
+                    for principal in table.findall("Principal"):
+                        principal_name = principal.get("name")
+                        principal_data = { 'name': principal_name, 'data': {} }
+                        for atributo in principal.findall("*"):
+                            atributo_name = atributo.tag
+                            atributo_value = atributo.attrib
+                            principal_data['data'][atributo_name] = atributo_value
+                        table_data.append(principal_data)
+                    database_tables.append({'name': table_name, 'data': table_data})
+
+                xml_data.append({'name': database_name, 'tables': database_tables})
+
+        return xml_data
+
     except Exception as e:
         print(f"Error al importar datos desde XML: {str(e)}")
         return []
+
+
     

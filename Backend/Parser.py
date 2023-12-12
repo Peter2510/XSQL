@@ -104,7 +104,7 @@ def p_columnaDefinicion(t): # ID INT NOT NULL PRIMARY KEY
     columnaDefinicion : ID tipo_dato nulidad_parametro restriccion_parametro
     '''
     print("EL TIPO ES ESTE: ",t[1],t[2],t[3],t[4])
-    t[0] = [t[1]]
+    t[0] = [t[1], t[2], t[3], t[4]]
     
     
     
@@ -173,13 +173,13 @@ def p_nulidad_parametro3(t):# si es vacio puede ser null entonces es 1
     '''
     nulidad_parametro : 
     '''
-    t[0] = '1'
+    t[0] = '2'
     
 def p_restriccion_parametro(t): #primary -> 1
     '''
     restriccion_parametro : PRIMARY KEY
     '''
-    t[0] = '0'
+    t[0] = t[1]
 
 def p_restriccion_parametro2(t): # foranea -> 2
     '''
