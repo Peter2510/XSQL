@@ -6,6 +6,7 @@ from src.expresiones.aritmeticas import Aritmeticas
 from src.expresiones.primitivos import Primitivo
 from src.instrucciones.createdb import createDB
 from src.instrucciones.crearTabla import crearTabla
+from src.instrucciones.usarDB import usarDB
 
 from src.expresiones.relacional import Relacional
 ## establecer precedencias 
@@ -60,12 +61,19 @@ def p_instruccionGeneral(t):
                 | expresion
                 | crearProcemieniento PUNTO_Y_COMA
                 | crearFuncion PUNTO_Y_COMA
+                | usarDB PUNTO_Y_COMA
     '''
     ### falta manipular
     t[0] = t[1]
 
 
+### usar base de datos
 
+def p_usarDB(t):
+    '''
+    usarDB :  USAR ID
+    '''
+    t[0] = usarDB(t.lineno(2), find_column(input, t.slice[2]),t[2])
 ## crear BD
 def p_crearBaseDatos(t):
     '''

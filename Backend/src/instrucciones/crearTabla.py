@@ -97,6 +97,6 @@ class crearTabla(Abstract):
 
         #obtener.exportDataToXML(datos, "nuevoTabla")
         print(type(datos), type(datos[0]))
-        Estructura.crearTabla("jiji", self.nombre, atributosFinales)
+        Estructura.crearTabla(Estructura.nombreActual, self.nombre, atributosFinales)
 
         return self.nombre

@@ -1,9 +1,11 @@
 from ..manejadorXml import obtener
 Databases = []
+nombreActual = ""
 import json
 
 def load():
     global Databases
+    global nombreActual
     ## llamarlo como desde la clase que necesitamos
     Databases = obtener.importAllXMLsInDirectory("./src/data/xml/")
     print(type(Databases))
