@@ -6,6 +6,7 @@ from src.expresiones.aritmeticas import Aritmeticas
 from src.expresiones.primitivos import Primitivo
 from src.instrucciones.createdb import createDB
 from src.instrucciones.crearTabla import crearTabla
+from src.ejecucion.datatype import tipoDato
 
 from src.expresiones.relacional import Relacional
 ## establecer precedencias 
@@ -340,32 +341,56 @@ def p_expAritmetica(t):
 def p_exp_entero(t):
     '''expresion : ENTERO'''
     ### como funciones le mandas lo que es digamos
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),int(t[1]),'int')
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),int(t[1]),tipoDato.INT)
+    print("ENTERO")
 
 ## para decimales
 def p_exp_decimal(t):
     '''expresion : DECIMAL'''
-    t[0] = Primitivo(t.lineno(1), find_column(input, t.slice[1]),float(t[1]),'decimal')
+    t[0] = Primitivo(t.lineno(1), find_column(input, t.slice[1]),float(t[1]),tipoDato.DECIMAL)
+    print("DECIMAL")
 
 ##para cadenas 
 def p_exp_cadena(t):
     '''expresion : STR'''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'texto')
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),tipoDato.TEXT)
+    print("STR")
 
 ## id
 def p_exp_id(t):
     '''expresion : ID'''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'id')
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),tipoDato.ID)
+    print("ID")
 
 #id variable
 def p_exp_id_declare(t):
     '''expresion : ID_DECLARE'''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'id_declare')
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),tipoDato.IDDECLARE)
+    print("id declare")
     
 def p_null(t):
     '''expresion : NULL'''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'null')
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),tipoDato.NULL)
+    print("null")
     
+def p_exp_bit(t):
+    '''expresion : BITPRIM'''
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),tipoDato.BIT)
+    print("bit")
+    
+def p_exp_date_time(t):
+    '''
+    expresion : DATETIMEPRIM
+    '''
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),tipoDato.DATETIME)
+    print("date time")
+    
+def p_exp_date(t):
+    '''
+    expresion : DATEPRIM
+    '''
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),tipoDato.DATE)
+    print("date")
     ###AGREGAR EL LLAMADO DE FUNCIONES 
     
 
@@ -753,15 +778,11 @@ CREATE PROCEDURE sp_nuevoprocedimiento(@MONTO AS
 DECIMAL,@IDFACTURA INT)
 AS
 BEGIN 
-DECLARE @IVA DECIMAL;
+
  DECLARE @ISR DECIMAL;
- 
- SET @IVA = @MONTO - @MONTO/1.12;
- IF @MONTO > 2000 THEN 
- SET @ISR = @MONTO *0.07;
-ELSE
- SET @ISR = @MONTO *0.10;
- END IF;
+ set @d = 1;
+
+
 end;
 
 
