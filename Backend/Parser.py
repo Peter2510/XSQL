@@ -296,7 +296,7 @@ def p_dml(t):
             | insert
             | delete
     '''
-    print(t)
+    t[0] = t[1]
 
 
 def p_select(t):
@@ -313,7 +313,7 @@ def p_from_table_opt(t):
 
 def p_condition_opt(t):
     '''
-    condition_opt : WHERE lst
+    condition_opt : WHERE expresion
                     | empty
     '''
 
@@ -348,7 +348,7 @@ def p_funciones_sistema(t):
             | HOY PARENTESIS_IZQ PARENTESIS_DER
             | CONTAR PARENTESIS_IZQ POR PARENTESIS_DER
             | SUMA PARENTESIS_IZQ param_suma PARENTESIS_DER
-            | CAS PARENTESIS_IZQ cas_value AS valor
+            | CAS PARENTESIS_IZQ cas_value AS valor PARENTESIS_DER
     '''
 
 
@@ -386,32 +386,9 @@ def p_table(t):
     '''
 
 
-def p_lst(t):
-    '''
-    lst  : condition
-             | condition AND condition
-             | condition OR condition
-    '''
-
-
-def p_condition(t):
-    '''
-    condition : ID '>' ENTERO
-                  | ID '>' funciones_sistema
-                  | ID '<' ENTERO
-                  | ID '<' funciones_sistema
-                  | ID ASIGNACION ENTERO
-                  | ID ASIGNACION funciones_sistema
-                  | ID '>' ID
-                  | ID '<' ID
-                  | ID ASIGNACION ID
-    '''
-    # TODO: Change ENTERO for production -> ENTERO | DECIMAL
-
-
 def p_update(t):
     '''
-    update : UPDATE ID SET assign_list WHERE lst
+    update : UPDATE ID SET assign_list WHERE expression
     '''
     ## no actualizar PK, FK
 
@@ -460,7 +437,7 @@ def p_value(t):
 
 def p_delete(t):
     '''
-    delete : DELETE FROM ID WHERE lst
+    delete : DELETE FROM ID WHERE expression
     '''
      # validar que no sea FK de otra tabla
 
@@ -548,7 +525,7 @@ def p_exp_id_declare(t):
 def p_null(t):
     '''expresion : NULL'''
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'null')
-    
+
     ###AGREGAR EL LLAMADO DE FUNCIONES 
     
 
