@@ -68,7 +68,12 @@ def p_instruccionGeneral(t):
                 | opcionTruncate PUNTO_Y_COMA
                 | opcionDrop PUNTO_Y_COMA
                 | alterTable PUNTO_Y_COMA
+<<<<<<< HEAD
                 | usarDB PUNTO_Y_COMA
+=======
+                | dml PUNTO_Y_COMA
+
+>>>>>>> dml-grammar
     '''
     ### falta manipular
     t[0] = t[1]
@@ -263,6 +268,187 @@ def p_parametros3(t):
 #### expresiuones nativas
 
 
+################### DML ###################
+def p_empty(t):
+    'empty :'
+    pass
+
+def p_dml(t):
+    '''
+    dml : select
+            | update
+            | insert
+            | delete
+    '''
+    print(t)
+
+
+def p_select(t):
+    '''
+    select : SELECT select_list from_table_opt
+    '''
+
+def p_from_table_opt(t):
+    '''
+    from_table_opt : FROM table condition_opt
+                | empty
+    '''
+
+
+def p_condition_opt(t):
+    '''
+    condition_opt : WHERE lst
+                    | empty
+    '''
+
+
+def p_select_list(t):
+    '''
+    select_list : POR
+                | select_sublist
+    '''
+
+
+def p_select_sublist(t):
+    '''
+    select_sublist : select_item
+             | select_sublist COMA select_item
+    '''
+
+
+def p_select_item(t):
+    '''
+    select_item : ID
+            | ID PUNTO ID
+            | ID_DECLARE ASIGNACION funciones_sistema
+            | funciones_sistema
+            | expresion ID
+    '''
+
+def p_funciones_sistema(t):
+    '''
+    funciones_sistema : CONCATENA PARENTESIS_IZQ STR COMA STR PARENTESIS_DER
+            | SUBSTRAER PARENTESIS_IZQ STR COMA ENTERO COMA ENTERO PARENTESIS_DER
+            | HOY PARENTESIS_IZQ PARENTESIS_DER
+            | CONTAR PARENTESIS_IZQ POR PARENTESIS_DER
+            | SUMA PARENTESIS_IZQ param_suma PARENTESIS_DER
+            | CAS PARENTESIS_IZQ cas_value AS valor
+    '''
+
+
+def p_cas_value(t):
+    '''
+    cas_value : expresion
+        | ID_DECLARE
+    '''
+
+
+def p_valor(t):
+    '''
+    valor : VARCHAR
+        | NCHAR
+        | NVARCHAR
+        | R_INT
+        | R_BIT
+        | R_DECIMAL
+        | DATETIME
+        | DATE
+    '''
+
+
+def p_param_suma(t):
+    '''
+    param_suma : STR
+              | ENTERO
+    '''
+
+
+def p_table(t):
+    '''
+    table : ID
+            | table COMA ID
+    '''
+
+
+def p_lst(t):
+    '''
+    lst  : condition
+             | condition AND condition
+             | condition OR condition
+    '''
+
+
+def p_condition(t):
+    '''
+    condition : ID '>' ENTERO
+                  | ID '>' funciones_sistema
+                  | ID '<' ENTERO
+                  | ID '<' funciones_sistema
+                  | ID ASIGNACION ENTERO
+                  | ID ASIGNACION funciones_sistema
+                  | ID '>' ID
+                  | ID '<' ID
+                  | ID ASIGNACION ID
+    '''
+    # TODO: Change ENTERO for production -> ENTERO | DECIMAL
+
+
+def p_update(t):
+    '''
+    update : UPDATE ID SET assign_list WHERE lst
+    '''
+    ## no actualizar PK, FK
+
+
+def p_assing_list(t):
+    '''
+    assign_list : assign
+                | assign_list COMA assign
+    '''
+
+
+def p_assing(t):
+    '''
+    assign : ID ASIGNACION expresion
+    '''
+
+
+def p_insert(t):
+    '''
+    insert : INSERT INTO ID PARENTESIS_IZQ column_list PARENTESIS_DER VALUES PARENTESIS_IZQ value_list PARENTESIS_DER
+    '''
+    ## validar FK
+
+
+def p_column_list(t):
+    '''
+    column_list : ID
+                | column_list COMA ID
+    '''
+
+
+def p_value_list(t):
+    '''
+    value_list : value
+                | value_list COMA value
+    '''
+
+
+def p_value(t):
+    '''
+    value : STR
+          | DECIMAL
+          | ENTERO
+    '''
+
+
+def p_delete(t):
+    '''
+    delete : DELETE FROM ID WHERE lst
+    '''
+     # validar que no sea FK de otra tabla
+
+################### END DML ################
 def p_expRelacional(t):
     '''
     expresion : expresion MENOR_QUE expresion
