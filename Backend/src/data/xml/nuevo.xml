@@ -1,30 +1,71 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Database name="nuevo">
-    <Table name="generacion23">
+    <Table name="ingresonuevo">
         <Principal name="id">
-            <Atributo1 tipo="int" />
-            <Atributo2 nulidad="0" />
-            <Atributo3 restricciones="True" />
+            <Atributo1 tipo="int">1</Atributo1>
+            <Atributo2 nulidad="0">2</Atributo2>
+            <Atributo3 restricciones="True">3</Atributo3>
         </Principal>
-        <Principal name="primernombre">
-            <Atributo1 tipo="VARCHAR(150)" />
-            <Atributo2 nulidad="0" />
-            <Atributo3 restricciones="True" />
+
+        <datos>
+            <dato>
+                <valor>a</valor>
+                <valor2>jose</valor2>
+            </dato>
+            <dato>
+                <valor>b</valor>
+            </dato>
+            <dato>
+                <valor>c</valor>
+            </dato>
+        </datos>
+        <Principal name="primernombre" valor="jose">
+            <Atributo1 tipo="VARCHAR(150)">1</Atributo1>
+            <Atributo2 nulidad="0">2</Atributo2>
+            <Atributo3 restricciones="True">3</Atributo3>
         </Principal>
         <Principal name="segundonombre">
-            <Atributo1 tipo="VARCHAR(150)" />
-            <Atributo2 nulidad="1" />
-            <Atributo3 restricciones="True" />
+            <Atributo1 tipo="VARCHAR(150)">1</Atributo1>
+            <Atributo2 nulidad="1">2</Atributo2>
+            <Atributo3 restricciones="True">3</Atributo3>
         </Principal>
         <Principal name="fechanacimiento">
-            <Atributo1 tipo="datetime" />
-            <Atributo2 nulidad="2" />
-            <Atributo3 restricciones="True" />
+            <Atributo1 tipo="datetime">1</Atributo1>
+            <Atributo2 nulidad="2">2</Atributo2>
+            <Atributo3 restricciones="True">3</Atributo3>
         </Principal>
         <Principal name="identificacion">
-            <Atributo1 tipo="int" />
-            <Atributo2 nulidad="2" />
-            <Atributo3 restricciones="True" />
+            <Atributo1 tipo="int">1</Atributo1>
+            <Atributo2 nulidad="2">2</Atributo2>
+            <Atributo3 restricciones="True">3</Atributo3>
+            <Atributo4 valor="4"></Atributo4>
+            <Atributo5 ingreso="4"></Atributo5>
+        </Principal>
+
+        <Principal name="id" primarykey="true" valor="1" ingreso="2">
+            <Atributo1 tipo="int">1</Atributo1>
+            <Atributo2 nulidad="0">2</Atributo2>
+            <Atributo3 restricciones="True">3</Atributo3>
+        </Principal>
+        <Principal name="primernombre" valor="jose">
+            <Atributo1 tipo="VARCHAR(150)">1</Atributo1>
+            <Atributo2 nulidad="0">2</Atributo2>
+            <Atributo3 restricciones="True">3</Atributo3>
+        </Principal>
+        <Principal name="segundonombre">
+            <Atributo1 tipo="VARCHAR(150)">1</Atributo1>
+            <Atributo2 nulidad="1">2</Atributo2>
+            <Atributo3 restricciones="True">3</Atributo3>
+        </Principal>
+        <Principal name="fechanacimiento">
+            <Atributo1 tipo="datetime">1</Atributo1>
+            <Atributo2 nulidad="2">2</Atributo2>
+            <Atributo3 restricciones="True">3</Atributo3>
+        </Principal>
+        <Principal name="identificacion">
+            <Atributo1 tipo="int">1</Atributo1>
+            <Atributo2 nulidad="2">2</Atributo2>
+            <Atributo3 restricciones="True">3</Atributo3>
         </Principal>
     </Table>
 </Database>

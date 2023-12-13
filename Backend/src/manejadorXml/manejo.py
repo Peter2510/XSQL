@@ -166,8 +166,7 @@ def createDatabaseXML(database_name):
     except Exception as e:
         print(f"Error al crear la base de datos en formato XML: {str(e)}")
 
-# Aquí llamas a la función para crear la base de datos en formato XML
-createDatabaseXML("NombreDeLaBaseDeDatos")
+
 
 
 
