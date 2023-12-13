@@ -127,3 +127,30 @@ class ReturnStmt(Node):
         if self.argument is not None:
             self.argument.accept(visitor, ambit)
         visitor.visit(self)
+
+class FunctionDeclaration(Node):
+    def __init__(self, fila, columna , id, params, type_, body):
+        super().__init__(fila,columna)
+        self.id = id
+        self.params = params
+        self.type = type_
+        self.body = body
+        self.name_for_table = self.get_name_for_table()
+        self.table = SymTable(f"funcion {id}")
+        self.table.returned_type = self.type
+
+    def accept(self, visitor, ambit = None):
+        visitor.set_ambit(self.table)
+        if isinstance(visitor, SymTableVisitor):
+            visitor.visit(self)
+        else:
+            for child in self.body:
+                child.accept(visitor, self.table)
+            for param in self.params:
+                param.accept(visitor, self.table)
+            visitor.visit(self)
+
+    def get_name_for_table(self) -> str:
+        func_types = ','.join(str(param.type) for param in self.params)
+        return f"{self.id}({func_types})"
+    
