@@ -1,4 +1,6 @@
 from ...abstract.abstractas import Abstract
+from ...manejadorXml import manejo, Estructura 
+
 import pandas as pd
 class insertInstruccion(Abstract):
     
@@ -10,5 +12,10 @@ class insertInstruccion(Abstract):
         nombre = self.nombre
         nuevosParametros =[]
         nuevosAtributos = []
+
+        ## carga de elementos 
+        Estructura.load();
+        
+
         
 

@@ -19,7 +19,7 @@ def exportAllXMLsInDirectory(directory):
         print(f"Error al exportar datos desde XML: {str(e)}")
 
 
-def exportDataToXML(data, name):
+def exportDataToXML(data, name, valores):
     try:
         file_path = f"./src/data/xml/{name}.xml"
         if os.path.exists(file_path):
@@ -29,6 +29,9 @@ def exportDataToXML(data, name):
             root = ET.Element("Database")
             root.set("name", name)
         print(type(data), "<<<<<<<<<<,")
+
+
+            
 
         if (data != {}):
             table = ET.SubElement(root, "Table")
@@ -41,16 +44,17 @@ def exportDataToXML(data, name):
 
                 data_element = ET.SubElement(principal, "Atributo1")
                 data_element.set("tipo", entry['data']['tipo'])
-                data_element.text=("1")
 
                 data_element2 = ET.SubElement(principal, "Atributo2")
                 data_element2.set("nulidad", str(entry['data']['nulidad']))
-                data_element2.text=("2")
-
 
                 data_element3 = ET.SubElement(principal, "Atributo3")
                 data_element3.set("restricciones", str(entry['data']['restricciones']))
-                data_element3.text=("3")
+
+            if (valores != None):
+                data_element.text=valores[0]
+                data_element2.text=valores[1]
+                data_element3.text=valores[2]
 
 
 

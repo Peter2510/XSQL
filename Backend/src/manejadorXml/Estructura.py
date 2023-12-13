@@ -22,7 +22,7 @@ def createDatabase(name):
             if (nombre["name"] == name):
                 return 2
         Databases.append(database)
-        obtener.exportDataToXML( {} , name)
+        obtener.exportDataToXML( {} , name, None)
         return 0
     except:
         return 1
@@ -62,7 +62,7 @@ def crearTabla(nombreDB, nombreTabla, parametros):
             bases["tables"].append(tabla)
             break
 
-    obtener.exportDataToXML(tabla , nombreDB)
+    obtener.exportDataToXML(tabla , nombreDB, None)
 
 
 #Obtener.exportDataToXML(data_to_export, "simoon2")
