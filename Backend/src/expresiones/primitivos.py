@@ -7,7 +7,6 @@ class Primitivo(Expression):
         super().__init__(fila, columna)
 
     def interpretar(self, environment):
-        print("valor: ",self.valor, "tipo: ",self.tipo)
         return self.valor
     
     def getTipo(self):

@@ -28,6 +28,19 @@ BEGIN
  END IF;
 END;
 
+--Simple
+CREATE FUNCTION Retornasuma()
+RETURNS int 
+AS 
+-- Returns the stock level for the product. 
+BEGIN 
+ DECLARE @ret int; 
+ 
+ IF @ret == NULL THEN
+ SET @ret = 0; 
+ RETURN 2; 
+ END IF;
+END;
 
 -- case
 CASE 
@@ -41,6 +54,14 @@ CASE
         THEN 'UNO IGUAL 4'
     END validacion
 
+
+--simple
+CREATE PROCEDURE proc ()
+as BEGIN 
+    DECLARE @id int;
+END;
+    
+
 CREATE PROCEDURE proc (@PROD int, @CANT int)
 as BEGIN 
     DECLARE @id int;
@@ -48,6 +69,12 @@ END;
     
 
 Create Procedure JD ( @id as int, @nombre varchar(20), @apellido varchar(20), @edad int) as
+Begin
+Declare @SumaProducto decimal;
+Set @SumaProducto = retornaSuma(1);
+end;
+
+Create Procedure JD () as
 Begin
 Declare @SumaProducto decimal;
 Set @SumaProducto = retornaSuma(1);
