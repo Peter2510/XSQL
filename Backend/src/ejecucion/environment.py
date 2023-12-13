@@ -1,5 +1,5 @@
 from prettytable import PrettyTable
-from src.ejecucion.datatype import *
+from src.ejecucion.type import Type
 from datetime import datetime
 
 class Environment:

@@ -5,7 +5,7 @@ from src.expresiones.aritmeticas import Aritmeticas
 from src.expresiones.primitivos import Primitivo
 from src.instrucciones.createdb import createDB
 from src.instrucciones.crearTabla import crearTabla
-from src.ejecucion.datatype import tipoDato
+from src.ejecucion.type import Type
 from src.instrucciones.usarDB import usarDB
 from src.instrucciones.funcion.funcion import Funcion
 from src.instrucciones.procedure.procedure import Procedure
@@ -68,12 +68,9 @@ def p_instruccionGeneral(t):
                 | opcionTruncate PUNTO_Y_COMA
                 | opcionDrop PUNTO_Y_COMA
                 | alterTable PUNTO_Y_COMA
-<<<<<<< HEAD
                 | usarDB PUNTO_Y_COMA
-=======
                 | dml PUNTO_Y_COMA
 
->>>>>>> dml-grammar
     '''
     ### falta manipular
     t[0] = t[1]
@@ -507,55 +504,55 @@ def p_expAritmetica(t):
 def p_exp_entero(t):
     '''expresion : ENTERO'''
     ### como funciones le mandas lo que es digamos
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),int(t[1]),tipoDato.INT)
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),int(t[1]),Type.INT)
     print("ENTERO")
 
 ## para decimales
 def p_exp_decimal(t):
     '''expresion : DECIMAL'''
-    t[0] = Primitivo(t.lineno(1), find_column(input, t.slice[1]),float(t[1]),tipoDato.DECIMAL)
+    t[0] = Primitivo(t.lineno(1), find_column(input, t.slice[1]),float(t[1]),Type.DECIMAL)
     print("DECIMAL")
 
 ##para cadenas 
 def p_exp_cadena(t):
     '''expresion : STR'''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),tipoDato.TEXT)
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.TEXT)
     print("STR")
 
 ## id
 def p_exp_id(t):
     '''expresion : ID'''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),tipoDato.ID)
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.ID)
     print("ID")
 
 #id variable
 def p_exp_id_declare(t):
     '''expresion : ID_DECLARE'''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),tipoDato.IDDECLARE)
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.IDDECLARE)
     print("id declare")
     
 def p_null(t):
     '''expresion : NULL'''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),tipoDato.NULL)
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.NULL)
     print("null")
     
 def p_exp_bit(t):
     '''expresion : BITPRIM'''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),tipoDato.BIT)
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.BIT)
     print("bit")
     
 def p_exp_date_time(t):
     '''
     expresion : DATETIMEPRIM
     '''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),tipoDato.DATETIME)
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.DATETIME)
     print("date time")
     
 def p_exp_date(t):
     '''
     expresion : DATEPRIM
     '''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),tipoDato.DATE)
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.DATE)
     print("date")
 
     ###AGREGAR EL LLAMADO DE FUNCIONES 

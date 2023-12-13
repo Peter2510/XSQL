@@ -1,9 +1,9 @@
 from src.abstract.abstractas import Abstract
 from src.manejadorXml import Estructura
-from src.ejecucion.datatype import tipoDato
+
 
 class Funcion(Abstract):
-    def __init__(self, fila, columna, nombre,listaParametros,tipoDato:tipoDato,instrucciones):
+    def __init__(self, fila, columna, nombre,listaParametros,tipoDato,instrucciones):
         self.nombre = nombre
         self.listaParametros = listaParametros
         self.tipoDato = tipoDato
