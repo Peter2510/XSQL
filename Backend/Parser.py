@@ -8,7 +8,9 @@ from src.instrucciones.createdb import createDB
 from src.instrucciones.crearTabla import crearTabla
 
 from src.expresiones.relacional import Relacional
-## establecer precedencias 
+
+from src.ast import Program, Select
+## establecer precedencias
 
 precedence = (
     ('left', 'MAS','MENOS'),
@@ -28,7 +30,7 @@ def p_init(t):
     '''
     init : instrucciones
     '''
-    t[0] = t[1]
+    t[0] = Program(fila=t.lineno(1), columna=0, statements=t[1])
 
 
 def p_instruccionesListado(t):
@@ -303,12 +305,22 @@ def p_select(t):
     '''
     select : SELECT select_list from_table_opt
     '''
+    t[0] = Select(fila=t.lineno(1), columna=find_column(input, t.slice[1]), columns=t[2], from_clause=t[3][0], where_clause=t[3][1])
 
 def p_from_table_opt(t):
     '''
     from_table_opt : FROM table condition_opt
-                | empty
     '''
+    t[0] = [None, None]
+    #TODO: Agregar nodos
+
+
+def p_from_table_opt_1(t):
+    '''
+    from_table_opt : empty
+    '''
+    t[0] = [None, None]
+
 
 
 def p_condition_opt(t):
@@ -321,25 +333,65 @@ def p_condition_opt(t):
 def p_select_list(t):
     '''
     select_list : POR
-                | select_sublist
     '''
+
+def p_select_list_1(t):
+    '''
+    select_list : select_sublist
+    '''
+    t[0] = t[1]
 
 
 def p_select_sublist(t):
     '''
-    select_sublist : select_item
-             | select_sublist COMA select_item
+    select_sublist : select_sublist COMA select_item
     '''
 
+    t[1].append(t[3])
+    t[0] = t[1]
+
+
+def p_select_sublist_1(t):
+    '''
+    select_sublist : select_item
+    '''
+    t[0] = [t[1]]
 
 def p_select_item(t):
     '''
     select_item : ID
-            | ID PUNTO ID
-            | ID_DECLARE ASIGNACION funciones_sistema
-            | funciones_sistema
-            | expresion ID
     '''
+
+
+def p_select_item_1(t):
+    '''
+    select_item : ID PUNTO ID
+    '''
+
+
+def p_select_item_2(t):
+    '''
+    select_item : ID_DECLARE ASIGNACION funciones_sistema
+    '''
+
+
+def p_select_item_3(t):
+    '''
+    select_item : funciones_sistema
+    '''
+
+
+def p_select_item_4(t):
+    '''
+    select_item : expresion ID
+    '''
+
+
+def p_select_item_6(t):
+    '''
+    select_item : expresion
+    '''
+    t[0] = t[1]
 
 def p_funciones_sistema(t):
     '''
@@ -388,7 +440,7 @@ def p_table(t):
 
 def p_update(t):
     '''
-    update : UPDATE ID SET assign_list WHERE expression
+    update : UPDATE ID SET assign_list WHERE expresion
     '''
     ## no actualizar PK, FK
 
@@ -437,7 +489,7 @@ def p_value(t):
 
 def p_delete(t):
     '''
-    delete : DELETE FROM ID WHERE expression
+    delete : DELETE FROM ID WHERE expresion
     '''
      # validar que no sea FK de otra tabla
 
@@ -890,6 +942,7 @@ def p_error(p):
 input = ''
 
 def parse(inp):
+    print(inp)
     global errores
     global parser
     errores = []
