@@ -1,4 +1,3 @@
-
 from Lexer import tokens, lexer, errores, find_column
 import ply.yacc as yacc
 
@@ -6,6 +5,10 @@ from src.expresiones.aritmeticas import Aritmeticas
 from src.expresiones.primitivos import Primitivo
 from src.instrucciones.createdb import createDB
 from src.instrucciones.crearTabla import crearTabla
+from src.ejecucion.type import Type
+from src.instrucciones.usarDB import usarDB
+from src.instrucciones.funcion.funcion import Funcion
+from src.instrucciones.procedure.procedure import Procedure
 
 from src.expresiones.relacional import Relacional
 
@@ -19,7 +22,7 @@ precedence = (
     ('left', 'OR','AND'),
     ('left', 'PARENTESIS_IZQ','PARENTESIS_DER'),
     ('left', 'AS')
-);
+)
 
 
 ## ahora el parser general s
@@ -67,6 +70,7 @@ def p_instruccionGeneral(t):
                 | opcionTruncate PUNTO_Y_COMA
                 | opcionDrop PUNTO_Y_COMA
                 | alterTable PUNTO_Y_COMA
+                | usarDB PUNTO_Y_COMA
                 | dml PUNTO_Y_COMA
 
     '''
@@ -74,7 +78,13 @@ def p_instruccionGeneral(t):
     t[0] = t[1]
 
 
+### usar base de datos
 
+def p_usarDB(t):
+    '''
+    usarDB :  USAR ID
+    '''
+    t[0] = usarDB(t.lineno(2), find_column(input, t.slice[2]),t[2])
 ## crear BD
 def p_crearBaseDatos(t):
     '''
@@ -113,9 +123,8 @@ def p_columnaDefinicion(t): # ID INT NOT NULL PRIMARY KEY
     columnaDefinicion : ID tipo_dato nulidad_parametro restriccion_parametro
     '''
     print("EL TIPO ES ESTE: ",t[1],t[2],t[3],t[4])
-    t[0] = [t[1]]
-    
-    
+    t[0] = [t[1], t[2], t[3], t[4]]
+        
     
 def p_tipo_dato(t):
     '''
@@ -125,7 +134,7 @@ def p_tipo_dato(t):
 
 def p_tipo_dato2(t):
     '''
-    tipo_dato : R_DECIMAL PARENTESIS_IZQ expresion COMA expresion PARENTESIS_DER
+    tipo_dato : R_DECIMAL
     '''
     t[0] = 'decimal'
     
@@ -182,17 +191,17 @@ def p_nulidad_parametro3(t):# si es vacio puede ser null entonces es 1
     '''
     nulidad_parametro : 
     '''
-    t[0] = '1'
+    t[0] = '2'
     
 def p_restriccion_parametro(t): #primary -> 1
     '''
     restriccion_parametro : PRIMARY KEY
     '''
-    t[0] = '0'
+    t[0] = t[1]
 
 def p_restriccion_parametro2(t): # foranea -> 2
     '''
-    restriccion_parametro : REFERENCES ID PARENTESIS_IZQ ID PARENTESIS_DER
+    restriccion_parametro : REFERENCE ID PARENTESIS_IZQ ID PARENTESIS_DER
     '''
     t[0] = f'forenea({t[2]})'
     
@@ -204,34 +213,6 @@ def p_restriccion_parametro3(t): #normal -> 0
     t[0] = '0'
 
 
-
-###############
-## SECCION DE CREACION DE PROCEDIMIENTOS COMENTAR SI ES NECESARIO FALTA IMPLEMENTARLO CON LA PILA PERO JALA 
-###############
-### poner sentenciasDML
-# def p_crearProcemieniento(t):
-#     '''
-#         crearProcemieniento : opcionesMetodos PROCEDURE expresion PARENTESIS_IZQ parametros PARENTESIS_DER AS BEGIN  END
-#     '''
-# def p_opcionesMetodos(t):
-#     '''
-#     opcionesMetodos : ALTER 
-#                     |  CREATE
-#     '''
-
-## metodo para la ejecucion
-# def p_ejecucionMetodos(t):
-#     '''
-#     ejecucionMetodos :    EXEC expresion forma1EjecucionMetodo PUNTO_Y_COMA
-#                         | EXEC expresion forma2EjecucionMetodo PUNTO_Y_COMA
-#     '''
-
-
-
-### con @expresion = 'expresion', ...
-# 
-
-### seccion de alter
 #Alter table tbfactura drop column tipotarjeta 
 #DROP TABLE tbproducts
 def p_alterTable(t):
@@ -552,51 +533,84 @@ def p_expAritmetica(t):
 def p_exp_entero(t):
     '''expresion : ENTERO'''
     ### como funciones le mandas lo que es digamos
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),int(t[1]),'int')
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),int(t[1]),Type.INT)
+    print("ENTERO")
 
 ## para decimales
 def p_exp_decimal(t):
     '''expresion : DECIMAL'''
-    t[0] = Primitivo(t.lineno(1), find_column(input, t.slice[1]),float(t[1]),'decimal')
+    t[0] = Primitivo(t.lineno(1), find_column(input, t.slice[1]),float(t[1]),Type.DECIMAL)
+    print("DECIMAL")
 
 ##para cadenas 
 def p_exp_cadena(t):
     '''expresion : STR'''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'texto')
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.TEXT)
+    print("STR")
 
 ## id
 def p_exp_id(t):
     '''expresion : ID'''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'id')
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.ID)
+    print("ID")
 
 #id variable
 def p_exp_id_declare(t):
     '''expresion : ID_DECLARE'''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'id_declare')
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.IDDECLARE)
+    print("id declare")
     
 def p_null(t):
     '''expresion : NULL'''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),'null')
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.NULL)
+    print("null")
+    
+def p_exp_bit(t):
+    '''expresion : BITPRIM'''
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.BIT)
+    print("bit")
+    
+def p_exp_date_time(t):
+    '''
+    expresion : DATETIMEPRIM
+    '''
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.DATETIME)
+    print("date time")
+    
+def p_exp_date(t):
+    '''
+    expresion : DATEPRIM
+    '''
+    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.DATE)
+    print("date")
 
     ###AGREGAR EL LLAMADO DE FUNCIONES 
     
+def p_exp_llamada_funcion(t):
+    '''
+    expresion : llamada_funcion
+    '''
+    t[0] = t[1]
+    print("llamada funcion")
+    
 
-##CREATE DATA BASE
-##CREATE TABLE
-##CREATE PROD
-##CREATE FUNC
+                ########################## SSL
 
-        ########################## SSL
+#FUNCIONES
 
-        #FUNCIONES
-
-def p_funcion_usuario(t):  #id @df
+def p_funcion_usuario(t):  #con parametros
     ''' 
     crear_funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
     '''
-    print('FUNCION DEL USUARIO:',t[3],"parametros",t[5],"tipo dato fn",t[8],t[11])
+    t[0] = Funcion(t.lineno(1),find_column(input,t.slice[1]),t[3],t[5],t[8],t[11])
+      
 
-
+def p_funcion_usuario2(t):  #sin parametros
+    '''
+    crear_funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
+    '''
+    t[0] = Funcion(t.lineno(1), find_column(input, t.slice[1]), t[3], [], t[7],t[10])
+    
 ##PARAMETROS DE LAS FUNCIONES
 def p_parametros_funcion(t):
     '''
@@ -617,7 +631,7 @@ def p_parametro_funcion(t): # @id tipoDato
     parametro_funcion : ID_DECLARE tipo_dato_parametro 
     '''
     t[0] = [t[1]]
-    print('parametro funcion',t[1],t[2])
+    print('--------------------------parametro funcion',t[1],t[2])
     
 #tipo de dato del parametro 
 def p_tipo_dato_parametro(t):
@@ -751,12 +765,21 @@ def p_parametro_llamada_funcion(t): # id
 
 #PROCEDURES
     
-#CREAR PROCEDURE
+#CREAR PROCEDURE Parametros
 def p_procedure(t):
     '''
     crear_procedure : CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END 
     '''
-    print("CREATE PROCEDURE",t[3],"parametros",t[5],t[9])
+    t[0] = Procedure(t.lineno(1), find_column(input, t.slice[1]),t[3],t[5],t[8])
+    
+    
+    
+#PROCEDURE PARAMETROS
+def p_procedure2(t):
+    '''
+    crear_procedure : CREATE PROCEDURE ID PARENTESIS_IZQ PARENTESIS_DER AS BEGIN sentencias_funciones END 
+    '''
+    t[0] = Procedure(t.lineno(1), find_column(input, t.slice[1]),t[3],[],t[7])
     
 #ALTER PROCEDURE
 def p_alter_procedure(t):
@@ -780,12 +803,20 @@ def p_parametros_procedure2(t):
     t[0] = [t[1]]
     
 #parametro de un procedure
-def p_parametro_procedure(t): # @id tipoDato 
+def p_parametro_procedure(t): # @id AS tipoDato 
     '''
     parametro_procedure : ID_DECLARE tipo_dato 
     '''
     t[0] = [t[1]]
-    print('parametro procedure',t[1],t[2])
+    print('parametro procedure SIMPLE',t[1],t[2])
+    
+def p_parametro_procedure2(t): # @id AS tipoDato 
+    '''
+    parametro_procedure : ID_DECLARE AS tipo_dato 
+    '''
+    t[0] = [t[1]]
+    print('parametro procedure CON AS',t[1],t[2])
+
     
 #llamada procedure
 def p_llamada_procedure(t):
@@ -955,16 +986,24 @@ def parse(inp):
 
 data = '''
 
-Alter table products add column inventario decimal(10,2);
-Alter table tbfactura add column formapago int;
-Alter table tbfactura add column tipotarjeta int;
-
+CREATE FUNCTION Retornasuma(@ProductID int) 
+RETURNS int 
+AS 
+-- Returns the stock level for the product. 
+BEGIN 
+ DECLARE @ret int; 
+ 
+ IF @ret == NULL THEN
+ SET @ret = 0; 
+ RETURN 2; 
+ END IF;
+END;
 
 '''
 
 # prueba
 
-instrucciones = parse(data.lower())
+#instrucciones = parse(data.lower())
 
 ## ciclo para que muestre
 ##for ist in instrucciones:

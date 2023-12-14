@@ -84,36 +84,36 @@ class Relacional(Expression):
   
     
 
-    ### seccion para los casteos
+### seccion para los casteos
 
-    def retornoValor(op1, op2, tipoOp):
-        if(tipoOp == '=='):
-            if (op1 == op2):
-                return 1
-            else: 
-                return 0
-        elif(tipoOp == '!='):
-            if (op1 != op2):
-                return 1
-            else: 
-                return 0
-        elif(tipoOp == '>'):
-            if (op1 > op2):
-                return 1
-            else: 
-                return 0
-        elif(tipoOp == '<'):
-            if (op1 < op2):
-                return 1
-            else: 
-                return 0
-        elif(tipoOp == '>='):
-            if (op1 >= op2):
-                return 1
-            else: 
-                return 0
-        elif(tipoOp == '<='):
-            if (op1 <= op2):
-                return 1
-            else: 
-                return 0
+def retornoValor(op1, op2, tipoOp):
+   if(tipoOp == '=='):
+       if (op1 == op2):
+           return 1
+       else: 
+           return 0
+   elif(tipoOp == '!='):
+       if (op1 != op2):
+           return 1
+       else: 
+           return 0
+   elif(tipoOp == '>'):
+       if (op1 > op2):
+           return 1
+       else: 
+           return 0
+   elif(tipoOp == '<'):
+       if (op1 < op2):
+           return 1
+       else: 
+           return 0
+   elif(tipoOp == '>='):
+       if (op1 >= op2):
+           return 1
+       else: 
+           return 0
+   elif(tipoOp == '<='):
+       if (op1 <= op2):
+           return 1
+       else: 
+           return 0

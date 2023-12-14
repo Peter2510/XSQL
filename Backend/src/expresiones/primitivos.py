@@ -10,7 +10,6 @@ class Primitivo(Expression):
         pass
 
     def interpretar(self, environment):
-        print("valor: ",self.valor, "tipo: ",self.tipo)
         return self.valor
     
     def getTipo(self):

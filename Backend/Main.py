@@ -7,6 +7,7 @@ from flask_cors import CORS, cross_origin
 from flask.helpers import url_for
 from werkzeug.utils import redirect
 from Lexer import tokens, lexer, errores, find_column
+from src.ast.node import Program
 from src.visitor import ExpressionsVisitor
 
 
@@ -33,7 +34,8 @@ def compilar():
         iniciarEjecucion = Ejec(pars.statements)
         _res = iniciarEjecucion.execute(env)
         print(_res,"---------------------------- FINNNNNNNNNNN -------------")
-     
+        ab = Program(0,0,[])
+        
         
 
         # ### solo prueba de esto
