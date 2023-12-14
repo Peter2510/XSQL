@@ -48,7 +48,7 @@ class VariableDeclarator(Node):
         visitor.visit(self)
         
 class Expr(Node):
-    def __init__(self, fila,columna, type_: Type = None):
+    def __init__(self, fila,columna, type_ = None):
         super().__init__(fila,columna)
         self.type = type_
         self.value = None
@@ -57,7 +57,7 @@ class Expr(Node):
         pass
         
 class BinaryExpression(Expr):
-    def __init__(self, fila,columna, type_: Type = None, left: Expr = None, operator: str = '', right: Expr = None):
+    def __init__(self, fila,columna, type_ = None, left: Expr = None, operator: str = '', right: Expr = None):
         super().__init__(fila,columna, type_)
         self.left = left
         self.operator = operator

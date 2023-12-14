@@ -67,7 +67,10 @@ keywords = {
     'datetime': 'DATETIME',
     'date': 'DATE',
     
-    'foreign': 'FOREIGN'  
+    'foreign': 'FOREIGN',
+
+    'into': 'INTO',
+    'values': 'VALUES'
 }
 
 

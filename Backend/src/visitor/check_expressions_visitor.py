@@ -1,55 +1,50 @@
 from enum import Enum
 from .visitor import Visitor
-
-
-class Type(Enum):
-    INT = 'int'
-    DECIMAL = 'decimal'
-    TEXTO = 'texto'
+from src.ejecucion.type import Type
 
 
 COMBINATIONS = [
-    f'{Type.INT.value}-{Type.INT.value}',
-    f'{Type.INT.value}-{Type.DECIMAL.value}',
-    f'{Type.INT.value}-{Type.TEXTO.value}',
-    f'{Type.DECIMAL.value}-{Type.DECIMAL.value}',
-    f'{Type.DECIMAL.value}-{Type.TEXTO.value}',
-    f'{Type.TEXTO.value}-{Type.TEXTO.value}',
+    f'{Type.INT.name}-{Type.INT.name}',
+    f'{Type.INT.name}-{Type.DECIMAL.name}',
+    f'{Type.INT.name}-{Type.TEXT.name}',
+    f'{Type.DECIMAL.name}-{Type.DECIMAL.name}',
+    f'{Type.DECIMAL.name}-{Type.TEXT.name}',
+    f'{Type.TEXT.name}-{Type.TEXT.name}',
 ]
 
 ADDITION_CAST = [
-    Type.INT.value,
-    Type.DECIMAL.value,
-    Type.TEXTO.value,
-    Type.DECIMAL.value,
-    Type.TEXTO.value,
-    Type.TEXTO.value
+    Type.INT.name,
+    Type.DECIMAL.name,
+    Type.TEXT.name,
+    Type.DECIMAL.name,
+    Type.TEXT.name,
+    Type.TEXT.name
 ]
 
 SUBTRACTION_CAST = [
-    Type.INT.value,
-    Type.DECIMAL.value,
+    Type.INT.name,
+    Type.DECIMAL.name,
     None,
-    Type.DECIMAL.value,
+    Type.DECIMAL.name,
     None,
     None,
 ]
 
 DIVISION_CAST = [
-    Type.DECIMAL.value,
-    Type.DECIMAL.value,
+    Type.DECIMAL.name,
+    Type.DECIMAL.name,
     None,
-    Type.DECIMAL.value,
+    Type.DECIMAL.name,
     None,
     None,
 ]
 
 
 MULTIPLICATION_CAST = [
-    Type.INT.value,
-    Type.DECIMAL.value,
+    Type.INT.name,
+    Type.DECIMAL.name,
     None,
-    Type.DECIMAL.value,
+    Type.DECIMAL.name,
     None,
     None,
 ]
@@ -75,8 +70,10 @@ def get_binary_type(left, op, right):
         casting_list = DIVISION_CAST
 
 
-    index = find_in_array(f'{left.tipo}-{right.tipo}', COMBINATIONS)
-    index = index if index != -1 else find_in_array(f'{right.tipo}-{left.tipo}', COMBINATIONS)
+    left_type = left.tipo.name if left.tipo is not None else None
+    right_type = right.tipo.name if right.tipo is not None else None
+    index = find_in_array(f'{left_type}-{right_type}', COMBINATIONS)
+    index = index if index != -1 else find_in_array(f'{right_type}-{left_type}', COMBINATIONS)
     type = casting_list[index] if index != -1 else None
     return type
 
