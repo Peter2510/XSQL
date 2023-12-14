@@ -21,8 +21,13 @@ def exportAllXMLsInDirectory(directory):
 
 def exportDataToXML(data, name):
     try:
-        root = ET.Element("Database")
-        root.set("name", name)
+        file_path = f"./src/data/xml/{name}.xml"
+        if os.path.exists(file_path):
+            tree = ET.parse(file_path)
+            root = tree.getroot()
+        else:
+            root = ET.Element("Database")
+            root.set("name", name)
         print(type(data), "<<<<<<<<<<,")
 
         if (data != {}):
@@ -36,12 +41,16 @@ def exportDataToXML(data, name):
 
                 data_element = ET.SubElement(principal, "Atributo1")
                 data_element.set("tipo", entry['data']['tipo'])
+                data_element.text=("1")
 
                 data_element2 = ET.SubElement(principal, "Atributo2")
                 data_element2.set("nulidad", str(entry['data']['nulidad']))
+                data_element2.text=("2")
+
 
                 data_element3 = ET.SubElement(principal, "Atributo3")
                 data_element3.set("restricciones", str(entry['data']['restricciones']))
+                data_element3.text=("3")
 
 
 

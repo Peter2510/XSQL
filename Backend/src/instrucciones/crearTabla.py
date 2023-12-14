@@ -65,9 +65,6 @@ class crearTabla(Abstract):
                 for j in i:
                     print(j)
                     
-                    ##create table nombre(id,nombre,precio)
-
-
         #Estructura.crearTabla("miDB", self.nombre, json_output[0] )
         datos = [
             {

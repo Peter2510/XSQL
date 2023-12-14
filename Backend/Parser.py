@@ -7,6 +7,8 @@ from src.instrucciones.createdb import createDB
 from src.instrucciones.crearTabla import crearTabla
 from src.ejecucion.type import Type
 from src.instrucciones.usarDB import usarDB
+from src.instrucciones.drop.dropDB import dropDB
+from src.instrucciones.truncate.truncateDB import truncateDB
 from src.instrucciones.funcion.funcion import Funcion
 from src.instrucciones.procedure.procedure import Procedure
 
@@ -232,18 +234,22 @@ def p_opcionesAlter(t):
 ## para el drop bueno no se si se elmina metodos y funciones ?
 def p_drop(t):
     '''
-    opcionDrop : DROP DATA BASE expresion
-                | DROP TABLE expresion
+    opcionDrop : DROP DATA BASE ID
     '''
-    print("DROP",t[2],t[3])
+    t[0] = dropDB(t.lineno(4), find_column(input, t.slice[4]), t[4])
 
+def p_drop2(t):
+    '''
+    opcionDrop : DROP TABLE expresion
+    '''
+    t[0] = t[3]
 ### seccion para el truncate creo que solo se puede en tablas
 
 def p_truncate(t):
     '''
-    opcionTruncate : TRUNCATE TABLE expresion
+    opcionTruncate : TRUNCATE ID
     ''' 
-    print("TRUNCATE",t[2])
+    t[0] = truncateDB(t.lineno(2), find_column(input, t.slice[2]),t[2])
 
 #### SECCION DE PARAMETROS
 def p_parametros1(t):
