@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Database name="hola2">
+    <Table name="tbfactura">
+        <Principal name="idfactura">
+            <Atributo1 tipo="int" />
+            <Atributo2 nulidad="2" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+        <Principal name="fechafactura">
+            <Atributo1 tipo="date" />
+            <Atributo2 nulidad="0" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+        <Principal name="nit">
+            <Atributo1 tipo="NVARCHAR(20)" />
+            <Atributo2 nulidad="0" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+        <Principal name="nombrecliente">
+            <Atributo1 tipo="NVARCHAR(50)" />
+            <Atributo2 nulidad="0" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+    </Table>
+    <Table name="aaa">
+        <Principal name="idfactura">
+            <Atributo1 tipo="int" />
+            <Atributo2 nulidad="2" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+        <Principal name="fechafactura">
+            <Atributo1 tipo="date" />
+            <Atributo2 nulidad="0" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+        <Principal name="nit">
+            <Atributo1 tipo="NVARCHAR(20)" />
+            <Atributo2 nulidad="0" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+        <Principal name="nombrecliente">
+            <Atributo1 tipo="NVARCHAR(50)" />
+            <Atributo2 nulidad="0" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+    </Table>
+    <Table name="tbfactura2">
+        <Principal name="idfactura">
+            <Atributo1 tipo="int" />
+            <Atributo2 nulidad="2" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+        <Principal name="fechafactura">
+            <Atributo1 tipo="date" />
+            <Atributo2 nulidad="0" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+        <Principal name="nit">
+            <Atributo1 tipo="NVARCHAR(20)" />
+            <Atributo2 nulidad="0" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+        <Principal name="nombrecliente">
+            <Atributo1 tipo="NVARCHAR(50)" />
+            <Atributo2 nulidad="0" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+        <Principal name="referencia">
+            <Atributo1 tipo="NVARCHAR(10)" />
+            <Atributo2 nulidad="2" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+    </Table>
+    <Table name="tbfactura23">
+        <Principal name="idfactura">
+            <Atributo1 tipo="int" />
+            <Atributo2 nulidad="2" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+        <Principal name="fechafactura">
+            <Atributo1 tipo="date" />
+            <Atributo2 nulidad="0" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+        <Principal name="nit">
+            <Atributo1 tipo="NVARCHAR(20)" />
+            <Atributo2 nulidad="0" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+        <Principal name="nombrecliente">
+            <Atributo1 tipo="NVARCHAR(50)" />
+            <Atributo2 nulidad="0" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+        <Principal name="referencia">
+            <Atributo1 tipo="NVARCHAR(10)" />
+            <Atributo2 nulidad="2" />
+            <Atributo3 restricciones="True" />
+        </Principal>
+    </Table>
+</Database>

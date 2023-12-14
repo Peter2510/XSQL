@@ -14,4 +14,3 @@ class usarDB(Abstract):
         Estructura.nombreActual = nombre
         print(Estructura.nombreActual)
         return nombre
-

@@ -8,12 +8,14 @@ class crearTabla(Abstract):
         self.listaAtributos = listaAtributos
         super().__init__(fila, columna)
 
-    def interpretar(self, environment):
+    def interpretar(self, tablaSimbolos):
         ### datos de bandera
+        ##hacer validacion con la variable global de Estructura
         existeNombre = False
         columnas = []
         ##primero llamo a que me traigan todos los archivos
         Estructura.load();
+        print("---------------------------------------------------------------",Estructura.Databases[0]["tables"],"----------")
         ## lo que hace de interfaz regresa el valor
         print("crear Tabla: ",self.nombre)
         print("DBB: ",Estructura.Databases)

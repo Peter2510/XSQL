@@ -40,7 +40,7 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   @ViewChild('logger') logger: any;
 
   codeMirrorOptions: any = {
-    theme: 'abcdef',
+    theme: 'dracula',
     lineNumbers: true,
     lineWrapping: true,
     matchBrackets: true,

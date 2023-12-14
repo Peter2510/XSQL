@@ -13,6 +13,7 @@ keywords = {
     'table': 'TABLE',
     'alter': 'ALTER',
     'drop': 'DROP',
+    'column': 'COLUMN',
     'truncate': 'TRUNCATE',
     'usar': 'USAR',
         
@@ -43,9 +44,14 @@ keywords = {
     'exec': 'EXEC',
     'function': 'FUNCTION',
     'if': 'IF',
+    'then': 'THEN',
+    'else': 'ELSE',
+    'elseif': 'ELSEIF',
     'return': 'RETURN',
     'returns': 'RETURNS',
     'begin': 'BEGIN',
+    'case': 'CASE',
+    'when': 'WHEN',
     'end': 'END',
     'add': 'ADD',
     'declare': 'DECLARE',
@@ -57,11 +63,13 @@ keywords = {
     'int': 'R_INT',
     'bit': 'R_BIT',
     'decimal': 'R_DECIMAL',
+
     'datetime': 'DATETIME',
     'date': 'DATE',
     
-    'references': 'REFERENCES',
-    'foreign': 'FOREIGN'  
+    'foreign': 'FOREIGN',
+    'into': 'INTO' ,
+    'values': 'VALUES' 
 }
 
 
@@ -164,6 +172,29 @@ def t_ID_DECLARE(t):
     t.type = keywords.get(t.value, 'ID_DECLARE')
     return t
 
+
+# para las fechas
+
+# Token DATETIME
+def t_DATETIMEPRIM(t):
+    r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+    try:
+        t.value = datetime.datetime.strptime(t.value, '%Y-%m-%d %H:%M:%S')
+    except ValueError:
+        print("Error en la fecha y hora")
+        t.value = None
+    return t
+
+
+def t_DATEPRIM(t):
+    r'\d{4}-\d{2}-\d{2}'
+    try:
+        t.value = datetime.datetime.strptime(t.value, '%Y-%m-%d').date()
+    except ValueError:
+        print("Error en la fecha")
+        t.value = None
+    return t
+
 ## DECIMALES
 def t_DECIMAL(t):
     r'\d+\.\d+'
@@ -196,29 +227,6 @@ def t_BITPRIM(t):
         print("Valor del entero demasiado grande %d", t.value)
         t.value = 0
     return t 
-
-
-# para las fechas
-
-# Token DATETIME
-def t_DATETIMEPRIM(t):
-    r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
-    try:
-        t.value = datetime.datetime.strptime(t.value, '%Y-%m-%d %H:%M:%S')
-    except ValueError:
-        print("Error en la fecha y hora")
-        t.value = None
-    return t
-
-
-def t_DATEPRIM(t):
-    r'\d{4}-\d{2}-\d{2}'
-    try:
-        t.value = datetime.datetime.strptime(t.value, '%Y-%m-%d').date()
-    except ValueError:
-        print("Error en la fecha")
-        t.value = None
-    return t
 
 
 ##Nueva linea

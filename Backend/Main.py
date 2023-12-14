@@ -27,7 +27,8 @@ def compilar():
         iniciarEjecucion = Ejec(pars)
         _res = iniciarEjecucion.execute(env)
         print(_res,"---------------------------- FINNNNNNNNNNN -------------")
-     
+        #ab = Program(0,0,[])
+        
         
 
         # ### solo prueba de esto

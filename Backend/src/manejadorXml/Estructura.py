@@ -65,6 +65,32 @@ def crearTabla(nombreDB, nombreTabla, parametros):
     obtener.exportDataToXML(tabla , nombreDB, None)
 
 
+
+def insertIntoTable(xml_file, table_name, values):
+    try:
+        tree = ET.parse(f"./src/data/xml/{xml_file}.xml")
+        root = tree.getroot()
+
+        # Encuentra la tabla deseada
+        table = root.find(f"./Table[@name='{table_name}']")
+        if table is None:
+            print(f"Tabla '{table_name}' no encontrada en el archivo XML.")
+            return
+
+        # Crea un nuevo elemento 'Principal' para la inserción
+        principal = ET.SubElement(table, "Principal")
+        principal.set("name", "nuevo_registro")  # Puedes establecer un nombre o identificador para el nuevo registro
+
+        # Agrega los valores proporcionados a los atributos
+        for key, value in values.items():
+            data_element = ET.SubElement(principal, key)
+            data_element.text = str(value)
+
+        # Guarda los cambios en el archivo XML
+        tree.write(xml_file, encoding="utf-8", xml_declaration=True)
+        print(f"Inserción exitosa en la tabla '{table_name}' del archivo {xml_file}.")
+    except Exception as e:
+        print(f"Error al insertar datos en el XML: {str(e)}")
 #Obtener.exportDataToXML(data_to_export, "simoon2")
 
 # Importar desde XML
@@ -75,6 +101,5 @@ def crearTabla(nombreDB, nombreTabla, parametros):
 #directory_to_import = "../data/xml/"
 #imported_data = obtener.importAllXMLsInDirectory(directory_to_import)
 #print(imported_data)
-
 
 
