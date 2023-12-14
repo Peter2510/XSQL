@@ -1,7 +1,7 @@
 from src.ejecucion.database import Database
-from src.ejecucion.symbol_ import Symbol
+from src.ejecucion.symbol import Symbol
 from prettytable import PrettyTable
-from src.ejecucion.datatype import *
+from src.ejecucion.type import *
 from datetime import datetime
 
 class Environment:
@@ -67,7 +67,7 @@ class Environment:
         
     def guardarVariable(self,name,tipo,value,father):
         valuee = value
-        if tipo == tipoDato.DATE:
+        if tipo == Type.DATE:
            valuee = datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
         self.simbolos.append(Symbol(name,tipo,valuee, father))
         env = self
