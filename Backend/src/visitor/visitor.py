@@ -1,7 +1,7 @@
 from abc import ABC
 from ..expresiones import aritmeticas, logicos, primitivos, relacional
 from ..instrucciones.funcion.function_declaration import FunctionDeclaration
-from ..instrucciones.procedure.procedure import ProcedureDeclaration
+from ..instrucciones.procedure.create_procedure import ProcedureDeclaration
 from ..instrucciones.funcion.param_function import FunctionParam
 
 

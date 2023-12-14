@@ -10,8 +10,9 @@ from src.instrucciones.usarDB import usarDB
 from src.instrucciones.drop.dropDB import dropDB
 from src.instrucciones.truncate.truncateDB import truncateDB
 from src.instrucciones.funcion.function_declaration import FunctionDeclaration
-from src.instrucciones.procedure.procedure import ProcedureDeclaration
+from instrucciones.procedure.create_procedure import ProcedureDeclaration
 from src.instrucciones.funcion.param_function import FunctionParam
+from src.instrucciones.funcion.call_function import CallFunction
 
 from src.expresiones.relacional import Relacional
 
@@ -738,14 +739,14 @@ def p_llamada_funcion(t):
     '''
     llamada_funcion : ID PARENTESIS_IZQ parametros_llamada_funcion PARENTESIS_DER
     '''
-    print("llamada_funcion",t[1],"parametros",t[3])
+    t[0] = CallFunction(t.lineno(1), find_column(input, t.slice[1]),t[1],t[3])
     
 #llamada de una funcion
 def p_llamada_funcion2(t):
     '''
     llamada_funcion : ID PARENTESIS_IZQ PARENTESIS_DER
     '''
-    print("llamada_funcion",t[1]," SIN parametros")
+    t[0] = CallFunction(t.lineno(1), find_column(input, t.slice[1]),t[1],[])
     
 #parametros de la llamada de una funcion
 def p_parametros_llamada_funcion(t):

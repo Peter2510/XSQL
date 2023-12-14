@@ -1,8 +1,8 @@
 from src.abstract.abstractas import Abstract
 
 class FunctionParam(Abstract):
-    def __init__(self, fila,columna, type_, id_):
-        super().__init__(fila,columna)
+    def __init__(self, row,column, type_, id_):
+        super().__init__(row,column)
         self.type = type_
         self.id = id_
 

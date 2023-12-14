@@ -2,7 +2,7 @@ from src.instrucciones.funcion.param_function import FunctionParam
 from src.abstract.abstractas import Abstract
 from src.ejecucion.environment import Environment
 
-class FunctionDeclaration(Abstract):
+class AlterFunction(Abstract):
     def __init__(self, row, column , id, params, type_, body):
         super().__init__(row,column)
         self.id = id
@@ -19,7 +19,7 @@ class FunctionDeclaration(Abstract):
         visitor.visit(self,environment)
             
     def interpretar(self, environment):
-        print("interpretando funcion declaracion")
+        print("interpretando funcion alter")
 
     def get_name_for_table(self) -> str:
         func_types = ','.join(str(param.type) for param in self.params)
