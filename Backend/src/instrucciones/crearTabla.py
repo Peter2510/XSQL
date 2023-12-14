@@ -99,3 +99,7 @@ class crearTabla(Abstract):
         Estructura.crearTabla(Estructura.nombreActual, self.nombre, atributosFinales)
 
         return self.nombre
+
+
+    def accept(self, visitor, environment):
+        pass

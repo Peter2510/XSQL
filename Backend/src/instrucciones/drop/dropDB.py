@@ -16,3 +16,5 @@ class dropDB(Abstract):
             print("No existe la base de datos")
         return nombre
 
+    def accept(self, visitor, environment):
+        pass

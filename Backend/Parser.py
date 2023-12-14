@@ -9,6 +9,7 @@ from src.ejecucion.type import Type
 from src.instrucciones.usarDB import usarDB
 from src.instrucciones.drop.dropDB import dropDB
 from src.instrucciones.truncate.truncateDB import truncateDB
+from src.instrucciones.insert.insert import insertInstruccion
 from src.instrucciones.funcion.funcion import Funcion
 from src.instrucciones.procedure.procedure import Procedure
 
@@ -450,28 +451,40 @@ def p_insert(t):
     insert : INSERT INTO ID PARENTESIS_IZQ column_list PARENTESIS_DER VALUES PARENTESIS_IZQ value_list PARENTESIS_DER
     '''
     ## validar FK
+    t[0] = insertInstruccion(t.lineno(3), find_column(input, t.slice[3]),t[3], t[5], t[9])
 
+def p_column_list1(t):
+    '''
+    column_list : column_list COMA ID
+    '''
+    t[1].append( t[3])
+    t[0] = t[1]
 
-def p_column_list(t):
+def p_column_list2(t):
     '''
     column_list : ID
-                | column_list COMA ID
     '''
+    t[0] = [t[1]]
+    
+def p_value_list1(t):
+    '''
+    value_list :  value_list COMA value
+    '''
+    t[1].append( t[3])
+    t[0] = t[1]
 
-
-def p_value_list(t):
+def p_value_list2(t):
     '''
     value_list : value
-                | value_list COMA value
     '''
-
-
+    t[0] = [t[1]]
 def p_value(t):
     '''
     value : STR
           | DECIMAL
           | ENTERO
     '''
+    t[0] = t[1]
 
 
 def p_delete(t):

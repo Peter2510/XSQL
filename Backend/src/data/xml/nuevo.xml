@@ -38,8 +38,8 @@
             <Atributo1 tipo="int">1</Atributo1>
             <Atributo2 nulidad="2">2</Atributo2>
             <Atributo3 restricciones="True">3</Atributo3>
-            <Atributo4 valor="4"></Atributo4>
-            <Atributo5 ingreso="4"></Atributo5>
+            <Atributo4 valor="4" />
+            <Atributo5 ingreso="4" />
         </Principal>
 
         <Principal name="id" primarykey="true" valor="1" ingreso="2">
@@ -66,6 +66,38 @@
             <Atributo1 tipo="int">1</Atributo1>
             <Atributo2 nulidad="2">2</Atributo2>
             <Atributo3 restricciones="True">3</Atributo3>
+        </Principal>
+    </Table>
+    <Table name="ssss">
+        <Principal name="idfactura">
+            <Atributo1 tipo="int">1</Atributo1>
+            <Atributo2 nulidad="2">2</Atributo2>
+            <Atributo3 restricciones="True">3</Atributo3>
+        </Principal>
+        <Principal name="fechafactura">
+            <Atributo1 tipo="date">1</Atributo1>
+            <Atributo2 nulidad="0">2</Atributo2>
+            <Atributo3 restricciones="True">3</Atributo3>
+        </Principal>
+        <Principal name="nit">
+            <Atributo1 tipo="NVARCHAR(20)">1</Atributo1>
+            <Atributo2 nulidad="0">2</Atributo2>
+            <Atributo3 restricciones="True">3</Atributo3>
+        </Principal>
+        <Principal name="nombrecliente">
+            <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
+            <Atributo2 nulidad="0">2</Atributo2>
+            <Atributo3 restricciones="True">3</Atributo3>
+        </Principal>
+        <Principal name="nuevo_registro">
+            <Atributo1>valor1</Atributo1>
+            <Atributo2>valor2</Atributo2>
+            <Atributo3>valor3</Atributo3>
+        </Principal>
+        <Principal name="nuevo_registro">
+            <Atributo1>a</Atributo1>
+            <Atributo2>b</Atributo2>
+            <Atributo3>c</Atributo3>
         </Principal>
     </Table>
 </Database>

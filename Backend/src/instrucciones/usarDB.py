@@ -9,6 +9,9 @@ class usarDB(Abstract):
         self.nombre = nombre
         super().__init__(fila, columna)
 
+    def accept(self, visitor, environment):
+        pass
+
     def interpretar(self,environment):
         nombre = self.nombre
         Estructura.nombreActual = nombre
