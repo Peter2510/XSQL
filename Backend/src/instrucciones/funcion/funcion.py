@@ -10,6 +10,11 @@ class Funcion(Abstract):
         self.instrucciones = instrucciones
         super().__init__(fila, columna)
 
+    def accept(self, visitor, environment):
+        ##validacioens
+        print("Ejecutar validaciones de la funcion")
+        pass
+
     def interpretar(self, tablaSimbolos):
         print("Ejecutar Funcion: nombre:",self.nombre,self.listaParametros,self.tipoDato)
 
