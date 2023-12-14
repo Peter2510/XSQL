@@ -92,3 +92,4 @@ Werkzeug==3.0.1
 # youtube-dl==2021.12.17
 # zipp==1.0.0
 prettytable==3.9.0
+pandas==2.1.4
