@@ -1,5 +1,8 @@
 from abc import ABC
 from ..expresiones import aritmeticas, logicos, primitivos, relacional
+from ..instrucciones.funcion.function_declaration import FunctionDeclaration
+from ..instrucciones.procedure.procedure import ProcedureDeclaration
+from ..instrucciones.funcion.param_function import FunctionParam
 
 
 class Visitor(ABC):
@@ -19,6 +22,12 @@ class Visitor(ABC):
             self.visitPrimitivo(node, environment)
         elif isinstance(node, relacional.Relacional):
             self.visitRelacional(node, environment)
+        elif isinstance(node,FunctionDeclaration):
+            self.visitFunctionDeclaration(node,environment)
+        elif isinstance(node,ProcedureDeclaration):
+            self.visitProcedure(node,environment)
+        elif isinstance(node, FunctionParam):
+            self.visitFunctionParam(node, environment)
 
     def visitAritmeticas(self, node, environment):
         pass
@@ -30,4 +39,13 @@ class Visitor(ABC):
         pass
 
     def visitRelacional(self, node, environment):
+        pass
+    
+    def visitFunctionDeclaration(self,node,environment):
+        pass
+    
+    def visitProcedure(self,node,environment):
+        pass
+
+    def visitFunctionParam(self,node,environment):
         pass

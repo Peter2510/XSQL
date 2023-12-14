@@ -8,6 +8,7 @@ from flask.helpers import url_for
 from werkzeug.utils import redirect
 from Lexer import tokens, lexer, errores, find_column
 from src.visitor import ExpressionsVisitor
+from src.visitor.function_declaration_visitor import FunctionDeclarationsVisitor
 
 
 
@@ -22,13 +23,15 @@ def saludo():
 def compilar():
     if request.method == "POST":
 
-        env = Environment(None)
-        visitorExpressions = ExpressionsVisitor(env)
         entrada = request.data.decode("utf-8")
         entrada = json.loads(entrada)
         pars = parse(entrada.lower())
+        env = Environment(None)
+        visitorExpressions = ExpressionsVisitor(env)
+        visitorFunctionDeclaration = FunctionDeclarationsVisitor(env)
         # Validaciones
         pars.accept(visitorExpressions, env)
+        pars.accept(visitorFunctionDeclaration, env)
         #
         iniciarEjecucion = Ejec(pars.statements)
         _res = iniciarEjecucion.execute(env)

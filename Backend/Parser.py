@@ -9,8 +9,9 @@ from src.ejecucion.type import Type
 from src.instrucciones.usarDB import usarDB
 from src.instrucciones.drop.dropDB import dropDB
 from src.instrucciones.truncate.truncateDB import truncateDB
-from src.instrucciones.funcion.funcion import Funcion
-from src.instrucciones.procedure.procedure import Procedure
+from src.instrucciones.funcion.function_declaration import FunctionDeclaration
+from src.instrucciones.procedure.procedure import ProcedureDeclaration
+from src.instrucciones.funcion.param_function import FunctionParam
 
 from src.expresiones.relacional import Relacional
 
@@ -608,14 +609,14 @@ def p_funcion_usuario(t):  #con parametros
     ''' 
     crear_funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ parametros_funcion PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
     '''
-    t[0] = Funcion(t.lineno(1),find_column(input,t.slice[1]),t[3],t[5],t[8],t[11])
-      
+    t[0] = FunctionDeclaration(t.lineno(1),find_column(input,t.slice[1]),t[3],t[5],t[8],t[11])
+
 
 def p_funcion_usuario2(t):  #sin parametros
     '''
     crear_funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
     '''
-    t[0] = Funcion(t.lineno(1), find_column(input, t.slice[1]), t[3], [], t[7],t[10])
+    t[0] = FunctionDeclaration(t.lineno(1), find_column(input, t.slice[1]), t[3], [], t[7],t[10])
     
 ##PARAMETROS DE LAS FUNCIONES
 def p_parametros_funcion(t):
@@ -636,9 +637,9 @@ def p_parametro_funcion(t): # @id tipoDato
     '''
     parametro_funcion : ID_DECLARE tipo_dato_parametro 
     '''
-    t[0] = [t[1]]
-    print('--------------------------parametro funcion',t[1],t[2])
+    t[0] = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
     
+        
 #tipo de dato del parametro 
 def p_tipo_dato_parametro(t):
     '''
@@ -776,7 +777,7 @@ def p_procedure(t):
     '''
     crear_procedure : CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END 
     '''
-    t[0] = Procedure(t.lineno(1), find_column(input, t.slice[1]),t[3],t[5],t[8])
+    t[0] = ProcedureDeclaration(t.lineno(1), find_column(input, t.slice[1]),t[3],t[5],t[8])
     
     
     
@@ -785,7 +786,7 @@ def p_procedure2(t):
     '''
     crear_procedure : CREATE PROCEDURE ID PARENTESIS_IZQ PARENTESIS_DER AS BEGIN sentencias_funciones END 
     '''
-    t[0] = Procedure(t.lineno(1), find_column(input, t.slice[1]),t[3],[],t[7])
+    t[0] = ProcedureDeclaration(t.lineno(1), find_column(input, t.slice[1]),t[3],[],t[7])
     
 #ALTER PROCEDURE
 def p_alter_procedure(t):
@@ -979,7 +980,7 @@ def p_error(p):
 input = ''
 
 def parse(inp):
-    print(inp)
+    #print(inp)
     global errores
     global parser
     errores = []
