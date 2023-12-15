@@ -3,10 +3,11 @@ from src.abstract.abstractas import Abstract
 from src.ejecucion.environment import Environment
 
 class StmCase(Abstract):
-    def __init__(self, row, column,list_when,else_case):
+    def __init__(self, row, column,list_when,else_case,alias):
         super().__init__(row,column)
         self.list_when = list_when
         self.else_case = else_case
+        self.alias = alias
 
     def accept(self, visitor, environment = None):
         for param in self.params:

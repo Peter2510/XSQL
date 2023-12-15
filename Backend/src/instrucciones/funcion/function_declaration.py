@@ -9,7 +9,7 @@ class FunctionDeclaration(Abstract):
         self.params = params
         self.type = type_
         self.body = body
-        self.name_for_table = self.get_name_for_table()
+        #self.name_for_table = self.get_name_for_table()
         self.table = Environment(f"funcion {id}")
         self.table.returned_type = self.type
 

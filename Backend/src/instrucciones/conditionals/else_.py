@@ -3,9 +3,8 @@ from src.abstract.abstractas import Abstract
 
 class Else_(Abstract):
     
-    def __init__(self, row, column,condition, instructions):
+    def __init__(self, row, column, instructions):
         super().__init__(row,column)
-        self.condition = condition
         self.instructions = instructions
         
         

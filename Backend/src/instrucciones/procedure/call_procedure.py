@@ -7,6 +7,9 @@ class CallProcedure(Abstract):
         self.nombre = nombre
         self.listaParametros = listaParametros
         super().__init__(fila, columna)
+        
+    def accept(self, visitor, environment):
+        visitor.visit(self, environment)
 
     def interpretar(self, environment):
         print("Ejecutar Llamada PROCECURE nombre:",self.nombre)

@@ -2,9 +2,10 @@ from src.instrucciones.funcion.param_function import FunctionParam
 from src.abstract.abstractas import Abstract
 from src.ejecucion.environment import Environment
 
-class StmIF(Abstract):
-    def __init__(self, row, column,list_elseif,else_):
+class StmIf(Abstract):
+    def __init__(self, row, column,_if,list_elseif,else_):
         super().__init__(row,column)
+        self._if = _if
         self.list_elseif = list_elseif
         self.else_ = else_
 
