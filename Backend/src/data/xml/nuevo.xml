@@ -89,15 +89,5 @@
             <Atributo2 nulidad="0">2</Atributo2>
             <Atributo3 restricciones="True">3</Atributo3>
         </Principal>
-        <Principal name="nuevo_registro">
-            <Atributo1>valor1</Atributo1>
-            <Atributo2>valor2</Atributo2>
-            <Atributo3>valor3</Atributo3>
-        </Principal>
-        <Principal name="nuevo_registro">
-            <Atributo1>a</Atributo1>
-            <Atributo2>b</Atributo2>
-            <Atributo3>c</Atributo3>
-        </Principal>
-    </Table>
+        </Table>
 </Database>

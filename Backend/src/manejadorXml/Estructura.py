@@ -92,6 +92,44 @@ def insertTabla(xml_file, table_name, values):
         print(f"Inserción exitosa en la tabla '{table_name}' del archivo {xml_file}.")
     except Exception as e:
         print(f"Error al insertar datos en el XML: {str(e)}")
+
+
+
+## ver lo del truncate
+def truncateTable(xmlPath, nombreTabla):
+    tree = ET.parse(xmlPath)
+    root = tree.getroot()
+    for table in root.findall(".//Table[@name='{}']".format(nombreTabla)):
+        table.clear()
+
+    tree.write(xmlPath, encoding="utf-8", xml_declaration=True)
+
+
+
+## para que agregue columnas 
+
+def alterColumnadd(xmlArchivo, nombreTabla, nombreColumna, tipoColumna):
+    tree = ET.parse(xmlArchivo)
+    root = tree.getroot()
+
+
+    for table in root.findall(".//Table[@name='{}']".format(nombreTabla)):
+        nuevaColumna = ET.SubElement(table,"Principal", name=nombreColumna)
+        atributo1=ET.SubElement(nuevaColumna, "Atributo1")
+        atributo1.text = tipoColumna
+    tree.write(xmlArchivo, encoding="utf-8", xml_declaration=True)
+
+def alterColumnDrop(xmlArchivo, nombreTabla, nombreColumna):
+    tree = ET.parse(xmlArchivo)
+    root = tree.getroot()
+
+
+    for table in root.findall(".//Table[@name='{}']".format(nombreTabla)):
+        for column in table.findall(".//Principal[@name='{}']".format(nombreColumna)):
+            table.remove(column)
+
+    tree.write(xmlArchivo, encoding="utf-8", xml_declaration=True)
+
 #Obtener.exportDataToXML(data_to_export, "simoon2")
 
 # Importar desde XML
