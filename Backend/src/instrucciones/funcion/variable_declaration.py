@@ -1,0 +1,16 @@
+from src.abstract.abstractas import Abstract
+
+class VariableDeclaration(Abstract):
+    def __init__(self, row,column, type_, id_):
+        super().__init__(row,column)
+        self.type = type_
+        self.id = id_
+
+    def accept(self, visitor, environment):
+        #if environment is not None:
+        #    visitor.environment = environment
+        #self.id.accept(visitor, environment)
+        visitor.visit(self,environment)
+        
+    def interpretar(self,environment):
+        print("interpretando declaracion de variable")

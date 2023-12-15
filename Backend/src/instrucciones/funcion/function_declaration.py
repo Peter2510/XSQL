@@ -14,8 +14,8 @@ class FunctionDeclaration(Abstract):
         self.table.returned_type = self.type
 
     def accept(self, visitor, environment = None):
-        for param in self.params:
-           param.accept(visitor, self.table)          
+        # for param in self.params:
+        #    param.accept(visitor, self.table)          
         visitor.visit(self,environment)
             
     def interpretar(self, environment):

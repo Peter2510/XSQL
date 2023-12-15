@@ -26,6 +26,10 @@ from src.instrucciones.procedure.alter_procedure import AlterProcedure
 from src.instrucciones.case.else_case import ElseCase
 from src.instrucciones.case.stm_case import StmCase
 from src.instrucciones.case.when import When
+from src.instrucciones.funcion.set import Set_
+from src.instrucciones.funcion.return_ import Return_
+from src.instrucciones.funcion.set import Set_
+from src.instrucciones.funcion.variable_declaration import VariableDeclaration
 
 
 from src.expresiones.relacional import Relacional
@@ -631,7 +635,7 @@ def p_funcion_usuario2(t):  #sin parametros
     '''
     crear_funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
     '''
-    t[0] = FunctionDeclaration(t.lineno(1), find_column(input, t.slice[1]), t[3], None, t[7],t[10])
+    t[0] = FunctionDeclaration(t.lineno(1), find_column(input, t.slice[1]), t[3], None, t[6],t[9])
     
 #ALTER FUNCTION
 def p_alter_funcion_usuario(t):  #con parametros
@@ -645,7 +649,7 @@ def p_alter_funcion_usuario2(t):  #sin parametros
     '''
     alter_funcion_usuario : ALTER FUNCTION ID PARENTESIS_IZQ PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
     '''
-    t[0] = AlterFunction(t.lineno(1), find_column(input, t.slice[1]), t[3], None, t[7],t[10])
+    t[0] = AlterFunction(t.lineno(1), find_column(input, t.slice[1]), t[3], None, t[6],t[9])
     
 ##PARAMETROS DE LAS FUNCIONES
 def p_parametros_funcion(t):
@@ -736,15 +740,17 @@ def p_declaracion_variable(t):
     '''
     declaracion_variable : ID_DECLARE tipo_dato_variable 
     '''
-    t[0] = [t[1]]
-    #print("declaracion varialbe",t[1],t[2])
+    declaracion_v =  VariableDeclaration(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
+    t[0] = [declaracion_v]
+
     
 def p_set_variable_funcion(t):
     '''
     set_variable_funcion : SET ID_DECLARE ASIGNACION asignacion_set PUNTO_Y_COMA
     '''
-    t[0] = [t[1]]
-    #print("set_variable_funcion","variable:",t[2],"valor:",t[4])
+    set_= Set_(t.lineno(1), find_column(input, t.slice[1]),t[2],t[4])
+    t[0] = [set_]
+    
     
 #asignacion set
 def p_asignacion_set(t):
@@ -759,8 +765,9 @@ def p_return(t):
     '''
     return : RETURN expresion PUNTO_Y_COMA
     '''
-    t[0] = t[2]
-    #print("return",t[2])
+    ret = Return_(t.lineno(1), find_column(input, t.slice[1]),t[2])
+    t[0] = [ret]
+    
     
 #llamada de una funcion
 def p_llamada_funcion(t):
@@ -997,8 +1004,10 @@ def p_when_clauses(t):
     '''
     when_clauses : when_clauses WHEN expresion THEN expresion
     '''
-    when = When(t.lineno(1), find_column(input, t.slice[1]), t[3], t[5])
-    t[0] = t[1].append(when)
+    when = When(t.lineno(1), find_column(input, t.slice[2]), t[3], t[5])
+    t[1].append(when)
+    t[0] = t[1]
+    
     
 
 def p_when_clauses2(t):

@@ -96,7 +96,7 @@ END;
 
 alter Procedure JD ( @id int, @nombre varchar(20), @apellido varchar(20), @edad int) as
 Begin
-Declare @SumaProducto decimal(10,2);
+Declare @SumaProducto decimal;
 Set @SumaProducto = retornaSuma(1);
 end;
 
