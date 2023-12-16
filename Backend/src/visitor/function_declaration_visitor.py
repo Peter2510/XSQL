@@ -8,5 +8,8 @@ class FunctionDeclarationsVisitor(Visitor):
     def visitFunctionDeclaration(self, node, environment):
         print("HACER COMPROBACIONES CON FUNCIONES DECLARACIONES")
         
+    def visitFunctionParam(self, node, environment):
+        print("ENTRANDO AL VISITOR DEL PARAMETRO")
+        
     
     
