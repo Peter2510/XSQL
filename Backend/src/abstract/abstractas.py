@@ -7,5 +7,9 @@ class Abstract(ABC):
         self.columna = columna
     
     @abstractmethod
+    def accept(self, visitor, environment):
+        pass
+
+    @abstractmethod
     def interpretar(self, environment):
         pass

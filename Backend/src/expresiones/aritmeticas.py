@@ -2,12 +2,18 @@
 
 from ..abstract.expresion import Expression
 class Aritmeticas(Expression):
-    def __init__(self, fila, columna, opIzq, opDer, tipoOp):
+    def __init__(self, fila, columna, opIzq, opDer, tipoOp, tipo = None):
         super().__init__(fila, columna)
         self.opIzq = opIzq
         self.opDer = opDer
         self.tipoOp = tipoOp
-    
+        self.tipo = tipo
+
+
+    def accept(self, visitor, environment):
+        self.opIzq.accept(visitor, environment)
+        self.opDer.accept(visitor, environment)
+        visitor.visit(self, environment)
 
     def interpretar(self, environment):
         ## esto es como una funcion que se deriva, asi obtienes los numeros como tal

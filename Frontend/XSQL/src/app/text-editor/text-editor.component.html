@@ -1,0 +1,16 @@
+<div class="row mb-2">
+  <div class="col">
+    <div class="ngx-codemirror">
+      <ngx-codemirror [options]="codeMirrorOptions" [(ngModel)]="content" #cm>
+      </ngx-codemirror>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="grid">
+      <span class="lead text-light">ln: {{ line }} col: {{ column }}</span>
+    </div>
+  </div>
+</div>
+

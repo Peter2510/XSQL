@@ -1,8 +1,0 @@
-CREATE TABLE Persona (
-ID int NOT NULL PRIMARY KEY,
-PrimerNombre varchar(150) NOT NULL,
-SegundoNombre varchar(150) NULL,
-FechaNacimiento datetime,
-Identificacion int,
-order int references per
-);
