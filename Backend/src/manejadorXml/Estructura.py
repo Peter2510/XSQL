@@ -78,14 +78,24 @@ def insertTabla(xml_file, table_name, values):
             print(f"Tabla '{table_name}' no encontrada en el archivo XML.")
             return
 
-        # Crea un nuevo elemento 'Principal' para la inserción
-        principal = ET.SubElement(table, "Principal")
-        principal.set("name", "nuevo_registro")  # Puedes establecer un nombre o identificador para el nuevo registro
+        existing_data = table.find("./Datos[@name='nuevo_registro']")
+        if existing_data is not None:
+            # Crea un nuevo elemento para cada clave y valor proporcionado
+            datosEtiqueta = ET.SubElement(existing_data, "DatosEspecifico")
+            for key, value in values.items():
+                data_element = ET.SubElement(datosEtiqueta, key)
+                data_element.text = str(value)
+        else:
+            # Crea una nueva etiqueta 'Datos' con los valores proporcionados
+            principal = ET.SubElement(table, "Datos")
+            principal.set("name", "nuevo_registro")
+            datosEtiqueta = ET.SubElement(principal, "DatosEspecifico")
 
-        # Agrega los valores proporcionados a los atributos
-        for key, value in values.items():
-            data_element = ET.SubElement(principal, key)
-            data_element.text = str(value)
+            # Agrega los valores proporcionados a los atributos
+            for key, value in values.items():
+                data_element = ET.SubElement(datosEtiqueta, key)
+                data_element.text = str(value)
+
 
         # Guarda los cambios en el archivo XML
         tree.write(xml_file, encoding="utf-8", xml_declaration=True)

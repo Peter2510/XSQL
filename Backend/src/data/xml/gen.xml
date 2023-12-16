@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Database name="gen">
+    <Table name="tbfactura">
+        <Estructura>
+            <Principal name="idfactura">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="fechafactura">
+                <Atributo1 tipo="date">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="nit">
+                <Atributo1 tipo="NVARCHAR(20)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="nombrecliente">
+                <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="referencia">
+                <Atributo1 tipo="NVARCHAR(10)">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+        </Estructura>
+        <Datos name="nuevo_registro">
+            <DatosEspecifico>
+                <id>3467</id>
+                <nombre>jorge enriquez</nombre>
+                <bandera>4444</bandera>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <id>347</id>
+                <nombre>jorge enriquez</nombre>
+                <bandera>4444</bandera>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <id>2</id>
+                <nombre>julio lopez</nombre>
+                <bandera>1</bandera>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <id>3</id>
+                <nombre>julio lopez</nombre>
+                <bandera>1</bandera>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <id>4</id>
+                <nombre>julio lopez</nombre>
+                <bandera>1</bandera>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <id>5</id>
+                <nombre>julio lopez</nombre>
+                <bandera>1</bandera>
+            </DatosEspecifico>
+        <DatosEspecifico><id>6</id><nombre>julio lopez</nombre><bandera>1</bandera></DatosEspecifico></Datos>
+    </Table>
+    <Table name="tbfactura2">
+        <Estructura>
+            <Principal name="idfactura">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="fechafactura">
+                <Atributo1 tipo="date">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="nit">
+                <Atributo1 tipo="NVARCHAR(20)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="nombrecliente">
+                <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="referencia">
+                <Atributo1 tipo="NVARCHAR(10)">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+        </Estructura>
+        <Datos name="nuevo_registro">
+            <DatosEspecifico>
+                <id>3456</id>
+                <nombre>jorge enriquez</nombre>
+                <bandera>4444</bandera>
+            </DatosEspecifico>
+        </Datos>
+    </Table>
+    <Table name="tbfactura3">
+        <Estructura>
+            <Principal name="idfactura">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="fechafactura">
+                <Atributo1 tipo="date">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="nit">
+                <Atributo1 tipo="NVARCHAR(20)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="nombrecliente">
+                <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="referencia">
+                <Atributo1 tipo="NVARCHAR(10)">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+        </Estructura>
+        <Datos name="nuevo_registro">
+            <DatosEspecifico>
+                <id>1</id>
+                <nombre>julio lopez</nombre>
+                <bandera>1</bandera>
+            </DatosEspecifico>
+        </Datos>
+    </Table>
+</Database>
