@@ -61,7 +61,11 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-       
+    this.compilar.saludo().subscribe(
+      info => {
+        console.log(info);
+      }
+    )
   }
 
   /*graphvizImg(dot: string) {
@@ -110,9 +114,9 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       this.compilar.ejecutarSQL(main.content).subscribe(data=>{
         console.log(data);
       })
-      
+
       this.resultHost.viewContainerRef.clear();
-            
+
     }
   }
 
