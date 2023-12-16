@@ -1,8 +1,9 @@
 from ...abstract.abstractas import Abstract
-import os
+import pandas as pd
+import os 
+from ...manejadorXml import manejo, Estructura, obtener
 
-
-class dropDB(Abstract):
+class truncateTabla(Abstract):
     
     def __init__(self, fila, columna, nombre):
         self.nombre = nombre
@@ -10,11 +11,11 @@ class dropDB(Abstract):
 
     def interpretar(self,environment):
         nombre = self.nombre
-        if os.path.exists(f'./src/data/xml/{nombre}.xml'):
-            os.remove(f'./src/data/xml/{nombre}.xml')
-        else:
-            print("No existe la base de datos")
-        return nombre
+
+        Estructura.truncateTable(f'./src/data/xml/{Estructura.nombreActual}.xml',self.nombre)
+
+
+
 
     def accept(self, visitor, environment):
         pass

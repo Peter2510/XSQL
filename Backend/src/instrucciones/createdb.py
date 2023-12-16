@@ -32,3 +32,7 @@ class createDB(Abstract):
             return {'Error': "La base de datos " + nombre + " ya existe.", 'Fila': self.fila, 'Columna': self.columna}
         else:
             return {'Error': "Error en el almacenamiento.", 'Fila': self.fila, 'Columna': self.columna}
+
+
+    def accept(self, visitor, environment):
+        pass

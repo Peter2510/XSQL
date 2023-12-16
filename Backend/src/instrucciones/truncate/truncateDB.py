@@ -19,3 +19,5 @@ class truncateDB(Abstract):
 
         # Guardar el resultado en un nuevo archivo XML
         tree.write(f'./src/data/xml/{nombre}.xml', encoding='utf-8', xml_declaration=True)
+    def accept(self, visitor, environment):
+        pass

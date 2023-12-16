@@ -9,6 +9,9 @@ from src.ejecucion.type import Type
 from src.instrucciones.usarDB import usarDB
 from src.instrucciones.drop.dropDB import dropDB
 from src.instrucciones.truncate.truncateDB import truncateDB
+from src.instrucciones.truncate.truncateTabla import truncateTabla
+from src.instrucciones.Alter.alterTable import alterTable
+from src.instrucciones.insert.insert import insertInstruccion
 from src.instrucciones.funcion.funcion import Funcion
 from src.instrucciones.procedure.procedure import Procedure
 
@@ -219,17 +222,22 @@ def p_restriccion_parametro3(t): #normal -> 0
 #DROP TABLE tbproducts
 def p_alterTable(t):
     '''
-    alterTable : ALTER TABLE expresion opcionAlter 
+    alterTable : ALTER TABLE ID opcionAlter 
     '''
     print("ALTER TABLE",t[3],t[4])
+    t[0] = alterTable(t.lineno(3), find_column(input, t.slice[3]),t[3],t[4])
 
-def p_opcionesAlter(t):
+def p_opcionesAlter1(t):
     '''
-    opcionAlter : ADD  COLUMN expresion tipo_dato
-                | DROP COLUMN expresion 
-                
+    opcionAlter : ADD  COLUMN ID tipo_dato
     '''
+    t[0] = [t[3], t[4]]
 
+def p_opcionesAlter2(t):
+    '''
+    opcionAlter :  DROP COLUMN ID 
+    '''
+    t[0]=t[3]
 ## seccion del drop 
 ## para el drop bueno no se si se elmina metodos y funciones ?
 def p_drop(t):
@@ -250,6 +258,12 @@ def p_truncate(t):
     opcionTruncate : TRUNCATE ID
     ''' 
     t[0] = truncateDB(t.lineno(2), find_column(input, t.slice[2]),t[2])
+
+def p_truncate2(t):
+    '''
+    opcionTruncate : TRUNCATE TABLE ID
+    ''' 
+    t[0] = truncateTabla(t.lineno(3), find_column(input, t.slice[3]),t[3])
 
 #### SECCION DE PARAMETROS
 def p_parametros1(t):
@@ -450,28 +464,40 @@ def p_insert(t):
     insert : INSERT INTO ID PARENTESIS_IZQ column_list PARENTESIS_DER VALUES PARENTESIS_IZQ value_list PARENTESIS_DER
     '''
     ## validar FK
+    t[0] = insertInstruccion(t.lineno(3), find_column(input, t.slice[3]),t[3], t[5], t[9])
 
+def p_column_list1(t):
+    '''
+    column_list : column_list COMA ID
+    '''
+    t[1].append( t[3])
+    t[0] = t[1]
 
-def p_column_list(t):
+def p_column_list2(t):
     '''
     column_list : ID
-                | column_list COMA ID
     '''
+    t[0] = [t[1]]
+    
+def p_value_list1(t):
+    '''
+    value_list :  value_list COMA value
+    '''
+    t[1].append( t[3])
+    t[0] = t[1]
 
-
-def p_value_list(t):
+def p_value_list2(t):
     '''
     value_list : value
-                | value_list COMA value
     '''
-
-
+    t[0] = [t[1]]
 def p_value(t):
     '''
     value : STR
           | DECIMAL
           | ENTERO
     '''
+    t[0] = t[1]
 
 
 def p_delete(t):

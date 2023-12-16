@@ -8,6 +8,7 @@ from flask.helpers import url_for
 from werkzeug.utils import redirect
 from Lexer import tokens, lexer, errores, find_column
 from src.visitor import ExpressionsVisitor
+from src.manejadorXml import  Estructura 
 
 
 
@@ -16,7 +17,8 @@ CORS(app)
 
 @app.route('/saludo',methods=["GET"])
 def saludo():
-    return {'mensaje':'Hola mundo!'}
+    Estructura.load();
+    return Estructura.Databases
 
 @app.route('/ejecutar',methods=["POST","GET"])
 def compilar():
