@@ -28,39 +28,7 @@
                 <Atributo3 restricciones="True">3</Atributo3>
             </Principal>
         </Estructura>
-        <Datos name="nuevo_registro">
-            <DatosEspecifico>
-                <id>3467</id>
-                <nombre>jorge enriquez</nombre>
-                <bandera>4444</bandera>
-            </DatosEspecifico>
-            <DatosEspecifico>
-                <id>347</id>
-                <nombre>jorge enriquez</nombre>
-                <bandera>4444</bandera>
-            </DatosEspecifico>
-            <DatosEspecifico>
-                <id>2</id>
-                <nombre>julio lopez</nombre>
-                <bandera>1</bandera>
-            </DatosEspecifico>
-            <DatosEspecifico>
-                <id>3</id>
-                <nombre>julio lopez</nombre>
-                <bandera>1</bandera>
-            </DatosEspecifico>
-            <DatosEspecifico>
-                <id>4</id>
-                <nombre>julio lopez</nombre>
-                <bandera>1</bandera>
-            </DatosEspecifico>
-            <DatosEspecifico>
-                <id>5</id>
-                <nombre>julio lopez</nombre>
-                <bandera>1</bandera>
-            </DatosEspecifico>
-        <DatosEspecifico><id>6</id><nombre>julio lopez</nombre><bandera>1</bandera></DatosEspecifico></Datos>
-    </Table>
+        </Table>
     <Table name="tbfactura2">
         <Estructura>
             <Principal name="idfactura">
@@ -125,12 +93,5 @@
                 <Atributo3 restricciones="True">3</Atributo3>
             </Principal>
         </Estructura>
-        <Datos name="nuevo_registro">
-            <DatosEspecifico>
-                <id>1</id>
-                <nombre>julio lopez</nombre>
-                <bandera>1</bandera>
-            </DatosEspecifico>
-        </Datos>
-    </Table>
+        </Table>
 </Database>

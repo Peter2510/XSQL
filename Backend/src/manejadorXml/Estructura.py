@@ -105,7 +105,8 @@ def truncateTable(xmlPath, nombreTabla):
     tree = ET.parse(xmlPath)
     root = tree.getroot()
     for table in root.findall(".//Table[@name='{}']".format(nombreTabla)):
-        table.clear()
+        for valores in table.findall("Datos"):
+            table.remove(valores)
 
     tree.write(xmlPath, encoding="utf-8", xml_declaration=True)
 

@@ -18,12 +18,5 @@
                 <Atributo3 restricciones="True">3</Atributo3>
             </Principal>
         </Estructura>
-        <Datos name="nuevo_registro">
-            <DatosEspecifico>
-                <id>3</id>
-                <nombre>carla perez</nombre>
-                <bandera>1</bandera>
-            </DatosEspecifico>
-        </Datos>
-    </Table>
+        </Table>
 </Database>

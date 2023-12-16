@@ -12,9 +12,9 @@ class truncateDB(Abstract):
         tree = ET.parse(f'./src/data/xml/{nombre}.xml')
         root = tree.getroot()
 
-        # Obtener todas las etiquetas <Table> y eliminar las etiquetas <Principal> dentro de ellas
+        # Obtener todas las etiquetas <Table> 
         for table in root.findall(".//Table"):
-            for principal in table.findall("Principal"):
+            for principal in table.findall("Datos"):
                 table.remove(principal)
 
         # Guardar el resultado en un nuevo archivo XML
