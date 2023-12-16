@@ -104,7 +104,7 @@ def importAllXMLsInDirectory(directory):
                             attributes = {}
                             for attribute in principal.findall("*"):
                                 attributes[attribute.tag] = attribute.attrib
-                            structure_data[principal_name] = attributes
+                            structure_data[principal_name] = {"nombre":principal_name,"caracteristicas":attributes}
                         table_data['estructura'] = structure_data
 
                     # Obtener los datos específicos

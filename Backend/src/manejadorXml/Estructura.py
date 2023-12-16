@@ -4,6 +4,8 @@ nombreActual = ""
 import json
 import xml.etree.ElementTree as ET
 
+
+### metodo para cargar toda la info 
 def load():
     global Databases
     global nombreActual
@@ -27,13 +29,6 @@ def createDatabase(name):
         return 0
     except:
         return 1
-
-
-# Exportar a XML
-data_to_export = {
-    'tabla1': {"producto": "nuevo", "precio": 1},
-    'tabla2': {"producto": "simon", "precio": 3}
-}
 
 
 ##metodo para crear tablas:
