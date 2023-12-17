@@ -14,7 +14,18 @@ from src.instrucciones.procedure.procedure import Procedure
 
 from src.expresiones.relacional import Relacional
 
-from src.ast import Program, Select
+from src.ast import (
+    Program, Select, FromClause, Table, WhereClause, AllColumns,
+    TableColumn, ColumnAssignments, Update, Delete, AliasSelect, SelectAssign
+)
+
+from src.funciones.cast import Cas
+from src.funciones.concatena import Concatenar
+from src.funciones.suma import Suma
+from src.funciones.contar import Contar
+from src.funciones.subatraer import Substraer
+from src.funciones.hoy import Hoy
+
 ## establecer precedencias
 
 precedence = (
@@ -276,7 +287,7 @@ def p_parametros3(t):
 ################### DML ###################
 def p_empty(t):
     'empty :'
-    pass
+    t[0] = None
 
 def p_dml(t):
     '''
@@ -298,8 +309,7 @@ def p_from_table_opt(t):
     '''
     from_table_opt : FROM table condition_opt
     '''
-    t[0] = [None, None]
-    #TODO: Agregar nodos
+    t[0] = [FromClause(fila=t.lineno(1), columna=find_column(input, t.slice[1]), tables=t[2]), t[3]]
 
 
 def p_from_table_opt_1(t):
@@ -313,14 +323,23 @@ def p_from_table_opt_1(t):
 def p_condition_opt(t):
     '''
     condition_opt : WHERE expresion
-                    | empty
     '''
+    t[0] = WhereClause(fila=t.lineno(1), columna=find_column(input, t.slice[1]), expr=t[2])
+
+
+def p_condition_opt_1(t):
+    '''
+    condition_opt: empty
+    '''
+    t[0] = t[1]
 
 
 def p_select_list(t):
     '''
     select_list : POR
     '''
+    t[0] = AllColumns(fila=t.lineno(1), columna=find_column(input, t.slice[1]))
+
 
 def p_select_list_1(t):
     '''
@@ -348,30 +367,35 @@ def p_select_item(t):
     '''
     select_item : ID
     '''
+    t[0] = TableColumn(fila=t.lineno(1), columna=find_column(input, t.slice[1]), id=t[1])
 
 
 def p_select_item_1(t):
     '''
     select_item : ID PUNTO ID
     '''
+    t[0] = TableColumn(fila=t.lineno(1), columna=find_column(input, t.slice[1]), id=t[3], table=t[1])
 
 
 def p_select_item_2(t):
     '''
     select_item : ID_DECLARE ASIGNACION funciones_sistema
     '''
+    t[0] = SelectAssign(fila=t.lineno(1), columna=find_column(input, t.slice[1]), variable=t[1], function=t[3])
 
 
 def p_select_item_3(t):
     '''
     select_item : funciones_sistema
     '''
+    t[0] = t[1]
 
 
 def p_select_item_4(t):
     '''
     select_item : expresion ID
     '''
+    t[0] = AliasSelect(fila=t.lineno(1), columna=find_column(input, t.slice[1]), id=t[2], expr=t[1])
 
 
 def p_select_item_6(t):
@@ -383,20 +407,45 @@ def p_select_item_6(t):
 def p_funciones_sistema(t):
     '''
     funciones_sistema : CONCATENA PARENTESIS_IZQ STR COMA STR PARENTESIS_DER
-            | SUBSTRAER PARENTESIS_IZQ STR COMA ENTERO COMA ENTERO PARENTESIS_DER
-            | HOY PARENTESIS_IZQ PARENTESIS_DER
-            | CONTAR PARENTESIS_IZQ POR PARENTESIS_DER
-            | SUMA PARENTESIS_IZQ param_suma PARENTESIS_DER
-            | CAS PARENTESIS_IZQ cas_value AS valor PARENTESIS_DER
     '''
+    t[0] = Concatenar(fila=t.lineno(1), columna=find_column(input, t.slice[1]), opIzq=t[3], opDer=t[5])
 
+def p_funciones_sistema1(t):
+    '''
+    funciones_sistema : SUBSTRAER PARENTESIS_IZQ STR COMA ENTERO COMA ENTERO PARENTESIS_DER
+    '''
+    t[0] = Substraer(fila=t.lineno(1), columna=find_column(input, t.slice[1]), value=t[3], start=t[5], end=t[7])
+
+def p_funciones_sistema2(t):
+    '''
+    funciones_sistema : HOY PARENTESIS_IZQ PARENTESIS_DER
+    '''
+    t[0] = Hoy(fila=t.lineno(1), columna=find_column(input, t.slice[1]))
+
+def p_funciones_sistema3(t):
+    '''
+    funciones_sistema : CONTAR PARENTESIS_IZQ POR PARENTESIS_DER
+    '''
+    t[0] = Contar(fila=t.lineno(1), columna=find_column(input, t.slice[1]))
+
+def p_funciones_sistema4(t):
+    '''
+    funciones_sistema : SUMA PARENTESIS_IZQ param_suma PARENTESIS_DER
+    '''
+    t[0] = Suma(fila=t.lineno(1), columna=find_column(input, t.slice[1]), value=t[3])
+
+def p_funciones_sistema5(t):
+    '''
+    funciones_sistema : CAS PARENTESIS_IZQ cas_value AS valor PARENTESIS_DER
+    '''
+    t[0] = Cas(fila=t.lineno(1), columna=find_column(input, t.slice[1]), expr=t[3], new_type=t[5])
 
 def p_cas_value(t):
     '''
     cas_value : expresion
-        | ID_DECLARE
     '''
-
+    # TODO: Cambiar a nodo de ID_DECLARE en expresiones
+    t[0] = t[1]
 
 def p_valor(t):
     '''
@@ -409,40 +458,61 @@ def p_valor(t):
         | DATETIME
         | DATE
     '''
+    t[0] = t[1]
 
 
 def p_param_suma(t):
     '''
-    param_suma : STR
+    param_suma : ID
               | ENTERO
     '''
+    t[0] = t[1]
 
 
 def p_table(t):
     '''
-    table : ID
-            | table COMA ID
+    table : table COMA ID
     '''
+    t[1].append(Table(fila=t.lineno(3), columna=find_column(input, t.slice[3]), id=t[3]))
+    t[0] = t[1]
+
+
+
+
+def p_table_1(t):
+    '''
+    table: ID
+    '''
+    t[0] = [Table(fila=t.lineno(1), columna=find_column(input, t.slice[1]), id=t[1])]
 
 
 def p_update(t):
     '''
     update : UPDATE ID SET assign_list WHERE expresion
     '''
-    ## no actualizar PK, FK
+    where_clause = WhereClause(fila=t.lineno(5), columna=find_column(input, t.slice[5]), expr=t[6])
+    t[0] = Update(fila=t.lineno(1), columna=find_column(input, t.slice[1]), table=t[2], assignments=t[4], where_clause=where_clause)
+    # TODO: no actualizar PK, FK
 
 
 def p_assing_list(t):
     '''
-    assign_list : assign
-                | assign_list COMA assign
+    assign_list : assign_list COMA assign
     '''
+    t[1].append(t[3])
+    t[0] = t[1]
 
+def p_assing_list1(t):
+    '''
+    assign_list : assign
+    '''
+    t[0] = [t[1]]
 
 def p_assing(t):
     '''
     assign : ID ASIGNACION expresion
     '''
+    t[0] = ColumnAssignments(fila=t.lineno(1), columna=find_column(input, t.slice[1]), column_ref=t[1], expr=t[3])
 
 
 def p_insert(t):
@@ -478,6 +548,8 @@ def p_delete(t):
     '''
     delete : DELETE FROM ID WHERE expresion
     '''
+    where_clause = WhereClause(fila=t.lineno(4), columna=find_column(input, t.slice[4]), expr=t[5])
+    t[0] = Delete(fila=t.lineno(1), columna=find_column(input, t.slice[1]), table=t[3], where_clause=where_clause)
      # validar que no sea FK de otra tabla
 
 ################### END DML ################

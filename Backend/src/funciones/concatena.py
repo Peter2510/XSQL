@@ -1,13 +1,15 @@
 
-from ..abstract.funcion import Funcion
+from src.abstract import Abstract
 
-class Concatenar(Funcion):
+
+class Concatenar(Abstract):
     def __init__(self, fila, columna, opIzq, opDer):
         super().__init__(fila, columna)
         self.opIzq = opIzq
         self.opDer = opDer
-    
 
-    def interpretar(self, environment):    
-        self.tipoOp = tipoOp
+    def accept(self, visitor, environment):
+        visitor.visit(self, environment)
 
+    def interpretar(self, environment):
+        return self.opIzq + self.opDer
