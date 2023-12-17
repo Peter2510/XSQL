@@ -1,14 +1,16 @@
 
-from ..abstract.funcion import Funcion
+from src.abstract import Abstract
 
-class Substraer(Funcion):
-    def __init__(self, fila, columna, nombreTabla):
+
+class Substraer(Abstract):
+    def __init__(self, fila, columna, value, start, end):
         super().__init__(fila, columna)
-        self.nombreTabla = nombreTabla
-    
+        self.value = value
+        self.start = start
+        self.end = end
 
-    def interpretar(self, environment):    
-        self.tipoOp = tipoOp
+    def accept(self, visitor, environment):
+        visitor.visit(self, environment)
 
-        ## aaqui cabal mandar a sumar toda la columna
-
+    def interpretar(self, environment):
+        return self.value[self.start:self.end]
