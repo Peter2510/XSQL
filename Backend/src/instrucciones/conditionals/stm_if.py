@@ -10,6 +10,9 @@ class StmIf(Abstract):
         self.else_ = else_
 
     def accept(self, visitor, environment = None):
+        self._if.accept(visitor,environment)
+        self.list_elseif.accept(visitor,environment)
+        self.else_.accept(visitor,environment)
         visitor.visit(self,environment)
             
     def interpretar(self, environment):

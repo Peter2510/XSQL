@@ -9,7 +9,7 @@ class Else_(Abstract):
         
         
     def accept(self, visitor, environment):
-        print("accept else")
+        visitor.visit(self, environment)
         
     def interpretar(self, environment):
         print("interpretando else")

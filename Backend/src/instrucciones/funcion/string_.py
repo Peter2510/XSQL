@@ -1,13 +1,13 @@
 from src.abstract.abstractas import Abstract
 
-class VariableDeclaration(Abstract):
-    def __init__(self, row,column, type_, id_):
+class String_(Abstract):
+    def __init__(self, row,column, type,size):
         super().__init__(row,column)
-        self.type = type_
-        self.id = id_
+        self.type = type
+        self.size = size
 
     def accept(self, visitor, environment):
         visitor.visit(self,environment)
         
     def interpretar(self,environment):
-        print("interpretando declaracion de variable")
+        print("interpretando ind")

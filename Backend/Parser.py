@@ -1,6 +1,6 @@
 from Lexer import tokens, lexer, errores, find_column
 import ply.yacc as yacc
-
+from src.instrucciones.funcion.string_ import String_
 from src.expresiones.aritmeticas import Aritmeticas
 from src.expresiones.primitivos import Primitivo
 from src.instrucciones.createdb import createDB
@@ -89,6 +89,7 @@ def p_instruccionGeneral(t):
     instruccion : crearBaseDatos PUNTO_Y_COMA
                 | crearTabla PUNTO_Y_COMA
                 | crear_funcion_usuario PUNTO_Y_COMA
+                | alter_funcion_usuario PUNTO_Y_COMA
                 | crear_procedure PUNTO_Y_COMA
                 | llamada_procedure PUNTO_Y_COMA
                 | expresion_case
@@ -156,49 +157,45 @@ def p_tipo_dato(t):
     '''
     tipo_dato : R_INT
     '''
-    t[0] = 'int'
+    t[0] = Type.INT
 
 def p_tipo_dato2(t):
     '''
     tipo_dato : R_DECIMAL
     '''
-    t[0] = 'decimal'
+    t[0] = Type.DECIMAL
     
 def p_tipo_dato3(t):
     '''
     tipo_dato : R_BIT
     '''
-    t[0] = 'bit'
+    t[0] = Type.BIT
     
 def p_tipo_dato4(t):
     '''
     tipo_dato : DATETIME
     '''
-    t[0] = 'datetime'
+    t[0] = Type.DATETIME
     
 def p_tipo_dato5(t):
     '''
     tipo_dato : DATE
     '''
-    t[0] = 'date'
+    t[0] = Type.DATE
     
-def p_tipo_dato6(t): #VARCHAR(4)
-    '''
-    tipo_dato : VARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
-    '''
-    t[0] = f'VARCHAR({t[3].valor})'
-    
+# NVARCHAR   
 def p_tipo_dato7(t):
     '''
     tipo_dato : NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
     '''
-    t[0] = f'NVARCHAR({t[3].valor})'
+    t[0] = String_(t.lineno(1), find_column(input, t.slice[1]),Type.NVARCHAR,t[3])
     
+# NCHAR 
 def p_tipo_dato8(t):
     '''
     tipo_dato : NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
     '''
-    t[0] = f'NCHAR({t[3].valor})'
+    t[0] = String_(t.lineno(1), find_column(input, t.slice[1]),Type.NCHAR,t[3])
         
     
 def p_nulidad_parametro(t): # si es null es 1
@@ -285,24 +282,6 @@ def p_truncate2(t):
     opcionTruncate : TRUNCATE TABLE ID
     ''' 
     t[0] = truncateTabla(t.lineno(3), find_column(input, t.slice[3]),t[3])
-
-#### SECCION DE PARAMETROS
-def p_parametros1(t):
-    '''
-    parametros : parametros ARROBA expresion tipo_dato
-    '''
-
-def p_parametros2(t):
-    '''
-    parametros : ARROBA expresion tipo_dato
-    '''
-
-## en caso que venga nada
-def p_parametros3(t):
-    '''
-    parametros : 
-    '''
-#### FIN DE  SECCION DE PARAMETROS
 
 
 #### expresiuones nativas
@@ -703,7 +682,16 @@ def p_parametro_funcion(t): # @id tipoDato
 #tipo de dato del parametro 
 def p_tipo_dato_parametro(t):
     '''
-    tipo_dato_parametro : R_INT
+    tipo_dato_parametro : tipo_dato
+    '''
+    t[0] = t[1]
+    
+#tipo de dato funcion
+def p_tipo_dato_funcion(t):
+    '''
+    tipo_dato_funcion : R_INT
+                      | R_BIT
+                      | R_DECIMAL  
     '''
     t[0] = t[1]
     

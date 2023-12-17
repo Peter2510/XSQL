@@ -1,4 +1,5 @@
 from flask import Flask, request
+from src.ast.symTable import SymTable
 from src.ejecucion.Ejecutar import Ejec
 from src.ejecucion.environment import Environment
 from Parser import *
@@ -8,8 +9,8 @@ from flask.helpers import url_for
 from werkzeug.utils import redirect
 from Lexer import tokens, lexer, errores, find_column
 from src.visitor import ExpressionsVisitor
-from src.visitor.function_declaration_visitor import FunctionDeclarationsVisitor
-from src.manejadorXml import  Estructura 
+from src.manejadorXml import  Estructura
+from src.visitor.symbolTableVisitor import SymbolTableVisitor 
 
 
 
@@ -30,15 +31,19 @@ def compilar():
         pars = parse(entrada.lower())
         env = Environment(None)
         visitorExpressions = ExpressionsVisitor(env)
-        visitorFunctionDeclaration = FunctionDeclarationsVisitor(env)
+        
         # Validaciones
         pars.accept(visitorExpressions, env)
-        pars.accept(visitorFunctionDeclaration, env)
+        
+        #visitor declaracion de una funcion
+        pars.accept(SymbolTableVisitor(env),env)
         #
         iniciarEjecucion = Ejec(pars.statements)
         _res = iniciarEjecucion.execute(env)
         print(_res,"---------------------------- FINNNNNNNNNNN -------------")
-
+        sb = SymTable("padre")
+        sb.symbolFuncs['pedro' ] = '45'
+        print(sb.symbolFuncs)
         # ### solo prueba de esto
         # def prueba(texto):
         #     while True:

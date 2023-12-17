@@ -7,7 +7,7 @@ class FunctionParam(Abstract):
         self.id = id_
 
     def accept(self, visitor, environment):
-        visitor.visit(self,environment)
+        pass
         
     def interpretar(self,environment):
         print("interpretando parametro de una funcion")

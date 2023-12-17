@@ -10,7 +10,7 @@ class ElseIf_(Abstract):
         
         
     def accept(self, visitor, environment):
-        print("accept elseif")
+        visitor.visit(self, environment)
         
     def interpretar(self, environment):
         print("interpretando elseif")

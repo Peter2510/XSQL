@@ -15,7 +15,7 @@ class AlterFunction(Abstract):
 
     def accept(self, visitor, environment = None):
         for param in self.params:
-           param.accept(visitor, self.table)          
+           param.visit(self,environment )          
         visitor.visit(self,environment)
             
     def interpretar(self, environment):
