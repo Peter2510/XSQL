@@ -28,7 +28,7 @@
                 <Atributo3 restricciones="True">3</Atributo3>
             </Principal>
         </Estructura>
-        </Table>
+    </Table>
     <Table name="tbfactura2">
         <Estructura>
             <Principal name="idfactura">
@@ -93,5 +93,34 @@
                 <Atributo3 restricciones="True">3</Atributo3>
             </Principal>
         </Estructura>
-        </Table>
+    </Table>
+    <Table name="tbfactura5">
+        <Estructura>
+            <Principal name="idfactura">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="inventario">
+                <Atributo1>int</Atributo1>
+            </Principal>
+            <Principal name="inventario2">
+                <Atributo1>int</Atributo1>
+            </Principal>
+            </Estructura>
+        <Principal name="inventario">
+            <Atributo1>decimal</Atributo1>
+        </Principal>
+        <Principal name="neuvo">
+            <Atributo1>int</Atributo1>
+        </Principal>
+        <Principal name="inventario">
+            <Atributo1>int</Atributo1>
+        </Principal>
+        <Estructura>
+            <Principal name="inventario">
+                <Atributo1>int</Atributo1>
+            </Principal>
+        </Estructura>
+    </Table>
 </Database>
