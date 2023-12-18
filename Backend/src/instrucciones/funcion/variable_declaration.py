@@ -11,3 +11,4 @@ class VariableDeclaration(Abstract):
         
     def interpretar(self,environment):
         print("interpretando declaracion de variable")
+        

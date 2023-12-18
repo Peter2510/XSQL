@@ -1,4 +1,3 @@
-from src.instrucciones.funcion.param_function import FunctionParam
 from src.abstract.abstractas import Abstract
 from src.ejecucion.environment import Environment
 
@@ -12,11 +11,7 @@ class FunctionDeclaration(Abstract):
         self.table = Environment(None)
 
     def accept(self, visitor, environment=Environment(None)):
-        for param in self.params:
-            param.accept(visitor,environment)
-        for bod in self.body:
-            print(bod)
-        visitor.visit(self,environment)
+        visitor.visit(self, environment)
         
     def interpretar(self, environment):
         print("interpretando funcion declaracion")

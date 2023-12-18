@@ -10,7 +10,9 @@ class T_error():
         valor = self.token
         if not isinstance(self.token, str):
             valor = str(valor)
-        return "Tipo: " + self.tipo + " Token: " + valor  + " Descripcion: " + self.description + " Linea: " + self.row + " Columna: " + self.column
+        return "Tipo: {} Token: {} Descripcion: {} Linea: {} Columna: {}".format(self.tipo, valor, self.description, self.row, self.column)
+
+
 
     def getTipo(self):
         return self.tipo

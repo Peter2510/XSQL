@@ -1,4 +1,5 @@
 from abc import ABC
+from src.instrucciones.usarDB import usarDB
 
 from src.instrucciones.case.else_case import ElseCase
 from src.instrucciones.case.stm_case import StmCase
@@ -94,8 +95,12 @@ class Visitor(ABC):
                 
         elif isinstance(node,When):
             self.visitStmCase(node,environment)
-            pass
-            
+
+        elif isinstance(node,usarDB):
+            self.visitUsar(node,environment)
+                    
+    def visitUsar(self,node,environment):
+        pass
 
     def visitAritmeticas(self, node, environment):
         pass
@@ -156,3 +161,4 @@ class Visitor(ABC):
     
     def visitStmCase(self,node,environment):
         pass
+    

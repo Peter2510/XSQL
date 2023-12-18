@@ -10,8 +10,8 @@ from werkzeug.utils import redirect
 from Lexer import tokens, lexer, errores, find_column
 from src.visitor import ExpressionsVisitor
 from src.manejadorXml import  Estructura
-from src.visitor.symbolTableVisitor import SymbolTableVisitor 
-
+from src.visitor.symbolTableVisitor import SymbolTableVisitor
+from src.visitor.usarvisitor import UsarVisitor 
 
 
 app = Flask(__name__)
@@ -32,11 +32,16 @@ def compilar():
         env = Environment(None)
         visitorExpressions = ExpressionsVisitor(env)
         
+        visitorUsar = UsarVisitor(env)
+        pars.accept(visitorUsar,env)
+        
         # Validaciones
         pars.accept(visitorExpressions, env)
         
         #visitor declaracion de una funcion
         pars.accept(SymbolTableVisitor(env),env)
+        for er in env.errors:
+            print(er.toString())
         #
         iniciarEjecucion = Ejec(pars.statements)
         _res = iniciarEjecucion.execute(env)

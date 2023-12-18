@@ -11,3 +11,9 @@ class FunctionParam(Abstract):
         
     def interpretar(self,environment):
         print("interpretando parametro de una funcion")
+        
+    def get_row(self):
+        return self.row
+
+    def get_column(self):
+        return self.column

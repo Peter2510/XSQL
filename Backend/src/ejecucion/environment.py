@@ -1,3 +1,5 @@
+from src.instrucciones.funcion.funcion import Funcion, TablaSimbolos
+from src.ejecucion.error import T_error
 from src.ejecucion.database import Database
 from src.ejecucion.symbol import Symbol
 from prettytable import PrettyTable
@@ -5,54 +7,42 @@ from src.ejecucion.type import *
 from datetime import datetime
 
 class Environment:
+       
     def __init__(self, father):
-        self.tablaSimbolos = [] ## funciones, procedimentos  se crea una por cada funcion o procedimiento
+        self.funciones = []
+        self.procedimientos = []
+        self.errors = []
 
-    def clearTablaSimbolos(self):
-        self.tablaSimbolos = []
+    def addError(self,tipo,token,descripcion,fila,columna):
+        self.errors.append(T_error(tipo,token,descripcion,fila,columna))
         
-    def guardarVariable(self,name,tipo,value,father):
-        valuee = value
-        if tipo == Type.DATE:
-           valuee = datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
-        self.simbolos.append(Symbol(name,tipo,valuee, father))
-        env = self
-        while env.father != None:
-            env = env.father 
-        env.tablaSimbolos.append(Symbol(name,tipo,value, father))
-
-    def guardarVariableins(self,name,tipo,value,father):            
-        self.simbolos.append(Symbol(name,tipo,value, father))
-        env = self
-        while env.father != None:
-            env = env.father 
-        env.tablaSimbolos.append(Symbol(name,tipo,str(value), father))
-
-    def deleteVariable(self, name):
-        env = self
-        while env.father != None:
-            for i in range(0,len(env.simbolos)):
-                if env.simbolos[i].name == name:
-                    del env.simbolos[i]
-                    break
-            env = env.father    
-
-    def vaciarVariables(self):
-        env = self
-        env.simbolos = []
+    def agregarFunction(self,nombre,environment):
+        self.funciones.append(Funcion(nombre,TablaSimbolos("global",None)))
+        
+    def agregarVariable(self,nombreFuncion,nombreVariable,variable):
+        #buscar la funcion e ingresar la variable
+        for funcion in self.funciones:
+            if nombreFuncion == funcion.nombre:
+                funcion.tablaSimbolos.agregarVariable(nombreVariable,variable)
+                                        
+    def existeVariable(self,nombreFuncion,nombreVariable):
+        for funcion in self.funciones:
+            if nombreFuncion == funcion.nombre:
+                if funcion.tablaSimbolos.existeVariable(nombreVariable):
+                    return True
+        return False
     
-    def buscarVariable(self, name, father):
-        env = self
-        while env.father != None:
-            for i in range(0,len(env.simbolos)):
-                if env.simbolos[i].name == name and env.simbolos[i].father == father:
-                    return {'value': env.simbolos[i].value , 'tipo':env.simbolos[i].tipo,'name':env.simbolos[i].name}
-            env = env.father
-        env = self
-        while env.father != None:
-            for i in range(0,len(env.simbolos)):
-                if env.simbolos[i].name == name:
-                    return {'value': env.simbolos[i].value , 'tipo':env.simbolos[i].tipo,'name':env.simbolos[i].name}
-            env = env.father
-
+    def existeFunction(self,nombre):
+        existe = False
+        for funcion in self.funciones:
+            if nombre == funcion.nombre:
+                return True
+        return False
+    
+    def obtenerVariable(self,nombreFuncion,nombreVariable):
+        for funcion in self.funciones:
+            if nombreFuncion == funcion.nombre:
+                return funcion.tablaSimbolos.obtenerVariable(nombreVariable)
+        return None
+        
         

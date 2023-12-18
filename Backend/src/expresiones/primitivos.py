@@ -7,6 +7,7 @@ class Primitivo(Expression):
         super().__init__(fila, columna)
 
     def accept(self, visitor, environment):
+        visitor.visit(self, environment)
         pass
 
     def interpretar(self, environment):

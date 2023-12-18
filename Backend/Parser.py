@@ -1,4 +1,5 @@
 from Lexer import tokens, lexer, errores, find_column
+from src.instrucciones.funcion.varAux import VarAux
 import ply.yacc as yacc
 from src.instrucciones.funcion.string_ import String_
 from src.expresiones.aritmeticas import Aritmeticas
@@ -67,20 +68,15 @@ def p_instruccionesListado(t):
     instrucciones : instrucciones instruccion
     '''
     ## aqui si existe la instruccion
-    if (t[2]!= ""):
-        t[1].append(t[2])
-    t[0] = t[1]  # Si t[1] no es una lista, crea una nueva lista con los elementos
+    t[1].append(t[2])
+    t[0] = t[1]
 
 
 def p_instruccionSimple(t):
     '''
     instrucciones : instruccion 
     '''
-    if t[1] =="":
-        t[0]=[]
-    else :
-        ### no se te olvie apilar como arreglo y no como objeto
-        t[0]= [t[1]]
+    t[0]= [t[1]]
 
 
 
@@ -112,6 +108,7 @@ def p_usarDB(t):
     usarDB :  USAR ID
     '''
     t[0] = usarDB(t.lineno(2), find_column(input, t.slice[2]),t[2])
+    
 ## crear BD
 def p_crearBaseDatos(t):
     '''
@@ -641,7 +638,7 @@ def p_funcion_usuario2(t):  #sin parametros
     '''
     crear_funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
     '''
-    t[0] = FunctionDeclaration(t.lineno(1), find_column(input, t.slice[1]), t[3], None, t[6],t[9])
+    t[0] = FunctionDeclaration(t.lineno(1), find_column(input, t.slice[1]), t[3], None, t[7],t[10])
     
 #ALTER FUNCTION
 def p_alter_funcion_usuario(t):  #con parametros
@@ -725,14 +722,17 @@ def p_sentencia_funcion(t):
                     | return
                     | expresion_if
     '''
-    t[0] = [t[1]]
+    t[0] = t[1]
     
 #declare varias variables
 def p_declaracion_variables(t):
     '''
     declaracion_variables :  DECLARE lista_declaracion_variables PUNTO_Y_COMA
     '''
-    t[0] = t[1]
+    listaDeclare = []
+    for declaracion in t[2]:
+        listaDeclare.append(VariableDeclaration(t.lineno(1),find_column(input,t.slice[1]),declaracion.tipo,declaracion.nombre))
+    t[0] = listaDeclare
       
     
 #lista de declaracion de variables
@@ -755,8 +755,7 @@ def p_declaracion_variable(t):
     '''
     declaracion_variable : ID_DECLARE tipo_dato_variable 
     '''
-    declaracion_v =  VariableDeclaration(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
-    t[0] = [declaracion_v]
+    t[0] = VarAux(t[1],t[2],t.lineno(1),find_column(input,t.slice[1]))
 
     
 def p_set_variable_funcion(t):
@@ -780,8 +779,7 @@ def p_return(t):
     '''
     return : RETURN expresion PUNTO_Y_COMA
     '''
-    ret = Return_(t.lineno(1), find_column(input, t.slice[1]),t[2])
-    t[0] = [ret]
+    t[0] = Return_(t.lineno(1), find_column(input, t.slice[1]),t[2])
     
     
 #llamada de una funcion
