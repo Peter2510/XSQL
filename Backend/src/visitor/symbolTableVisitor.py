@@ -1,3 +1,5 @@
+from src.expresiones.primitivos import Primitivo
+from src.ejecucion.type import Type
 from src.instrucciones.funcion.funcion import Simbolo
 from src.manejadorXml import Estructura
 from src.instrucciones.funcion.return_ import Return_
@@ -14,7 +16,7 @@ class SymbolTableVisitor(Visitor):
         self.nombreFuncion = nombre
         if(not environment.existeFunction(nombre)):
             #Agregar la funcion Basededatos-NombreFuncion
-            environment.agregarFunction(nombre,environment)
+            environment.agregarFunction(nombre,None)
             #validar argumentos y agregarlos a la funcion
             self.visitParamFunction(node,environment,nombre)
             #validar las declaraciones en la funcion
@@ -43,21 +45,23 @@ class SymbolTableVisitor(Visitor):
         else:
             #Agregar parametros como variables
             for param in params:
-                if(environment.existeVariable(nombre,param.id)):
-                    environment.addError("Semantico", param.id ,f"El id '{param.id}' ya está definido como variable", param.fila,param.columna)
-                else:
-                    environment.agregarVariable(nombre,param.id,Simbolo(param.type,None))
+                #if(environment.existeVariable(nombre,param.id)):
+                #    environment.addError("Semantico", param.id ,f"El id '{param.id}' ya está definido como variable", param.fila,param.columna)
+                #else:
+                environment.agregarVariable(nombre,param.id,Simbolo(param.type,None))
+            #add params to function
+            environment.obtenerFuncion(nombre).parametros = params
             #print(len(environment.funciones[0].tablaSimbolos.variables),"valida esto---------")        
             #print("ObtenerVariable",environment.obtenerVariable(nombre,"@productids").valor)
     
     def visitInstrucciones(self,instrucciones,environment,nombre):
         print("visitando instrucciones")
         for instruccion in instrucciones:
-            for instuc in instruccion:
-                instuc.accept(self,environment)
-            
-    def visitPrimitivo(self,node,environment):
-        return node            
+            if(isinstance(instruccion,list)):
+                for instuc in instruccion:
+                    instuc.accept(self,environment)
+            else:
+                instruccion.accept(self,environment)
     
     def visitVariableDeclaration(self,node,environment):
         print(len(environment.funciones))
@@ -74,19 +78,44 @@ class SymbolTableVisitor(Visitor):
         pass
     
     def visitSet(self,node,environment):
-        ##print("Nombre valira",node.id,"Nombre funcion",self.nameFunction)
-        #visit value and apply method accept
-        if(environment.existeVariable(self.nombreFuncion,node.id)):
-            #validate that the value is the same type of the variable
-             variable = environment.obtenerVariable(self.nombreFuncion,node.id)
-             if(variable.tipo == node.value.tipo):
-                 variable.valor = node.value.valor
-                 print("se asigno el valor a la variable")
-             else:
-                environment.addError("Semantico", node.id ,f"El tipo de dato no es el mismo que el de la variable", node.fila,node.columna)
+        variableName = node.id
+        if(environment.existeVariable(self.nombreFuncion,variableName)):
+            #valdate data type of the current variable and the new value
+            variable = environment.obtenerVariable(self.nombreFuncion,variableName)
+            tipoVariable = self.obtenerTipoVariable(node.value,environment)
+            obtenerVariable = self.obtenerTipoVariable(variable.valor,environment)
+            
         else:
-             environment.addError("Semantico", node.id ,f"La variable no existe", node.fila,node.columna)
-        print("ObtenerVariable",environment.obtenerVariable(self.nombreFuncion,"@productid").valor)
+             environment.addError("Semantico", node.id ,f"La variable no ha sido declarada", node.fila,node.columna)
+             
+    def obtenerTipoVariable(self,value,environment):
+        if isinstance(value,Primitivo):
+            return value.tipo
+        else:
+            return self.tipoVariableBinaria(value,environment)
+
+    def tipoVariableBinaria(self,value,environment):
+        pass
+                   
+                
+    def visitPrimitivo(self,node,environment):
+        pass
+        
+    def visitAritmeticas(self,node,environment):
+        ##get value and type    
+        pass
+    
+    def visitRelacionales(self,node,environment):
+        ##get value and type
+        pass
+    
+    def visitLogicas(self,node,environment):
+        ##get value and type
+        pass
+    
+    def visitRelacional(self,node,environment):
+        ##get value and type
+        pass
     
     def visitAlterProcedure(self,node,environment):
         pass
@@ -98,16 +127,19 @@ class SymbolTableVisitor(Visitor):
         pass    
     
     def visitElse(self,node,environment):
+        print("visit else")
         pass
     
     def visitElseIf(self,node,environment):
-        pass
+        print("visit elseif")
     
     def visitIf(self,node,environment):
-        pass
+        print("visit if")
+        
     
     def visitStmIf(self,node,environment):
-        pass
+        print("visitando ifSTM")
+        
     
     def visitElseCase(self,node,environment):
         pass

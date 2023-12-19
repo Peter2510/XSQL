@@ -3,9 +3,10 @@ from src.manejadorXml import Estructura
 
 
 class Funcion():
-    def __init__(self,nombre,tablaSimbolos):
+    def __init__(self,nombre ,parametros,tablaSimbolos):
         self.nombre = nombre
         self.tablaSimbolos = tablaSimbolos
+        self.parametros = parametros
         self.instrucciones = []
         
     def interpretar(self, environment):

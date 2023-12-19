@@ -16,8 +16,8 @@ class Environment:
     def addError(self,tipo,token,descripcion,fila,columna):
         self.errors.append(T_error(tipo,token,descripcion,fila,columna))
         
-    def agregarFunction(self,nombre,environment):
-        self.funciones.append(Funcion(nombre,TablaSimbolos("global",None)))
+    def agregarFunction(self,nombre,parametros):
+        self.funciones.append(Funcion(nombre,parametros,TablaSimbolos("global",None)))
         
     def agregarVariable(self,nombreFuncion,nombreVariable,variable):
         #buscar la funcion e ingresar la variable
@@ -30,6 +30,8 @@ class Environment:
             if nombreFuncion == funcion.nombre:
                 if funcion.tablaSimbolos.existeVariable(nombreVariable):
                     return True
+                else:
+                    return False
         return False
     
     def existeFunction(self,nombre):
@@ -38,6 +40,12 @@ class Environment:
             if nombre == funcion.nombre:
                 return True
         return False
+    
+    def obtenerFuncion(self,nombre):
+        for funcion in self.funciones:
+            if nombre == funcion.nombre:
+                return funcion
+        return None
     
     def obtenerVariable(self,nombreFuncion,nombreVariable):
         for funcion in self.funciones:

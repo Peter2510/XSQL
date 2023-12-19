@@ -32,8 +32,8 @@ def compilar():
         env = Environment(None)
         visitorExpressions = ExpressionsVisitor(env)
         
-        visitorUsar = UsarVisitor(env)
-        pars.accept(visitorUsar,env)
+        #visitorUsar = UsarVisitor(env)
+        #pars.accept(visitorUsar,env)
         
         # Validaciones
         pars.accept(visitorExpressions, env)

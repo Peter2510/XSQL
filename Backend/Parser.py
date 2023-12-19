@@ -1,4 +1,5 @@
 from Lexer import tokens, lexer, errores, find_column
+from src.expresiones.logicos import Logico
 from src.instrucciones.funcion.varAux import VarAux
 import ply.yacc as yacc
 from src.instrucciones.funcion.string_ import String_
@@ -533,9 +534,9 @@ def p_logica(t):
     '''
 
     if (t[2] == '&&'):
-        t[0] = t[1]
+        t[0] = Logico(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '&&')
     elif (t[2]== '||'):
-        t[0]=t[1]
+        t[0]= Logico(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '||')
 
 
 

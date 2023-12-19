@@ -10,7 +10,7 @@ class If_(Abstract):
         
         
     def accept(self, visitor, environment):
-        visitor.visit
+        visitor.visit(self,environment)
         
     def interpretar(self, environment):
         print("interpretando if")
