@@ -13,7 +13,7 @@ COMBINATIONS = [
 ]
 
 ADDITION_CAST = [
-    Type.INT.name,
+    Type.INT,
     Type.DECIMAL.name,
     Type.TEXT.name,
     Type.DECIMAL.name,
