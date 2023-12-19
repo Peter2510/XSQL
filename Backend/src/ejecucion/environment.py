@@ -12,6 +12,7 @@ class Environment:
         self.funciones = []
         self.procedimientos = []
         self.errors = []
+        self.tables = None
 
     def addError(self,tipo,token,descripcion,fila,columna):
         self.errors.append(T_error(tipo,token,descripcion,fila,columna))

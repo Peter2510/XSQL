@@ -12,6 +12,8 @@ from src.visitor import ExpressionsVisitor
 from src.manejadorXml import  Estructura
 from src.visitor.symbolTableVisitor import SymbolTableVisitor
 from src.visitor.usarvisitor import UsarVisitor 
+from src.manejadorXml import  Estructura 
+
 
 
 app = Flask(__name__)
@@ -26,29 +28,13 @@ def saludo():
 def compilar():
     if request.method == "POST":
 
+        env = Environment(None)
         entrada = request.data.decode("utf-8")
         entrada = json.loads(entrada)
         pars = parse(entrada.lower())
-        env = Environment(None)
-        visitorExpressions = ExpressionsVisitor(env)
-        
-        #visitorUsar = UsarVisitor(env)
-        #pars.accept(visitorUsar,env)
-        
-        # Validaciones
-        pars.accept(visitorExpressions, env)
-        
-        #visitor declaracion de una funcion
-        pars.accept(SymbolTableVisitor(env),env)
-        for er in env.errors:
-            print(er.toString())
-        #
         iniciarEjecucion = Ejec(pars.statements)
         _res = iniciarEjecucion.execute(env)
-        print(_res,"---------------------------- FINNNNNNNNNNN -------------")
-        sb = SymTable("padre")
-        sb.symbolFuncs['pedro' ] = '45'
-        print(sb.symbolFuncs)
+        print(_res, "---------------------------- FINNNNNNNNNNN -------------")
         # ### solo prueba de esto
         # def prueba(texto):
         #     while True:
