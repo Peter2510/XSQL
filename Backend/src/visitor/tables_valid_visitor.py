@@ -18,13 +18,20 @@ class ValidateColumnVisitor(Visitor):
         check_tables = [node.table] if node.table is not None else tables
         tables_found = Estructura.find_tables(tables=check_tables, name=node.id)
         if len(tables_found) == 0:
-            return False, f"{node.id} no existe"
+            self.log_error(msg=f"{node.id} no existe", column=node.columna, row=node.fila)
+            return
 
         if len(tables_found) > 1:
-            return False, f"La columna {node.id} es ambigüa"
+            self.log_error(msg=f"La columna {node.id} es ambigüa", column=node.columna, row=node.fila)
 
         db_table = tables_found[0]
-        tipo = db_table.get("tipo", "")
+        data_tb = db_table.get("data", {})
+        estructura_tb = data_tb.get("estructura", {})
+        column_tb = estructura_tb.get(node.id, {})
+        atribute_1 = column_tb.get("Atributo1", {})
+        tipo = atribute_1.get("tipo", None)
+        print(tipo, "tipo")
+        node.tipo = tipo
 
 
 class TablesValidVisitor(Visitor):

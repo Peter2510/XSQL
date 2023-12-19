@@ -2,7 +2,6 @@ from enum import Enum
 from .visitor import Visitor
 from src.ejecucion.type import Type
 
-
 COMBINATIONS = [
     f'{Type.INT.name}-{Type.INT.name}',
     f'{Type.INT.name}-{Type.DECIMAL.name}',
@@ -13,41 +12,41 @@ COMBINATIONS = [
 ]
 
 ADDITION_CAST = [
-    Type.INT.name,
-    Type.DECIMAL.name,
-    Type.TEXT.name,
-    Type.DECIMAL.name,
-    Type.TEXT.name,
-    Type.TEXT.name
+    Type.INT,
+    Type.DECIMAL,
+    Type.TEXT,
+    Type.DECIMAL,
+    Type.TEXT,
+    Type.TEXT
 ]
 
 SUBTRACTION_CAST = [
-    Type.INT.name,
-    Type.DECIMAL.name,
+    Type.INT,
+    Type.DECIMAL,
     None,
-    Type.DECIMAL.name,
+    Type.DECIMAL,
     None,
     None,
 ]
 
 DIVISION_CAST = [
-    Type.DECIMAL.name,
-    Type.DECIMAL.name,
+    Type.DECIMAL,
+    Type.DECIMAL,
     None,
-    Type.DECIMAL.name,
+    Type.DECIMAL,
     None,
     None,
 ]
-
 
 MULTIPLICATION_CAST = [
-    Type.INT.name,
-    Type.DECIMAL.name,
+    Type.INT,
+    Type.DECIMAL,
     None,
-    Type.DECIMAL.name,
+    Type.DECIMAL,
     None,
     None,
 ]
+
 
 def find_in_array(value, lst):
     index = -1
@@ -57,6 +56,7 @@ def find_in_array(value, lst):
         index = -1
 
     return index
+
 
 def get_binary_type(left, op, right):
     casting_list = []
@@ -69,13 +69,13 @@ def get_binary_type(left, op, right):
     elif op == '/':
         casting_list = DIVISION_CAST
 
-
     left_type = left.tipo.name if left.tipo is not None else None
     right_type = right.tipo.name if right.tipo is not None else None
     index = find_in_array(f'{left_type}-{right_type}', COMBINATIONS)
     index = index if index != -1 else find_in_array(f'{right_type}-{left_type}', COMBINATIONS)
     type = casting_list[index] if index != -1 else None
     return type
+
 
 class ExpressionsVisitor(Visitor):
 
