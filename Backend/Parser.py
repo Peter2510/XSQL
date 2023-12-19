@@ -343,7 +343,7 @@ def p_condition_opt(t):
 
 def p_condition_opt_1(t):
     '''
-    condition_opt: empty
+    condition_opt : empty
     '''
     t[0] = t[1]
 
@@ -377,20 +377,6 @@ def p_select_sublist_1(t):
     '''
     t[0] = [t[1]]
 
-def p_select_item(t):
-    '''
-    select_item : ID
-    '''
-    t[0] = TableColumn(fila=t.lineno(1), columna=find_column(input, t.slice[1]), id=t[1])
-
-
-def p_select_item_1(t):
-    '''
-    select_item : ID PUNTO ID
-    '''
-    t[0] = TableColumn(fila=t.lineno(1), columna=find_column(input, t.slice[1]), id=t[3], table=t[1])
-
-
 def p_select_item_2(t):
     '''
     select_item : ID_DECLARE ASIGNACION funciones_sistema
@@ -407,14 +393,18 @@ def p_select_item_3(t):
 
 def p_select_item_4(t):
     '''
-    select_item : expresion ID
+    select_item : expresion id_opt
     '''
-    t[0] = AliasSelect(fila=t.lineno(1), columna=find_column(input, t.slice[1]), id=t[2], expr=t[1])
+    if t[2] is not None:
+        t[0] = AliasSelect(fila=t.lineno(1), columna=t[1].columna, id=t[2], expr=t[1])
+    else:
+        t[0] = t[1]
 
 
-def p_select_item_6(t):
+def p_id_opt(t):
     '''
-    select_item : expresion
+    id_opt : expresion
+            | empty
     '''
     t[0] = t[1]
 
@@ -495,7 +485,7 @@ def p_table(t):
 
 def p_table_1(t):
     '''
-    table: ID
+    table : ID
     '''
     t[0] = [Table(fila=t.lineno(1), columna=find_column(input, t.slice[1]), id=t[1])]
 
@@ -654,9 +644,22 @@ def p_exp_cadena(t):
 
 ## id
 def p_exp_id(t):
-    '''expresion : ID'''
-    t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.ID)
-    print("ID")
+    '''expresion : ID punto_table_opt'''
+    column = t[2] if t[2] is not None else t[1]
+    table = t[1] if t[2] is not None else None
+    t[0] = TableColumn(fila=t.lineno(1), columna=find_column(input, t.slice[1]), id=column, table=table)
+
+def p_punto_table_opt(t):
+    '''
+    punto_table_opt : PUNTO ID
+    '''
+    t[0] = t[2]
+
+def p_punto_table_opt1(t):
+    '''
+    punto_table_opt : empty
+    '''
+    pass
 
 #id variable
 def p_exp_id_declare(t):

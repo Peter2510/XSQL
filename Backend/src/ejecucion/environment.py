@@ -12,6 +12,8 @@ class Environment:
         self.simbolos = []
         self.tablaSimbolos = []
 
+        self.tables = None
+
     def getActualDataBase(self):
         #Buscamos la base de datos 
         env = self

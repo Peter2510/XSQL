@@ -1,8 +1,10 @@
 from ..manejadorXml import obtener
+
 Databases = []
 nombreActual = ""
 import json
 import xml.etree.ElementTree as ET
+
 
 def load():
     global Databases
@@ -11,7 +13,6 @@ def load():
     Databases = obtener.importAllXMLsInDirectory("./src/data/xml/")
     print(type(Databases))
     print(Databases)
-    
 
 
 def createDatabase(name):
@@ -23,7 +24,7 @@ def createDatabase(name):
             if (nombre["name"] == name):
                 return 2
         Databases.append(database)
-        obtener.exportDataToXML( {} , name)
+        obtener.exportDataToXML({}, name)
         return 0
     except:
         return 1
@@ -46,15 +47,14 @@ def crearTabla(nombreDB, nombreTabla, parametros):
     # Comprobar si parametros es una cadena JSON y convertirla a un diccionario si es necesario
     if isinstance(parametros, list):
         tabla["data"] = []
- 
+
         for parametro in parametros:
             if isinstance(parametro, dict):
-                print(parametro,"++++++++++++")
+                print(parametro, "++++++++++++")
                 tabla["data"].append(parametro)
 
-
     # para las columnas
-    tabla["name"]= nombreTabla
+    tabla["name"] = nombreTabla
     print(tabla["name"], "bbb")
 
     # agregar las tablas 
@@ -63,8 +63,7 @@ def crearTabla(nombreDB, nombreTabla, parametros):
             bases["tables"].append(tabla)
             break
 
-    obtener.exportDataToXML(tabla , nombreDB)
-
+    obtener.exportDataToXML(tabla, nombreDB)
 
 
 def insertTabla(xml_file, table_name, values):
@@ -96,13 +95,11 @@ def insertTabla(xml_file, table_name, values):
                 data_element = ET.SubElement(datosEtiqueta, key)
                 data_element.text = str(value)
 
-
         # Guarda los cambios en el archivo XML
         tree.write(xml_file, encoding="utf-8", xml_declaration=True)
         print(f"Inserción exitosa en la tabla '{table_name}' del archivo {xml_file}.")
     except Exception as e:
         print(f"Error al insertar datos en el XML: {str(e)}")
-
 
 
 ## ver lo del truncate
@@ -115,24 +112,22 @@ def truncateTable(xmlPath, nombreTabla):
     tree.write(xmlPath, encoding="utf-8", xml_declaration=True)
 
 
-
-## para que agregue columnas 
+## para que agregue columnas
 
 def alterColumnadd(xmlArchivo, nombreTabla, nombreColumna, tipoColumna):
     tree = ET.parse(xmlArchivo)
     root = tree.getroot()
 
-
     for table in root.findall(".//Table[@name='{}']".format(nombreTabla)):
-        nuevaColumna = ET.SubElement(table,"Principal", name=nombreColumna)
-        atributo1=ET.SubElement(nuevaColumna, "Atributo1")
+        nuevaColumna = ET.SubElement(table, "Principal", name=nombreColumna)
+        atributo1 = ET.SubElement(nuevaColumna, "Atributo1")
         atributo1.text = tipoColumna
     tree.write(xmlArchivo, encoding="utf-8", xml_declaration=True)
+
 
 def alterColumnDrop(xmlArchivo, nombreTabla, nombreColumna):
     tree = ET.parse(xmlArchivo)
     root = tree.getroot()
-
 
     for table in root.findall(".//Table[@name='{}']".format(nombreTabla)):
         for column in table.findall(".//Principal[@name='{}']".format(nombreColumna)):
@@ -140,16 +135,77 @@ def alterColumnDrop(xmlArchivo, nombreTabla, nombreColumna):
 
     tree.write(xmlArchivo, encoding="utf-8", xml_declaration=True)
 
-#Obtener.exportDataToXML(data_to_export, "simoon2")
+
+# Obtener.exportDataToXML(data_to_export, "simoon2")
 
 # Importar desde XML
-#data_imported = obtener.importFileFromXML("nuevo")
-#print(data_imported)  # Esto imprimirá el diccionario importado desde el archivo XML
+# data_imported = obtener.importFileFromXML("nuevo")
+# print(data_imported)  # Esto imprimirá el diccionario importado desde el archivo XML
 
 
-#directory_to_import = "../data/xml/"
-#imported_data = obtener.importAllXMLsInDirectory(directory_to_import)
-#print(imported_data)
+# directory_to_import = "../data/xml/"
+# imported_data = obtener.importAllXMLsInDirectory(directory_to_import)
+# print(imported_data)
 
 
+def comprobar_tabla_columnas(nombre):
+    # print(Databases)
+    return True
 
+
+def get_current_db():
+    global Databases
+
+    if len(Databases) == 0:
+        Databases = obtener.importAllXMLsInDirectory("./src/data/xml/")
+
+    if nombreActual == "" or nombreActual is None:
+        return None
+
+    db = next((obj for obj in Databases if obj.get("name", "") == nombreActual), None)
+    return db
+
+
+def comprobar_tablas(tablas: list[str]):
+    db = get_current_db()
+
+    if db is None:
+        return False, "No está usando una DB"
+
+    for name in tablas:
+        tb = next((obj for obj in db.get("tables", []) if obj.get("name", "") == name), None)
+        if tb is None:
+            return False, f"{nombreActual}.{name} no existe"
+
+    return True, ""
+
+
+def filter_by_table_and_name(table_names: list[str], column_name: str):
+    def filter_by(table) -> bool:
+        tb_name = table.get("name", None)
+        if tb_name is None:
+            return False
+
+        data = table.get("data", None)
+
+        if data is None:
+            return False
+
+        estructura = data.get("estructura", None)
+
+        if estructura is None:
+            return False
+
+        if tb_name in table_names and column_name in estructura:
+            return True
+
+        return False
+
+    return filter_by
+
+
+def find_tables(tables: list[str], name: str) -> (bool, str):
+    db = get_current_db()
+    db_tables = db.get("tables", [])
+    tables_found = list(filter(filter_by_table_and_name(table_names=tables, column_name=name), db_tables))
+    return tables_found

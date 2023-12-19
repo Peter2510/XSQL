@@ -1,28 +1,6 @@
 from ..abstract import Abstract
 
 
-class Select(Abstract):
-    def __init__(self, fila, columna, columns: list, from_clause=None, where_clause=None, db=None):
-        super().__init__(fila, columna)
-        self.columns = columns
-        self.from_clause = from_clause
-        self.where_clause = where_clause
-        self.db = db
-
-    def accept(self, visitor, environment):
-        if self.from_clause is not None:
-            self.from_clause.accept(visitor, environment)
-        if self.where_clause is not None:
-            self.where_clause.accept(visitor, environment)
-        for col in self.columns:
-            col.accept(visitor, environment)
-        visitor.visit(self, environment)
-
-    def interpretar(self, environment):
-        for col in self.columns:
-            print(col.interpretar(environment))
-
-
 class Table(Abstract):
     def __init__(self, fila, columna, id):
         super().__init__(fila, columna)
@@ -35,11 +13,15 @@ class Table(Abstract):
         return self.id
 
 
+# TODO: Validar que las tablas existan en nombreActual
+
+
 class TableColumn(Abstract):
-    def __init__(self, fila, columna, id, table=None):
+    def __init__(self, fila, columna, id, table=None, tipo=None):
         super().__init__(fila, columna)
         self.table = table
         self.id = id
+        self.tipo = tipo
 
     def accept(self, visitor, environment):
         visitor.visit(self, environment)
@@ -49,7 +31,7 @@ class TableColumn(Abstract):
 
 
 class FromClause(Abstract):
-    def __init__(self, fila, columna, tables: list):
+    def __init__(self, fila, columna, tables: list[Table]):
         super().__init__(fila, columna)
         self.tables = tables
 
@@ -74,6 +56,34 @@ class WhereClause(Abstract):
 
     def interpretar(self, environment):
         print(self.expr.interpretar)
+
+
+# TODO: Validar que en las expresiones los ids sean columnas validas según las tablas del From
+
+
+class Select(Abstract):
+    def __init__(self, fila, columna, columns: list, from_clause: FromClause | None = None,
+                 where_clause: WhereClause | None = None, tables=None):
+        super().__init__(fila, columna)
+        if tables is None:
+            tables = []
+        self.columns = columns
+        self.from_clause = from_clause
+        self.where_clause = where_clause
+        self.tables = tables
+
+    def accept(self, visitor, environment):
+        if self.from_clause is not None:
+            self.from_clause.accept(visitor, environment)
+        if self.where_clause is not None:
+            self.where_clause.accept(visitor, environment)
+        for col in self.columns:
+            col.accept(visitor, environment)
+        visitor.visit(self, environment)
+
+    def interpretar(self, environment):
+        for col in self.columns:
+            print(col.interpretar(environment))
 
 
 class AllColumns(Abstract):
@@ -108,7 +118,7 @@ class AliasSelect(Abstract):
         self.expr = expr
 
     def accept(self, visitor, environment):
-        self.expr.accept(self, environment)
+        self.expr.accept(visitor, environment)
         visitor.visit(self, environment)
 
     def interpretar(self, environment):

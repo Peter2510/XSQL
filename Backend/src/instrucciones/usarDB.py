@@ -15,5 +15,5 @@ class usarDB(Abstract):
     def interpretar(self,environment):
         nombre = self.nombre
         Estructura.nombreActual = nombre
-        print(Estructura.nombreActual)
+        # print(Estructura.nombreActual)
         return nombre

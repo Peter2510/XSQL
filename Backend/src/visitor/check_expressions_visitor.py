@@ -86,6 +86,5 @@ class ExpressionsVisitor(Visitor):
         new_type = get_binary_type(left=node.opIzq, op=node.tipoOp, right=node.opDer)
         if new_type is None:
             self.log_error(msg=f'La operación {node.opIzq.tipo} {node.tipoOp} {node.opDer.tipo} no es posible')
-            self.correct = False
         else:
-            node.tipo = new_type;
+            node.tipo = new_type
