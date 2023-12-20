@@ -1,6 +1,6 @@
 from abc import ABC
 from src.instrucciones.usarDB import usarDB
-
+from ..expresiones import binaria
 from src.instrucciones.case.else_case import ElseCase
 from src.instrucciones.case.stm_case import StmCase
 from src.instrucciones.case.when import When
@@ -17,7 +17,6 @@ from src.instrucciones.funcion.string_ import String_
 from src.instrucciones.funcion.variable_declaration import VariableDeclaration
 from src.instrucciones.procedure.alter_procedure import AlterProcedure
 from src.instrucciones.procedure.call_procedure import CallProcedure
-from ..expresiones import aritmeticas, logicos, primitivos, relacional
 from ..instrucciones.funcion.function_declaration import FunctionDeclaration
 from ..instrucciones.procedure.create_procedure import ProcedureDeclaration
 from ..instrucciones.funcion.param_function import FunctionParam
@@ -42,16 +41,16 @@ class Visitor(ABC):
         if not self.correct:
             return
 
-        if isinstance(node, aritmeticas.Aritmeticas):
+        if isinstance(node, binaria.Binaria):
             self.visitAritmeticas(node, environment)
             
-        elif isinstance(node, logicos.Logico):
+        elif isinstance(node, binaria.Binaria):
             self.visitLogico(node, environment)
             
-        elif isinstance(node, primitivos.Primitivo):
+        elif isinstance(node, binaria.Binaria):
             self.visitPrimitivo(node, environment)
             
-        elif isinstance(node, relacional.Relacional):
+        elif isinstance(node, binaria.Binaria):
             self.visitRelacional(node, environment)
             
         elif isinstance(node,AlterFunction):

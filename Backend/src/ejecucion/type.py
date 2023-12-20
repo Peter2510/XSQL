@@ -14,17 +14,5 @@ class Type(Enum):
     IDDECLARE = 10    
     TEXT = 11
     VOID = 12
+    BOOLEAN = 13
 
-class OperationType(Enum):
-    SUMA = 0
-    RESTA = 1
-    MULTIPLICACION = 2
-    DIVISION = 3
-    MAYOR_IGUAL = 4
-    MENOR_IGUAL = 5
-    MAYOR = 6
-    MENOR = 7
-    IGUAL = 8
-    DISTINTO = 9
-    AND = 10
-    OR = 11

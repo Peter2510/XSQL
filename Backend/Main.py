@@ -34,7 +34,13 @@ def compilar():
         pars = parse(entrada.lower())
         iniciarEjecucion = Ejec(pars.statements)
         _res = iniciarEjecucion.execute(env)
-        print(_res, "---------------------------- FINNNNNNNNNNN -------------")
+        if len(env.errors) > 0:
+            for e in errores:
+                print(e)
+        else:
+            print("Compilación exitosa")
+        #     return {'mensaje':"Compilación exitosa"}
+        
         # ### solo prueba de esto
         # def prueba(texto):
         #     while True:

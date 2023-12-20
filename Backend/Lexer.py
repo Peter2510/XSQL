@@ -149,15 +149,6 @@ def t_comment(t):
 
 # IDENTIFICAR CADENAS DE TEXTO CON  COMILLAS DOBLES Y SIMPLES    
 
-def t_STR(t):
-    r'(\"[\s\S]*?\")|(\'[\s\S]*?\')|(\`[\s\S]*?\`)'
-    t.value = t.value[1:-1]
-    t.value = t.value.replace('\\"', '\"')
-    t.value = t.value.replace("\\'", "\'")
-    t.value = t.value.replace('\\\\', '\\')
-    t.value = t.value.replace('\\t', '\t')
-    t.value = t.value.replace('\\n', '\n')
-    return t
 
 # ID NORMAL
 
@@ -178,19 +169,18 @@ def t_ID_DECLARE(t):
 
 # Token DATETIME
 def t_DATETIMEPRIM(t):
-    r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+    r'\'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\''
     try:
-        t.value = datetime.datetime.strptime(t.value, '%Y-%m-%d %H:%M:%S')
+        t.value = datetime.datetime.strptime(t.value[1:-1], '%Y-%m-%d %H:%M:%S')
     except ValueError:
         print("Error en la fecha y hora")
         t.value = None
     return t
 
-
 def t_DATEPRIM(t):
-    r'\d{4}-\d{2}-\d{2}'
+    r'\'\d{4}-\d{2}-\d{2}\''
     try:
-        t.value = datetime.datetime.strptime(t.value, '%Y-%m-%d').date()
+        t.value = datetime.datetime.strptime(t.value[1:-1], '%Y-%m-%d').date()
     except ValueError:
         print("Error en la fecha")
         t.value = None
@@ -235,6 +225,16 @@ def t_BITPRIM(t):
 def newline(t):
     r'\n'
     t.lexer.lineno +=len(t.value)
+    
+def t_STR(t):
+    r'\"[\s\S]*?\"'
+    t.value = t.value[1:-1]
+    t.value = t.value.replace('\\"', '\"')
+    t.value = t.value.replace("\\'", "\'")
+    t.value = t.value.replace('\\\\', '\\')
+    t.value = t.value.replace('\\t', '\t')
+    t.value = t.value.replace('\\n', '\n')
+    return t
 
 
 ## PARA LOS TAGS DEL XML

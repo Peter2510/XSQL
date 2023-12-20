@@ -6,52 +6,57 @@ from prettytable import PrettyTable
 from src.ejecucion.type import *
 from datetime import datetime
 
-class Environment:
+class Environment(list):
        
-    def __init__(self, father):
+    def __init__(self, padre=None):
+        super().__init__()
         self.funciones = []
         self.procedimientos = []
         self.errors = []
         self.tables = None
+        if padre is not None:
+            for variable in padre:
+                self.append(variable)
+            self.setFunciones(padre.getFunciones())
+            self.setProcedimientos(padre.getProcedimientos())
 
     def addError(self,tipo,token,descripcion,fila,columna):
         self.errors.append(T_error(tipo,token,descripcion,fila,columna))
         
-    def agregarFunction(self,nombre,parametros):
-        self.funciones.append(Funcion(nombre,parametros,TablaSimbolos("global",None)))
-        
-    def agregarVariable(self,nombreFuncion,nombreVariable,variable):
-        #buscar la funcion e ingresar la variable
-        for funcion in self.funciones:
-            if nombreFuncion == funcion.nombre:
-                funcion.tablaSimbolos.agregarVariable(nombreVariable,variable)
-                                        
-    def existeVariable(self,nombreFuncion,nombreVariable):
-        for funcion in self.funciones:
-            if nombreFuncion == funcion.nombre:
-                if funcion.tablaSimbolos.existeVariable(nombreVariable):
-                    return True
-                else:
-                    return False
-        return False
+    def getFunciones(self):
+        return self.funciones
     
-    def existeFunction(self,nombre):
-        existe = False
-        for funcion in self.funciones:
-            if nombre == funcion.nombre:
+    def getProcedimientos(self):
+        return self.procedimientos
+    
+    def agregarFuncion(self, name, funcion):
+        self.funciones[name] = funcion
+
+    def existeFuncion(self, name):
+        return name in self.funciones
+
+    def cantidadParametros(self, name):
+        return self.funciones[name].getSizeParameters()
+
+    def tipoFuncion(self, name):
+        return self.funciones[name].getType()
+
+    def getFuncion(self, name):
+        return self.funciones[name]
+    
+    def _add(self, variable):
+        self.append(variable)
+
+    def getById(self, id):
+        for variable in self:
+            if variable.getId() == id:
+                return variable
+        return None
+
+    def contains(self, id):
+        for variable in self:
+            if variable.getId() == id:
                 return True
         return False
-    
-    def obtenerFuncion(self,nombre):
-        for funcion in self.funciones:
-            if nombre == funcion.nombre:
-                return funcion
-        return None
-    
-    def obtenerVariable(self,nombreFuncion,nombreVariable):
-        for funcion in self.funciones:
-            if nombreFuncion == funcion.nombre:
-                return funcion.tablaSimbolos.obtenerVariable(nombreVariable)
-        return None
         
         

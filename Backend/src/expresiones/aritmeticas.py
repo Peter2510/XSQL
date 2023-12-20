@@ -1,5 +1,3 @@
-
-
 from ..abstract.expresion import Expression
 from src.visitor import ExpressionsVisitor
 class Aritmeticas(Expression):

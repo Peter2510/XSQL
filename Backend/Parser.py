@@ -1,9 +1,8 @@
 from Lexer import tokens, lexer, errores, find_column
-from src.expresiones.logicos import Logico
+from src.expresiones.binaria import Binaria
 from src.instrucciones.funcion.varAux import VarAux
 import ply.yacc as yacc
 from src.instrucciones.funcion.string_ import String_
-from src.expresiones.aritmeticas import Aritmeticas
 from src.expresiones.primitivos import Primitivo
 from src.instrucciones.createdb import createDB
 from src.instrucciones.crearTabla import crearTabla
@@ -577,17 +576,17 @@ def p_expRelacional(t):
                 | expresion DISTINTO expresion
     '''
     if (t[2] == '<'):
-        t[0] = Relacional(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '<')
+        t[0] = Binaria(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '<')
     elif (t[2] == '>'):
-        t[0] = Relacional(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '>')
+        t[0] = Binaria(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '>')
     elif (t[2] == '<='):
-        t[0] = Relacional(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '<=')
+        t[0] = Binaria(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '<=')
     elif (t[2] == '>='):
-        t[0] = Relacional(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '>=')
+        t[0] = Binaria(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '>=')
     elif (t[2] == '!='):
-        t[0] = Relacional(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '!=')
+        t[0] = Binaria(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '!=')
     elif (t[2] == '=='):
-        t[0] = Relacional(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '==')
+        t[0] = Binaria(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '==')
 
 def p_logica(t):
     '''
@@ -596,9 +595,9 @@ def p_logica(t):
     '''
 
     if (t[2] == '&&'):
-        t[0] = Logico(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '&&')
+        t[0] = Binaria(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '&&')
     elif (t[2]== '||'):
-        t[0]= Logico(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '||')
+        t[0]= Binaria(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '||')
 
 
 
@@ -611,13 +610,13 @@ def p_expAritmetica(t):
                 | PARENTESIS_IZQ expresion PARENTESIS_DER
     '''
     if (t[2] == '+'):
-        t[0] = Aritmeticas(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '+')
+        t[0] = Binaria(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '+')
     elif (t[2] == '-'):
-        t[0] = Aritmeticas(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '-')
+        t[0] = Binaria(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '-')
     elif (t[2] == '*'):
-        t[0] = Aritmeticas(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '*')
+        t[0] = Binaria(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '*')
     elif (t[2] == '/'):
-        t[0] = Aritmeticas(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '/')
+        t[0] = Binaria(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '/')
     elif (t[1] == '(' and t[3] == ')' ):
         t[0] =t[2]
 
