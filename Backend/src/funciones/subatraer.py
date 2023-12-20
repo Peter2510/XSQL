@@ -11,4 +11,7 @@ class Substraer(Funcion):
         self.tipoOp = tipoOp
 
         ## aaqui cabal mandar a sumar toda la columna
+    def accept(self, visitor, environment):
+        pass
+
 

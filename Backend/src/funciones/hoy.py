@@ -4,7 +4,7 @@ from datetime import date
 from datetime import datetime
 
 
-class Concatenar(Funcion):
+class Hoy(Funcion):
     def __init__(self, fila, columna):
         super().__init__(fila, columna)
 
@@ -12,4 +12,7 @@ class Concatenar(Funcion):
     ## no se si le enviamos el tipo de dato asi com date
     def interpretar(self, environment):    
         return datetime.now()
+
+    def accept(self, visitor, environment):
+        pass
 

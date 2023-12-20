@@ -107,7 +107,7 @@
             <Principal name="inventario2">
                 <Atributo1>int</Atributo1>
             </Principal>
-            </Estructura>
+        </Estructura>
         <Principal name="inventario">
             <Atributo1>decimal</Atributo1>
         </Principal>
@@ -120,6 +120,30 @@
         <Estructura>
             <Principal name="inventario">
                 <Atributo1>int</Atributo1>
+            </Principal>
+        </Estructura>
+    </Table>
+    <Table name="tbdetallefactura">
+        <Estructura>
+            <Principal name="iddetallefac">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="description">
+                <Atributo1 tipo="NVARCHAR(100)">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="price">
+                <Atributo1 tipo="decimal">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="cantidad">
+                <Atributo1 tipo="decimal">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
             </Principal>
         </Estructura>
     </Table>

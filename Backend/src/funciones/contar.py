@@ -1,7 +1,7 @@
 
 from ..abstract.funcion import Funcion
-from datetime import date
-from datetime import datetime
+
+from ..manejadorXml import manejo, Estructura 
 
 
 class Contar(Funcion):
@@ -12,5 +12,15 @@ class Contar(Funcion):
 
     ## no se si le enviamos el tipo de dato asi com date
     def interpretar(self, environment):    
-        return datetime.now()
+        ### llamar a los xml
+        Estructura.load()
+        if columna != None:
+            if columna == '*':
+                print('a')
+            else:
+                print('a')
+    
+    def accept(self, visitor, environment):
+        pass
+
 

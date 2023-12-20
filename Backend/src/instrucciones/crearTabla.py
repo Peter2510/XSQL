@@ -13,6 +13,8 @@ class crearTabla(Abstract):
         ##hacer validacion con la variable global de Estructura
         existeNombre = False
         nombreTablaRepetido = False
+        atributoRepetido = False
+
         columnas = []
         indiceBaseDatos = 0
 
@@ -69,6 +71,7 @@ class crearTabla(Abstract):
                 for atributo in atributosFinales:
                     nombre = atributo["nombre"]
                     if nombre in valoresTabla:
+                        atributoRepetido= True
                         print({"error": 'Error semántico, ya existe un atributo con este nombre en esta tabla como referencia'})
                         break
                     else:
@@ -83,7 +86,8 @@ class crearTabla(Abstract):
                     ## para ver si se reptie
            
                             ## CREACION FINAL
-                  #  Estructura.crearTabla(Estructura.nombreActual, self.nombre, atributosFinales)
+                if(atributoRepetido == False):
+                   Estructura.crearTabla(Estructura.nombreActual, self.nombre, atributosFinales)
         else:
             print({"error": 'error semantico, no existe la base de datos que hace referencia'})
 

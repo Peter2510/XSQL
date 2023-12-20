@@ -10,4 +10,7 @@ class Concatenar(Funcion):
 
     def interpretar(self, environment):    
         self.tipoOp = tipoOp
+        
+    def accept(self, visitor, environment):
+        pass
 
