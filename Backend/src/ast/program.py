@@ -13,4 +13,4 @@ class Program(Abstract):
 
     def interpretar(self, environment):
         for stmt in self.statements:
-            print(stmt.interpretar(environment))
+            stmt.interpretar(environment)

@@ -36,7 +36,7 @@ def compilar():
         _res = iniciarEjecucion.execute(env)
         if len(env.errors) > 0:
             for e in errores:
-                print(e)
+                print("a",e)
         else:
             print("Compilación exitosa")
         #     return {'mensaje':"Compilación exitosa"}

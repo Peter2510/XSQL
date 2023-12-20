@@ -42,33 +42,96 @@ class Binaria(Abstract):
                     if izq.type == Type.TEXT or der.type == Type.TEXT:
                         variable.type = Type.TEXT
                         variable.value = str(izq.value) + str(der.value)                    
-                        print(variable.value)        
-                        return variable                                            
+                        return variable                                          
                                             
                     elif izq.type == Type.DECIMAL or der.type == Type.DECIMAL:
                         variable.type = Type.DECIMAL
                         variable.value = float(izq.value) + float(der.value)
-                        print(variable.value)        
                         return variable
                         
                     elif izq.type == Type.INT or der.type == Type.INT:
                         variable.type = Type.INT
                         variable.value = int(izq.value) + int(der.value)
-                        print(variable.value)        
                         return variable
                     
-                    
+                    elif izq.type == Type.BIT and der.type == Type.BIT:
+                        variable.type = Type.BIT
+                        tmp = bool(izq.value) or bool(der.value)
+                        if tmp == True:
+                            variable.value = 1
+                        else: 
+                            variable.value = 0
+                        return variable
+                                      
                 elif self.tipoOp == '-':
-                        return izq - der
+                    
+                    if izq.type == Type.DECIMAL or der.type == Type.DECIMAL:
+                        variable.type = Type.DECIMAL
+                        variable.value = float(izq.value) - float(der.value)
+                        return variable
+                        
+                    elif izq.type == Type.INT and der.type == Type.INT:
+                        variable.type = Type.INT
+                        variable.value = int(izq.value) - int(der.value)
+                        return variable
 
                 elif self.tipoOp == '*':
-                        return izq * der
+                                            
+                    if izq.type == Type.DECIMAL or der.type == Type.DECIMAL:
+                        variable.type = Type.DECIMAL
+                        variable.value = float(izq.value) * float(der.value)
+                        return variable
+                        
+                    elif izq.type == Type.INT or der.type == Type.INT:
+                        variable.type = Type.INT
+                        variable.value = int(izq.value) * int(der.value)
+                        return variable
+                    
+                    elif izq.type == Type.BIT and der.type == Type.BIT:
+                        variable.type = Type.BIT
+                        tmp = bool(izq.value) or bool(der.value)
+                        if tmp == True:
+                            variable.value = 1
+                        else: 
+                            variable.value = 0
+                        return variable
+                    
+                    elif izq.type == Type.DATE or der.type == Type.DATE:
+                        variable.type = Type.TEXT
+                        variable.value = str(izq.value) + str(der.value)
+                        return variable
+                    
+                    elif izq.type == Type.DATETIME or der.type == Type.DATETIME:
+                        variable.type = Type.TEXT
+                        variable.value = str(izq.value) + str(der.value)
+                        return variable
 
                 elif self.tipoOp == '/':
-                        if der == 0:
-                            environment.addError("Semántico","0","No se puede dividir entre 0.", self.fila, self.columna)
-                            return None
-                        return izq / der
+                    
+                    if der == 0:
+                        environment.addError("Semántico","0","No se puede dividir entre 0.", self.fila, self.columna)
+                        return None
+                    
+                    if izq.type == Type.DECIMAL or der.type == Type.DECIMAL:
+                        variable.type = Type.DECIMAL
+                        variable.value = float(izq.value) / float(der.value)
+                        return variable
+                        
+                    elif izq.type == Type.INT or der.type == Type.INT:
+                        variable.type = Type.INT
+                        variable.value = int(izq.value) / int(der.value)
+                        return variable
+                                        
+                    elif izq.type == Type.DATE or der.type == Type.DATE:
+                        variable.type = Type.TEXT
+                        variable.value = str(izq.value) + str(der.value)
+                        return variable
+                    
+                    elif izq.type == Type.DATETIME or der.type == Type.DATETIME:
+                        variable.type = Type.TEXT
+                        variable.value = str(izq.value) + str(der.value)
+                        return variable
+                    
         else:
             environment.addError("Semántico","0","Error en la operación.", self.fila, self.columna)
             return None

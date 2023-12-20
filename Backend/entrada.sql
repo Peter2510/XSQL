@@ -121,3 +121,8 @@ Truncate table tbdetallefactura;
 Alter table tbfactura drop column tipotarjeta ;
 DROP TABLE tbproducts;
 
+SELECT 1+2*3+"hola"*'2023-12-20'*'2025-12-11';
+
+SELECT 1+2*3+"hola";
+
+SELECT '2023-12-15'/"2023-12-15";

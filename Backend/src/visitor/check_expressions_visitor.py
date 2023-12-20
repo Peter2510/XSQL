@@ -218,4 +218,3 @@ class ExpressionsVisitor(Visitor):
             print(f'La operación {node.opIzq.tipo} {node.tipoOp} {node.opDer.tipo} no es posible')
         else:
             node.tipo = new_type
-            print("CORRECTO")
