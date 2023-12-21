@@ -32,7 +32,6 @@ keywords = {
     "suma":"SUMA",
     "cas":"CAS",
     
-    'not': 'NOT',
     'null': 'NULL',
     'primary': 'PRIMARY',
     'foreing': 'FOREING',
@@ -97,6 +96,7 @@ tokens = [
     'LLAVE_DER',
     'OR',
     'AND',
+    'NOT',
     'NEGACION',
     'CORCHETE_IZQ',
     'CORCHETE_DER',
@@ -135,6 +135,7 @@ t_LLAVE_IZQ = r'\{'
 t_LLAVE_DER = r'\}'
 t_OR = r'\|\|'
 t_AND = r'\&\&'
+t_NOT = r'\!'
 t_NEGACION = r'\!'
 t_CORCHETE_IZQ = r'\['
 t_CORCHETE_DER = r'\]'

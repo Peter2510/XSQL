@@ -1,4 +1,5 @@
 from Lexer import tokens, lexer, errors, find_column
+from src.expresiones.negacion import Negacion
 from src.ejecucion.error import T_error
 from src.expresiones.negativa import Negativa
 from src.expresiones.binaria import Binaria
@@ -58,6 +59,7 @@ from src.funciones.hoy import Hoy
 precedence = (
     ('left', 'OR'),
     ('left','AND'),
+    ('left','NOT'),
     ('left', 'COMPARACION','DISTINTO','MENOR_QUE','MAYOR_QUE','MENOR_O_IGUAL_QUE', 'MAYOR_O_IGUAL_QUE'),
     ('left', 'MAS','MENOS'),
     ('left', 'POR','DIVISION'),
@@ -630,6 +632,11 @@ def p_expresion_negativo(t):
     '''
     t[0] = Negativa(t.lineno(1), find_column(input, t.slice[1]), t[2])
     
+def p_expresion_negado(t):
+    '''
+    expresion : NOT expresion
+    '''
+    t[0] = Negacion(t.lineno(1), find_column(input, t.slice[1]), t[2])
 
 ### para enteros 
 def p_exp_entero(t):
