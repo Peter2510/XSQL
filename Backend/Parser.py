@@ -44,7 +44,8 @@ from src.expresiones.relacional import Relacional
 
 from src.ast import (
     Program, Select, FromClause, Table, WhereClause, AllColumns,
-    TableColumn, ColumnAssignments, Update, Delete, AliasSelect, SelectAssign
+    TableColumn, ColumnAssignments, Update, Delete, AliasSelect, SelectAssign,
+    SQLUnaryExpression, SQLBinaryExpression, SQLLogicalExpression
 )
 
 from src.funciones.cast import Cas
@@ -72,7 +73,7 @@ precedence = (
 ## ahora el parser general s
 ##############
 ### SECCION GENERAL DE LAS INSTRUCCIONES
-    
+
 def p_init(t):
     '''
     init : instrucciones
@@ -125,7 +126,7 @@ def p_usarDB(t):
     usarDB :  USAR ID
     '''
     t[0] = usarDB(t.lineno(2), find_column(input, t.slice[2]),t[2])
-    
+
 ## crear BD
 def p_crearBaseDatos(t):
     '''
@@ -165,8 +166,8 @@ def p_columnaDefinicion(t): # ID INT NOT NULL PRIMARY KEY
     '''
     print("EL TIPO ES ESTE: ",t[1],t[2],t[3],t[4])
     t[0] = [t[1], t[2], t[3], t[4]]
-        
-    
+
+
 def p_tipo_dato(t):
     '''
     tipo_dato : R_INT
@@ -178,40 +179,40 @@ def p_tipo_dato2(t):
     tipo_dato : R_DECIMAL
     '''
     t[0] = Type.DECIMAL
-    
+
 def p_tipo_dato3(t):
     '''
     tipo_dato : R_BIT
     '''
     t[0] = Type.BIT
-    
+
 def p_tipo_dato4(t):
     '''
     tipo_dato : DATETIME
     '''
     t[0] = Type.DATETIME
-    
+
 def p_tipo_dato5(t):
     '''
     tipo_dato : DATE
     '''
     t[0] = Type.DATE
-    
+
 # NVARCHAR   
 def p_tipo_dato7(t):
     '''
     tipo_dato : NVARCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
     '''
     t[0] = String_(t.lineno(1), find_column(input, t.slice[1]),Type.NVARCHAR,t[3])
-    
+
 # NCHAR 
 def p_tipo_dato8(t):
     '''
     tipo_dato : NCHAR PARENTESIS_IZQ expresion PARENTESIS_DER
     '''
     t[0] = String_(t.lineno(1), find_column(input, t.slice[1]),Type.NCHAR,t[3])
-        
-    
+
+
 def p_nulidad_parametro(t): # si es null es 1
     '''
     nulidad_parametro : NULL
@@ -223,13 +224,13 @@ def p_nulidad_parametro2(t): # si es not null es 2
     nulidad_parametro : NOT NULL
     '''
     t[0] = '0'
-    
+
 def p_nulidad_parametro3(t):# si es vacio puede ser null entonces es 1
     '''
     nulidad_parametro : 
     '''
     t[0] = '2'
-    
+
 def p_restriccion_parametro(t): #primary -> 1
     '''
     restriccion_parametro : PRIMARY KEY
@@ -241,7 +242,7 @@ def p_restriccion_parametro2(t): # foranea -> 2
     restriccion_parametro : REFERENCE ID PARENTESIS_IZQ ID PARENTESIS_DER
     '''
     t[0] = f'forenea({t[2]})'
-    
+
 
 def p_restriccion_parametro3(t): #normal -> 0
     '''
@@ -250,7 +251,7 @@ def p_restriccion_parametro3(t): #normal -> 0
     t[0] = '0'
 
 
-#Alter table tbfactura drop column tipotarjeta 
+#Alter table tbfactura drop column tipotarjeta
 #DROP TABLE tbproducts
 def p_alterTable(t):
     '''
@@ -270,7 +271,7 @@ def p_opcionesAlter2(t):
     opcionAlter :  DROP COLUMN ID 
     '''
     t[0]=t[3]
-## seccion del drop 
+## seccion del drop
 ## para el drop bueno no se si se elmina metodos y funciones ?
 def p_drop(t):
     '''
@@ -288,13 +289,13 @@ def p_drop2(t):
 def p_truncate(t):
     '''
     opcionTruncate : TRUNCATE ID
-    ''' 
+    '''
     t[0] = truncateDB(t.lineno(2), find_column(input, t.slice[2]),t[2])
 
 def p_truncate2(t):
     '''
     opcionTruncate : TRUNCATE TABLE ID
-    ''' 
+    '''
     t[0] = truncateTabla(t.lineno(3), find_column(input, t.slice[3]),t[3])
 
 
@@ -339,7 +340,7 @@ def p_from_table_opt_1(t):
 
 def p_condition_opt(t):
     '''
-    condition_opt : WHERE expresion
+    condition_opt : WHERE sql_expression
     '''
     t[0] = WhereClause(fila=t.lineno(1), columna=find_column(input, t.slice[1]), expr=t[2])
 
@@ -380,23 +381,24 @@ def p_select_sublist_1(t):
     '''
     t[0] = [t[1]]
 
-def p_select_item_2(t):
-    '''
-    select_item : ID_DECLARE ASIGNACION funciones_sistema
-    '''
-    t[0] = SelectAssign(fila=t.lineno(1), columna=find_column(input, t.slice[1]), variable=t[1], function=t[3])
+# def p_select_item_2(t):
+#     '''
+#     select_item : ID_DECLARE ASIGNACION funciones_sistema
+#     '''
+#     t[0] = SelectAssign(fila=t.lineno(1), columna=find_column(input, t.slice[1]), variable=t[1], function=t[3])
+# TODO: NEW (extra points) ID_DECLARE = select
 
 
-def p_select_item_3(t):
-    '''
-    select_item : funciones_sistema
-    '''
-    t[0] = t[1]
-
+# def p_select_item_3(t):
+#     '''
+#     select_item : funciones_sistema
+#     '''
+#     t[0] = t[1]
+# NOTE: Added to sql_expressions
 
 def p_select_item_4(t):
     '''
-    select_item : expresion id_opt
+    select_item : sql_expression id_opt
     '''
     if t[2] is not None:
         t[0] = AliasSelect(fila=t.lineno(1), columna=t[1].columna, id=t[2], expr=t[1])
@@ -406,14 +408,14 @@ def p_select_item_4(t):
 
 def p_id_opt(t):
     '''
-    id_opt : expresion
+    id_opt : ID
             | empty
     '''
     t[0] = t[1]
 
 def p_funciones_sistema(t):
     '''
-    funciones_sistema : CONCATENA PARENTESIS_IZQ STR COMA STR PARENTESIS_DER
+    funciones_sistema : CONCATENA PARENTESIS_IZQ sql_expression COMA sql_expression PARENTESIS_DER
     '''
     t[0] = Concatenar(fila=t.lineno(1), columna=find_column(input, t.slice[1]), opIzq=t[3], opDer=t[5])
 
@@ -449,7 +451,7 @@ def p_funciones_sistema5(t):
 
 def p_cas_value(t):
     '''
-    cas_value : expresion
+    cas_value : sql_expression
     '''
     # TODO: Cambiar a nodo de ID_DECLARE en expresiones
     t[0] = t[1]
@@ -465,7 +467,18 @@ def p_valor(t):
         | DATETIME
         | DATE
     '''
-    t[0] = t[1]
+    if t[1] in ['varchar', 'nchar', 'nvarchar']:
+        t[0] = Type.TEXT
+    elif t[1] == 'int':
+        t[0] = Type.INT
+    elif t[1] == 'bit':
+        t[0] = Type.BIT
+    elif t[1] == 'decimal':
+        t[0] = Type.DECIMAL
+    elif t[1] == 'datetime':
+        t[0] = Type.DATETIME
+    elif t[1] == 'date':
+        t[0] = Type.DATE
 
 
 def p_param_suma(t):
@@ -495,7 +508,7 @@ def p_table_1(t):
 
 def p_update(t):
     '''
-    update : UPDATE ID SET assign_list WHERE expresion
+    update : UPDATE ID SET assign_list WHERE sql_expression
     '''
     where_clause = WhereClause(fila=t.lineno(5), columna=find_column(input, t.slice[5]), expr=t[6])
     t[0] = Update(fila=t.lineno(1), columna=find_column(input, t.slice[1]), table=t[2], assignments=t[4], where_clause=where_clause)
@@ -517,7 +530,7 @@ def p_assing_list1(t):
 
 def p_assing(t):
     '''
-    assign : ID ASIGNACION expresion
+    assign : ID ASIGNACION sql_expression
     '''
     t[0] = ColumnAssignments(fila=t.lineno(1), columna=find_column(input, t.slice[1]), column_ref=t[1], expr=t[3])
 
@@ -541,7 +554,7 @@ def p_column_list2(t):
     column_list : ID
     '''
     t[0] = [t[1]]
-    
+
 def p_value_list1(t):
     '''
     value_list :  value_list COMA value
@@ -565,11 +578,218 @@ def p_value(t):
 
 def p_delete(t):
     '''
-    delete : DELETE FROM ID WHERE expresion
+    delete : DELETE FROM ID WHERE sql_expression
     '''
     where_clause = WhereClause(fila=t.lineno(4), columna=find_column(input, t.slice[4]), expr=t[5])
     t[0] = Delete(fila=t.lineno(1), columna=find_column(input, t.slice[1]), table=t[3], where_clause=where_clause)
      # validar que no sea FK de otra tabla
+
+
+def p_sql_expression(t):
+    """
+    sql_expression : conditional_expression
+    """
+    t[0] = t[1]
+
+
+def p_conditional_expression(t):
+    """
+    conditional_expression : conditional_or_expression
+    """
+    t[0] = t[1]
+
+
+def p_conditional_or_expression(t):
+    """
+    conditional_or_expression : conditional_or_expression SQL_OR conditional_and_expression
+    """
+    t[0] = SQLLogicalExpression(fila=t[1].fila, columna=t[1].columna, left=t[1], operator=t[2], right=t[3])
+
+def p_conditional_or_expression1(t):
+    """
+    conditional_or_expression : conditional_and_expression
+    """
+    t[0] = t[1]
+
+
+def p_conditional_and_expression(t):
+    """
+    conditional_and_expression : conditional_and_expression SQL_AND equality_expression
+    """
+    t[0] = SQLLogicalExpression(fila=t[1].fila, columna=t[1].columna, left=t[1], operator=t[2], right=t[3])
+
+
+def p_conditional_and_expression1(t):
+    """
+    conditional_and_expression : equality_expression
+    """
+    t[0] = t[1]
+
+
+def p_equality_expression(t):
+    """
+    equality_expression : equality_expression DISTINTO relational_expression
+                        | equality_expression ASIGNACION relational_expression
+    """
+    t[0] = SQLBinaryExpression(fila=t[1].fila, columna=t[1].columna, left=t[1], operator=t[2], right=t[3])
+
+
+def p_equality_expression1(t):
+    """
+    equality_expression : relational_expression
+    """
+    t[0] = t[1]
+
+
+def p_relational_expression(t):
+    """
+    relational_expression : relational_expression MENOR_QUE additive_expression
+                        | relational_expression MAYOR_QUE additive_expression
+                        | relational_expression MENOR_O_IGUAL_QUE additive_expression
+                        | relational_expression MAYOR_O_IGUAL_QUE additive_expression
+    """
+    t[0] = SQLBinaryExpression(fila=t[1].fila, columna=t[1].columna, left=t[1], operator=t[2], right=t[3])
+
+
+def p_relational_expression1(t):
+    """
+    relational_expression : additive_expression
+    """
+    t[0] = t[1]
+
+
+def p_additive_expression(t):
+    """
+    additive_expression : additive_expression MAS multiplicative_expression
+                        | additive_expression MENOS multiplicative_expression
+    """
+    t[0] = SQLBinaryExpression(fila=t[1].fila, columna=t[1].columna, left=t[1], operator=t[2], right=t[3])
+
+
+def p_additive_expression1(t):
+    """
+    additive_expression : multiplicative_expression
+    """
+    t[0] = t[1]
+
+
+def p_multiplicative_expression(t):
+    """
+    multiplicative_expression : multiplicative_expression POR unary_expression
+                        | multiplicative_expression DIVISION unary_expression
+    """
+    t[0] = SQLBinaryExpression(fila=t[1].fila, columna=t[1].columna, left=t[1], operator=t[2], right=t[3])
+
+
+def p_multiplicative_expression1(t):
+    """
+    multiplicative_expression : unary_expression
+    """
+    t[0] = t[1]
+
+
+def p_unary_expression(t):
+    """
+    unary_expression : value_literal
+                    | column_id
+                    | call_function
+    """
+    t[0] = t[1]
+
+
+def p_unary_expression1(t):
+    """
+    unary_expression : PARENTESIS_IZQ sql_expression PARENTESIS_DER
+    """
+    t[0] = t[2]
+
+def p_value_literal(t):
+    """
+    value_literal : ENTERO
+    """
+    t[0] = SQLUnaryExpression(fila=t.lineno(1), columna=find_column(input, t.slice[1]), argument=t[1], tipo=Type.INT)
+
+
+def p_value_literal1(t):
+    """
+    value_literal : DECIMAL
+    """
+    t[0] = SQLUnaryExpression(fila=t.lineno(1), columna=find_column(input, t.slice[1]), argument=t[1], tipo=Type.DECIMAL)
+
+
+def p_value_literal2(t):
+    """
+    value_literal : STR
+    """
+    t[0] = SQLUnaryExpression(fila=t.lineno(1), columna=find_column(input, t.slice[1]), argument=t[1], tipo=Type.TEXT)
+
+
+def p_value_literal3(t):
+    """
+    value_literal : NULL
+    """
+    t[0] = SQLUnaryExpression(fila=t.lineno(1), columna=find_column(input, t.slice[1]), argument=t[1], tipo=Type.NULL)
+
+
+def p_value_literal4(t):
+    """
+    value_literal : BITPRIM
+    """
+    t[0] = SQLUnaryExpression(fila=t.lineno(1), columna=find_column(input, t.slice[1]), argument=t[1], tipo=Type.BIT)
+
+
+def p_value_literal5(t):
+    """
+    value_literal : DATETIMEPRIM
+    """
+    t[0] = SQLUnaryExpression(fila=t.lineno(1), columna=find_column(input, t.slice[1]), argument=t[1], tipo=Type.DATETIME)
+
+
+def p_value_literal6(t):
+    """
+    value_literal : DATEPRIM
+    """
+    t[0] = SQLUnaryExpression(fila=t.lineno(1), columna=find_column(input, t.slice[1]), argument=t[1], tipo=Type.DATE)
+
+
+def p_column_id(t):
+    """
+    column_id : ID dot_table_opt
+    """
+    column = t[2] if t[2] is not None else t[1]
+    table = t[1] if t[2] is not None else None
+    table_column = TableColumn(fila=t.lineno(1), columna=find_column(input, t.slice[1]), id=column, table=table)
+    t[0] = SQLUnaryExpression(fila=t.lineno(1), columna=find_column(input, t.slice[1]), argument=table_column)
+
+
+def p_dot_table_opt(t):
+    """
+    dot_table_opt : PUNTO ID
+    """
+    t[0] = t[2]
+
+
+def p_dot_table_opt1(t):
+    """
+    dot_table_opt : empty
+    """
+    pass
+
+
+# id variable
+# def p_variable_id(t):
+#     """
+#     variable_id : ID_DECLARE
+#     """
+#     t[0] = Primitivo(t.lineno(1), find_column(input, t.slice[1]), str(t[1]), Type.IDDECLARE)
+#     # TODO: CHECK IF ADD
+
+def p_call_function(t):
+    """
+    call_function : llamada_funcion
+                | funciones_sistema
+    """
+    t[0] = SQLUnaryExpression(fila=t[1].fila, columna=t[1].columna, argument=t[1])
 
 ################### END DML ################
 def p_expRelacional(t):
@@ -638,7 +858,7 @@ def p_expresion_negado(t):
     '''
     t[0] = Negacion(t.lineno(1), find_column(input, t.slice[1]), t[2])
 
-### para enteros 
+### para enteros
 def p_exp_entero(t):
     '''expresion : ENTERO'''
     ### como funciones le mandas lo que es digamos
@@ -651,54 +871,37 @@ def p_exp_decimal(t):
     t[0] = Primitivo(t.lineno(1), find_column(input, t.slice[1]),float(t[1]),Type.DECIMAL)
     #print("DECIMAL")
 
-##para cadenas 
+##para cadenas
 def p_exp_cadena(t):
     '''expresion : STR'''
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.TEXT)
     #print("STR")
 
 ## id
-def p_exp_id(t):
-    '''expresion : ID punto_table_opt'''
-    column = t[2] if t[2] is not None else t[1]
-    table = t[1] if t[2] is not None else None
-    t[0] = TableColumn(fila=t.lineno(1), columna=find_column(input, t.slice[1]), id=column, table=table)
-
-def p_punto_table_opt(t):
-    '''
-    punto_table_opt : PUNTO ID
-    '''
-    t[0] = t[2]
-
-def p_punto_table_opt1(t):
-    '''
-    punto_table_opt : empty
-    '''
-    pass
 
 #id variable
 def p_exp_id_declare(t):
     '''expresion : ID_DECLARE'''
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.IDDECLARE)
     #print("id declare")
-    
+
 def p_null(t):
     '''expresion : NULL'''
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.NULL)
     #print("null")
-    
+
 def p_exp_bit(t):
     '''expresion : BITPRIM'''
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.BIT)
     #print("bit")
-    
+
 def p_exp_date_time(t):
     '''
     expresion : DATETIMEPRIM
     '''
     t[0]=Primitivo(t.lineno(1), find_column(input, t.slice[1]),str(t[1]),Type.DATETIME)
     #print("date time")
-    
+
 def p_exp_date(t):
     '''
     expresion : DATEPRIM
@@ -707,14 +910,14 @@ def p_exp_date(t):
     #print("date")
 
     ###AGREGAR EL LLAMADO DE FUNCIONES 
-    
+
 def p_exp_llamada_funcion(t):
     '''
     expresion : llamada_funcion
     '''
     t[0] = t[1]
-    
-    
+
+
 
                 ########################## SSL
 
@@ -732,7 +935,7 @@ def p_funcion_usuario2(t):  #sin parametros
     crear_funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
     '''
     t[0] = FunctionDeclaration(t.lineno(1), find_column(input, t.slice[1]), t[3], None, t[7],t[10])
-    
+
 #ALTER FUNCTION
 def p_alter_funcion_usuario(t):  #con parametros
     ''' 
@@ -746,7 +949,7 @@ def p_alter_funcion_usuario2(t):  #sin parametros
     alter_funcion_usuario : ALTER FUNCTION ID PARENTESIS_IZQ PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
     '''
     t[0] = AlterFunction(t.lineno(1), find_column(input, t.slice[1]), t[3], None, t[6],t[9])
-    
+
 ##PARAMETROS DE LAS FUNCIONES
 def p_parametros_funcion(t):
     '''
@@ -760,22 +963,22 @@ def p_parametros_funcion2(t):
     parametros_funcion :  parametro_funcion
     '''
     t[0] = [t[1]]
-    
+
 #parametro de una funcion
-def p_parametro_funcion(t): # @id tipoDato 
+def p_parametro_funcion(t): # @id tipoDato
     '''
     parametro_funcion : ID_DECLARE tipo_dato_parametro 
     '''
     t[0] = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
-    
-        
-#tipo de dato del parametro 
+
+
+#tipo de dato del parametro
 def p_tipo_dato_parametro(t):
     '''
     tipo_dato_parametro : tipo_dato
     '''
     t[0] = t[1]
-    
+
 #tipo de dato funcion
 def p_tipo_dato_funcion(t):
     '''
@@ -784,14 +987,14 @@ def p_tipo_dato_funcion(t):
                       | R_DECIMAL  
     '''
     t[0] = t[1]
-    
+
 #tipo de dato de la variable
 def p_tipo_dato_variable_funcion(t):
     '''
     tipo_dato_variable : tipo_dato
     '''
     t[0] = t[1]
-    
+
 #sentencias de las funciones
 def p_sentencias_funciones(t):
     '''
@@ -806,8 +1009,8 @@ def p_sentencias_funciones1(t):
     sentencias_funciones : sentencia_funcion
     '''
     t[0] = [t[1]]
-    
-#sentecias dentro de las funciones    
+
+#sentecias dentro de las funciones
 def p_sentencia_funcion(t):
     '''
     sentencia_funcion : declaracion_variables
@@ -816,7 +1019,7 @@ def p_sentencia_funcion(t):
                     | expresion_if
     '''
     t[0] = t[1]
-    
+
 #declare varias variables
 def p_declaracion_variables(t):
     '''
@@ -826,8 +1029,8 @@ def p_declaracion_variables(t):
     for declaracion in t[2]:
         listaDeclare.append(VariableDeclaration(t.lineno(1),find_column(input,t.slice[1]),declaracion.tipo,declaracion.nombre))
     t[0] = listaDeclare
-      
-    
+
+
 #lista de declaracion de variables
 def p_lista_declaracion_variables(t):
     '''
@@ -835,14 +1038,14 @@ def p_lista_declaracion_variables(t):
     '''
     t[1].append(t[3])
     t[0] = t[1]
-    
-#declaracion de una sola variable    
+
+#declaracion de una sola variable
 def p_lista_declaracion_variables2(t):
     '''
     lista_declaracion_variables :  declaracion_variable
     '''
     t[0] = [t[1]]
-    
+
 #declarar variable
 def p_declaracion_variable(t):
     '''
@@ -850,15 +1053,15 @@ def p_declaracion_variable(t):
     '''
     t[0] = VarAux(t[1],t[2],t.lineno(1),find_column(input,t.slice[1]))
 
-    
+
 def p_set_variable_funcion(t):
     '''
     set_variable_funcion : SET ID_DECLARE ASIGNACION asignacion_set PUNTO_Y_COMA
     '''
     set_= Set_(t.lineno(1), find_column(input, t.slice[1]),t[2],t[4])
     t[0] = [set_]
-    
-    
+
+
 #asignacion set
 def p_asignacion_set(t):
     '''
@@ -866,29 +1069,29 @@ def p_asignacion_set(t):
                    | llamada_funcion
     '''
     t[0] = t[1]
-    
+
 # RETURN
 def p_return(t):
     '''
     return : RETURN expresion PUNTO_Y_COMA
     '''
     t[0] = Return_(t.lineno(1), find_column(input, t.slice[1]),t[2])
-    
-    
+
+
 #llamada de una funcion
 def p_llamada_funcion(t):
     '''
     llamada_funcion : ID PARENTESIS_IZQ parametros_llamada_funcion PARENTESIS_DER
     '''
     t[0] = CallFunction(t.lineno(1), find_column(input, t.slice[1]),t[1],t[3])
-    
+
 #llamada de una funcion
 def p_llamada_funcion2(t):
     '''
     llamada_funcion : ID PARENTESIS_IZQ PARENTESIS_DER
     '''
     t[0] = CallFunction(t.lineno(1), find_column(input, t.slice[1]),t[1],None)
-    
+
 #parametros de la llamada de una funcion
 def p_parametros_llamada_funcion(t):
     '''
@@ -902,7 +1105,7 @@ def p_parametros_llamada_funcion2(t):
     parametros_llamada_funcion :  parametro_llamada_funcion
     '''
     t[0] = [t[1]]
-    
+
 #parametro de la llamada de una funcion
 def p_parametro_llamada_funcion(t): # id
     '''
@@ -910,33 +1113,33 @@ def p_parametro_llamada_funcion(t): # id
     '''
     t[0] = [t[1]]
     #print('parametro llamada funcion',t[1])
-    
+
 
 #PROCEDURES
-    
+
 #CREAR PROCEDURE Parametros
 def p_procedure(t):
     '''
     crear_procedure : CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END 
     '''
     t[0] = ProcedureDeclaration(t.lineno(1), find_column(input, t.slice[1]),t[3],t[5],t[8])
-    
-    
-    
+
+
+
 #PROCEDURE PARAMETROS
 def p_procedure2(t):
     '''
     crear_procedure : CREATE PROCEDURE ID PARENTESIS_IZQ PARENTESIS_DER AS BEGIN sentencias_funciones END 
     '''
     t[0] = ProcedureDeclaration(t.lineno(1), find_column(input, t.slice[1]),t[3],None,t[7])
-    
+
 #ALTER PROCEDURE
 def p_alter_procedure(t):
     '''
     alter_procedure : ALTER PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END 
     '''
     t[0] = AlterProcedure(t.lineno(1), find_column(input, t.slice[1]),t[3],t[5],t[9])
-     
+
 #parametros de los procedures
 def p_parametros_procedure(t):
     '''
@@ -950,32 +1153,32 @@ def p_parametros_procedure2(t):
     parametros_procedure :  parametro_procedure
     '''
     t[0] = [t[1]]
-    
+
 #parametro de un procedure
-def p_parametro_procedure(t): # @id AS tipoDato 
+def p_parametro_procedure(t): # @id AS tipoDato
     '''
     parametro_procedure : ID_DECLARE tipo_dato 
     '''
     param = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
     t[0] = [param]
-    
-    
-def p_parametro_procedure2(t): # @id AS tipoDato 
+
+
+def p_parametro_procedure2(t): # @id AS tipoDato
     '''
     parametro_procedure : ID_DECLARE AS tipo_dato 
     '''
     param = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
     t[0] = [param]
 
-    
+
 #llamada procedure
 def p_llamada_procedure(t):
     '''
     llamada_procedure : EXEC ID lista_variables_procedure
     '''
     t[0] = CallProcedure(t.lineno(1), find_column(input, t.slice[1]),t[2],t[3])
-    
-   
+
+
 #lista_variables_procedure
 def p_lista_variables_procedure(t):
     '''
@@ -983,7 +1186,7 @@ def p_lista_variables_procedure(t):
     '''
     t[1].append(t[3])
     t[0] = t[1]
-    
+
 #lista_variables_procedure
 def p_lista_variables_procedure3(t):
     '''
@@ -991,7 +1194,7 @@ def p_lista_variables_procedure3(t):
     '''
     param = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
     t[0] = [param]
-    
+
 #variable_procedure
 def p_variable_procedure(t):
     '''
@@ -999,7 +1202,7 @@ def p_variable_procedure(t):
     '''
     t[0] = [t[1]]
     #print("variable_procedure",t[1])
-    
+
 #valor_variable_procedure
 def p_valor_variable_procedure(t):
     '''
@@ -1007,7 +1210,7 @@ def p_valor_variable_procedure(t):
     '''
     t[0] = t[1]
     #print("valor_variable_procedure",t[3])
-    
+
 #valor_variable_procedure
 def p_valor_variable_procedure2(t):
     '''
@@ -1015,31 +1218,31 @@ def p_valor_variable_procedure2(t):
     '''
     t[0] = t[1]
     #print("valor_variable_procedure",t[1])
-    
+
 #llamada procedure2
 def p_llamada_procedure2(t):
     '''
     llamada_procedure : EXEC ID lista_variables_procedure2
     '''
     t[0] = CallProcedure(t.lineno(1), find_column(input, t.slice[1]),t[2],t[3])
-    
+
 def p_lista_variables_procedure2(t):
     '''
     lista_variables_procedure2 : lista_variables_procedure2 COMA expresion
     '''
     t[1].append(t[3])
     t[0] = t[1]
-    
-    
+
+
 def p_lista_variables_procedure4(t):
     '''
     lista_variables_procedure2 : expresion
     '''
     t[0] = [t[1]]
-                
+
 #if
 #solo if
-def p_if(t): 
+def p_if(t):
     '''
     expresion_if : IF expresion THEN cuerpo_if_else END IF PUNTO_Y_COMA
     '''
@@ -1050,15 +1253,15 @@ def p_if(t):
 def p_if2(t):
     '''
     expresion_if : IF expresion THEN cuerpo_if_else expresion_else END IF PUNTO_Y_COMA
-    '''    
+    '''
     _if = If_(t.lineno(1), find_column(input, t.slice[1]), t[2], t[4])
     t[0] = StmIf(t.lineno(1), find_column(input, t.slice[1]), _if,None,t[5])
-    
+
 #if elseif else
 def p_if3(t):
     '''
     expresion_if : IF expresion THEN cuerpo_if_else expresion_else_if expresion_else END IF PUNTO_Y_COMA
-    '''    
+    '''
     _if = If_(t.lineno(1), find_column(input, t.slice[1]), t[2], t[4])
     t[0] = StmIf(t.lineno(1), find_column(input, t.slice[1]), _if,t[5],t[6])
 
@@ -1075,7 +1278,7 @@ def p_cuerpo_if_else(t):
     cuerpo_if_else : sentencias_funciones
     '''
     t[0] = t[1]
-    
+
 # expresion else
 def p_expresion_else(t):
     '''
@@ -1091,14 +1294,14 @@ def p_expresion_else_if(t):
     t[0] = ElseIf_(t.lineno(1), find_column(input, t.slice[1]), t[2], t[4])
 
 
-#case 
+#case
 def p_expresion_case(t):
     '''
     expresion_case : CASE when_clauses ELSE THEN expresion END expresion
     '''
     else_case = ElseCase(t.lineno(1), find_column(input, t.slice[1]), t[5])
     t[0] = StmCase(t.lineno(1), find_column(input, t.slice[1]), t[2], else_case, t[7])
-    
+
 #case 2
 def p_expresion_case2(t):
     '''
@@ -1113,8 +1316,8 @@ def p_when_clauses(t):
     when = When(t.lineno(1), find_column(input, t.slice[2]), t[3], t[5])
     t[1].append(when)
     t[0] = t[1]
-    
-    
+
+
 
 def p_when_clauses2(t):
     '''
@@ -1122,7 +1325,7 @@ def p_when_clauses2(t):
     '''
     when = When(t.lineno(1), find_column(input, t.slice[1]), t[2], t[3])
     t[0] = [when]
-    
+
 
 ## metodo de error
 def p_error(p):

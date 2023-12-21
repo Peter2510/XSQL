@@ -1,6 +1,7 @@
 from src.visitor import Visitor
 from src.ast import Select, Table, FromClause, TableColumn
 from src.manejadorXml import Estructura
+from src.ejecucion.type import Type
 
 
 class ValidateColumnVisitor(Visitor):
@@ -28,10 +29,24 @@ class ValidateColumnVisitor(Visitor):
         data_tb = db_table.get("data", {})
         estructura_tb = data_tb.get("estructura", {})
         column_tb = estructura_tb.get(node.id, {})
-        atribute_1 = column_tb.get("Atributo1", {})
-        tipo = atribute_1.get("tipo", None)
-        print(tipo, "tipo")
-        node.tipo = tipo
+        attribute_1 = column_tb.get("Atributo1", {})
+        tipo = attribute_1.get("tipo", None)
+        column_type = None
+        if tipo in 'nvarchar':
+            column_type = Type.TEXT
+        elif tipo in 'nchar':
+            column_type = Type.TEXT
+        elif tipo in 'int':
+            column_type = Type.INT
+        elif tipo in 'bit':
+            column_type = Type.BIT
+        elif tipo in 'decimal':
+            column_type = Type.DECIMAL
+        elif tipo in 'date':
+            column_type = Type.DATE
+        elif tipo in 'datetime':
+            column_type = Type.DATETIME
+        node.tipo = column_type
 
 
 class TablesValidVisitor(Visitor):

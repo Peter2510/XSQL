@@ -109,7 +109,9 @@ tokens = [
     'ID_DECLARE',
     'ID',
     'ARROBA',
-    'COMILLASIMPLE'
+    'COMILLASIMPLE',
+    'SQL_AND',
+    'SQL_OR'
 ]+ list(keywords.values())
 
 
@@ -141,6 +143,8 @@ t_CORCHETE_IZQ = r'\['
 t_CORCHETE_DER = r'\]'
 t_ARROBA = r'\@'
 t_COMILLASIMPLE = r"\'"
+t_SQL_AND = r"AND"
+t_SQL_OR = r"OR"
 
 # COMENTARIO
 

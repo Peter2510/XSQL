@@ -27,6 +27,8 @@ class TableColumn(Abstract):
         visitor.visit(self, environment)
 
     def interpretar(self, environment):
+
+
         return self.id
 
 
@@ -82,6 +84,9 @@ class Select(Abstract):
         visitor.visit(self, environment)
 
     def interpretar(self, environment):
+        from src.visitor import TablesValidVisitor
+        visitor = TablesValidVisitor(environment)
+        visitor.visit(self, environment)
         for col in self.columns:
             v = col.interpretar(environment)
             if v is not None:
