@@ -101,7 +101,7 @@ class SymbolTableVisitor(Visitor):
     def visitPrimitivo(self,node,environment):
         pass
         
-    def visitAritmeticas(self,node,environment):
+    def visitBinaria(self,node,environment):
         ##get value and type    
         pass
     

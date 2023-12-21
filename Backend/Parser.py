@@ -54,12 +54,14 @@ from src.funciones.hoy import Hoy
 ## establecer precedencias
 
 precedence = (
+    ('left', 'OR'),
+    ('left','AND'),
+    ('left', 'COMPARACION','DISTINTO','MENOR_QUE','MAYOR_QUE','MENOR_O_IGUAL_QUE', 'MAYOR_O_IGUAL_QUE'),
     ('left', 'MAS','MENOS'),
     ('left', 'POR','DIVISION'),
-    ('left', 'COMPARACION','DISTINTO','MENOR_QUE','MAYOR_QUE','MENOR_O_IGUAL_QUE', 'MAYOR_O_IGUAL_QUE'),
-    ('left', 'OR','AND'),
     ('left', 'PARENTESIS_IZQ','PARENTESIS_DER'),
-    ('left', 'AS')
+    ('left', 'AS'),
+    ('right','UMENOS')
 )
 
 
@@ -619,6 +621,13 @@ def p_expAritmetica(t):
         t[0] = Binaria(t.lineno(2), find_column(input, t.slice[2]), t[1], t[3], '/')
     elif (t[1] == '(' and t[3] == ')' ):
         t[0] =t[2]
+        
+def p_expresion_negativo(t):
+    '''
+    expresion : MENOS expresion %prec UMENOS
+    '''
+    t[0] = Primitivo(t.lineno(1), find_column(input, t.slice[1]),-1,Type.INT)
+    t[0] = Binaria(t.lineno(1), find_column(input, t.slice[1]), t[1], t[2], '*')
 
 ### para enteros 
 def p_exp_entero(t):

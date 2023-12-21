@@ -25,13 +25,15 @@ def saludo():
     return Estructura.Databases
 
 @app.route('/ejecutar',methods=["POST","GET"])
+
 def compilar():
     if request.method == "POST":
 
         env = Environment(None)
         entrada = request.data.decode("utf-8")
         entrada = json.loads(entrada)
-        pars = parse(entrada.lower())
+        entrada = comprobarTexto(entrada)
+        pars = parse(entrada)
         iniciarEjecucion = Ejec(pars.statements)
         _res = iniciarEjecucion.execute(env)
         if len(env.errors) > 0:
@@ -54,6 +56,19 @@ def compilar():
         return {'mensaje':entrada}
     else:
         return {'mensaje':'Error al compilar'}
+        
+def comprobarTexto(entrada):
+    result = ""
+    enComillas = False
+
+    for char in entrada:
+        if char == '"':
+            enComillas = not enComillas
+        result += char.lower() if not enComillas else char
+
+    return result
+    
+           
            
 if __name__ == "__main__":
     app.run(debug=True,port=3000)

@@ -42,7 +42,7 @@ class Visitor(ABC):
             return
 
         if isinstance(node, binaria.Binaria):
-            self.visitAritmeticas(node, environment)
+            self.visitBinaria(node, environment)
             
         elif isinstance(node, binaria.Binaria):
             self.visitLogico(node, environment)
@@ -135,7 +135,7 @@ class Visitor(ABC):
     def visitUsar(self,node,environment):
         pass
 
-    def visitAritmeticas(self, node, environment):
+    def visitBinaria(self, node, environment):
         pass
 
     def visitLogico(self, node, environment):

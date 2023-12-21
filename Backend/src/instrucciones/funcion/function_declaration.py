@@ -8,13 +8,15 @@ class FunctionDeclaration(Abstract):
         self.params = params
         self.type = type_
         self.body = body
-        self.table = Environment(None)
 
-    def accept(self, visitor, environment=Environment(None)):
+    def accept(self, visitor, environment):
         visitor.visit(self, environment)
         
     def interpretar(self, environment):
-        print("interpretando funcion declaracion")
+        #guardar la funcion en el environment
+        environment
+        
+        
 
     def get_name_for_table(self) -> str:
         func_types = ','.join(str(param.type) for param in self.params)

@@ -176,6 +176,341 @@ DIVISION_CAST = [
     None
 ]
 
+AND_CAST = [
+    Type.BIT,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    
+    None,
+    None,
+    None,
+    None,   
+    None,
+    None,
+    
+    None,
+    None,
+    None,
+    None,
+    None,
+    
+    None, 
+    None,
+    None,
+    None,
+    
+    None, 
+    None,
+    None, 
+    
+    None, 
+    None,
+    
+    None
+]
+
+OR_CAST = [
+    Type.BIT,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    
+    None,
+    None,
+    None,
+    None,   
+    None,
+    None,
+    
+    None,
+    None,
+    None,
+    None,
+    None,
+    
+    None, 
+    None,
+    None,
+    None,
+    
+    None, 
+    None,
+    None, 
+    
+    None, 
+    None,
+    
+    None
+]
+
+GREATER_CAST = [
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    Type.BIT,
+    None,
+    None,   
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None, 
+    
+    Type.BIT,
+    None,
+    
+    None
+]
+
+LESS_CAST = [
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    Type.BIT,
+    None,
+    None,   
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None, 
+    
+    Type.BIT,
+    None,
+    
+    None
+]
+
+
+GREATER_EQUAL_CAST = [
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    Type.BIT,
+    None,
+    None,   
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None, 
+    
+    Type.BIT,
+    None,
+    
+    None
+]
+
+LESS_EQUAL_CAST = [
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    Type.BIT,
+    None,
+    None,   
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None, 
+    
+    Type.BIT,
+    None,
+    
+    None
+]
+
+LESS_EQUAL_CAST = [
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    Type.BIT,
+    None,
+    None,   
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None, 
+    
+    Type.BIT,
+    None,
+    
+    None
+]
+
+EQUAL_CAST = [
+    Type.BIT,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    Type.BIT,
+    None,
+    None,   
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None, 
+    
+    Type.BIT,
+    None,
+    
+    None
+]
+
+NOT_EQUAL_CAST = [
+    Type.BIT,
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    Type.BIT,
+    None,
+    None,   
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None,
+    None,
+    
+    Type.BIT,
+    None,
+    None, 
+    
+    Type.BIT,
+    None,
+    
+    None
+]
+
+
 def find_in_array(value, lst):
     index = -1
     try:
@@ -196,6 +531,23 @@ def get_binary_type(left, op, right):
         casting_list = MULTIPLICATION_CAST
     elif op == '/':
         casting_list = DIVISION_CAST
+    elif op == '&&':
+        casting_list = AND_CAST
+    elif op == '||':
+        casting_list = OR_CAST
+    elif op == '>':
+        casting_list = GREATER_CAST
+    elif op == '<':
+        casting_list = LESS_CAST
+    elif op == '>=':
+        casting_list = GREATER_EQUAL_CAST
+    elif op == '<=':
+        casting_list = LESS_EQUAL_CAST  
+    elif op == '==':    
+        casting_list = EQUAL_CAST
+    elif op == '!=':
+        casting_list = NOT_EQUAL_CAST
+    
 
     left_type = left.tipo.name if left.tipo is not None else None
     right_type = right.tipo.name if right.tipo is not None else None
@@ -210,7 +562,7 @@ class ExpressionsVisitor(Visitor):
     def __init__(self, environment):
         super().__init__(environment)
 
-    def visitAritmeticas(self, node, environment):
+    def visitBinaria(self, node, environment):
         new_type = get_binary_type(left=node.opIzq, op=node.tipoOp, right=node.opDer)
         if new_type is None:
             environment.addError('Semántico', "" ,f'La operación {node.opIzq.tipo} {node.tipoOp} {node.opDer.tipo} no es posible', node.fila, node.columna)
