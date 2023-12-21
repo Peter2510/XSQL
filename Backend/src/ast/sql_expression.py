@@ -32,15 +32,17 @@ class SQLBinaryExpression(SQLExpression):
         visitor.visit(self, environment)
 
     def interpretar(self, environment):
-        # TODO: Implement
-        pass
+        from src.visitor.check_expressions_visitor import ExpressionsVisitor
+        visitor = ExpressionsVisitor(environment)
+        visitor.visit(self, environment)
+        if visitor.correct:
+            pass
+        else:
+            return None
 
 
 class SQLLogicalExpression(SQLBinaryExpression):
-
-    def interpretar(self, environment):
-        # TODO: Implement
-        pass
+    pass
 
 
 class SQLUnaryExpression(SQLExpression):

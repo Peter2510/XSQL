@@ -531,9 +531,9 @@ def get_binary_type(left, op, right):
         casting_list = MULTIPLICATION_CAST
     elif op == '/':
         casting_list = DIVISION_CAST
-    elif op == '&&':
+    elif op == '&&' or op == 'and':
         casting_list = AND_CAST
-    elif op == '||':
+    elif op == '||' or op == 'or':
         casting_list = OR_CAST
     elif op == '>':
         casting_list = GREATER_CAST
@@ -543,18 +543,17 @@ def get_binary_type(left, op, right):
         casting_list = GREATER_EQUAL_CAST
     elif op == '<=':
         casting_list = LESS_EQUAL_CAST  
-    elif op == '==':    
+    elif op == '==' or op == '=':
         casting_list = EQUAL_CAST
     elif op == '!=':
         casting_list = NOT_EQUAL_CAST
-    
 
     left_type = left.tipo.name if left.tipo is not None else None
     right_type = right.tipo.name if right.tipo is not None else None
     index = find_in_array(f'{left_type}-{right_type}', COMBINATIONS)
     index = index if index != -1 else find_in_array(f'{right_type}-{left_type}', COMBINATIONS)
-    type = casting_list[index] if index != -1 else None
-    return type
+    new_type = casting_list[index] if index != -1 else None
+    return new_type
 
 
 class ExpressionsVisitor(Visitor):

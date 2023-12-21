@@ -34,9 +34,10 @@ class Visitor(ABC):
         self.environment = environment
         self.correct = True
 
-    def log_error(self, msg, row=None, column=None):
+    def log_error(self, msg, row=0, column=0, lexeme = ""):
         self.correct = False
         print(msg, f"ln: {row}, col: {column}")
+        self.environment.addError("Semántico", lexeme, msg, row, column)
 
     def visit(self, node, environment):
         if not self.correct:

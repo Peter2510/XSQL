@@ -87,10 +87,10 @@ class Select(Abstract):
         from src.visitor import TablesValidVisitor
         visitor = TablesValidVisitor(environment)
         visitor.visit(self, environment)
-        for col in self.columns:
-            v = col.interpretar(environment)
-            if v is not None:
-                print(v.value)
+        if visitor.correct:
+            pass
+        else:
+            return None
 
 
 class AllColumns(Abstract):
