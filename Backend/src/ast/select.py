@@ -83,7 +83,9 @@ class Select(Abstract):
 
     def interpretar(self, environment):
         for col in self.columns:
-            print(col.interpretar(environment).value)
+            v = col.interpretar(environment)
+            if v is not None:
+                print(v.value)
 
 
 class AllColumns(Abstract):

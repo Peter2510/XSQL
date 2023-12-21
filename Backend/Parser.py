@@ -1,4 +1,6 @@
-from Lexer import tokens, lexer, errores, find_column
+from Lexer import tokens, lexer, errors, find_column
+from src.ejecucion.error import T_error
+from src.expresiones.negativa import Negativa
 from src.expresiones.binaria import Binaria
 from src.instrucciones.funcion.varAux import VarAux
 import ply.yacc as yacc
@@ -626,8 +628,8 @@ def p_expresion_negativo(t):
     '''
     expresion : MENOS expresion %prec UMENOS
     '''
-    t[0] = Primitivo(t.lineno(1), find_column(input, t.slice[1]),-1,Type.INT)
-    t[0] = Binaria(t.lineno(1), find_column(input, t.slice[1]), t[1], t[2], '*')
+    t[0] = Negativa(t.lineno(1), find_column(input, t.slice[1]), t[2])
+    
 
 ### para enteros 
 def p_exp_entero(t):
@@ -1118,19 +1120,19 @@ def p_when_clauses2(t):
 ## metodo de error
 def p_error(p):
     if p:
+        print(p.lexpos,p.lineno)
         print("Syntax error at '%s'" % p.value,p.lineno,find_column(input, p))
+        errors.append(T_error("Sintactico",p.value,"No se esperaba este token",p.lineno,find_column(input, p)))
     else:
         print("Syntax error at EOF")
-
+        errors.append(T_error("Sintactico"," ","No se esperaba el final del archivo","",""))
 
 ## generacion del parser
 input = ''
 
 def parse(inp):
     #print(inp)
-    global errores
     global parser
-    errores = []
     parser = yacc.yacc()
     global input
     input = inp

@@ -184,6 +184,6 @@ class Binaria(Abstract):
                  
 
         else:
-            environment.addError("Semántico","0","Error en la operación.", self.fila, self.columna)
+            environment.addError("Semántico","","No fue posible realizar la operacion", self.fila, self.columna)
             return None
 

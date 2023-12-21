@@ -565,8 +565,7 @@ class ExpressionsVisitor(Visitor):
     def visitBinaria(self, node, environment):
         new_type = get_binary_type(left=node.opIzq, op=node.tipoOp, right=node.opDer)
         if new_type is None:
-            environment.addError('Semántico', "" ,f'La operación {node.opIzq.tipo} {node.tipoOp} {node.opDer.tipo} no es posible', node.fila, node.columna)
+            environment.addError('Semántico', "" ,f'La operación {node.opIzq.tipo.name} {node.tipoOp} {node.opDer.tipo.name} no es posible', node.fila, node.columna)
             self.correct = False
-            print(f'La operación {node.opIzq.tipo} {node.tipoOp} {node.opDer.tipo} no es posible')
         else:
             node.tipo = new_type

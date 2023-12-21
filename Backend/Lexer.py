@@ -1,8 +1,8 @@
-import re 
+import re
+from src.ejecucion.error import T_error 
 import ply.lex as lex
 import datetime
 
-errores = []
 errors = []
 
 # Conjunto palabras reservadas
@@ -147,7 +147,7 @@ def t_comment(t):
     r'\-\-.*'
     t.lexer.lineno += 1
 
-# IDENTIFICAR CADENAS DE TEXTO CON  COMILLAS DOBLES Y SIMPLES    
+# IDENTIFICAR CADENAS DE TEXTO CON  COMILLAS DOBLES
 
 
 # ID NORMAL
@@ -174,6 +174,7 @@ def t_DATETIMEPRIM(t):
         t.value = datetime.datetime.strptime(t.value[1:-1], '%Y-%m-%d %H:%M:%S')
     except ValueError:
         print("Error en la fecha y hora")
+        errors.append(T_error("Lexico",t.value,"Error en la fecha u hora", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
         t.value = None
     return t
 
@@ -183,6 +184,7 @@ def t_DATEPRIM(t):
         t.value = datetime.datetime.strptime(t.value[1:-1], '%Y-%m-%d').date()
     except ValueError:
         print("Error en la fecha")
+        errors.append(T_error("Lexico",t.value,"Error en la fecha", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
         t.value = None
     return t
 
@@ -193,6 +195,7 @@ def t_DECIMAL(t):
         t.value = float(t.value)
     except ValueError:
         print("error en el decimal %d", t.value)
+        errors.append(T_error("Lexico",t.value,"Valor del decimal demasiado grande", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
         t.value = 0
     return t
 
@@ -203,6 +206,7 @@ def t_ENTERO(t):
         t.value = int(t.value)
     except ValueError:
          print("Valor del entero demasiado grande %d", t.value)
+         errors.append(T_error("Lexico",t.value,"Valor del entero demasiado grande", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
          t.value = 0
     return t
 
@@ -216,6 +220,7 @@ def t_BITPRIM(t):
             t.value = 'null'
     except ValueError:
         print("Valor del entero demasiado grande %d", t.value)
+        errors.append(T_error("Lexico",t.value,"Valor del entero demasiado grande", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
         t.value = 0
     return t 
 
@@ -236,47 +241,22 @@ def t_STR(t):
     t.value = t.value.replace('\\n', '\n')
     return t
 
-
-## PARA LOS TAGS DEL XML
-# def t_TAGABIERTO(t):
-#     r'<[A-Za-z]+>'
-#     return t
-
-# def t_TAGCERRADO(t):
-#     r'</[A-Za-z]+>'
-#     return t
-
-# def t_ATRIBUTOSTAG(t):
-#     r'[A-Za-z]+="[^"]*"'
-#     return t
-
-
-        #ignora lo demas
         
 # WHIT_SPACE
 t_ignore = " \t\f\v"
-def t_error(t):
-    
+
+def t_error(t):   
+    errors.append(T_error("Lexico",lexer.lexdata,"No se reconoce el token", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
     t.lexer.skip(1)
     
 ##para columna
-def find_column(inp, tk):
-    line_start = inp.rfind('\n', 0, tk.lexpos)+1
-    return (tk.lexpos-line_start)+1
-
+def find_column(input_text, token):
+    last_cr = input_text.rfind('\n', 0, token.lexpos)
+    if last_cr < 0:
+        last_cr = 0
+    column = (token.lexpos - last_cr) + 1
+    return column
 
 # Crear instancia del lexer
 lexer = lex.lex(reflags=re.IGNORECASE)
 
-# # Ingresar la cadena de texto para analizar
-# texto = 'SELECT : '
-
-# # Configurar la entrada del lexer
-# lexer.input(texto)
-
-# # Iterar sobre los tokens generados
-# while True:
-#     token = lexer.token()
-#     if not token:
-#         break
-#     print(token)

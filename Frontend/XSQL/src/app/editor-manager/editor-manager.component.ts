@@ -26,6 +26,7 @@ import { ResultImgComponent } from './result.component';
 import { TableResultComponent } from './tableResult.component';
 import { ThisReceiver } from '@angular/compiler';
 import { CompilacionService } from '../service/compilacion.service';
+import { ErrorSQL } from '../data-bases/models/Errors';
 
 @Component({
   selector: 'app-editor-manager',
@@ -38,6 +39,8 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   @ViewChild(ResultDirective, { static: true }) resultHost!: ResultDirective;
 
   @ViewChild('logger') logger: any;
+
+  errores:ErrorSQL[] = [];
 
   codeMirrorOptions: any = {
     theme: 'dracula',
@@ -111,20 +114,41 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       }
 
       //EJECUTAR EL ARCHIVO ACTUAL
-      this.compilar.ejecutarSQL(main.content).subscribe(data=>{
-        console.log(data);
+      this.compilar.ejecutarSQL(main.content).subscribe((data)=>{
+        
+        if(data.errores){
+          
+          let errores = data.errores;
+          let erroresJson =  JSON.parse(errores);
+          
+          for(let i = 0; i < erroresJson.length; i++){
+            let error = erroresJson[i];
+            let errorSQL = new ErrorSQL(error.tipo, error.token ,error.descripcion, error.linea, error.columna);
+            this.errores.push(errorSQL);
+          }
+
+          this.showErrorsConsole(this.errores);
+
+
+        }else{
+          console.log("nenenel rrores")
+        }
+
       })
 
-      this.resultHost.viewContainerRef.clear();
+      
+      //this.resultHost.viewContainerRef.clear();
+      
 
     }
   }
 
-  showLogs(logs: string[]) {
+  showLogs(logs: any[]) {
     logs.forEach((l) => (this.contentLogger += l + '\n'));
   }
-  showErrorsConsole(errors: string[]) {
-    errors.forEach((e) => (this.contentLogger += e + '\n'));
+  showErrorsConsole(errors: any[]) {
+    errors.forEach((e) => (this.contentLogger += e.toString() + '\n'));
+    this.errores = [];
   }
 
   clearLogger() {
