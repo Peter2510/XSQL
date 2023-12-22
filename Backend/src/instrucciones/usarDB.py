@@ -13,4 +13,5 @@ class usarDB(Abstract):
     def interpretar(self,environment):
         nombre = self.nombre
         Estructura.nombreActual = nombre
+        print("CAMBIANDO BASE DE DATOS A: ",nombre)
         return nombre

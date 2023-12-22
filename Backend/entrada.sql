@@ -81,7 +81,8 @@ Set @SumaProducto = retornaSuma(1);
 end;
 
 CREATE PROCEDURE sp_nuevoprocedimiento(@MONTO AS 
-DECIMAL,@IDFACTURA INT)
+DECIMAL,
+@IDFACTURA INT)
 AS
 BEGIN 
 DECLARE @IVA DECIMAL;

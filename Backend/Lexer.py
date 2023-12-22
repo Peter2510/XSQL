@@ -244,8 +244,7 @@ def t_STR(t):
 
         
 # WHIT_SPACE
-t_ignore = " \t\f\v"
-
+t_ignore = " \t\f\v\n"
 def t_error(t):   
     errors.append(T_error("Lexico",lexer.lexdata,"No se reconoce el token", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
     t.lexer.skip(1)

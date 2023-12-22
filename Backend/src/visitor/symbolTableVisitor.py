@@ -1,6 +1,6 @@
 from src.expresiones.primitivos import Primitivo
 from src.ejecucion.type import Type
-from src.instrucciones.funcion.funcion import Simbolo
+
 from src.manejadorXml import Estructura
 from src.instrucciones.funcion.return_ import Return_
 from src.visitor.visitor import Visitor
@@ -12,9 +12,7 @@ class SymbolTableVisitor(Visitor):
         
     def visitFunctionDeclaration(self, node,environment):
         
-        nombre = Estructura.nombreActual+"-"+node.id
-        self.nombreFuncion = nombre
-        if(not environment.existeFunction(nombre)):
+        if(not environment.existeFuncion(nombre)):
             #Agregar la funcion Basededatos-NombreFuncion
             environment.agregarFunction(nombre,None)
             #validar argumentos y agregarlos a la funcion
@@ -48,7 +46,7 @@ class SymbolTableVisitor(Visitor):
                 #if(environment.existeVariable(nombre,param.id)):
                 #    environment.addError("Semantico", param.id ,f"El id '{param.id}' ya está definido como variable", param.fila,param.columna)
                 #else:
-                environment.agregarVariable(nombre,param.id,Simbolo(param.type,None))
+                environment.agregarVariable(nombre,param.id,None)
             #add params to function
             environment.obtenerFuncion(nombre).parametros = params
             #print(len(environment.funciones[0].tablaSimbolos.variables),"valida esto---------")        

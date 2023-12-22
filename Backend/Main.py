@@ -56,6 +56,7 @@ def compilar():
                     return {'errores':json_string}
             else:
                 # print("Compilación exitosa")
+                print("",Estructura.nombreActual)
                 return {'result':entrada}
     
         
