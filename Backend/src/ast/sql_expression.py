@@ -8,6 +8,10 @@ class SQLExpression(Abstract):
         super().__init__(fila, columna)
         self.tipo = tipo
         self.valor = None
+        self.in_paren = False
+
+    def __str__(self):
+        return ""
 
     @abstractmethod
     def accept(self, visitor, environment):
@@ -38,6 +42,10 @@ class SQLBinaryExpression(SQLExpression):
         self.left = left
         self.operator = operator
         self.right = right
+
+    def __str__(self):
+        op_str = f"{str(self.left)} {self.operator} {str(self.right)}"
+        return f"({op_str})" if self.in_paren else op_str
 
     def accept(self, visitor, environment):
         self.left.accept(visitor, environment)
@@ -106,6 +114,13 @@ class SQLUnaryExpression(SQLExpression):
         super().__init__(fila, columna, tipo)
         self.argument = argument
 
+    def __str__(self):
+        print(self.argument)
+        if not isinstance(self.argument, (int, str, float, bool)):
+            return str(self.argument)
+
+        return f"({self.argument})" if self.in_paren else self.argument
+
     def get_tipo(self):
         if not isinstance(self.argument, (int, str, float, bool)):
             return self.argument.tipo
@@ -120,6 +135,7 @@ class SQLUnaryExpression(SQLExpression):
     def interpretar(self, environment):
         if not isinstance(self.argument, (int, str, float, bool)):
             self.valor = self.argument.interpretar(environment)
+        else:
+            self.valor = self.argument
 
-        self.valor = self.argument
         return self.valor

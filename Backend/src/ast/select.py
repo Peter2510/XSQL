@@ -1,4 +1,7 @@
+import pprint
 from ..abstract import Abstract
+from .utils import add_prefix_to_keys, filter_where_clause, apply_column_expressions
+from src.ejecucion.type import Type
 
 
 class Table(Abstract):
@@ -20,11 +23,23 @@ class TableColumn(Abstract):
         self.id = id
         self.tipo = tipo
 
+    def __str__(self):
+        return self.id
+
     def accept(self, visitor, environment):
         visitor.visit(self, environment)
 
     def interpretar(self, environment):
-        return self.id
+        record = environment.record
+        value = record.get(f"{self.table}.{self.id}", 0)
+        if self.tipo == Type.INT:
+            return int(value)
+        elif self.tipo == Type.BIT:
+            return bool(int(value))
+        elif self.tipo == Type.DECIMAL:
+            return float(value)
+
+        return value
 
 
 class FromClause(Abstract):
@@ -65,6 +80,13 @@ class Select(Abstract):
         self.from_clause = from_clause
         self.where_clause = where_clause
         self.tables = tables
+        self.data = []
+
+    def get_data_joined(self):
+        # TODO: Implement
+        name = self.data[0]["name"]
+        data = self.data[0]["data"]["datos"]
+        return add_prefix_to_keys(data, name)
 
     def accept(self, visitor, environment):
         if self.from_clause is not None:
@@ -85,21 +107,32 @@ class Select(Abstract):
         if not visitor.correct:
             return None
 
+        self.data = visitor.tables
+
         self.accept(visitor_expressions, environment)
 
         if not visitor_expressions.correct:
             return None
 
-        print(visitor.tables, 'tables')
-        # TODO: Si alguna expresión es None entonces se salta
-
         if self.from_clause is None and self.where_clause is None:
             result = ''
             for column in self.columns:
+                print('expr: ', str(column))
                 result += f"{column.interpretar(environment)}\n"
 
             print('result: ', result)
             return result
+
+        data = self.get_data_joined()
+        # Apply where expr
+        data_filtered = list(filter(filter_where_clause(self.where_clause.expr, environment),
+                                    data)) if self.where_clause is not None else data
+
+        # Apply expressions in columns
+        environment.record = {}
+        final_data = list(map(apply_column_expressions(self.columns, environment), data_filtered))
+        pp = pprint.PrettyPrinter(indent=4, compact=True, depth=2)
+        pp.pprint(final_data)
 
         return None
 
@@ -134,10 +167,15 @@ class AliasSelect(Abstract):
         super().__init__(fila, columna)
         self.id = id
         self.expr = expr
+        self.valor = None
+
+    def __str__(self):
+        return self.id
 
     def accept(self, visitor, environment):
         self.expr.accept(visitor, environment)
         visitor.visit(self, environment)
 
     def interpretar(self, environment):
-        return 'interpretar alias'
+        self.valor = self.expr.interpretar(environment)
+        return self.valor

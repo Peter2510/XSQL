@@ -11,23 +11,20 @@ class ValidateColumnVisitor(Visitor):
         self.tables = tables
 
     def visitTableColumn(self, node: TableColumn, environment):
-        tables = environment.tables
-        if tables is None:
-            self.log_error(msg="No se seleccionó una tabla", column=node.columna, row=node.fila)
+        if self.tables is None:
+            self.log_error(msg="No se seleccionó una tabla", column=node.columna, row=node.fila, lexeme="DB")
             return
 
-        if node.table is not None and node.table not in tables:
-            self.log_error(msg=f"Columna {node.table}.{node.id} no encontrada", column=node.columna, row=node.fila)
-            return
-
-        check_tables = [node.table] if node.table is not None else tables
-        tables_found = Estructura.find_tables(tables=check_tables, name=node.id)
+        # check_tables = [node.table] if node.table is not None else tables
+        tables_found = Estructura.find_tables(tables=self.tables, name=node.id, table_name=node.table)
         if len(tables_found) == 0:
-            self.log_error(msg=f"{node.id} no existe", column=node.columna, row=node.fila)
+            table_log = f"{node.table}." if node.table is not None else ""
+            self.log_error(msg=f"La columna {table_log}{node.id} no existe", column=node.columna, row=node.fila,
+                           lexeme="Columna")
             return
 
         if len(tables_found) > 1:
-            self.log_error(msg=f"La columna {node.id} es ambigüa", column=node.columna, row=node.fila)
+            self.log_error(msg=f"La columna {node.id} es ambigüa", column=node.columna, row=node.fila, lexeme="Columna")
 
         db_table = tables_found[0]
         data_tb = db_table.get("data", {})
@@ -68,17 +65,13 @@ class TablesValidVisitor(Visitor):
         if not valid:
             self.log_error(msg_or_tables, node.fila, node.columna, "columna")
         else:
-            self.tables = tables
+            self.tables = msg_or_tables
 
     def visitSelect(self, node: Select, environment):
         if node.from_clause is not None:
             names = [table.id for table in node.from_clause.tables]
             node.tables = names
 
-        # Agregar las tablas validadas al environment
-        environment.tables = node.tables
         column_visitor = ValidateColumnVisitor(environment, self.tables)
         node.accept(column_visitor, environment)
-        self.correct = column_visitor.correct
-        # Limpiar environment después de validar
-        environment.tables = None
+        self.correct = self.correct and column_visitor.correct

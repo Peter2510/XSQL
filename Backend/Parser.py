@@ -356,7 +356,7 @@ def p_select_list(t):
     '''
     select_list : POR
     '''
-    t[0] = AllColumns(fila=t.lineno(1), columna=find_column(input, t.slice[1]))
+    t[0] = [AllColumns(fila=t.lineno(1), columna=find_column(input, t.slice[1]))]
 
 
 def p_select_list_1(t):
@@ -701,6 +701,7 @@ def p_unary_expression1(t):
     """
     unary_expression : PARENTESIS_IZQ sql_expression PARENTESIS_DER
     """
+    t[2].in_paren = True
     t[0] = t[2]
 
 def p_value_literal(t):

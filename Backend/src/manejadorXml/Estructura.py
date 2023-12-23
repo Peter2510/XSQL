@@ -184,10 +184,13 @@ def comprobar_tablas(tablas: list[str]):
     return True, tables
 
 
-def filter_by_table_and_name(table_names: list[str], column_name: str):
+def filter_by_table_and_name(table_name: str | None, column_name: str):
     def filter_by(table) -> bool:
         tb_name = table.get("name", None)
         if tb_name is None:
+            return False
+
+        if table_name is not None and table_name != tb_name:
             return False
 
         data = table.get("data", None)
@@ -200,7 +203,7 @@ def filter_by_table_and_name(table_names: list[str], column_name: str):
         if estructura is None:
             return False
 
-        if tb_name in table_names and column_name in estructura:
+        if column_name in estructura:
             return True
 
         return False
@@ -208,8 +211,6 @@ def filter_by_table_and_name(table_names: list[str], column_name: str):
     return filter_by
 
 
-def find_tables(tables: list[str], name: str) -> (bool, str):
-    db = get_current_db()
-    db_tables = db.get("tables", [])
-    tables_found = list(filter(filter_by_table_and_name(table_names=tables, column_name=name), db_tables))
+def find_tables(tables: list, name: str, table_name: str | None) -> list:
+    tables_found = list(filter(filter_by_table_and_name(table_name=table_name, column_name=name), tables))
     return tables_found

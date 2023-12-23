@@ -13,7 +13,7 @@ class Environment(list):
         self.funciones = []
         self.procedimientos = []
         self.errors = []
-        self.tables = None
+        self.record = {}
         if padre is not None:
             for variable in padre:
                 self.append(variable)

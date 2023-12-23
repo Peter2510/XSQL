@@ -7,6 +7,16 @@
                 <Atributo2 nulidad="2">2</Atributo2>
                 <Atributo3 restricciones="True">3</Atributo3>
             </Principal>
+            <Principal name="cantidad">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="precio">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
             <Principal name="fechafactura">
                 <Atributo1 tipo="date">1</Atributo1>
                 <Atributo2 nulidad="0">2</Atributo2>
@@ -30,36 +40,48 @@
         </Estructura>
         <Datos name="nuevo_registro">
             <DatosEspecifico>
-                <id>3467</id>
-                <nombre>jorge enriquez</nombre>
-                <bandera>4444</bandera>
+                <idfactura>3467</idfactura>
+                <fechafactura>2023-12-23</fechafactura>
+                <nit>123456789</nit>
+                <cantidad>65</cantidad>
+                <precio>23</precio>
             </DatosEspecifico>
             <DatosEspecifico>
-                <id>347</id>
-                <nombre>jorge enriquez</nombre>
-                <bandera>4444</bandera>
+                <idfactura>123456789</idfactura>
+                <fechafactura>2023-12-23</fechafactura>
+                <nit>123456789</nit>
+                <cantidad>5</cantidad>
+                <precio>233</precio>
             </DatosEspecifico>
             <DatosEspecifico>
-                <id>2</id>
-                <nombre>julio lopez</nombre>
-                <bandera>1</bandera>
+                <idfactura>2</idfactura>
+                <fechafactura>2023-12-23</fechafactura>
+                <nit>123456789</nit>
+                <cantidad>6</cantidad>
+                <precio>20</precio>
             </DatosEspecifico>
             <DatosEspecifico>
-                <id>3</id>
-                <nombre>julio lopez</nombre>
-                <bandera>1</bandera>
+                <idfactura>3</idfactura>
+                <fechafactura>2023-12-23</fechafactura>
+                <nit>123456789</nit>
+                <cantidad>100</cantidad>
+                <precio>23</precio>
             </DatosEspecifico>
             <DatosEspecifico>
-                <id>4</id>
-                <nombre>julio lopez</nombre>
-                <bandera>1</bandera>
+                <idfactura>4</idfactura>
+                <fechafactura>2023-12-23</fechafactura>
+                <nit>123456789</nit>
+                <cantidad>50</cantidad>
+                <precio>100</precio>
             </DatosEspecifico>
             <DatosEspecifico>
-                <id>5</id>
-                <nombre>julio lopez</nombre>
-                <bandera>1</bandera>
+                <idfactura>5</idfactura>
+                <fechafactura>2023-12-23</fechafactura>
+                <nit>123456789</nit>
+                <cantidad>5</cantidad>
+                <precio>200</precio>
             </DatosEspecifico>
-        <DatosEspecifico><id>6</id><nombre>julio lopez</nombre><bandera>1</bandera></DatosEspecifico></Datos>
+        </Datos>
     </Table>
     <Table name="tbfactura2">
         <Estructura>
