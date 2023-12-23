@@ -12,7 +12,7 @@ def load():
     ## llamarlo como desde la clase que necesitamos
     Databases = obtener.importAllXMLsInDirectory("./src/data/xml/")
     print(type(Databases))
-    print(Databases)
+    #print(Databases)
     
 
 

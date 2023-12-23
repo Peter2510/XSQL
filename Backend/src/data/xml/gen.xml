@@ -147,4 +147,141 @@
             </Principal>
         </Estructura>
     </Table>
+    <Table name="nuevaprueba">
+        <Estructura>
+            <Principal name="iddetallefac">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="1">3</Atributo3>
+            </Principal>
+            <Principal name="idfactura">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3
+                    restricciones="{'nombreTabla': 'tbfactura', 'nombreAtributo': 'idfactura'}">3</Atributo3>
+            </Principal>
+            <Principal name="product_no">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3
+                    restricciones="{'nombreTabla': 'products', 'nombreAtributo': 'product_no'}">3</Atributo3>
+            </Principal>
+            <Principal name="price">
+                <Atributo1 tipo="decimal">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="0">3</Atributo3>
+            </Principal>
+            <Principal name="cantidad">
+                <Atributo1 tipo="decimal">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="0">3</Atributo3>
+            </Principal>
+        </Estructura>
+    </Table>
+    <Table name="nuevaprueb3a">
+        <Estructura>
+            <Principal name="iddetallefac">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="1">3</Atributo3>
+            </Principal>
+            <Principal name="idfactura">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3
+                    restricciones="{'nombreTabla': 'tbfactura', 'nombreAtributo': 'idfactura'}">3</Atributo3>
+            </Principal>
+            <Principal name="product_no">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3
+                    restricciones="{'nombreTabla': 'products', 'nombreAtributo': 'product_no'}">3</Atributo3>
+            </Principal>
+            <Principal name="price">
+                <Atributo1 tipo="decimal">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="0">3</Atributo3>
+            </Principal>
+            <Principal name="cantidad">
+                <Atributo1 tipo="decimal">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="0">3</Atributo3>
+            </Principal>
+        </Estructura>
+    </Table>
+    <Table name="nuevaprueb43a">
+        <Estructura>
+            <Principal name="iddetallefac">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 />
+                <Atributo3 restricciones="1">1</Atributo3>
+            </Principal>
+            <Principal name="idfactura">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 />
+                <Atributo3 restricciones="2">
+                    <nombreTabla>tbfactura</nombreTabla>
+                    <nombreAtributo>idfactura</nombreAtributo>
+                </Atributo3>
+            </Principal>
+            <Principal name="product_no">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 />
+                <Atributo3 restricciones="2">
+                    <nombreTabla>products</nombreTabla>
+                    <nombreAtributo>product_no</nombreAtributo>
+                </Atributo3>
+            </Principal>
+            <Principal name="price">
+                <Atributo1 tipo="decimal">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 />
+                <Atributo3 restricciones="0">0</Atributo3>
+            </Principal>
+            <Principal name="cantidad">
+                <Atributo1 tipo="decimal">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 />
+                <Atributo3 restricciones="0">0</Atributo3>
+            </Principal>
+        </Estructura>
+    </Table>
+    <Table name="nuevaprueb423a">
+        <Estructura>
+            <Principal name="iddetallefac">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="1">1</Atributo3>
+            </Principal>
+            <Principal name="idfactura">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="2">
+                    <nombreTabla>tbfactura</nombreTabla>
+                    <nombreAtributo>idfactura</nombreAtributo>
+                </Atributo3>
+            </Principal>
+            <Principal name="product_no">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="2">
+                    <nombreTabla>products</nombreTabla>
+                    <nombreAtributo>product_no</nombreAtributo>
+                </Atributo3>
+            </Principal>
+            <Principal name="price">
+                <Atributo1 tipo="decimal">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="0">0</Atributo3>
+            </Principal>
+            <Principal name="cantidad">
+                <Atributo1 tipo="decimal">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="0">0</Atributo3>
+            </Principal>
+        </Estructura>
+    </Table>
 </Database>

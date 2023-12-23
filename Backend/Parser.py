@@ -12,6 +12,7 @@ from src.instrucciones.truncate.truncateDB import truncateDB
 from src.instrucciones.truncate.truncateTabla import truncateTabla
 from src.instrucciones.Alter.alterTable import alterTable
 from src.instrucciones.insert.insert import insertInstruccion
+from src.instrucciones.update.update import updateInstruccion
 from src.instrucciones.funcion.funcion import Funcion
 from src.instrucciones.procedure.procedure import Procedure
 
@@ -202,20 +203,20 @@ def p_restriccion_parametro(t): #primary -> 1
     '''
     restriccion_parametro : PRIMARY KEY
     '''
-    t[0] = t[1]
+    t[0] = 1
 
 def p_restriccion_parametro2(t): # foranea -> 2
     '''
     restriccion_parametro : REFERENCE ID PARENTESIS_IZQ ID PARENTESIS_DER
     '''
-    t[0] = f'forenea({t[2]})'
+    t[0] = [t[2], t[4]]
     
 
 def p_restriccion_parametro3(t): #normal -> 0
     '''
     restriccion_parametro : 
     '''
-    t[0] = '0'
+    t[0] = 0
 
 
 #Alter table tbfactura drop column tipotarjeta 
@@ -439,24 +440,34 @@ def p_table(t):
     '''
 
 
+
+### cambio a assign pprqie tenemos que meterle algo 
 def p_update(t):
     '''
-    update : UPDATE ID SET assign_list WHERE expresion
+    update : UPDATE ID SET assign_list WHERE assign
     '''
     ## no actualizar PK, FK
+    t[0] =updateInstruccion(t.lineno(2), find_column(input, t.slice[2]),  t[2], t[4], t[6])
 
 
-def p_assing_list(t):
+def p_assing_list1(t):
     '''
     assign_list : assign
-                | assign_list COMA assign
     '''
+    t[0] = [t[1]]
 
+def p_assing_list2(t):
+    '''
+    assign_list : assign_list COMA assign
+    '''
+    t[1].append(t[3])
+    t[0] = t[1] 
 
 def p_assing(t):
     '''
     assign : ID ASIGNACION expresion
     '''
+    t[0]= [t[1], t[3]]
 
 
 def p_insert(t):
