@@ -135,12 +135,33 @@ class SymbolTableVisitor(Visitor):
                         self.correct = False
                     
                 else:
-               
-                    if variable.type == value.type:
-                     variable.value = value.value
-                    else:
-                     environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
-                     self.correct = False
+                    
+                    #validar las asignaciones de tipo bit
+                    
+                    if variable.type == Type.BIT:
+                    
+                        if value.type == Type.INT:
+                            if value.value == 0 or value.value == 1:
+                                variable.value = value.value
+                            else:
+                                environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
+                                self.correct = False
+                                                       
+                            
+                        elif value.type == Type.BIT:
+                            variable.value = value.value
+                    
+                        else:
+                            environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
+                            self.correct = False                            
+                    
+                    else: 
+                        
+                        if variable.type == value.type:
+                            variable.value = value.value
+                        else:
+                            environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
+                            self.correct = False
             
             else:
                 self.correct = False               

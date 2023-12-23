@@ -150,6 +150,28 @@ set @ProductIDs = 1.2+1&&4>2;
 
 END;
 
+                --Marcar error varchar y char
+USAR HOLA;
+--CREAR FUNCION 
+CREATE FUNCTION Retornasuma(@ProductID Nchar(10)) 
+RETURNS int 
+AS 
+BEGIN 
+ 
+Set @ProductID = "";
 
 
+END;
 
+-- TODO OK
+
+USAR HOLA;
+CREATE FUNCTION Retornasuma(@ProductID BIT) 
+RETURNS int 
+AS 
+BEGIN 
+ 
+Set @ProductID = (1>0)+(0>0);
+
+
+END;
