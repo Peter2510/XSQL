@@ -1,3 +1,6 @@
+from src.ejecucion.type import Type
+from src.instrucciones.funcion.string_ import String_
+from src.instrucciones.funcion.funcion import Funcion
 from src.ejecucion.environment import Environment
 from src.expresiones.variable import Variable
 from src.manejadorXml import Estructura
@@ -26,6 +29,10 @@ class SymbolTableVisitor(Visitor):
                 else:
                     for variable in environmentFuncion:
                         print(variable.id,variable.value,variable.type)
+                    funcion = Funcion(node.id,node.type,node.params,node.body)
+                    environment.agregarFuncion(nombre,funcion)
+                    #environment.getFuncion(nombre).interpretar(environmentFuncion)
+                        
             else:
                 environment.errors = environment.getErrores() + environmentFuncion.getErrores()
                 return None
@@ -99,46 +106,47 @@ class SymbolTableVisitor(Visitor):
     
     def visitSet(self,node,environment):
         print("visitando set")
+        
         if(environment.existeVariable(node.id)):
             variable = environment.getVariable(node.id)
             value = node.valor.interpretar(environment)
             if value != None:
-               
-                if variable.type == value.type:
-                    variable.value = value.value
+                
+                if isinstance(variable.type,String_):
+                    tamanio = variable.type.size.interpretar(environment)
+                    if value.type == Type.TEXT:
+                    
+                        if variable.type.type == Type.NVARCHAR:
+                            if len(value.value) <= tamanio.value:
+                                variable.value = value.value
+                            else:
+                                environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(value.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
+                                self.correct = False
+                        else:
+                        
+                            if len(value.value) <= tamanio.value and len(value.value) > 0:
+                                variable.value = value.value
+                            else:
+                                environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(value.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)
+                                self.correct = False    
+                                                       
+                    else: 
+                        environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)                        
+                        self.correct = False
+                    
                 else:
-                    environment.addError("Semantico", node.id ,f"El tipo de dato de la variable no coincide con el valor a asignar", node.fila,node.columna)
-                    self.correct = False
+               
+                    if variable.type == value.type:
+                     variable.value = value.value
+                    else:
+                     environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
+                     self.correct = False
             
             else:
-                self.correct = False
-                       
+                self.correct = False               
         else:
              environment.addError("Semantico", node.id ,f"La variable no ha sido declarada", node.fila,node.columna)
-             
-    def tipoVariableBinaria(self,value,environment):
-        pass
-                   
-                
-    def visitPrimitivo(self,node,environment):
-        pass
-        
-    def visitBinaria(self,node,environment):
-        ##get value and type    
-        pass
-    
-    def visitRelacionales(self,node,environment):
-        ##get value and type
-        pass
-    
-    def visitLogicas(self,node,environment):
-        ##get value and type
-        pass
-    
-    def visitRelacional(self,node,environment):
-        ##get value and type
-        pass
-    
+                 
     def visitAlterProcedure(self,node,environment):
         pass
     

@@ -47,15 +47,16 @@ class Primitivo(Expression):
             #buscar si existe la tabla
             pass
         elif self.tipo == Type.IDDECLARE:
-            tmp = environment.getById(str(self.valor))
-            if tmp is not None:
-                variable.id(tmp.id())
-                variable.type(tmp.type())
-                variable.value(tmp.value())
+            tmp = environment.existeVariable(str(self.valor))
+            if tmp == True:
+                var = environment.getVariable(str(self.valor))
+                variable.id = var.id
+                self.tipo = var.type
+                variable.type = var.type
+                variable.value = var.value
                 return variable
             else:
                 print("La variable " + str(self.valor) + " no está definida")
                 environment.addError("Semántico", str(self.valor), "La variable no está definida", self.fila, self.columna)
                 return None
-        return None    
         

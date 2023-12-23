@@ -1,9 +1,9 @@
 class Funcion():
-    def __init__(self,nombre ,parametros,enviroment,instrucciones):
+    def __init__(self,nombre,tipo,parametros,instrucciones):
         self.nombre = nombre
+        self.tipo = tipo
         self.parametros = parametros
-        self.enviroment = enviroment
         self.instrucciones = instrucciones
         
     def interpretar(self, environment):
-        print("Ejecutar de cada instruccion de funcion",self.nombre)
+        print(self.nombre,self.tipo,self.parametros,self.instrucciones)
