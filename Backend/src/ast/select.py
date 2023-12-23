@@ -13,9 +13,6 @@ class Table(Abstract):
         return self.id
 
 
-# TODO: Validar que las tablas existan en nombreActual
-
-
 class TableColumn(Abstract):
     def __init__(self, fila, columna, id, table=None, tipo=None):
         super().__init__(fila, columna)
@@ -27,8 +24,6 @@ class TableColumn(Abstract):
         visitor.visit(self, environment)
 
     def interpretar(self, environment):
-
-
         return self.id
 
 
@@ -60,9 +55,6 @@ class WhereClause(Abstract):
         print(self.expr.interpretar)
 
 
-# TODO: Validar que en las expresiones los ids sean columnas validas según las tablas del From
-
-
 class Select(Abstract):
     def __init__(self, fila, columna, columns: list, from_clause: FromClause | None = None,
                  where_clause: WhereClause | None = None, tables=None):
@@ -85,12 +77,31 @@ class Select(Abstract):
 
     def interpretar(self, environment):
         from src.visitor import TablesValidVisitor
+        from src.visitor.check_expressions_visitor import SqlExpressionsVisitor
         visitor = TablesValidVisitor(environment)
-        visitor.visit(self, environment)
-        if visitor.correct:
-            pass
-        else:
+        visitor_expressions = SqlExpressionsVisitor(environment)
+        self.accept(visitor, environment)
+
+        if not visitor.correct:
             return None
+
+        self.accept(visitor_expressions, environment)
+
+        if not visitor_expressions.correct:
+            return None
+
+        print(visitor.tables, 'tables')
+        # TODO: Si alguna expresión es None entonces se salta
+
+        if self.from_clause is None and self.where_clause is None:
+            result = ''
+            for column in self.columns:
+                result += f"{column.interpretar(environment)}\n"
+
+            print('result: ', result)
+            return result
+
+        return None
 
 
 class AllColumns(Abstract):

@@ -11,7 +11,9 @@ class Substraer(Abstract):
         self.tipo = Type.TEXT
 
     def accept(self, visitor, environment):
+        self.value.accept(visitor, environment)
         visitor.visit(self, environment)
 
     def interpretar(self, environment):
-        return self.value[self.start:self.end]
+        # return self.value[self.start:self.end]
+        return "substraido"

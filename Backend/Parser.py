@@ -421,7 +421,7 @@ def p_funciones_sistema(t):
 
 def p_funciones_sistema1(t):
     '''
-    funciones_sistema : SUBSTRAER PARENTESIS_IZQ STR COMA ENTERO COMA ENTERO PARENTESIS_DER
+    funciones_sistema : SUBSTRAER PARENTESIS_IZQ sql_expression COMA ENTERO COMA ENTERO PARENTESIS_DER
     '''
     t[0] = Substraer(fila=t.lineno(1), columna=find_column(input, t.slice[1]), value=t[3], start=t[5], end=t[7])
 

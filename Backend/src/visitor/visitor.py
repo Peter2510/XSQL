@@ -34,10 +34,10 @@ class Visitor(ABC):
         self.environment = environment
         self.correct = True
 
-    def log_error(self, msg, row=0, column=0, lexeme = ""):
+    def log_error(self, msg, row=0, column=1, lexeme = ""):
         self.correct = False
-        print(msg, f"ln: {row}, col: {column}")
-        self.environment.addError("Semántico", lexeme, msg, row, column)
+        print(msg, f"ln: {row}, col: {column - 1}")
+        self.environment.addError("Semántico", lexeme, msg, row, column - 1)
 
     def visit(self, node, environment):
         if not self.correct:
@@ -45,11 +45,11 @@ class Visitor(ABC):
 
         if isinstance(node, SQLUnaryExpression):
             self.visitSQLUnaryExpression(node, environment)
-        if isinstance(node, SQLBinaryExpression):
+        elif isinstance(node, SQLBinaryExpression):
             self.visitSQLBinaryExpression(node, environment)
-        if isinstance(node, SQLLogicalExpression):
+        elif isinstance(node, SQLLogicalExpression):
             self.visitSQLLogicalExpression(node, environment)
-        if isinstance(node, binaria.Binaria):
+        elif isinstance(node, binaria.Binaria):
             self.visitBinaria(node, environment)
 
         elif isinstance(node, binaria.Binaria):

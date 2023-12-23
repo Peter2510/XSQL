@@ -6,6 +6,10 @@ from src.ejecucion.type import Type
 
 class ValidateColumnVisitor(Visitor):
 
+    def __init__(self, environment, tables):
+        super().__init__(environment)
+        self.tables = tables
+
     def visitTableColumn(self, node: TableColumn, environment):
         tables = environment.tables
         if tables is None:
@@ -27,6 +31,7 @@ class ValidateColumnVisitor(Visitor):
 
         db_table = tables_found[0]
         data_tb = db_table.get("data", {})
+        name_tb = db_table.get("name", "")
         estructura_tb = data_tb.get("estructura", {})
         column_tb = estructura_tb.get(node.id, {})
         attribute_1 = column_tb.get("Atributo1", {})
@@ -47,19 +52,23 @@ class ValidateColumnVisitor(Visitor):
         elif tipo in 'datetime':
             column_type = Type.DATETIME
         node.tipo = column_type
+        node.table = name_tb
 
 
 class TablesValidVisitor(Visitor):
 
     def __init__(self, environment):
         super().__init__(environment)
+        self.tables = []
 
     def visitFromClause(self, node: FromClause, environment):
         tables = node.tables
         names = [table.id for table in tables]
-        valid, msg = Estructura.comprobar_tablas(tablas=names)
+        valid, msg_or_tables = Estructura.comprobar_tablas(tablas=names)
         if not valid:
-            self.log_error(msg, node.fila, node.columna)
+            self.log_error(msg_or_tables, node.fila, node.columna, "columna")
+        else:
+            self.tables = tables
 
     def visitSelect(self, node: Select, environment):
         if node.from_clause is not None:
@@ -68,7 +77,8 @@ class TablesValidVisitor(Visitor):
 
         # Agregar las tablas validadas al environment
         environment.tables = node.tables
-        column_visitor = ValidateColumnVisitor(environment)
+        column_visitor = ValidateColumnVisitor(environment, self.tables)
         node.accept(column_visitor, environment)
+        self.correct = column_visitor.correct
         # Limpiar environment después de validar
         environment.tables = None

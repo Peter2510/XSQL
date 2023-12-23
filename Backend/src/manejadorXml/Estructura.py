@@ -168,6 +168,7 @@ def get_current_db():
 
 
 def comprobar_tablas(tablas: list[str]):
+    tables = []
     db = get_current_db()
 
     if db is None:
@@ -178,7 +179,9 @@ def comprobar_tablas(tablas: list[str]):
         if tb is None:
             return False, f"{nombreActual}.{name} no existe"
 
-    return True, ""
+        tables.append(tb)
+
+    return True, tables
 
 
 def filter_by_table_and_name(table_names: list[str], column_name: str):

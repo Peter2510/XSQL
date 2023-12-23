@@ -69,7 +69,9 @@ keywords = {
     'foreign': 'FOREIGN',
 
     'into': 'INTO',
-    'values': 'VALUES'
+    'values': 'VALUES',
+    'and': 'SQL_AND',
+    'or': 'SQL_OR'
 }
 
 
@@ -110,8 +112,6 @@ tokens = [
     'ID',
     'ARROBA',
     'COMILLASIMPLE',
-    'SQL_AND',
-    'SQL_OR'
 ]+ list(keywords.values())
 
 
@@ -143,8 +143,6 @@ t_CORCHETE_IZQ = r'\['
 t_CORCHETE_DER = r'\]'
 t_ARROBA = r'\@'
 t_COMILLASIMPLE = r"\'"
-t_SQL_AND = r"AND"
-t_SQL_OR = r"OR"
 
 # COMENTARIO
 
@@ -248,7 +246,7 @@ def t_STR(t):
 
         
 # WHIT_SPACE
-t_ignore = " \t\f\v"
+t_ignore = " \t\f\v\n"
 
 def t_error(t):   
     errors.append(T_error("Lexico",lexer.lexdata,"No se reconoce el token", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
