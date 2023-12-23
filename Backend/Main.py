@@ -1,5 +1,4 @@
 from flask import Flask, request
-from src.ast.symTable import SymTable
 from src.ejecucion.Ejecutar import Ejec
 from src.ejecucion.environment import Environment
 from Parser import *
@@ -8,13 +7,10 @@ from flask_cors import CORS, cross_origin
 from flask.helpers import url_for
 from werkzeug.utils import redirect
 from Lexer import tokens, lexer, errors, find_column
-from src.visitor import ExpressionsVisitor
 from src.manejadorXml import  Estructura
-from src.visitor.symbolTableVisitor import SymbolTableVisitor
-from src.visitor.usarvisitor import UsarVisitor 
-from src.manejadorXml import  Estructura 
 
-
+global env
+env = None
 
 app = Flask(__name__)
 CORS(app)
@@ -29,8 +25,11 @@ def saludo():
 
 def compilar():
     if request.method == "POST":
-        
+        #global env 
+        #if env is None:
+        #     env = Environment(None)
         env = Environment(None)
+        
         entrada = request.data.decode("utf-8")
         entrada = json.loads(entrada)
         entrada = comprobarTexto(entrada)
@@ -45,6 +44,10 @@ def compilar():
             # Imprimir el resultado
             print(json_string)
             errors.clear()
+            #cuando termine la ejecucion de un .sql 
+            #se resetea el nombre de la base de datos actual
+            Estructura.nombreActual = ""
+            env.errors.clear()
             return {'errores':json_string}
         
         else: 
@@ -53,10 +56,14 @@ def compilar():
             if len(env.errors) > 0:
                     errores_dict_list = [error.to_dict() for error in env.errors]        
                     json_string = json.dumps(errores_dict_list, indent=2)
+                    Estructura.nombreActual = ""
+                    env.errors.clear()
                     return {'errores':json_string}
             else:
                 # print("Compilación exitosa")
                 print("",Estructura.nombreActual)
+                Estructura.nombreActual = ""
+                env.errors.clear()
                 return {'result':entrada}
     
         

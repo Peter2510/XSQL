@@ -4,7 +4,7 @@ class Set_(Abstract):
     def __init__(self, row,column, id_,value):
         super().__init__(row,column)
         self.id = id_
-        self.value = value
+        self.valor = value
 
     def accept(self, visitor, environment):
         visitor.visit(self,environment)

@@ -21,7 +21,7 @@ class insertInstruccion(Abstract):
         # genearcion de json
         finAtrinutos = []
         for atributo, valor in zip(self.atributos, self.parametros):
-            json_data = {
+            jsonEstructura_data = {
                 'valor': atributo,
                 'nulidad': valor
             }

@@ -20,11 +20,10 @@ RETURNS int
 AS 
 -- Returns the stock level for the product. 
 BEGIN 
- DECLARE @ret int; 
- 
+ DECLARE @ret int;
  IF @ret == NULL THEN
  SET @ret = 0; 
- RETURN 2; 
+ RETURN 2;
  END IF;
 END;
 
@@ -136,6 +135,21 @@ SELECT '2023-12-10'>='2023-12-10'*5;
 
 -- si funciona
 SELECT ('2023-12-10'>='2023-12-10')*5;
+
+                -- MARCA ERROR ENTRE LAS OPERACIONES
+
+USAR HOLA;
+--CREAR FUNCION 
+CREATE FUNCTION Retornasuma(@ProductID int,@ProductIDs decimal) 
+RETURNS int 
+AS 
+BEGIN 
+ DECLARE @ret int;
+Set @ret = 456+1;
+set @ProductIDs = 1.2+1&&4>2;
+
+END;
+
 
 
 

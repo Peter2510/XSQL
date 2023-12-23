@@ -146,7 +146,7 @@ t_COMILLASIMPLE = r"\'"
 
 def t_comment(t):
     r'\-\-.*'
-    t.lexer.lineno += 1
+    t.lexer.lineno += 2
 
 # IDENTIFICAR CADENAS DE TEXTO CON  COMILLAS DOBLES
 

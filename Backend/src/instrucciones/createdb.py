@@ -23,15 +23,20 @@ class createDB(Abstract):
             #Se creo la base de datos correctamente.
             #LO GUARDA EN MEMORIA
           #  environment.createDataBase(nombre)#Guardamos la metadata en el entorno global.
+            print( 'La base de datos ' + self.nombre + ' ha sido creada.' )
             return 'La base de datos ' + self.nombre + ' ha sido creada.' 
         elif resultado == 1:
             #Error al crear
+            print( 'Ocurrió un error. La base de datos' + nombre + ' no pudo ser creada.' )
             return {'Error':'Ocurrió un error. La base de datos' + nombre + ' no pudo ser creada.', 'Fila':self.fila, 'Columna':self.columna}
         elif resultado == 2:
             #Ya creada
+            print ( "La base de datos " + nombre + " ya existe" )
             return {'Error': "La base de datos " + nombre + " ya existe.", 'Fila': self.fila, 'Columna': self.columna}
         else:
+            print('Error', "Error en el almacenamiento.", 'Fila', self.fila, 'Columna', self.columna)
             return {'Error': "Error en el almacenamiento.", 'Fila': self.fila, 'Columna': self.columna}
+            
 
 
     def accept(self, visitor, environment):

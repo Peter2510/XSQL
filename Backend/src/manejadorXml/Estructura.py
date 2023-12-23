@@ -6,6 +6,7 @@ import json
 import xml.etree.ElementTree as ET
 
 
+### metodo para cargar toda la info 
 def load():
     global Databases
     global nombreActual
@@ -28,13 +29,6 @@ def createDatabase(name):
         return 0
     except:
         return 1
-
-
-# Exportar a XML
-data_to_export = {
-    'tabla1': {"producto": "nuevo", "precio": 1},
-    'tabla2': {"producto": "simon", "precio": 3}
-}
 
 
 ##metodo para crear tablas:
@@ -107,7 +101,8 @@ def truncateTable(xmlPath, nombreTabla):
     tree = ET.parse(xmlPath)
     root = tree.getroot()
     for table in root.findall(".//Table[@name='{}']".format(nombreTabla)):
-        table.clear()
+        for valores in table.findall("Datos"):
+            table.remove(valores)
 
     tree.write(xmlPath, encoding="utf-8", xml_declaration=True)
 
@@ -119,8 +114,9 @@ def alterColumnadd(xmlArchivo, nombreTabla, nombreColumna, tipoColumna):
     root = tree.getroot()
 
     for table in root.findall(".//Table[@name='{}']".format(nombreTabla)):
-        nuevaColumna = ET.SubElement(table, "Principal", name=nombreColumna)
-        atributo1 = ET.SubElement(nuevaColumna, "Atributo1")
+        existing_data = table.find("./Estructura")
+        nuevaColumna = ET.SubElement(existing_data,"Principal", name=nombreColumna)
+        atributo1=ET.SubElement(nuevaColumna, "Atributo1")
         atributo1.text = tipoColumna
     tree.write(xmlArchivo, encoding="utf-8", xml_declaration=True)
 
@@ -130,13 +126,17 @@ def alterColumnDrop(xmlArchivo, nombreTabla, nombreColumna):
     root = tree.getroot()
 
     for table in root.findall(".//Table[@name='{}']".format(nombreTabla)):
-        for column in table.findall(".//Principal[@name='{}']".format(nombreColumna)):
-            table.remove(column)
-
+        for column in table.findall("./Estructura/Principal[@name='{}']".format(nombreColumna)):
+            # Verifica si la columna está presente antes de intentar eliminarla
+            if column is not None:
+                table.find("./Estructura").remove(column)
+                print(f"Columna '{nombreColumna}' eliminada de la tabla '{nombreTabla}'.")
+                break  # Rompe el bucle luego de eliminar la columna
+    
     tree.write(xmlArchivo, encoding="utf-8", xml_declaration=True)
 
 
-# Obtener.exportDataToXML(data_to_export, "simoon2")
+#Obtener.exportDataToXML(data_to_export, "simoon2")
 
 # Importar desde XML
 # data_imported = obtener.importFileFromXML("nuevo")

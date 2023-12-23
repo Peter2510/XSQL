@@ -1,32 +1,45 @@
-from src.expresiones.primitivos import Primitivo
-from src.ejecucion.type import Type
-
+from src.ejecucion.environment import Environment
+from src.expresiones.variable import Variable
 from src.manejadorXml import Estructura
-from src.instrucciones.funcion.return_ import Return_
 from src.visitor.visitor import Visitor
-from datetime import datetime
 
 
 class SymbolTableVisitor(Visitor):
-   
-        
+          
     def visitFunctionDeclaration(self, node,environment):
+      
+        nombre = Estructura.nombreActual + "-" + str(node.id)
         
         if(not environment.existeFuncion(nombre)):
-            #Agregar la funcion Basededatos-NombreFuncion
-            environment.agregarFunction(nombre,None)
+            print(self.correct)
+            print("creando nuevo environment")
+            environmentFuncion = Environment(environment)
             #validar argumentos y agregarlos a la funcion
-            self.visitParamFunction(node,environment,nombre)
-            #validar las declaraciones en la funcion
-            self.visitInstrucciones(node.body,environment,nombre)
-        else:
-            environment.addError("Semantico", node.id ,f"La funcion '{node.id}' ya está definida en la base de datos "+Estructura.nombreActual, node.fila,node.columna)
+            self.visitParamFunction(node,environmentFuncion)
             
-    def visitParamFunction(self,node,environment,nombre):
+            #validar las declaraciones en la funcion
+            if self.correct:
+                self.visitInstrucciones(node,environmentFuncion)
+                if not self.correct:
+                    environment.errors = environment.getErrores() + environmentFuncion.getErrores()
+                    return None
+                else:
+                    for variable in environmentFuncion:
+                        print(variable.id,variable.value,variable.type)
+            else:
+                environment.errors = environment.getErrores() + environmentFuncion.getErrores()
+                return None
+        else:
+            print("La funcion ya existe")
+            environment.addError("Semantico", node.id ,f"La funcion '{node.id}' ya está definida en la base de datos "+Estructura.nombreActual, node.fila,node.columna)
+            return None
+            
+    def visitParamFunction(self,node,environment):
         if(node.params != None):               
-            self.ValidateParamNames(node.params,environment,nombre)
+            self.ValidateParamNames(node,environment)
         
-    def ValidateParamNames(self,params,environment,nombre):
+    def ValidateParamNames(self,node,environment):
+        params = node.params
         seen = set()
         duplicates = set()
 
@@ -40,31 +53,40 @@ class SymbolTableVisitor(Visitor):
         if duplicates:
             for duplicate in duplicates:
                 environment.addError("Semantico", duplicate.id ,f"El id '{duplicate.id}' ya está definido como parámetro", duplicate.fila,duplicate.columna)
+                self.correct = False
         else:
             #Agregar parametros como variables
             for param in params:
-                #if(environment.existeVariable(nombre,param.id)):
-                #    environment.addError("Semantico", param.id ,f"El id '{param.id}' ya está definido como variable", param.fila,param.columna)
-                #else:
-                environment.agregarVariable(nombre,param.id,None)
-            #add params to function
-            environment.obtenerFuncion(nombre).parametros = params
-            #print(len(environment.funciones[0].tablaSimbolos.variables),"valida esto---------")        
-            #print("ObtenerVariable",environment.obtenerVariable(nombre,"@productids").valor)
+                v = Variable()
+                v.id = param.id
+                v.type = param.type
+                v.valor = None
+                environment.agregarVariable(v)
     
-    def visitInstrucciones(self,instrucciones,environment,nombre):
+    def visitInstrucciones(self,node,environment):
+        instrucciones = node.body
         print("visitando instrucciones")
         for instruccion in instrucciones:
+            #entra si son declaraciones de variables, es una lista
             if(isinstance(instruccion,list)):
                 for instuc in instruccion:
-                    instuc.accept(self,environment)
+                    if self.correct:
+                        instuc.accept(self,environment)
+                    else: 
+                        break
             else:
                 instruccion.accept(self,environment)
     
     def visitVariableDeclaration(self,node,environment):
-        print(len(environment.funciones))
-        pass
-   
+        if environment.existeVariable(node.id):
+            environment.addError("Semantico", node.id ,f"La variable '{node.id}' ya ha sido definida", node.fila,node.columna)
+            self.correct = False
+        else:
+            v = Variable()
+            v.id = node.id
+            v.type = node.type
+            environment.agregarVariable(v)
+           
     def visitAlterFunction(self,node,environment):
         pass
     
@@ -76,22 +98,24 @@ class SymbolTableVisitor(Visitor):
         pass
     
     def visitSet(self,node,environment):
-        variableName = node.id
-        if(environment.existeVariable(self.nombreFuncion,variableName)):
-            #valdate data type of the current variable and the new value
-            variable = environment.obtenerVariable(self.nombreFuncion,variableName)
-            tipoVariable = self.obtenerTipoVariable(node.value,environment)
-            obtenerVariable = self.obtenerTipoVariable(variable.valor,environment)
+        print("visitando set")
+        if(environment.existeVariable(node.id)):
+            variable = environment.getVariable(node.id)
+            value = node.valor.interpretar(environment)
+            if value != None:
+               
+                if variable.type == value.type:
+                    variable.value = value.value
+                else:
+                    environment.addError("Semantico", node.id ,f"El tipo de dato de la variable no coincide con el valor a asignar", node.fila,node.columna)
+                    self.correct = False
             
+            else:
+                self.correct = False
+                       
         else:
              environment.addError("Semantico", node.id ,f"La variable no ha sido declarada", node.fila,node.columna)
              
-    def obtenerTipoVariable(self,value,environment):
-        if isinstance(value,Primitivo):
-            return value.tipo
-        else:
-            return self.tipoVariableBinaria(value,environment)
-
     def tipoVariableBinaria(self,value,environment):
         pass
                    

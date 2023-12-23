@@ -1,4 +1,4 @@
-class Funcion():
+class Procedure():
     def __init__(self,nombre ,parametros,enviroment,instrucciones):
         self.nombre = nombre
         self.parametros = parametros
@@ -6,4 +6,4 @@ class Funcion():
         self.instrucciones = instrucciones
         
     def interpretar(self, environment):
-        print("Ejecutar de cada instruccion de funcion",self.nombre)
+        print("Ejecutar de cada instruccion de procedure",self.nombre)

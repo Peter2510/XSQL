@@ -1,4 +1,3 @@
-from manejadorXml import Estructura
 from src.instrucciones.funcion.funcion import Funcion
 from src.ejecucion.error import T_error
 from src.ejecucion.database import Database
@@ -15,29 +14,27 @@ class Environment(list):
         self.procedimientos = {}
         self.errors = []
         self.tables = None
-        self.padre = padre
+        if padre is not None:
+            for variable in padre:
+                self.append(variable)
+            self.funciones = padre.funciones
+            self.procedimientos = padre.procedimientos
 
     def addError(self,tipo,token,descripcion,fila,columna):
         self.errors.append(T_error(tipo,token,descripcion,fila,columna))
-        
-    def getFunciones(self):
-        return self.funciones
-
-    def existeFuncion(self, nombreFuncion):
-        # nombreBaseActual = Estructura.nombreActual
-        # if nombreBaseActual in self.funciones:
-        #     return nombreFuncion in self.funciones[nombreBaseActual]
-        # else:
-        #return nombreFuncion in self.funciones
-        pass
     
-        
+    def getErrores(self):
+        return self.errors
+               
     def agregarFuncion(self, name, funcion):
         self.funciones[name] = funcion
         
-    def setFuncion(self, name, funcion):
-        self.funciones[name] = funcion
-                
+    def actualizarFuncion(self, name, funcion):
+        self.funciones.update({name: funcion})
+
+    def existeFuncion(self, name):
+        return name in self.funciones
+
     def cantidadParametrosFuncion(self, name):
         return self.funciones[name].getSizeParameters()
 
@@ -46,24 +43,32 @@ class Environment(list):
 
     def getFuncion(self, name):
         return self.funciones[name]
-        
-    def getProcedimiento(self):
-        return self.procedimientos
-
-    def existeProcedimiento(self, name):
-        return name in self.procedimientos
-        
+               
     def agregarProcedimiento(self, name, procedimiento):
         self.procedimientos[name] = procedimiento
         
-    def setProcedimiento(self, name, procedimiento):
-        pass
-                
+    def actualizarProcedimiento(self, name, procedimiento):
+        self.procedimientos.update({name: procedimiento})
+
+    def existeProcedimiento(self, name):
+        return name in self.procedimientos
+
     def cantidadParametrosProcedimiento(self, name):
         return self.procedimientos[name].getSizeParameters()
 
     def getProcedimiento(self, name):
         return self.procedimientos[name]
-    
-    "entar a la tabla de simblos"
-    
+   
+    def agregarVariable(self, variable):
+        self.append(variable)
+
+    def getVariable(self, id):
+        for variable in self:
+            if variable.id == id:
+                return variable
+
+    def existeVariable(self, id):
+        for variable in self:
+            if variable.id == id:
+                return True
+        return False
