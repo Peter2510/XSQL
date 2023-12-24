@@ -96,7 +96,17 @@ class SymbolTableVisitor(Visitor):
             environment.agregarVariable(v)
            
     def visitAlterFunction(self,node,environment):
-        pass
+        print("visitando alter function")
+        nombre = Estructura.nombreActual + "-" + str(node.id)
+        if environment.existeFuncion(nombre):
+            
+            del environment.funciones[nombre]
+            self.visitFunctionDeclaration(node,environment)
+            
+        
+        else:
+            environment.addError("Semantico", node.id ,f"La funcion '{node.id}' no existe en la base de datos "+Estructura.nombreActual, node.fila,node.columna)
+        
     
     def visitCallFunction(self,node,environment):
         pass
@@ -146,21 +156,7 @@ class SymbolTableVisitor(Visitor):
             
         else:
             environment.addError("Semantico", "" ,f"Error en el valor de retorno", node.fila,node.columna)    
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-            
+                    
     def visitSet(self,node,environment):
         print("visitando set")
         

@@ -20,6 +20,3 @@ class FunctionDeclaration(Abstract):
             self.accept(visit, environment)
         
               
-    def get_name_for_table(self) -> str:
-        func_types = ','.join(str(param.type) for param in self.params)
-        return f"{self.id}({func_types})"

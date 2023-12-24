@@ -744,7 +744,7 @@ def p_alter_funcion_usuario2(t):  #sin parametros
     '''
     alter_funcion_usuario : ALTER FUNCTION ID PARENTESIS_IZQ PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
     '''
-    t[0] = AlterFunction(t.lineno(1), find_column(input, t.slice[1]), t[3], None, t[6],t[9])
+    t[0] = AlterFunction(t.lineno(1), find_column(input, t.slice[1]), t[3], None, t[7],t[10])
     
 ##PARAMETROS DE LAS FUNCIONES
 def p_parametros_funcion(t):

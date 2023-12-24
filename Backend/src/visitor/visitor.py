@@ -1,4 +1,5 @@
 from abc import ABC
+from src.instrucciones.funcion.alter_function import AlterFunction
 from src.instrucciones.funcion.return_ import Return_
 from src.instrucciones.case.else_case import ElseCase
 from src.instrucciones.case.when import When
@@ -50,9 +51,9 @@ class Visitor(ABC):
         elif isinstance(node, function_declaration.FunctionDeclaration ):
              self.visitFunctionDeclaration(node,environment)    
             
-        # elif isinstance(node,AlterFunction):
-            # self.visitAlterFunction(node,environment)
-            # 
+        elif isinstance(node,AlterFunction):
+            self.visitAlterFunction(node,environment)
+            
         # elif isinstance(node,CallFunction):
             # self.visitCallFunction(node,environment)
             # 

@@ -9,18 +9,13 @@ class AlterFunction(Abstract):
         self.params = params
         self.type = type_
         self.body = body
-        self.name_for_table = self.get_name_for_table()
-        self.table = Environment(f"funcion {id}")
-        self.table.returned_type = self.type
 
     def accept(self, visitor, environment = None):
-        for param in self.params:
-           param.visit(self,environment )          
         visitor.visit(self,environment)
             
     def interpretar(self, environment):
-        print("interpretando funcion alter")
+        from src.visitor.tableVisitor import SymbolTableVisitor
+        visit = SymbolTableVisitor(environment)
+        if visit.correct == True:
+            self.accept(visit, environment)
 
-    def get_name_for_table(self) -> str:
-        func_types = ','.join(str(param.type) for param in self.params)
-        return f"{self.id}({func_types})"
