@@ -12,6 +12,7 @@ class SymbolTableVisitor(Visitor):
     def visitFunctionDeclaration(self, node,environment):
       
         nombre = Estructura.nombreActual + "-" + str(node.id)
+        self.tipo = node.type
         
         if(not environment.existeFuncion(nombre)):
             print(self.correct)
@@ -101,9 +102,65 @@ class SymbolTableVisitor(Visitor):
         pass
     
     def visitReturn(self,node,environment):
-        print("visitando return")
-        pass
+        
+        valorRetorno = node.instruction.interpretar(environment)
+        
+        if valorRetorno != None:
+            
+            #validar si es de tipo string
+            if isinstance(self.tipo, String_):
+                
+                tamanio = self.tipo.size.interpretar(environment)
+                
+                if valorRetorno.type == Type.TEXT:
+                    
+                    if self.tipo.type == Type.NVARCHAR:
+                        
+                        if not (len(valorRetorno.value) <= tamanio.value):
+                            environment.addError("Semantico", valorRetorno.value ,f"No es posible retornar una cadena de longitud {len(valorRetorno.value)}, el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
+                            self.correct = False                      
+                    
+                    else:
+
+                        if not (len(valorRetorno.value) <= tamanio.value and len(valorRetorno.value) >= 1) :
+                            environment.addError("Semantico", valorRetorno.value ,f"No es posible retornar una cadena de longitud {len(valorRetorno.value)}, el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)
+                            
+                            self.correct = False
+                                                                               
+                else: 
+                    environment.addError("Semantico", valorRetorno.value ,f"El tipo de dato retornado debe ser de tipo {self.tipo.type.name}", node.fila,node.columna)
+                    self.correct = False
     
+            #validar si es de tipo bit
+            elif self.tipo == Type.BIT:
+                
+                if not(valorRetorno.value == 0 or valorRetorno.value == 1):
+                    environment.addError("Semantico", valorRetorno.value ,f"No es posible retornar un {valorRetorno.type.name}, el tipo de dato de la funcion es BIT", node.fila,node.columna)
+                    self.correct = False            
+                        
+            else:
+
+                if not valorRetorno.type == self.tipo:
+                    environment.addError("Semantico", valorRetorno.value ,f"El tipo de retorno no coincide con el tipo de la funcion", node.fila,node.columna)
+                    self.correct = False
+            
+        else:
+            environment.addError("Semantico", "" ,f"Error en el valor de retorno", node.fila,node.columna)    
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+            
     def visitSet(self,node,environment):
         print("visitando set")
         
