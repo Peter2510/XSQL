@@ -1,6 +1,6 @@
 import pprint
 from ..abstract import Abstract
-from .utils import add_prefix_to_keys, filter_where_clause, apply_column_expressions
+from .utils import add_prefix_to_keys, filter_where_clause, apply_column_expressions, cartesian_product
 from src.ejecucion.type import Type
 
 
@@ -24,7 +24,7 @@ class TableColumn(Abstract):
         self.tipo = tipo
 
     def __str__(self):
-        return self.id
+        return f"{self.table}.{self.id}"
 
     def accept(self, visitor, environment):
         visitor.visit(self, environment)
@@ -84,9 +84,13 @@ class Select(Abstract):
 
     def get_data_joined(self):
         # TODO: Implement
-        name = self.data[0]["name"]
-        data = self.data[0]["data"]["datos"]
-        return add_prefix_to_keys(data, name)
+        tables = []
+        for record in self.data:
+            name = record["name"]
+            data = record["data"]["datos"]
+            tables.append(add_prefix_to_keys(data, name))
+
+        return cartesian_product(*tables)
 
     def accept(self, visitor, environment):
         if self.from_clause is not None:
@@ -131,10 +135,10 @@ class Select(Abstract):
         # Apply expressions in columns
         environment.record = {}
         final_data = list(map(apply_column_expressions(self.columns, environment), data_filtered))
-        pp = pprint.PrettyPrinter(indent=4, compact=True, depth=2)
+        pp = pprint.PrettyPrinter(indent=2, compact=False, depth=10)
         pp.pprint(final_data)
 
-        return None
+        return final_data
 
 
 class AllColumns(Abstract):

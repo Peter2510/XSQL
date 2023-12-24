@@ -1,3 +1,6 @@
+from itertools import product
+
+
 def add_prefix_to_keys(list_of_dicts, prefix):
     new_list_of_dicts = []
 
@@ -22,6 +25,9 @@ def filter_where_clause(expr, environment):
 
 def apply_column_expressions(expr_lst, environment):
     def alter_record(record):
+        from src.ast import AllColumns
+        if isinstance(expr_lst[0], AllColumns):
+            return record
         environment.record = record
         new_dict = {}
         for expr in expr_lst:
@@ -31,3 +37,13 @@ def apply_column_expressions(expr_lst, environment):
         return new_dict
 
     return alter_record
+
+
+def cartesian_product(*tables):
+    # Obtener todas las combinaciones posibles de filas entre las tablas
+    result = list(product(*tables))
+
+    # Crear una lista de diccionarios para representar el resultado
+    result_dicts = [dict(item for sublist in row for item in sublist.items()) for row in result]
+
+    return result_dicts

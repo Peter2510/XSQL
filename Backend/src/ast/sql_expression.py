@@ -93,9 +93,9 @@ class SQLBinaryExpression(SQLExpression):
         elif self.operator == '<':
             self.valor = left_value < right_value
         elif self.operator == '>=':
-            self.valor = left_value > right_value
+            self.valor = left_value >= right_value
         elif self.operator == '<=':
-            self.valor = left_value < right_value
+            self.valor = left_value <= right_value
         elif self.operator == 'and':
             self.valor = left_value and right_value
         elif self.operator == 'or':
@@ -115,7 +115,6 @@ class SQLUnaryExpression(SQLExpression):
         self.argument = argument
 
     def __str__(self):
-        print(self.argument)
         if not isinstance(self.argument, (int, str, float, bool)):
             return str(self.argument)
 

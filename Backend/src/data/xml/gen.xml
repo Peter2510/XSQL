@@ -43,42 +43,42 @@
                 <idfactura>3467</idfactura>
                 <fechafactura>2023-12-23</fechafactura>
                 <nit>123456789</nit>
-                <cantidad>65</cantidad>
+                <cantidad>1</cantidad>
                 <precio>23</precio>
             </DatosEspecifico>
             <DatosEspecifico>
                 <idfactura>123456789</idfactura>
                 <fechafactura>2023-12-23</fechafactura>
                 <nit>123456789</nit>
-                <cantidad>5</cantidad>
+                <cantidad>2</cantidad>
                 <precio>233</precio>
             </DatosEspecifico>
             <DatosEspecifico>
                 <idfactura>2</idfactura>
                 <fechafactura>2023-12-23</fechafactura>
                 <nit>123456789</nit>
-                <cantidad>6</cantidad>
+                <cantidad>3</cantidad>
                 <precio>20</precio>
             </DatosEspecifico>
             <DatosEspecifico>
                 <idfactura>3</idfactura>
                 <fechafactura>2023-12-23</fechafactura>
                 <nit>123456789</nit>
-                <cantidad>100</cantidad>
+                <cantidad>4</cantidad>
                 <precio>23</precio>
             </DatosEspecifico>
             <DatosEspecifico>
                 <idfactura>4</idfactura>
                 <fechafactura>2023-12-23</fechafactura>
                 <nit>123456789</nit>
-                <cantidad>50</cantidad>
+                <cantidad>5</cantidad>
                 <precio>100</precio>
             </DatosEspecifico>
             <DatosEspecifico>
                 <idfactura>5</idfactura>
                 <fechafactura>2023-12-23</fechafactura>
                 <nit>123456789</nit>
-                <cantidad>5</cantidad>
+                <cantidad>6</cantidad>
                 <precio>200</precio>
             </DatosEspecifico>
         </Datos>
@@ -86,6 +86,11 @@
     <Table name="tbfactura2">
         <Estructura>
             <Principal name="idfactura">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="precio">
                 <Atributo1 tipo="int">1</Atributo1>
                 <Atributo2 nulidad="2">2</Atributo2>
                 <Atributo3 restricciones="True">3</Atributo3>
@@ -113,9 +118,18 @@
         </Estructura>
         <Datos name="nuevo_registro">
             <DatosEspecifico>
-                <id>3456</id>
-                <nombre>jorge enriquez</nombre>
-                <bandera>4444</bandera>
+                <idfactura>1111</idfactura>
+                <fechafactura>2023-12-23</fechafactura>
+                <nit>111111111</nit>
+                <cantidad>1111</cantidad>
+                <precio>11</precio>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idfactura>2222</idfactura>
+                <fechafactura>2023-12-23</fechafactura>
+                <nit>222222222</nit>
+                <cantidad>22</cantidad>
+                <precio>22</precio>
             </DatosEspecifico>
         </Datos>
     </Table>
