@@ -167,6 +167,7 @@ class SymbolTableVisitor(Visitor):
                 self.correct = False               
         else:
              environment.addError("Semantico", node.id ,f"La variable no ha sido declarada", node.fila,node.columna)
+             self.correct = False               
                  
     def visitAlterProcedure(self,node,environment):
         pass
@@ -185,7 +186,31 @@ class SymbolTableVisitor(Visitor):
         print("visit elseif")
     
     def visitIf(self,node,environment):
-        print("visit if")
+        
+        condicion = node.condition.interpretar(environment)
+        env = Environment(environment)
+        if condicion != None:
+            
+            if condicion.type == Type.BIT:
+                for inst in node.instructions:
+                    if isinstance(inst,list):
+                        for instruccion in inst:
+                            if self.correct:
+                                instruccion.accept(self,env)
+                            else: 
+                                self.correct = False
+                                break
+                    else:
+                        inst.accept(self,env)
+                
+                environment.errors = environment.getErrores() + env.getErrores()
+            else: 
+                environment.addError("Semantico", "" ,f"La condicion de la sentencia if debe ser de tipo BIT", node.fila,node.columna)
+                self.correct = False
+                
+        else: 
+            environment.addError("Semantico", "" ,f"Error en la condicion de la sentencia if", node.fila,node.columna)
+            self.correct = False
         
     
     def visitStmIf(self,node,environment):

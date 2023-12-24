@@ -18,14 +18,14 @@ CREATE TABLE tbdetallefactura (
 CREATE FUNCTION Retornasuma(@ProductID int) 
 RETURNS int 
 AS 
--- Returns the stock level for the product. 
 BEGIN 
  DECLARE @ret int;
- IF @ret == NULL THEN
+ IF (@ret == 1) BEGIN
  SET @ret = 0; 
  RETURN 2;
- END IF;
+ END;
 END;
+
 
 --Simple
 CREATE FUNCTION Retornasuma()
@@ -35,10 +35,10 @@ AS
 BEGIN 
  DECLARE @ret int; 
  
- IF @ret == NULL THEN
+ IF (@ret == NULL) BEGIN
  SET @ret = 0; 
  RETURN 2; 
- END IF;
+ END
 END;
 
 -- case

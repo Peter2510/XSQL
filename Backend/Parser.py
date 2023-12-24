@@ -1037,37 +1037,36 @@ def p_lista_variables_procedure4(t):
     '''
     t[0] = [t[1]]
                 
-#if
 #solo if
 def p_if(t): 
     '''
-    expresion_if : IF expresion THEN cuerpo_if_else END IF PUNTO_Y_COMA
+    expresion_if : IF PARENTESIS_IZQ expresion PARENTESIS_DER BEGIN cuerpo_if_else END PUNTO_Y_COMA
     '''
-    _if = If_(t.lineno(1), find_column(input, t.slice[1]), t[2], t[4])
+    _if = If_(t.lineno(1), find_column(input, t.slice[1]), t[3], t[6])
     t[0] = StmIf(t.lineno(1), find_column(input, t.slice[1]), _if,None,None)
 
 #if else
 def p_if2(t):
     '''
-    expresion_if : IF expresion THEN cuerpo_if_else expresion_else END IF PUNTO_Y_COMA
+    expresion_if : IF PARENTESIS_IZQ expresion PARENTESIS_DER BEGIN cuerpo_if_else END PUNTO_Y_COMA expresion_else 
     '''    
-    _if = If_(t.lineno(1), find_column(input, t.slice[1]), t[2], t[4])
-    t[0] = StmIf(t.lineno(1), find_column(input, t.slice[1]), _if,None,t[5])
+    _if = If_(t.lineno(1), find_column(input, t.slice[1]), t[3], t[6])
+    t[0] = StmIf(t.lineno(1), find_column(input, t.slice[1]), _if,None,t[9])
     
 #if elseif else
 def p_if3(t):
     '''
-    expresion_if : IF expresion THEN cuerpo_if_else expresion_else_if expresion_else END IF PUNTO_Y_COMA
+    expresion_if : IF PARENTESIS_IZQ expresion PARENTESIS_DER BEGIN cuerpo_if_else END PUNTO_Y_COMA lista_else_if expresion_else 
     '''    
-    _if = If_(t.lineno(1), find_column(input, t.slice[1]), t[2], t[4])
-    t[0] = StmIf(t.lineno(1), find_column(input, t.slice[1]), _if,t[5],t[6])
+    _if = If_(t.lineno(1), find_column(input, t.slice[1]), t[3], t[6])
+    t[0] = StmIf(t.lineno(1), find_column(input, t.slice[1]), _if,t[9],t[10])
 
 def p_if4(t):
     '''
-    expresion_if : IF expresion THEN cuerpo_if_else expresion_else_if END IF PUNTO_Y_COMA
+    expresion_if : IF PARENTESIS_IZQ expresion PARENTESIS_DER BEGIN cuerpo_if_else END PUNTO_Y_COMA lista_else_if
     '''
-    _if = If_(t.lineno(1), find_column(input, t.slice[1]), t[2], t[4])
-    t[0] = StmIf(t.lineno(1), find_column(input, t.slice[1]), _if,t[5],None)
+    _if = If_(t.lineno(1), find_column(input, t.slice[1]), t[3], t[6])
+    t[0] = StmIf(t.lineno(1), find_column(input, t.slice[1]), _if,t[9],None)
 
 # cuerpo del if
 def p_cuerpo_if_else(t):
@@ -1079,16 +1078,31 @@ def p_cuerpo_if_else(t):
 # expresion else
 def p_expresion_else(t):
     '''
-    expresion_else : ELSE cuerpo_if_else
+    expresion_else : ELSE BEGIN cuerpo_if_else END PUNTO_Y_COMA
     '''
-    t[0] = Else_(t.lineno(1), find_column(input, t.slice[1]), t[2])
+    t[0] = Else_(t.lineno(1), find_column(input, t.slice[1]), t[3])
+
 
 # expresion else if
+def p_lista_else_if(t):
+    '''
+    lista_else_if : lista_else_if expresion_else_if
+    '''
+    t[1].append(t[2])
+    t[0] = t[1]
+    
+def p_lista_else_if2(t):
+    '''
+    lista_else_if : expresion_else_if
+    '''  
+    t[0] = [t[1]]
+
 def p_expresion_else_if(t):
     '''
-    expresion_else_if : ELSEIF expresion THEN cuerpo_if_else
+    expresion_else_if : ELSEIF PARENTESIS_IZQ expresion PARENTESIS_DER BEGIN cuerpo_if_else END PUNTO_Y_COMA
     '''
-    t[0] = ElseIf_(t.lineno(1), find_column(input, t.slice[1]), t[2], t[4])
+    t[0] = ElseIf_(t.lineno(1), find_column(input, t.slice[1]), t[3], t[6])
+
 
 
 #case 

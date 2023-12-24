@@ -1,4 +1,5 @@
 from abc import ABC
+from src.instrucciones.conditionals.if_ import If_
 from src.instrucciones.funcion.set import Set_
 from src.instrucciones.funcion.variable_declaration import VariableDeclaration
 from src.instrucciones.usarDB import usarDB
@@ -77,9 +78,9 @@ class Visitor(ABC):
         # elif isinstance(node,ElseIf_):
             # self.visitElseIF(node,environment)
                 # 
-        # elif isinstance(node,If_):
-            # self.visitIf(node,environment)
-                # 
+        elif isinstance(node,If_):
+            self.visitIf(node,environment)
+            
         # elif isinstance(node,StmIf):
             # self.visitStmIf(node,environment)
                 # 
@@ -194,7 +195,6 @@ class Visitor(ABC):
     def visitStmCase(self,node,environment):
         pass
     
-
     def visitSelect(self, node, environment):
         pass
 
