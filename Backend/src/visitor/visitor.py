@@ -1,4 +1,5 @@
 from abc import ABC
+from src.instrucciones.conditionals.else_ import Else_
 from src.instrucciones.conditionals.if_ import If_
 from src.instrucciones.funcion.set import Set_
 from src.instrucciones.funcion.variable_declaration import VariableDeclaration
@@ -72,9 +73,9 @@ class Visitor(ABC):
         # elif isinstance(node,ProcedureDeclaration):
             # self.visitCreateProcedure(node,environment)
                 # 
-        # elif isinstance(node,Else_):
-            # self.visitElse(node,environment)
-                # 
+        elif isinstance(node,Else_):
+            self.visitElse(node,environment)
+             
         # elif isinstance(node,ElseIf_):
             # self.visitElseIF(node,environment)
                 # 

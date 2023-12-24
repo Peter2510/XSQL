@@ -179,8 +179,21 @@ class SymbolTableVisitor(Visitor):
         pass    
     
     def visitElse(self,node,environment):
-        print("visit else")
-        pass
+        print("visitando esle")
+        env = Environment(environment)
+               
+        for inst in node.instructions:
+            if isinstance(inst,list):
+                for instruccion in inst:
+                    if self.correct:
+                        instruccion.accept(self,env)
+                    else: 
+                         self.correct = False
+                         break
+            else:
+                inst.accept(self,env)        
+        environment.errors = environment.getErrores() + env.getErrores()            
+        
     
     def visitElseIf(self,node,environment):
         print("visit elseif")

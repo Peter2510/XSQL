@@ -11,7 +11,12 @@ class StmIf(Abstract):
 
     def accept(self, visitor, environment = None):
         self._if.accept(visitor,environment)
-
+        # if self.list_elseif != None:
+            # for elseif in self.list_elseif:
+                # elseif.accept(visitor,environment)
+        if self.else_ != None:
+            self.else_.accept(visitor,environment)
+ 
             
     def interpretar(self, environment):
         print("interpretando if general")
