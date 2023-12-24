@@ -415,9 +415,24 @@ def p_id_opt(t):
 
 def p_funciones_sistema(t):
     '''
-    funciones_sistema : CONCATENA PARENTESIS_IZQ sql_expression COMA sql_expression PARENTESIS_DER
+    funciones_sistema : CONCATENA PARENTESIS_IZQ concat_list_params PARENTESIS_DER
     '''
-    t[0] = Concatenar(fila=t.lineno(1), columna=find_column(input, t.slice[1]), opIzq=t[3], opDer=t[5])
+    t[0] = Concatenar(fila=t.lineno(1), columna=find_column(input, t.slice[1]), expr_lst=t[3])
+
+
+def p_concat_list_params(t):
+    """
+    concat_list_params : concat_list_params COMA sql_expression
+    """
+    t[1].append(t[3])
+    t[0] = t[1]
+
+
+def p_concat_list_params1(t):
+    """
+    concat_list_params : sql_expression
+    """
+    t[0] = [t[1]]
 
 def p_funciones_sistema1(t):
     '''
@@ -453,7 +468,6 @@ def p_cas_value(t):
     '''
     cas_value : sql_expression
     '''
-    # TODO: Cambiar a nodo de ID_DECLARE en expresiones
     t[0] = t[1]
 
 def p_valor(t):
@@ -482,12 +496,17 @@ def p_valor(t):
 
 
 def p_param_suma(t):
-    '''
+    """
     param_suma : ID
-              | ENTERO
-    '''
-    t[0] = t[1]
+    """
+    t[0] = TableColumn(fila=t.lineno(1), columna=find_column(input, t.slice[1]), id=t[1])
 
+
+def p_param_suma1(t):
+    """
+    param_suma : ENTERO
+    """
+    t[0] = t[1]
 
 def p_table(t):
     '''

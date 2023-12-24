@@ -26,7 +26,7 @@ keywords = {
     "delete":"DELETE",
     
     "concatena":"CONCATENA",
-    "subtraer":"SUBSTRAER",
+    "substraer":"SUBSTRAER",
     "hoy":"HOY",
     "contar":"CONTAR",
     "suma":"SUMA",

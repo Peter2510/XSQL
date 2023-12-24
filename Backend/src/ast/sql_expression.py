@@ -118,7 +118,7 @@ class SQLUnaryExpression(SQLExpression):
         if not isinstance(self.argument, (int, str, float, bool)):
             return str(self.argument)
 
-        return f"({self.argument})" if self.in_paren else self.argument
+        return f"({self.argument})" if self.in_paren else str(self.argument)
 
     def get_tipo(self):
         if not isinstance(self.argument, (int, str, float, bool)):

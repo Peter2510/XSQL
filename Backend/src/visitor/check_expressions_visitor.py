@@ -324,7 +324,6 @@ LESS_CAST = [
     None
 ]
 
-
 GREATER_EQUAL_CAST = [
     None,
     None,
@@ -564,7 +563,9 @@ class ExpressionsVisitor(Visitor):
     def visitBinaria(self, node, environment):
         new_type = get_binary_type(left=node.opIzq, op=node.tipoOp, right=node.opDer)
         if new_type is None:
-            environment.addError('Semántico', "" ,f'La operación {node.opIzq.tipo.name} {node.tipoOp} {node.opDer.tipo.name} no es posible', node.fila, node.columna)
+            environment.addError('Semántico', "",
+                                 f'La operación {node.opIzq.tipo.name} {node.tipoOp} {node.opDer.tipo.name} no es posible',
+                                 node.fila, node.columna)
             self.correct = False
         else:
             node.tipo = new_type
@@ -575,10 +576,12 @@ class SqlExpressionsVisitor(Visitor):
     def visitSQLBinaryExpression(self, node: SQLBinaryExpression | SQLLogicalExpression, environment):
         new_type = get_binary_type(left=node.left, op=node.operator, right=node.right)
         if new_type is None:
-            self.log_error(msg=f'La operación {node.left.tipo.name} {node.operator} {node.right.tipo.name} no es posible', row=node.fila, column=node.columna, lexeme="BINOP")
+            print(node.left.tipo, node.right.tipo)
+            self.log_error(
+                msg=f'La operación {node.left.tipo.name} {node.operator} {node.right.tipo.name} no es posible',
+                row=node.fila, column=node.columna, lexeme="BINOP")
         else:
             node.tipo = new_type
-
 
     def visitSQLLogicalExpression(self, node, environment):
         self.visitSQLBinaryExpression(node, environment)
@@ -586,3 +589,8 @@ class SqlExpressionsVisitor(Visitor):
     def visitSQLUnaryExpression(self, node: SQLUnaryExpression, environment):
         tipo = node.get_tipo()
         node.tipo = tipo
+
+    def visitSubstraer(self, node, environment):
+        if node.value.tipo != Type.TEXT:
+            self.log_error(msg="Valor no válido para Substraer()", row=node.fila, column=node.columna,
+                           lexeme="SUBSTRAER")

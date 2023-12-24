@@ -9,10 +9,25 @@ class Cas(Abstract):
         self.new_type = new_type
         self.tipo = new_type
 
+    def __str__(self):
+        return "CAS"
+
     def accept(self, visitor, environment):
         self.expr.accept(visitor, environment)
         visitor.visit(self, environment)
 
     # no se si le enviamos el tipo de dato asi com date
     def interpretar(self, environment):
-        return 0
+        result = self.expr.interpretar(environment)
+        try:
+            if self.new_type == Type.INT:
+                return int(result)
+            if self.new_type == Type.DECIMAL:
+                return float(result)
+            if self.new_type == Type.BIT:
+                return bool(result)
+        except ValueError:
+            if self.new_type == Type.INT or self.new_type == Type.DECIMAL:
+                return 0
+
+        return str(result)

@@ -134,7 +134,10 @@ class Select(Abstract):
 
         # Apply expressions in columns
         environment.record = {}
+        environment.select_records = data_filtered
         final_data = list(map(apply_column_expressions(self.columns, environment), data_filtered))
+        environment.record = {}
+        environment.select_records = []
         pp = pprint.PrettyPrinter(indent=2, compact=False, depth=10)
         pp.pprint(final_data)
 

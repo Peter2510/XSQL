@@ -33,23 +33,26 @@ class ValidateColumnVisitor(Visitor):
         column_tb = estructura_tb.get(node.id, {})
         attribute_1 = column_tb.get("Atributo1", {})
         tipo = attribute_1.get("tipo", None)
+        tipo = tipo.lower() if tipo is not None else None
+        print('tipo', tipo, name_tb)
         column_type = None
-        if tipo in 'nvarchar':
+        if 'nvarchar' in tipo:
             column_type = Type.TEXT
-        elif tipo in 'nchar':
+        elif 'nchar' in tipo:
             column_type = Type.TEXT
-        elif tipo in 'int':
+        elif 'int' in tipo:
             column_type = Type.INT
-        elif tipo in 'bit':
+        elif 'bit' in tipo:
             column_type = Type.BIT
-        elif tipo in 'decimal':
+        elif 'decimal' in tipo:
             column_type = Type.DECIMAL
-        elif tipo in 'date':
+        elif 'date' in tipo:
             column_type = Type.DATE
-        elif tipo in 'datetime':
+        elif 'datetime' in tipo:
             column_type = Type.DATETIME
         node.tipo = column_type
         node.table = name_tb
+        print('column', node.tipo)
 
 
 class TablesValidVisitor(Visitor):

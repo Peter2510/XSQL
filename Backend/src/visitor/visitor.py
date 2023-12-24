@@ -28,13 +28,17 @@ from src.ast import (
     SQLUnaryExpression, SQLBinaryExpression, SQLLogicalExpression
 )
 
+from src.funciones import (
+    Cas, Concatenar, Contar, Hoy, Substraer, Suma
+)
+
 
 class Visitor(ABC):
     def __init__(self, environment):
         self.environment = environment
         self.correct = True
 
-    def log_error(self, msg, row=0, column=1, lexeme = ""):
+    def log_error(self, msg, row=0, column=1, lexeme=""):
         self.correct = False
         print(msg, f"ln: {row}, col: {column - 1}")
         self.environment.addError("Semántico", lexeme, msg, row, column - 1)
@@ -51,13 +55,26 @@ class Visitor(ABC):
             self.visitSQLLogicalExpression(node, environment)
         elif isinstance(node, binaria.Binaria):
             self.visitBinaria(node, environment)
+        elif isinstance(node, Cas):
+            self.visitCas(node, environment)
+        elif isinstance(node, Concatenar):
+            self.visitConcatenar(node, environment)
+        elif isinstance(node, Contar):
+            self.visitContar(node, environment)
+        elif isinstance(node, Hoy):
+            self.visitHoy(node, environment)
+        elif isinstance(node, Substraer):
+            self.visitSubstraer(node, environment)
+        elif isinstance(node, Suma):
+            self.visitSuma(node, environment)
+
 
         elif isinstance(node, binaria.Binaria):
             self.visitLogico(node, environment)
-            
+
         elif isinstance(node, binaria.Binaria):
             self.visitPrimitivo(node, environment)
-            
+
         elif isinstance(node, binaria.Binaria):
             self.visitRelacional(node, environment)
 
@@ -246,4 +263,22 @@ class Visitor(ABC):
         pass
 
     def visitSQLLogicalExpression(self, node, environment):
+        pass
+
+    def visitCas(self, node, environment):
+        pass
+
+    def visitConcatenar(self, node, environment):
+        pass
+
+    def visitContar(self, node, environment):
+        pass
+
+    def visitHoy(self, node, environment):
+        pass
+
+    def visitSubstraer(self, node, environment):
+        pass
+
+    def visitSuma(self, node, environment):
         pass
