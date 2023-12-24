@@ -1,4 +1,7 @@
 from abc import ABC
+from src.instrucciones.case.else_case import ElseCase
+from src.instrucciones.case.when import When
+from src.instrucciones.case.stm_case import StmCase
 from src.instrucciones.conditionals.else_if_ import ElseIf_
 from src.instrucciones.conditionals.else_ import Else_
 from src.instrucciones.conditionals.if_ import If_
@@ -86,14 +89,14 @@ class Visitor(ABC):
         # elif isinstance(node,StmIf):
             # self.visitStmIf(node,environment)
                 # 
-        # elif isinstance(node,ElseCase):
-            # self.visitElseCase(node,environment)
-                # 
-        # elif isinstance(node,StmCase):
-            # self.visitWhen(node,environment)
-                # 
-        # elif isinstance(node,When):
-            # self.visitStmCase(node,environment)
+        elif isinstance(node,ElseCase):
+            self.visitElseCase(node,environment)
+            
+        elif isinstance(node,StmCase):
+            self.visitStmCase(node,environment)
+                
+        elif isinstance(node,When):
+            self.visitWhen(node,environment)
 
         elif isinstance(node,usarDB):
             self.visitUsar(node,environment)

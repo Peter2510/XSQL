@@ -254,10 +254,46 @@ class SymbolTableVisitor(Visitor):
         
     
     def visitElseCase(self,node,environment):
-        pass
+        print("visitando esle")
+        env = Environment(environment)
+               
+        for inst in node.instructions:
+            if isinstance(inst,list):
+                for instruccion in inst:
+                    if self.correct:
+                        instruccion.accept(self,env)
+                    else: 
+                         self.correct = False
+                         break
+            else:
+                inst.accept(self,env)        
+        environment.errors = environment.getErrores() + env.getErrores()            
     
     def visitWhen(self,node,environment):
-        pass
+        condicion = node.condition.interpretar(environment)
+        env = Environment(environment)
+        if condicion != None:
+            
+            if condicion.type == Type.BIT:
+                for inst in node.instructions:
+                    if isinstance(inst,list):
+                        for instruccion in inst:
+                            if self.correct:
+                                instruccion.accept(self,env)
+                            else: 
+                                self.correct = False
+                                break
+                    else:
+                        inst.accept(self,env)
+                
+                environment.errors = environment.getErrores() + env.getErrores()
+            else: 
+                environment.addError("Semantico", "" ,f"La condicion de la sentencia when debe ser de tipo BIT", node.fila,node.columna)
+                self.correct = False
+                
+        else: 
+            environment.addError("Semantico", "" ,f"Error en la condicion de la sentencia when", node.fila,node.columna)
+            self.correct = False
     
     def visitStmCase(self,node,environment):
         pass

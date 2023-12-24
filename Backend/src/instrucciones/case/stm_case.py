@@ -9,7 +9,11 @@ class StmCase(Abstract):
         self.else_case = else_case
         self.alias = alias
 
-    def accept(self, visitor, environment = None):
+    def accept(self, visitor, environment = None):       
+        for when in self.list_when:
+            when.accept(visitor,environment)
+        if self.else_case != None:
+            self.else_case.accept(visitor,environment)
         
         visitor.visit(self,environment)
             

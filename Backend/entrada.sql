@@ -53,6 +53,22 @@ CASE
         THEN 'UNO IGUAL 4'
     END validacion
 
+    CASE
+        WHEN @cuota > 1000 && @cuota <  1500
+        THEN     SET @ajuste = 75;
+        
+        WHEN @cuota >= 1500 && @cuota <  2000   
+            THEN SET @ajuste = 125;	
+                
+        WHEN @cuota > 0 &&  @cuota < 1000
+            THEN SET @ajuste = 25;
+        
+        WHEN @cuota >=  2000
+            THEN SET @ajuste = 150;					
+        ELSE 
+            THEN SET @ajuste = 0;
+    END;
+
 
 --simple
 CREATE PROCEDURE proc ()
@@ -175,3 +191,40 @@ Set @ProductID = (1>0)+(0>0);
 
 
 END;
+
+
+----
+
+CREATE FUNCTION Retornasuma()
+RETURNS int 
+AS 
+-- Returns the stock level for the product. 
+BEGIN 
+ DECLARE @ret int; 
+ SET @ret = 45; 
+     
+     IF (@ret == 0) BEGIN
+         SET @ret = 123; 
+         DECLARE @ret1 int;
+         select @ret;
+     END;
+     
+      ELSEIF (@ret == 0) BEGIN
+         SET @ret = 145; 
+         
+         RETURN 2; 
+     END;
+     
+      ELSEIF (@ret + 0) BEGIN
+         SET @ret = 145; 
+         DECLARE @ret int; 
+         RETURN 2; 
+     END;
+     
+     ELSE begin 
+     SET @ret = 689; 
+     DECLARE @ret1 int;
+     end;
+     
+END;
+----

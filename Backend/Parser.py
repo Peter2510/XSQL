@@ -105,7 +105,6 @@ def p_instruccionGeneral(t):
                 | alter_funcion_usuario PUNTO_Y_COMA
                 | crear_procedure PUNTO_Y_COMA
                 | llamada_procedure PUNTO_Y_COMA
-                | expresion_case
                 | alter_procedure PUNTO_Y_COMA
                 | opcionTruncate PUNTO_Y_COMA
                 | opcionDrop PUNTO_Y_COMA
@@ -814,6 +813,7 @@ def p_sentencia_funcion(t):
                     | set_variable_funcion
                     | return
                     | expresion_if
+                    | expresion_case
     '''
     t[0] = t[1]
     
@@ -1105,24 +1105,25 @@ def p_expresion_else_if(t):
 
 
 
-#case 
+#case funcion 
+
 def p_expresion_case(t):
     '''
-    expresion_case : CASE when_clauses ELSE THEN expresion END expresion
+    expresion_case : CASE when_clauses ELSE THEN sentencia_funcion END PUNTO_Y_COMA
     '''
     else_case = ElseCase(t.lineno(1), find_column(input, t.slice[1]), t[5])
-    t[0] = StmCase(t.lineno(1), find_column(input, t.slice[1]), t[2], else_case, t[7])
+    t[0] = StmCase(t.lineno(1), find_column(input, t.slice[1]), t[2], else_case, None)
     
 #case 2
 def p_expresion_case2(t):
     '''
-    expresion_case : CASE when_clauses END expresion
+    expresion_case : CASE when_clauses END PUNTO_Y_COMA
     '''
-    t[0] = StmCase(t.lineno(1), find_column(input, t.slice[1]), t[2], None, t[4])
+    t[0] = StmCase(t.lineno(1), find_column(input, t.slice[1]), t[2], None, None)
 
 def p_when_clauses(t):
     '''
-    when_clauses : when_clauses WHEN expresion THEN expresion
+    when_clauses : when_clauses WHEN expresion THEN sentencia_funcion
     '''
     when = When(t.lineno(1), find_column(input, t.slice[2]), t[3], t[5])
     t[1].append(when)
@@ -1132,9 +1133,9 @@ def p_when_clauses(t):
 
 def p_when_clauses2(t):
     '''
-    when_clauses : WHEN expresion THEN expresion
+    when_clauses : WHEN expresion THEN sentencia_funcion
     '''
-    when = When(t.lineno(1), find_column(input, t.slice[1]), t[2], t[3])
+    when = When(t.lineno(1), find_column(input, t.slice[1]), t[2], t[4])
     t[0] = [when]
     
 

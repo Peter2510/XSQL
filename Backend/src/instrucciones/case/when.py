@@ -9,8 +9,6 @@ class When(Abstract):
         self.instructions = instruction
 
     def accept(self, visitor, environment = None):
-        for param in self.params:
-           param.accept(visitor, self.table)          
         visitor.visit(self,environment)
             
     def interpretar(self, environment):
