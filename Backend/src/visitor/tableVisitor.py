@@ -196,7 +196,30 @@ class SymbolTableVisitor(Visitor):
         
     
     def visitElseIf(self,node,environment):
-        print("visit elseif")
+        condicion = node.condition.interpretar(environment)
+        env = Environment(environment)
+        if condicion != None:
+            
+            if condicion.type == Type.BIT:
+                for inst in node.instructions:
+                    if isinstance(inst,list):
+                        for instruccion in inst:
+                            if self.correct:
+                                instruccion.accept(self,env)
+                            else: 
+                                self.correct = False
+                                break
+                    else:
+                        inst.accept(self,env)
+                
+                environment.errors = environment.getErrores() + env.getErrores()
+            else: 
+                environment.addError("Semantico", "" ,f"La condicion de la sentencia ElseIf debe ser de tipo BIT", node.fila,node.columna)
+                self.correct = False
+                
+        else: 
+            environment.addError("Semantico", "" ,f"Error en la condicion de la sentencia ElseIf", node.fila,node.columna)
+            self.correct = False
     
     def visitIf(self,node,environment):
         

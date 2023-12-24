@@ -1,4 +1,5 @@
 from abc import ABC
+from src.instrucciones.conditionals.else_if_ import ElseIf_
 from src.instrucciones.conditionals.else_ import Else_
 from src.instrucciones.conditionals.if_ import If_
 from src.instrucciones.funcion.set import Set_
@@ -76,9 +77,9 @@ class Visitor(ABC):
         elif isinstance(node,Else_):
             self.visitElse(node,environment)
              
-        # elif isinstance(node,ElseIf_):
-            # self.visitElseIF(node,environment)
-                # 
+        elif isinstance(node,ElseIf_):
+            self.visitElseIf(node,environment)
+            
         elif isinstance(node,If_):
             self.visitIf(node,environment)
             
