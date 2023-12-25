@@ -18,4 +18,5 @@ class AlterFunction(Abstract):
         visit = SymbolTableVisitor(environment)
         if visit.correct == True:
             self.accept(visit, environment)
+            return self
 

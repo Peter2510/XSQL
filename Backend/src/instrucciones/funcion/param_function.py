@@ -1,3 +1,4 @@
+from src.expresiones.variable import Variable
 from src.abstract.abstractas import Abstract
 
 class FunctionParam(Abstract):
@@ -11,6 +12,11 @@ class FunctionParam(Abstract):
         
     def interpretar(self,environment):
         print("interpretando parametro de una funcion")
+        var = Variable()
+        var.type = self.type
+        var.id = self.id
+        var.value = None
+        environment.agregarVariable(var)
         
     def get_row(self):
         return self.row

@@ -1,3 +1,4 @@
+from expresiones.variable import Variable
 from src.abstract.abstractas import Abstract
 
 class VariableDeclaration(Abstract):
@@ -10,5 +11,10 @@ class VariableDeclaration(Abstract):
         visitor.visit(self,environment)
         
     def interpretar(self,environment):
-        print("interpretando declaracion de variable")
+        var = Variable()
+        var.id = self.id
+        var.type = self.type
+        value = None
+        environment.agregarVariable(var)
+        return self
         

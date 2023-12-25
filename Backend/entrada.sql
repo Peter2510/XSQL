@@ -228,3 +228,18 @@ BEGIN
      
 END;
 ----
+
+-------PROBANDO FUNCIONES
+
+CREATE FUNCTION Retornasuma()
+RETURNS int 
+AS 
+-- Returns the stock level for the product. 
+BEGIN 
+ DECLARE @ret int; 
+ SET @ret = 45; 
+     
+     SET @ret = retornaSuma(1); 
+     
+END;
+----

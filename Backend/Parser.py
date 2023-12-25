@@ -730,7 +730,7 @@ def p_funcion_usuario2(t):  #sin parametros
     '''
     crear_funcion_usuario : CREATE FUNCTION ID PARENTESIS_IZQ PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
     '''
-    t[0] = FunctionDeclaration(t.lineno(1), find_column(input, t.slice[1]), t[3], None, t[7],t[10])
+    t[0] = FunctionDeclaration(t.lineno(1), find_column(input, t.slice[1]), t[3], [], t[7],t[10])
     
 #ALTER FUNCTION
 def p_alter_funcion_usuario(t):  #con parametros
@@ -887,7 +887,7 @@ def p_llamada_funcion2(t):
     '''
     llamada_funcion : ID PARENTESIS_IZQ PARENTESIS_DER
     '''
-    t[0] = CallFunction(t.lineno(1), find_column(input, t.slice[1]),t[1],None)
+    t[0] = CallFunction(t.lineno(1), find_column(input, t.slice[1]),t[1],[])
     
 #parametros de la llamada de una funcion
 def p_parametros_llamada_funcion(t):
@@ -901,7 +901,7 @@ def p_parametros_llamada_funcion2(t):
     '''
     parametros_llamada_funcion :  parametro_llamada_funcion
     '''
-    t[0] = [t[1]]
+    t[0] = t[1]
     
 #parametro de la llamada de una funcion
 def p_parametro_llamada_funcion(t): # id

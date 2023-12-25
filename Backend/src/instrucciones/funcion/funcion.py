@@ -6,4 +6,9 @@ class Funcion():
         self.instrucciones = instrucciones
         
     def interpretar(self, environment):
-        print(self.nombre,self.tipo,self.parametros,self.instrucciones)
+        
+        for parametro in self.parametros:
+            parametro.interpretar(environment)
+        
+        for instruccion in self.instrucciones:
+            instruccion.interpretar(environment)

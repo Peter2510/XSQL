@@ -1,3 +1,4 @@
+from src.expresiones.variable import Variable
 from src.abstract.abstractas import Abstract
 
 class Return_(Abstract):
@@ -9,4 +10,8 @@ class Return_(Abstract):
         visitor.visit(self,environment)
         
     def interpretar(self,environment):
-        print("interpretando return")
+        val = self.instruction.interpretar(environment)
+        var = Variable()
+        var.type = val.type
+        var.value = val.value
+        return var
