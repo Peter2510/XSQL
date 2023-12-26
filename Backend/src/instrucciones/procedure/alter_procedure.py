@@ -1,0 +1,17 @@
+from src.abstract.abstractas import Abstract
+from src.manejadorXml import Estructura
+
+class AlterProcedure(Abstract):
+    def __init__(self, fila, columna, nombre, listaParametros,instrucciones):
+        self.nombre = nombre
+        self.listaParametros = listaParametros
+        self.instrucciones = instrucciones
+        super().__init__(fila, columna)
+
+    def accept(self, visitor, environment):
+        print("ALTER ACCEPT procedure",self.nombre,self.listaParametros)
+        ##visitor.visitProcedure(self,environment)
+
+    def interpretar(self, environment):
+        print("Ejecutar ALTER Procedure",self.nombre,self.listaParametros)
+

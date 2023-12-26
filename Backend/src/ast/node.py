@@ -1,18 +1,9 @@
 from abc import ABC, abstractmethod
 from src.ast.symTable import SymTable
 from src.visitor.visitor import Visitor
+from src.abstract.abstractas import Abstract
 
-class Node(ABC):
-    
-    def __init__(self, fila, columna):
-        self.fila = fila
-        self.columna = columna
-    
-    @abstractmethod
-    def accept(self, visitor:Visitor, ambit:SymTable):
-        pass
-
-class Program(Node):
+class Program(Abstract):
 
     def __init__(self, fila, columna, body):
         super().__init__(fila, columna)
@@ -27,7 +18,7 @@ class Program(Node):
         visitor.visit(self)
 
     
-class VariableDeclarator(Node):
+class VariableDeclarator(Abstract):
     def __init__(self, fila,columna, id, init=None):
         super().__init__(fila,columna)
         self.id = id
@@ -47,7 +38,7 @@ class VariableDeclarator(Node):
         self.id.accept(visitor, ambit)
         visitor.visit(self)
         
-class Expr(Node):
+class Expr(Abstract):
     def __init__(self, fila,columna, type_ = None):
         super().__init__(fila,columna)
         self.type = type_
@@ -73,7 +64,7 @@ class BinaryExpression(Expr):
 class LogicalExpression(BinaryExpression):
     pass
 
-class Assignment(Node):
+class Assignment(Abstract):
     def __init__(self, fila,columna, id, expression):
         super().__init__(fila,columna)
         self.id = id
@@ -86,7 +77,7 @@ class Assignment(Node):
         self.expression.accept(visitor, ambit)
         visitor.visit(self)
         
-class CallFunction(Node):
+class CallFunction(Abstract):
     def __init__(self, fila,columna, callee, args):
         super().__init__(fila,columna)
         self.callee = callee
@@ -104,7 +95,7 @@ class CallFunction(Node):
         func_types = ','.join(str(expr.type) if expr.type is not None else 'null' for expr in self.args)
         return f'{self.callee}({func_types})'
     
-class FunctionParam(Node):
+class FunctionParam(Abstract):
     def __init__(self, fila,columna, type_, id_):
         super().__init__(fila,columna)
         self.type = type_
@@ -116,7 +107,7 @@ class FunctionParam(Node):
         self.id.accept(visitor, ambit)
         visitor.visit(self)
         
-class ReturnStmt(Node):
+class ReturnStmt(Abstract):
     def __init__(self, fila,columna, argument=None):
         super().__init__(fila,columna)
         self.argument = argument
@@ -128,29 +119,29 @@ class ReturnStmt(Node):
             self.argument.accept(visitor, ambit)
         visitor.visit(self)
 
-class FunctionDeclaration(Node):
-    def __init__(self, fila, columna , id, params, type_, body):
-        super().__init__(fila,columna)
-        self.id = id
-        self.params = params
-        self.type = type_
-        self.body = body
-        self.name_for_table = self.get_name_for_table()
-        self.table = SymTable(f"funcion {id}")
-        self.table.returned_type = self.type
-
-    def accept(self, visitor, ambit = None):
-        visitor.set_ambit(self.table)
-        if isinstance(visitor, SymTableVisitor):
-            visitor.visit(self)
-        else:
-            for child in self.body:
-                child.accept(visitor, self.table)
-            for param in self.params:
-                param.accept(visitor, self.table)
-            visitor.visit(self)
-
-    def get_name_for_table(self) -> str:
-        func_types = ','.join(str(param.type) for param in self.params)
-        return f"{self.id}({func_types})"
+# class FunctionDeclaration(Abstract):
+    # def __init__(self, fila, columna , id, params, type_, body):
+        # super().__init__(fila,columna)
+        # self.id = id
+        # self.params = params
+        # self.type = type_
+        # self.body = body
+        # self.name_for_table = self.get_name_for_table()
+        # self.table = SymTable(f"funcion {id}")
+        # self.table.returned_type = self.type
+# 
+    # def accept(self, visitor, ambit = None):
+        # visitor.set_ambit(self.table)
+        # if isinstance(visitor, SymTableVisitor):
+            # visitor.visit(self)
+        # else:
+            # for child in self.body:
+                # child.accept(visitor, self.table)
+            # for param in self.params:
+                # param.accept(visitor, self.table)
+            # visitor.visit(self)
+# 
+    # def get_name_for_table(self) -> str:
+        # func_types = ','.join(str(param.type) for param in self.params)
+        # return f"{self.id}({func_types})"
     

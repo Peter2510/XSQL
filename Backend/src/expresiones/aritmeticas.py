@@ -1,5 +1,3 @@
-
-
 from ..abstract.expresion import Expression
 class Aritmeticas(Expression):
     def __init__(self, fila, columna, opIzq, opDer, tipoOp, tipo = None):
@@ -17,6 +15,12 @@ class Aritmeticas(Expression):
 
     def interpretar(self, environment):
         ## esto es como una funcion que se deriva, asi obtienes los numeros como tal
+        from src.visitor import ExpressionsVisitor
+        visitor = ExpressionsVisitor(environment)
+        self.accept(visitor, environment)
+        if not visitor.correct:
+             print("Error en visitor dentro de interpretar")
+
         izq = self.opIzq.interpretar(environment)
         der = self.opDer.interpretar(environment)
 

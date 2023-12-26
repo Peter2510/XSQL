@@ -1,26 +1,20 @@
-
-from ..abstract.funcion import Funcion
-
-from ..manejadorXml import manejo, Estructura 
+from ..abstract import Abstract
+from src.ejecucion.type import Type
 
 
-class Contar(Funcion):
-    def __init__(self, fila, columna, tabla):
+class Contar(Abstract):
+    def __init__(self, fila, columna, tabla=None):
         super().__init__(fila, columna)
         self.tabla = tabla
+        self.tipo = Type.INT
 
+    def __str__(self):
+        return "Contar"
 
-    ## no se si le enviamos el tipo de dato asi com date
-    def interpretar(self, environment):    
-        ### llamar a los xml
-        Estructura.load()
-        if columna != None:
-            if columna == '*':
-                print('a')
-            else:
-                print('a')
-    
     def accept(self, visitor, environment):
-        pass
+        visitor.visit(self, environment)
 
-
+    def interpretar(self, environment):
+        environment.one_record = True
+        records = environment.select_records
+        return len(records)

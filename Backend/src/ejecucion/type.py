@@ -14,3 +14,5 @@ class Type(Enum):
     IDDECLARE = 10    
     TEXT = 11
     VOID = 12
+    BOOLEAN = 13
+
