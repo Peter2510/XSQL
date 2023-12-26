@@ -1,6 +1,6 @@
 from enum import Enum
 from src.ejecucion.type import Type
-from src.visitor.visitor import Visitor
+from src.visitor.visitor import Visitor, SQLBinaryExpression, SQLLogicalExpression, SQLUnaryExpression
 
 COMBINATIONS = [
 
@@ -45,7 +45,7 @@ ADDITION_CAST = [
     Type.INT,
     Type.DECIMAL,
     None,
-    None,   
+    None,
     Type.TEXT,
     None,
     Type.DECIMAL,
@@ -61,7 +61,7 @@ ADDITION_CAST = [
     None,
     None,
     Type.TEXT,
-    None,    
+    None,
     None
 ]
 
@@ -73,32 +73,32 @@ SUBTRACTION_CAST = [
     None,
     None,
     None,
-    
+
     Type.INT,
     Type.DECIMAL,
     None,
-    None,   
     None,
     None,
-    
+    None,
+
     Type.DECIMAL,
     None,
     None,
     None,
     None,
-    
+
     None,
     None,
     None,
     None,
-    
+
     None,
     None,
     None,
-    
+
     None,
     None,
-    
+
     None
 ]
 
@@ -110,32 +110,32 @@ MULTIPLICATION_CAST = [
     None,
     None,
     None,
-    
+
     Type.INT,
     Type.DECIMAL,
     None,
-    None,   
     None,
     None,
-    
+    None,
+
     Type.DECIMAL,
     None,
     None,
     None,
     None,
-    
-    None, 
+
+    None,
     None,
     Type.TEXT,
     None,
-    
-    None, 
-    Type.TEXT,
-    None, 
-    
-    None, 
+
     None,
-    
+    Type.TEXT,
+    None,
+
+    None,
+    None,
+
     None
 ]
 
@@ -147,32 +147,32 @@ DIVISION_CAST = [
     None,
     None,
     None,
-    
+
     Type.INT,
     Type.DECIMAL,
     None,
-    None,   
     None,
     None,
-    
+    None,
+
     Type.DECIMAL,
     None,
     None,
     None,
     None,
-    
-    None, 
+
+    None,
     None,
     Type.TEXT,
     None,
-    
-    None, 
-    Type.TEXT,
-    None, 
-    
-    None, 
+
     None,
-    
+    Type.TEXT,
+    None,
+
+    None,
+    None,
+
     None
 ]
 
@@ -184,32 +184,32 @@ AND_CAST = [
     None,
     None,
     None,
-    
-    None,
-    None,
-    None,
-    None,   
-    None,
-    None,
-    
+
     None,
     None,
     None,
     None,
     None,
-    
-    None, 
+    None,
+
     None,
     None,
     None,
-    
-    None, 
     None,
-    None, 
-    
-    None, 
     None,
-    
+
+    None,
+    None,
+    None,
+    None,
+
+    None,
+    None,
+    None,
+
+    None,
+    None,
+
     None
 ]
 
@@ -221,32 +221,32 @@ OR_CAST = [
     None,
     None,
     None,
-    
-    None,
-    None,
-    None,
-    None,   
-    None,
-    None,
-    
+
     None,
     None,
     None,
     None,
     None,
-    
-    None, 
+    None,
+
     None,
     None,
     None,
-    
-    None, 
     None,
-    None, 
-    
-    None, 
     None,
-    
+
+    None,
+    None,
+    None,
+    None,
+
+    None,
+    None,
+    None,
+
+    None,
+    None,
+
     None
 ]
 
@@ -258,32 +258,32 @@ GREATER_CAST = [
     None,
     None,
     None,
-    
+
     Type.BIT,
     Type.BIT,
     None,
-    None,   
-    None,
-    None,
-    
-    Type.BIT,
     None,
     None,
     None,
-    None,
-    
+
     Type.BIT,
     None,
     None,
     None,
-    
+    None,
+
     Type.BIT,
     None,
-    None, 
-    
+    None,
+    None,
+
     Type.BIT,
     None,
-    
+    None,
+
+    Type.BIT,
+    None,
+
     None
 ]
 
@@ -295,35 +295,34 @@ LESS_CAST = [
     None,
     None,
     None,
-    
+
     Type.BIT,
     Type.BIT,
     None,
-    None,   
-    None,
-    None,
-    
-    Type.BIT,
     None,
     None,
     None,
-    None,
-    
+
     Type.BIT,
     None,
     None,
     None,
-    
+    None,
+
     Type.BIT,
     None,
-    None, 
-    
+    None,
+    None,
+
     Type.BIT,
     None,
-    
+    None,
+
+    Type.BIT,
+    None,
+
     None
 ]
-
 
 GREATER_EQUAL_CAST = [
     None,
@@ -333,32 +332,32 @@ GREATER_EQUAL_CAST = [
     None,
     None,
     None,
-    
+
     Type.BIT,
     Type.BIT,
     None,
-    None,   
-    None,
-    None,
-    
-    Type.BIT,
     None,
     None,
     None,
-    None,
-    
+
     Type.BIT,
     None,
     None,
     None,
-    
+    None,
+
     Type.BIT,
     None,
-    None, 
-    
+    None,
+    None,
+
     Type.BIT,
     None,
-    
+    None,
+
+    Type.BIT,
+    None,
+
     None
 ]
 
@@ -370,32 +369,32 @@ LESS_EQUAL_CAST = [
     None,
     None,
     None,
-    
+
     Type.BIT,
     Type.BIT,
     None,
-    None,   
-    None,
-    None,
-    
-    Type.BIT,
     None,
     None,
     None,
-    None,
-    
+
     Type.BIT,
     None,
     None,
     None,
-    
+    None,
+
     Type.BIT,
     None,
-    None, 
-    
+    None,
+    None,
+
     Type.BIT,
     None,
-    
+    None,
+
+    Type.BIT,
+    None,
+
     None
 ]
 
@@ -407,32 +406,32 @@ LESS_EQUAL_CAST = [
     None,
     None,
     None,
-    
+
     Type.BIT,
     Type.BIT,
     None,
-    None,   
-    None,
-    None,
-    
-    Type.BIT,
     None,
     None,
     None,
-    None,
-    
+
     Type.BIT,
     None,
     None,
     None,
-    
+    None,
+
     Type.BIT,
     None,
-    None, 
-    
+    None,
+    None,
+
     Type.BIT,
     None,
-    
+    None,
+
+    Type.BIT,
+    None,
+
     None
 ]
 
@@ -444,32 +443,32 @@ EQUAL_CAST = [
     None,
     None,
     None,
-    
+
     Type.BIT,
     Type.BIT,
     None,
-    None,   
-    None,
-    None,
-    
-    Type.BIT,
     None,
     None,
     None,
-    None,
-    
+
     Type.BIT,
     None,
     None,
     None,
-    
+    None,
+
     Type.BIT,
     None,
-    None, 
-    
+    None,
+    None,
+
     Type.BIT,
     None,
-    
+    None,
+
+    Type.BIT,
+    None,
+
     None
 ]
 
@@ -481,32 +480,32 @@ NOT_EQUAL_CAST = [
     None,
     None,
     None,
-    
+
     Type.BIT,
     Type.BIT,
     None,
-    None,   
-    None,
-    None,
-    
-    Type.BIT,
     None,
     None,
     None,
-    None,
-    
+
     Type.BIT,
     None,
     None,
     None,
-    
+    None,
+
     Type.BIT,
     None,
-    None, 
-    
+    None,
+    None,
+
     Type.BIT,
     None,
-    
+    None,
+
+    Type.BIT,
+    None,
+
     None
 ]
 
@@ -531,9 +530,9 @@ def get_binary_type(left, op, right):
         casting_list = MULTIPLICATION_CAST
     elif op == '/':
         casting_list = DIVISION_CAST
-    elif op == '&&':
+    elif op == '&&' or op == 'and':
         casting_list = AND_CAST
-    elif op == '||':
+    elif op == '||' or op == 'or':
         casting_list = OR_CAST
     elif op == '>':
         casting_list = GREATER_CAST
@@ -542,19 +541,18 @@ def get_binary_type(left, op, right):
     elif op == '>=':
         casting_list = GREATER_EQUAL_CAST
     elif op == '<=':
-        casting_list = LESS_EQUAL_CAST  
-    elif op == '==':    
+        casting_list = LESS_EQUAL_CAST
+    elif op == '==' or op == '=':
         casting_list = EQUAL_CAST
     elif op == '!=':
         casting_list = NOT_EQUAL_CAST
-    
 
     left_type = left.tipo.name if left.tipo is not None else None
     right_type = right.tipo.name if right.tipo is not None else None
     index = find_in_array(f'{left_type}-{right_type}', COMBINATIONS)
     index = index if index != -1 else find_in_array(f'{right_type}-{left_type}', COMBINATIONS)
-    type = casting_list[index] if index != -1 else None
-    return type
+    new_type = casting_list[index] if index != -1 else None
+    return new_type
 
 
 class ExpressionsVisitor(Visitor):
@@ -565,7 +563,34 @@ class ExpressionsVisitor(Visitor):
     def visitBinaria(self, node, environment):
         new_type = get_binary_type(left=node.opIzq, op=node.tipoOp, right=node.opDer)
         if new_type is None:
-            environment.addError('Semántico', "" ,f'La operación {node.opIzq.tipo.name} {node.tipoOp} {node.opDer.tipo.name} no es posible', node.fila, node.columna)
+            environment.addError('Semántico', "",
+                                 f'La operación {node.opIzq.tipo.name} {node.tipoOp} {node.opDer.tipo.name} no es posible',
+                                 node.fila, node.columna)
             self.correct = False
         else:
             node.tipo = new_type
+
+
+class SqlExpressionsVisitor(Visitor):
+
+    def visitSQLBinaryExpression(self, node: SQLBinaryExpression | SQLLogicalExpression, environment):
+        new_type = get_binary_type(left=node.left, op=node.operator, right=node.right)
+        if new_type is None:
+            print(node.left.tipo, node.right.tipo)
+            self.log_error(
+                msg=f'La operación {node.left.tipo.name} {node.operator} {node.right.tipo.name} no es posible',
+                row=node.fila, column=node.columna, lexeme="BINOP")
+        else:
+            node.tipo = new_type
+
+    def visitSQLLogicalExpression(self, node, environment):
+        self.visitSQLBinaryExpression(node, environment)
+
+    def visitSQLUnaryExpression(self, node: SQLUnaryExpression, environment):
+        tipo = node.get_tipo()
+        node.tipo = tipo
+
+    def visitSubstraer(self, node, environment):
+        if node.value.tipo != Type.TEXT:
+            self.log_error(msg="Valor no válido para Substraer()", row=node.fila, column=node.columna,
+                           lexeme="SUBSTRAER")

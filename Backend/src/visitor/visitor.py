@@ -20,7 +20,12 @@ from src.ast import (
     Select, FromClause, Table,
     WhereClause, AllColumns, TableColumn,
     AliasSelect, SelectAssign, Program,
-    ColumnAssignments, Update, Delete
+    ColumnAssignments, Update, Delete,
+    SQLUnaryExpression, SQLBinaryExpression, SQLLogicalExpression
+)
+
+from src.funciones import (
+    Cas, Concatenar, Contar, Hoy, Substraer, Suma
 )
 
 
@@ -29,23 +34,43 @@ class Visitor(ABC):
         self.environment = environment
         self.correct = True
 
-    def log_error(self, msg, row=None, column=None):
+    def log_error(self, msg, row=0, column=1, lexeme=""):
         self.correct = False
-        print(msg, f"ln: {row}, col: {column}")
+        print(msg, f"ln: {row}, col: {column - 1}")
+        self.environment.addError("Semántico", lexeme, msg, row, column - 1)
 
     def visit(self, node, environment):
         if not self.correct:
             return
 
-        if isinstance(node, binaria.Binaria):
+        if isinstance(node, SQLUnaryExpression):
+            self.visitSQLUnaryExpression(node, environment)
+        elif isinstance(node, SQLBinaryExpression):
+            self.visitSQLBinaryExpression(node, environment)
+        elif isinstance(node, SQLLogicalExpression):
+            self.visitSQLLogicalExpression(node, environment)
+        elif isinstance(node, binaria.Binaria):
             self.visitBinaria(node, environment)
-            
+        elif isinstance(node, Cas):
+            self.visitCas(node, environment)
+        elif isinstance(node, Concatenar):
+            self.visitConcatenar(node, environment)
+        elif isinstance(node, Contar):
+            self.visitContar(node, environment)
+        elif isinstance(node, Hoy):
+            self.visitHoy(node, environment)
+        elif isinstance(node, Substraer):
+            self.visitSubstraer(node, environment)
+        elif isinstance(node, Suma):
+            self.visitSuma(node, environment)
+
+
         elif isinstance(node, binaria.Binaria):
             self.visitLogico(node, environment)
-            
+
         elif isinstance(node, binaria.Binaria):
             self.visitPrimitivo(node, environment)
-            
+
         elif isinstance(node, binaria.Binaria):
             self.visitRelacional(node, environment)
 
@@ -100,9 +125,9 @@ class Visitor(ABC):
         elif isinstance(node,When):
             self.visitWhen(node,environment)
 
-        elif isinstance(node,usarDB):
-            self.visitUsar(node,environment)
-                   
+        elif isinstance(node, usarDB):
+            self.visitUsar(node, environment)
+
         elif isinstance(node, Select):
             self.visitSelect(node, environment)
             
@@ -139,7 +164,7 @@ class Visitor(ABC):
         elif isinstance(node, Delete):
             self.visitDelete(node, environment)
 
-    def visitUsar(self,node,environment):
+    def visitUsar(self, node, environment):
         pass
 
     def visitBinaria(self, node, environment):
@@ -153,55 +178,55 @@ class Visitor(ABC):
 
     def visitRelacional(self, node, environment):
         pass
-    
-    def visitFunctionDeclaration(self,node,environment):
+
+    def visitFunctionDeclaration(self, node, environment):
         pass
-    
-    def visitAlterFunction(self,node,environment):
+
+    def visitAlterFunction(self, node, environment):
         pass
-    
-    def visitCallFunction(self,node,environment):
+
+    def visitCallFunction(self, node, environment):
         pass
-    
-    def visitReturn(self,node,environment):
+
+    def visitReturn(self, node, environment):
         pass
-    
-    def visitSet(self,node,environment):
+
+    def visitSet(self, node, environment):
         pass
-    
-    def visitVariableDeclaration(self,node,environment):
+
+    def visitVariableDeclaration(self, node, environment):
         pass
-    
-    def visitAlterProcedure(self,node,environment):
+
+    def visitAlterProcedure(self, node, environment):
         pass
-    
-    def visitCallProcedure(self,node,environment):
+
+    def visitCallProcedure(self, node, environment):
         pass
-    
-    def visitCreateProcedure(self,node,environment):
-        pass    
-    
-    def visitElse(self,node,environment):
+
+    def visitCreateProcedure(self, node, environment):
         pass
-    
-    def visitElseIf(self,node,environment):
+
+    def visitElse(self, node, environment):
         pass
-    
-    def visitIf(self,node,environment):
+
+    def visitElseIf(self, node, environment):
         pass
-    
-    def visitStmIf(self,node,environment):
+
+    def visitIf(self, node, environment):
         pass
-    
-    def visitElseCase(self,node,environment):
+
+    def visitStmIf(self, node, environment):
         pass
-    
-    def visitWhen(self,node,environment):
+
+    def visitElseCase(self, node, environment):
         pass
-    
-    def visitStmCase(self,node,environment):
+
+    def visitWhen(self, node, environment):
         pass
-    
+
+    def visitStmCase(self, node, environment):
+        pass
+
     def visitSelect(self, node, environment):
         pass
 
@@ -236,4 +261,31 @@ class Visitor(ABC):
         pass
 
     def visitDelete(self, node, environment):
+        pass
+
+    def visitSQLUnaryExpression(self, node, environment):
+        pass
+
+    def visitSQLBinaryExpression(self, node, environment):
+        pass
+
+    def visitSQLLogicalExpression(self, node, environment):
+        pass
+
+    def visitCas(self, node, environment):
+        pass
+
+    def visitConcatenar(self, node, environment):
+        pass
+
+    def visitContar(self, node, environment):
+        pass
+
+    def visitHoy(self, node, environment):
+        pass
+
+    def visitSubstraer(self, node, environment):
+        pass
+
+    def visitSuma(self, node, environment):
         pass

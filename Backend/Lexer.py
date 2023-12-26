@@ -26,7 +26,7 @@ keywords = {
     "delete":"DELETE",
     
     "concatena":"CONCATENA",
-    "subtraer":"SUBSTRAER",
+    "substraer":"SUBSTRAER",
     "hoy":"HOY",
     "contar":"CONTAR",
     "suma":"SUMA",
@@ -69,7 +69,9 @@ keywords = {
     'foreign': 'FOREIGN',
 
     'into': 'INTO',
-    'values': 'VALUES'
+    'values': 'VALUES',
+    'and': 'SQL_AND',
+    'or': 'SQL_OR'
 }
 
 
@@ -109,7 +111,7 @@ tokens = [
     'ID_DECLARE',
     'ID',
     'ARROBA',
-    'COMILLASIMPLE'
+    'COMILLASIMPLE',
 ]+ list(keywords.values())
 
 
@@ -228,8 +230,8 @@ def t_BITPRIM(t):
 
 ##Nueva linea
 
-def newline(t):
-    r'\n'
+def t_newline(t):
+    r'\n+'
     t.lexer.lineno +=len(t.value)
     
 def t_STR(t):

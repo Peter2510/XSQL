@@ -1,0 +1,143 @@
+<Database name="gen">
+    <Table name="tbfactura">
+        <Estructura>
+            <Principal name="idfactura">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="cantidad">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="precio">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="fechafactura">
+                <Atributo1 tipo="date">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="nit">
+                <Atributo1 tipo="NVARCHAR(20)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="nombrecliente">
+                <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="referencia">
+                <Atributo1 tipo="NVARCHAR(10)">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+        </Estructura>
+        <Datos name="nuevo_registro">
+            <DatosEspecifico>
+                <idfactura>3467</idfactura>
+                <fechafactura>2023-12-23</fechafactura>
+                <nit>123456789</nit>
+                <cantidad>1</cantidad>
+                <precio>23</precio>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idfactura>2</idfactura>
+                <fechafactura>2023-12-23</fechafactura>
+                <nit>123456788</nit>
+                <cantidad>3</cantidad>
+                <precio>20</precio>
+            </DatosEspecifico>
+        </Datos>
+    </Table>
+    <Table name="tbfactura2">
+        <Estructura>
+            <Principal name="idfactura">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="precio">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="fechafactura">
+                <Atributo1 tipo="date">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="nit">
+                <Atributo1 tipo="NVARCHAR(20)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="nombrecliente">
+                <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="referencia">
+                <Atributo1 tipo="NVARCHAR(10)">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+        </Estructura>
+        <Datos name="nuevo_registro">
+            <DatosEspecifico>
+                <idfactura>1111</idfactura>
+                <fechafactura>2023-12-23</fechafactura>
+                <nit>111111111</nit>
+                <cantidad>1111</cantidad>
+                <precio>11</precio>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idfactura>2222</idfactura>
+                <fechafactura>2023-12-23</fechafactura>
+                <nit>222222222</nit>
+                <cantidad>22</cantidad>
+                <precio>22</precio>
+            </DatosEspecifico>
+        </Datos>
+    </Table>
+    <Table name="tbfactura3">
+        <Estructura>
+            <Principal name="idfactura">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="fechafactura">
+                <Atributo1 tipo="date">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="nit">
+                <Atributo1 tipo="NVARCHAR(20)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="nombrecliente">
+                <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+            <Principal name="referencia">
+                <Atributo1 tipo="NVARCHAR(10)">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="True">3</Atributo3>
+            </Principal>
+        </Estructura>
+        <Datos name="nuevo_registro">
+            <DatosEspecifico>
+                <id>1</id>
+                <nombre>julio lopez</nombre>
+                <bandera>1</bandera>
+            </DatosEspecifico>
+        </Datos>
+    </Table>
+</Database>

@@ -154,19 +154,16 @@ def comprobar_tabla_columnas(nombre):
 
 
 def get_current_db():
-    global Databases
-
-    if len(Databases) == 0:
-        Databases = obtener.importAllXMLsInDirectory("./src/data/xml/")
-
     if nombreActual == "" or nombreActual is None:
         return None
 
-    db = next((obj for obj in Databases if obj.get("name", "") == nombreActual), None)
+    db = obtener.import_xml_db(nombreActual)
+
     return db
 
 
 def comprobar_tablas(tablas: list[str]):
+    tables = []
     db = get_current_db()
 
     if db is None:
@@ -177,13 +174,18 @@ def comprobar_tablas(tablas: list[str]):
         if tb is None:
             return False, f"{nombreActual}.{name} no existe"
 
-    return True, ""
+        tables.append(tb)
+
+    return True, tables
 
 
-def filter_by_table_and_name(table_names: list[str], column_name: str):
+def filter_by_table_and_name(table_name: str | None, column_name: str):
     def filter_by(table) -> bool:
         tb_name = table.get("name", None)
         if tb_name is None:
+            return False
+
+        if table_name is not None and table_name != tb_name:
             return False
 
         data = table.get("data", None)
@@ -196,7 +198,7 @@ def filter_by_table_and_name(table_names: list[str], column_name: str):
         if estructura is None:
             return False
 
-        if tb_name in table_names and column_name in estructura:
+        if column_name in estructura:
             return True
 
         return False
@@ -204,8 +206,41 @@ def filter_by_table_and_name(table_names: list[str], column_name: str):
     return filter_by
 
 
-def find_tables(tables: list[str], name: str) -> (bool, str):
-    db = get_current_db()
-    db_tables = db.get("tables", [])
-    tables_found = list(filter(filter_by_table_and_name(table_names=tables, column_name=name), db_tables))
+def find_tables(tables: list, name: str, table_name: str | None) -> list:
+    tables_found = list(filter(filter_by_table_and_name(table_name=table_name, column_name=name), tables))
     return tables_found
+
+
+def actualizar_datos_en_xml(name, data):
+    if nombreActual == "" or nombreActual is None:
+        return None
+
+    directory = f"./src/data/xml/{nombreActual}.xml"
+    try:
+        # Cargar el archivo XML
+        tree = ET.parse(directory)
+        root = tree.getroot()
+
+        table = root.find(".//Table[@name='{}']".format(name))
+
+        if table is not None:
+            datos = table.find('Datos')
+            for elemento in datos.findall('DatosEspecifico'):
+                datos.remove(elemento)
+
+            for diccionario in data:
+                datos_especifico = ET.SubElement(datos, 'DatosEspecifico')
+                for key, valor in diccionario.items():
+                    elemento = ET.SubElement(datos_especifico, key)
+                    elemento.text = valor
+
+            tree.write(directory)
+            return True
+        else:
+            return None
+
+    except FileNotFoundError:
+        # print('El archivo "{}" no existe.'.format('tu_archivo.xml'))
+        return None
+    except Exception:
+        return None
