@@ -455,6 +455,121 @@
                 <fechafactura>2020-12-07 12:20:12</fechafactura>
                 <nombrecliente>carlos perez</nombrecliente>
             </DatosEspecifico>
-        <DatosEspecifico><idfactura>1</idfactura><nit>333</nit><fechafactura>2020-12-07 12:20:12</fechafactura><nombrecliente>carlos perez</nombrecliente></DatosEspecifico><DatosEspecifico><idfactura>1</idfactura><nit>333</nit><fechafactura>2020-12-07 12:20:12</fechafactura><nombrecliente>carlos perez</nombrecliente></DatosEspecifico><DatosEspecifico><idfactura>2</idfactura><nit>333</nit><fechafactura>2020-12-07 12:20:12</fechafactura><nombrecliente>carlos perez</nombrecliente></DatosEspecifico><DatosEspecifico><idfactura>1</idfactura><nit>333</nit><fechafactura>2020-12-07 12:20:12</fechafactura><nombrecliente>carlos perez</nombrecliente></DatosEspecifico><DatosEspecifico><idfactura>1</idfactura><nit>333</nit><fechafactura>2020-12-07 12:20:12</fechafactura><nombrecliente>carlos perez</nombrecliente></DatosEspecifico><DatosEspecifico><idfactura>1</idfactura><nit>333</nit><fechafactura>2020-12-07 12:20:12</fechafactura><nombrecliente>carlos perez</nombrecliente></DatosEspecifico><DatosEspecifico><idfactura>1</idfactura><nit>333</nit><fechafactura>2020-12-07 12:20:12</fechafactura><nombrecliente>carlos perez</nombrecliente></DatosEspecifico><DatosEspecifico><idfactura>1</idfactura><nit>333</nit><fechafactura>2020-12-07 12:20:12</fechafactura><nombrecliente>carlos perez</nombrecliente></DatosEspecifico><DatosEspecifico><idfactura>5</idfactura><nit>333</nit><fechafactura>2020-12-07 12:20:12</fechafactura><nombrecliente>carlos perez</nombrecliente></DatosEspecifico></Datos>
+            <DatosEspecifico>
+                <idfactura>1</idfactura>
+                <nit>333</nit>
+                <fechafactura>2020-12-07 12:20:12</fechafactura>
+                <nombrecliente>carlos perez</nombrecliente>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idfactura>1</idfactura>
+                <nit>333</nit>
+                <fechafactura>2020-12-07 12:20:12</fechafactura>
+                <nombrecliente>carlos perez</nombrecliente>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idfactura>2</idfactura>
+                <nit>333</nit>
+                <fechafactura>2020-12-07 12:20:12</fechafactura>
+                <nombrecliente>carlos perez</nombrecliente>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idfactura>1</idfactura>
+                <nit>333</nit>
+                <fechafactura>2020-12-07 12:20:12</fechafactura>
+                <nombrecliente>carlos perez</nombrecliente>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idfactura>1</idfactura>
+                <nit>333</nit>
+                <fechafactura>2020-12-07 12:20:12</fechafactura>
+                <nombrecliente>carlos perez</nombrecliente>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idfactura>1</idfactura>
+                <nit>333</nit>
+                <fechafactura>2020-12-07 12:20:12</fechafactura>
+                <nombrecliente>carlos perez</nombrecliente>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idfactura>1</idfactura>
+                <nit>333</nit>
+                <fechafactura>2020-12-07 12:20:12</fechafactura>
+                <nombrecliente>carlos perez</nombrecliente>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idfactura>1</idfactura>
+                <nit>333</nit>
+                <fechafactura>2020-12-07 12:20:12</fechafactura>
+                <nombrecliente>carlos perez</nombrecliente>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idfactura>5</idfactura>
+                <nit>333</nit>
+                <fechafactura>2020-12-07 12:20:12</fechafactura>
+                <nombrecliente>carlos perez</nombrecliente>
+            </DatosEspecifico>
+        </Datos>
+    </Table>
+    <Table name="tbestado">
+        <Estructura>
+            <Principal name="idestado">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="1">1</Atributo3>
+            </Principal>
+            <Principal name="estado">
+                <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="0">0</Atributo3>
+            </Principal>
+        </Estructura>
+    </Table>
+    <Table name="tbcliente">
+        <Estructura>
+            <Principal name="codigocliente">
+                <Atributo1 tipo="NVARCHAR(15)">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="1">1</Atributo3>
+            </Principal>
+            <Principal name="primer_nombre">
+                <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="0">0</Atributo3>
+            </Principal>
+            <Principal name="segundo_nombre">
+                <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="0">0</Atributo3>
+            </Principal>
+            <Principal name="primer_apellido">
+                <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="0">0</Atributo3>
+            </Principal>
+            <Principal name="segundo_apellido">
+                <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="0">0</Atributo3>
+            </Principal>
+            <Principal name="fecha_nacimiento">
+                <Atributo1 tipo="date">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="0">0</Atributo3>
+            </Principal>
+            <Principal name="genero">
+                <Atributo1 tipo="NVARCHAR(1)">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="0">0</Atributo3>
+            </Principal>
+            <Principal name="idestado">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="2">
+                    <nombreTabla>tbestado</nombreTabla>
+                    <nombreAtributo>idestado</nombreAtributo>
+                </Atributo3>
+            </Principal>
+        </Estructura>
     </Table>
 </Database>

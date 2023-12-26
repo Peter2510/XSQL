@@ -1,99 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Database name="gen">
-    <Table name="tbfactura">
-        <Estructura>
-            <Principal name="idfactura">
-                <Atributo1 tipo="int">1</Atributo1>
-                <Atributo2 nulidad="2">2</Atributo2>
-                <Atributo3 restricciones="True">3</Atributo3>
-            </Principal>
-            <Principal name="fechafactura">
-                <Atributo1 tipo="date">1</Atributo1>
-                <Atributo2 nulidad="0">2</Atributo2>
-                <Atributo3 restricciones="True">3</Atributo3>
-            </Principal>
-            <Principal name="nit">
-                <Atributo1 tipo="NVARCHAR(20)">1</Atributo1>
-                <Atributo2 nulidad="0">2</Atributo2>
-                <Atributo3 restricciones="True">3</Atributo3>
-            </Principal>
-            <Principal name="nombrecliente">
-                <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
-                <Atributo2 nulidad="0">2</Atributo2>
-                <Atributo3 restricciones="True">3</Atributo3>
-            </Principal>
-            <Principal name="referencia">
-                <Atributo1 tipo="NVARCHAR(10)">1</Atributo1>
-                <Atributo2 nulidad="2">2</Atributo2>
-                <Atributo3 restricciones="True">3</Atributo3>
-            </Principal>
-        </Estructura>
-    </Table>
-    <Table name="tbfactura2">
-        <Estructura>
-            <Principal name="idfactura">
-                <Atributo1 tipo="int">1</Atributo1>
-                <Atributo2 nulidad="2">2</Atributo2>
-                <Atributo3 restricciones="True">3</Atributo3>
-            </Principal>
-            <Principal name="fechafactura">
-                <Atributo1 tipo="date">1</Atributo1>
-                <Atributo2 nulidad="0">2</Atributo2>
-                <Atributo3 restricciones="True">3</Atributo3>
-            </Principal>
-            <Principal name="nit">
-                <Atributo1 tipo="NVARCHAR(20)">1</Atributo1>
-                <Atributo2 nulidad="0">2</Atributo2>
-                <Atributo3 restricciones="True">3</Atributo3>
-            </Principal>
-            <Principal name="nombrecliente">
-                <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
-                <Atributo2 nulidad="0">2</Atributo2>
-                <Atributo3 restricciones="True">3</Atributo3>
-            </Principal>
-            <Principal name="referencia">
-                <Atributo1 tipo="NVARCHAR(10)">1</Atributo1>
-                <Atributo2 nulidad="2">2</Atributo2>
-                <Atributo3 restricciones="True">3</Atributo3>
-            </Principal>
-        </Estructura>
-        <Datos name="nuevo_registro">
-            <DatosEspecifico>
-                <id>3456</id>
-                <nombre>jorge enriquez</nombre>
-                <bandera>4444</bandera>
-            </DatosEspecifico>
-        </Datos>
-    </Table>
-    <Table name="tbfactura3">
-        <Estructura>
-            <Principal name="idfactura">
-                <Atributo1 tipo="int">1</Atributo1>
-                <Atributo2 nulidad="2">2</Atributo2>
-                <Atributo3 restricciones="True">3</Atributo3>
-            </Principal>
-            <Principal name="fechafactura">
-                <Atributo1 tipo="date">1</Atributo1>
-                <Atributo2 nulidad="0">2</Atributo2>
-                <Atributo3 restricciones="True">3</Atributo3>
-            </Principal>
-            <Principal name="nit">
-                <Atributo1 tipo="NVARCHAR(20)">1</Atributo1>
-                <Atributo2 nulidad="0">2</Atributo2>
-                <Atributo3 restricciones="True">3</Atributo3>
-            </Principal>
-            <Principal name="nombrecliente">
-                <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
-                <Atributo2 nulidad="0">2</Atributo2>
-                <Atributo3 restricciones="True">3</Atributo3>
-            </Principal>
-            <Principal name="referencia">
-                <Atributo1 tipo="NVARCHAR(10)">1</Atributo1>
-                <Atributo2 nulidad="2">2</Atributo2>
-                <Atributo3 restricciones="True">3</Atributo3>
-            </Principal>
-        </Estructura>
-    </Table>
+
     <Table name="tbfactura5">
         <Estructura>
             <Principal name="idfactura">
@@ -157,12 +64,14 @@
             <Principal name="idfactura">
                 <Atributo1 tipo="int">1</Atributo1>
                 <Atributo2 nulidad="2">2</Atributo2>
-                <Atributo3 restricciones="{'nombreTabla': 'tbfactura', 'nombreAtributo': 'idfactura'}">3</Atributo3>
+                <Atributo3
+                    restricciones="{'nombreTabla': 'tbfactura', 'nombreAtributo': 'idfactura'}">3</Atributo3>
             </Principal>
             <Principal name="product_no">
                 <Atributo1 tipo="int">1</Atributo1>
                 <Atributo2 nulidad="2">2</Atributo2>
-                <Atributo3 restricciones="{'nombreTabla': 'products', 'nombreAtributo': 'product_no'}">3</Atributo3>
+                <Atributo3
+                    restricciones="{'nombreTabla': 'products', 'nombreAtributo': 'product_no'}">3</Atributo3>
             </Principal>
             <Principal name="price">
                 <Atributo1 tipo="decimal">1</Atributo1>
@@ -186,12 +95,14 @@
             <Principal name="idfactura">
                 <Atributo1 tipo="int">1</Atributo1>
                 <Atributo2 nulidad="2">2</Atributo2>
-                <Atributo3 restricciones="{'nombreTabla': 'tbfactura', 'nombreAtributo': 'idfactura'}">3</Atributo3>
+                <Atributo3
+                    restricciones="{'nombreTabla': 'tbfactura', 'nombreAtributo': 'idfactura'}">3</Atributo3>
             </Principal>
             <Principal name="product_no">
                 <Atributo1 tipo="int">1</Atributo1>
                 <Atributo2 nulidad="2">2</Atributo2>
-                <Atributo3 restricciones="{'nombreTabla': 'products', 'nombreAtributo': 'product_no'}">3</Atributo3>
+                <Atributo3
+                    restricciones="{'nombreTabla': 'products', 'nombreAtributo': 'product_no'}">3</Atributo3>
             </Principal>
             <Principal name="price">
                 <Atributo1 tipo="decimal">1</Atributo1>
@@ -314,5 +225,54 @@
                 <Atributo3 restricciones="0">0</Atributo3>
             </Principal>
         </Estructura>
-        <Datos name="nuevo_registro"><DatosEspecifico><iddetallefac>queso</iddetallefac><price>11</price><cantidad>3.0</cantidad></DatosEspecifico><DatosEspecifico><iddetallefac>queso</iddetallefac><price>11</price><cantidad>3.0</cantidad></DatosEspecifico><DatosEspecifico><iddetallefac>queso</iddetallefac><price>11</price><cantidad>3.0</cantidad><product_no>34</product_no></DatosEspecifico><DatosEspecifico><iddetallefac>queso</iddetallefac><precio>150</precio><price>1</price><idunidad>2</idunidad></DatosEspecifico><DatosEspecifico><iddetallefac>1</iddetallefac><price>3.0</price><cantidad>104.4</cantidad></DatosEspecifico></Datos></Table>
+        <Datos name="nuevo_registro">
+            <DatosEspecifico>
+                <iddetallefac>queso</iddetallefac>
+                <price>11</price>
+                <cantidad>3.0</cantidad>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <iddetallefac>queso</iddetallefac>
+                <price>11</price>
+                <cantidad>3.0</cantidad>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <iddetallefac>queso</iddetallefac>
+                <price>11</price>
+                <cantidad>3.0</cantidad>
+                <product_no>34</product_no>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <iddetallefac>queso</iddetallefac>
+                <precio>150</precio>
+                <price>1</price>
+                <idunidad>2</idunidad>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <iddetallefac>1</iddetallefac>
+                <price>3.0</price>
+                <cantidad>104.4</cantidad>
+            </DatosEspecifico>
+        </Datos>
+    </Table>
+    <Table name="tbestado">
+        <Estructura>
+            <Principal name="idestado">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="1">1</Atributo3>
+            </Principal>
+            <Principal name="estado">
+                <Atributo1 tipo="NVARCHAR(50)">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="0">0</Atributo3>
+            </Principal>
+        </Estructura>
+        <Datos name="nuevo_registro">
+            <DatosEspecifico>
+                <idestado>1</idestado>
+                <estado>s</estado>
+            </DatosEspecifico>
+        </Datos>
+    </Table>
 </Database>
