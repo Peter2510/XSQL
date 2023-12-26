@@ -13,6 +13,8 @@ class crearTabla(Abstract):
         ##hacer validacion con la variable global de Estructura
         existeNombre = False
         nombreTablaRepetido = False
+        atributoRepetido = False
+
         columnas = []
         indiceBaseDatos = 0
 
@@ -49,17 +51,33 @@ class crearTabla(Abstract):
                             return
                     ## si no existe nombre de la tabla genera el ingreso 
                     if (not existeNombre):
-                        json_data = {
-                            'tipo': row[1],
-                            'nulidad': int(row[2]),
-                            'restricciones': bool(row[3])  # Convierte '0' a False y cualquier otro valor a True
-                        }
-                        atributosFinales.append(
-                            {
-                            'nombre': row[0],
-                            'data': json_data      
+                        if (isinstance(row[3], list)):
+                            json_data = {
+                                'tipo': row[1],
+                                'nulidad': int(row[2]),
+                                'restricciones': {
+                                    'nombreTabla':row[3][0],
+                                    'nombreAtributo':row[3][1]
+                                } 
                             }
-                        )
+                            atributosFinales.append(
+                                {
+                                'nombre': row[0],
+                                'data': json_data      
+                                }
+                            )
+                        else:
+                            json_data = {
+                                'tipo': row[1],
+                                'nulidad': int(row[2]),
+                                'restricciones': (row[3])  # Convierte '0' a False y cualquier otro valor a True
+                            }
+                            atributosFinales.append(
+                                {
+                                'nombre': row[0],
+                                'data': json_data      
+                                }
+                            )
 
                 print("Contenido de atributosFinales:")
                 print(type(atributosFinales))
@@ -69,6 +87,7 @@ class crearTabla(Abstract):
                 for atributo in atributosFinales:
                     nombre = atributo["nombre"]
                     if nombre in valoresTabla:
+                        atributoRepetido= True
                         print({"error": 'Error semántico, ya existe un atributo con este nombre en esta tabla como referencia'})
                         break
                     else:
@@ -83,7 +102,8 @@ class crearTabla(Abstract):
                     ## para ver si se reptie
            
                             ## CREACION FINAL
-                  #  Estructura.crearTabla(Estructura.nombreActual, self.nombre, atributosFinales)
+                if(atributoRepetido == False):
+                   Estructura.crearTabla(Estructura.nombreActual, self.nombre, atributosFinales)
         else:
             print({"error": 'error semantico, no existe la base de datos que hace referencia'})
 

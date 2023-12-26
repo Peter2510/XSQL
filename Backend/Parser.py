@@ -38,7 +38,9 @@ from src.instrucciones.funcion.variable_declaration import VariableDeclaration
 from src.instrucciones.truncate.truncateTabla import truncateTabla
 from src.instrucciones.Alter.alterTable import alterTable
 from src.instrucciones.insert.insert import insertInstruccion
-
+from src.instrucciones.update.update import updateInstruccion
+from src.instrucciones.funcion.funcion import Funcion
+from src.instrucciones.procedure.procedure import Procedure
 
 from src.expresiones.relacional import Relacional
 
@@ -234,20 +236,20 @@ def p_restriccion_parametro(t): #primary -> 1
     '''
     restriccion_parametro : PRIMARY KEY
     '''
-    t[0] = t[1]
+    t[0] = 1
 
 def p_restriccion_parametro2(t): # foranea -> 2
     '''
     restriccion_parametro : REFERENCE ID PARENTESIS_IZQ ID PARENTESIS_DER
     '''
-    t[0] = f'forenea({t[2]})'
-
+    t[0] = [t[2], t[4]]
+    
 
 def p_restriccion_parametro3(t): #normal -> 0
     '''
     restriccion_parametro : 
     '''
-    t[0] = '0'
+    t[0] = 0
 
 
 #Alter table tbfactura drop column tipotarjeta
@@ -524,21 +526,15 @@ def p_table_1(t):
     t[0] = [Table(fila=t.lineno(1), columna=find_column(input, t.slice[1]), id=t[1])]
 
 
+
+### cambio a assign pprqie tenemos que meterle algo 
 def p_update(t):
     '''
-    update : UPDATE ID SET assign_list WHERE sql_expression
+    update : UPDATE ID SET assign_list WHERE assign
     '''
-    where_clause = WhereClause(fila=t.lineno(5), columna=find_column(input, t.slice[5]), expr=t[6])
-    t[0] = Update(fila=t.lineno(1), columna=find_column(input, t.slice[1]), table=t[2], assignments=t[4], where_clause=where_clause)
-    # TODO: no actualizar PK, FK
+    ## no actualizar PK, FK
+    t[0] =updateInstruccion(t.lineno(2), find_column(input, t.slice[2]),  t[2], t[4], t[6])
 
-
-def p_assing_list(t):
-    '''
-    assign_list : assign_list COMA assign
-    '''
-    t[1].append(t[3])
-    t[0] = t[1]
 
 def p_assing_list1(t):
     '''
@@ -546,11 +542,18 @@ def p_assing_list1(t):
     '''
     t[0] = [t[1]]
 
+def p_assing_list2(t):
+    '''
+    assign_list : assign_list COMA assign
+    '''
+    t[1].append(t[3])
+    t[0] = t[1] 
+
 def p_assing(t):
     '''
     assign : ID ASIGNACION sql_expression
     '''
-    t[0] = ColumnAssignments(fila=t.lineno(1), columna=find_column(input, t.slice[1]), column_ref=t[1], expr=t[3])
+    t[0]= [t[1], t[3]]
 
 
 def p_insert(t):
