@@ -49,6 +49,7 @@ def filter_where_delete(expr, environment):
 def apply_column_expressions(expr_lst, environment):
     def alter_record(record):
         from src.ast import AllColumns
+        from src.funciones import Contar, Suma
         if isinstance(expr_lst[0], AllColumns):
             return record
         environment.record = record

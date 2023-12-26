@@ -154,15 +154,10 @@ def comprobar_tabla_columnas(nombre):
 
 
 def get_current_db():
-    global Databases
-
     if nombreActual == "" or nombreActual is None:
         return None
 
-    if len(Databases) == 0:
-        Databases = obtener.importAllXMLsInDirectory("./src/data/xml/")
-
-    db = next((obj for obj in Databases if obj.get("name", "") == nombreActual), None)
+    db = obtener.import_xml_db(nombreActual)
 
     return db
 

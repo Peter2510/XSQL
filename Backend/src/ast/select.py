@@ -135,8 +135,12 @@ class Select(Abstract):
         environment.record = {}
         environment.select_records = data_filtered
         final_data = list(map(apply_column_expressions(self.columns, environment), data_filtered))
+        if environment.one_record and len(final_data) > 0:
+            final_data = [final_data[0]]
+
         environment.record = {}
         environment.select_records = []
+        environment.one_record = False
         pp = pprint.PrettyPrinter(indent=2, compact=False, depth=10)
         pp.pprint(final_data)
 

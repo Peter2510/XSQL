@@ -497,9 +497,9 @@ def p_valor(t):
 
 def p_param_suma(t):
     """
-    param_suma : ID
+    param_suma : column_id
     """
-    t[0] = TableColumn(fila=t.lineno(1), columna=find_column(input, t.slice[1]), id=t[1])
+    t[0] = t[1]
 
 
 def p_param_suma1(t):

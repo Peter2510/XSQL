@@ -15,5 +15,6 @@ class Contar(Abstract):
         visitor.visit(self, environment)
 
     def interpretar(self, environment):
+        environment.one_record = True
         records = environment.select_records
         return len(records)

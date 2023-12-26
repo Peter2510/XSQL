@@ -15,6 +15,7 @@ class Environment(list):
         self.errors = []
         self.record = {}
         self.select_records = []
+        self.one_record = False
         if padre is not None:
             for variable in padre:
                 self.append(variable)

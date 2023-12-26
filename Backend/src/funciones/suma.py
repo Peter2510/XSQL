@@ -31,14 +31,18 @@ class Suma(Abstract):
         suma = 0
         for record in records:
             # Verificar si la llave es un nombre o un número
+            environment.one_record = True
             if isinstance(self.value, int):
-                # keys = list(record.keys())
-                # if key < len(keys):
-                #     key_value = keys[key].split('.')
-                #     tb = TableColumn(0, 0, key_value[1], key_value[0])
-                #     val = val if isinstance(val, (int, float)) else 0
-                #     suma += val
-                return 0
+                try:
+                    key = self.value
+                    keys = list(record.keys())
+                    if key < len(keys):
+                        val = record[keys[key]]
+                        val = float(val)
+                        suma += val
+                except ValueError:
+                    suma += 0
+
             else:
                 environment.record = record
                 result = self.value.interpretar(environment)
@@ -46,4 +50,4 @@ class Suma(Abstract):
                 suma += val
 
             environment.record = aux_record
-        return suma
+        return float(suma)
