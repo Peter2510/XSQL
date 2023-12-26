@@ -751,7 +751,7 @@ def p_parametros_funcion(t):
     '''
     parametros_funcion : parametros_funcion  COMA parametro_funcion
     '''
-    t[1].append(t[3])
+    t[1] = t[1] + [t[3]]
     t[0] = t[1]
 
 def p_parametros_funcion2(t):
@@ -894,23 +894,22 @@ def p_parametros_llamada_funcion(t):
     '''
     parametros_llamada_funcion : parametros_llamada_funcion COMA parametro_llamada_funcion
     '''
-    t[1].append(t[3])
+    t[1] = t[1] + [t[3]]
     t[0] = t[1]
 
 def p_parametros_llamada_funcion2(t):
     '''
     parametros_llamada_funcion :  parametro_llamada_funcion
     '''
-    t[0] = t[1]
+    t[0] = [t[1]]
     
 #parametro de la llamada de una funcion
 def p_parametro_llamada_funcion(t): # id
     '''
     parametro_llamada_funcion : expresion
     '''
-    t[0] = [t[1]]
-    #print('parametro llamada funcion',t[1])
-    
+    t[0] = t[1]
+       
 
 #PROCEDURES
     

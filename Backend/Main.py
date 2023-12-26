@@ -25,10 +25,10 @@ def saludo():
 
 def compilar():
     if request.method == "POST":
-        #global env 
-        #if env is None:
-        #     env = Environment(None)
-        env = Environment(None)
+        global env 
+        if env is None:
+             env = Environment(None)
+        #env = Environment(None)
         
         entrada = request.data.decode("utf-8")
         entrada = json.loads(entrada)

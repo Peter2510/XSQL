@@ -10,8 +10,8 @@ class Return_(Abstract):
         visitor.visit(self,environment)
         
     def interpretar(self,environment):
-        val = self.instruction.interpretar(environment)
-        var = Variable()
-        var.type = val.type
-        var.value = val.value
-        return var
+        #return self.instruction.interpretar(environment)
+        va = Variable()
+        va.value = self.instruction
+        return va
+

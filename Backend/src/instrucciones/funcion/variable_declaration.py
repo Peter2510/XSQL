@@ -1,4 +1,4 @@
-from expresiones.variable import Variable
+from src.expresiones.variable import Variable
 from src.abstract.abstractas import Abstract
 
 class VariableDeclaration(Abstract):

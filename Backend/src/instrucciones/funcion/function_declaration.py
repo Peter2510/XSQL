@@ -11,11 +11,12 @@ class FunctionDeclaration(Abstract):
 
     def accept(self, visitor, environment):
         visitor.visit(self, environment)
-        pass
         
     def interpretar(self, environment):
+        
         from src.visitor.tableVisitor import SymbolTableVisitor
         visit = SymbolTableVisitor(environment)
+                
         if visit.correct == True:
             self.accept(visit, environment)
             return self

@@ -1,3 +1,4 @@
+from src.ejecucion.environment import Environment
 from src.abstract.abstractas import Abstract
 from src.manejadorXml import Estructura
 
@@ -14,11 +15,14 @@ class CallFunction(Abstract):
     def interpretar(self, environment):
         from src.visitor.tableVisitor import SymbolTableVisitor
         visit = SymbolTableVisitor(environment)
-        if visit.correct == True:
-            self.accept(visit, environment)
-            print("Ejecutando llamda de una funcion")
-            funcion = environment.getFunction(self.id)
-            funcion.interpretar(environment)
-            return self
+        self.accept(visit, environment)
+        # if visit.correct == True:
+            #self.accept(visit, environment)
+            # print("Ejecutando llamda de una funcion")
+            # env = Environment(environment)
+            # nombreFuncion = Estructura.nombreActual + "-"+self.id
+            # funcion = env.getFuncion(nombreFuncion)
+            # funcion.interpretar(env)
+            # return self
             
 
