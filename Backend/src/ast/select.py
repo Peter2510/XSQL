@@ -144,7 +144,7 @@ class Select(Abstract):
         pp = pprint.PrettyPrinter(indent=2, compact=False, depth=10)
         pp.pprint(final_data)
 
-        return final_data
+        return {'tipo': 'select', 'resultado': final_data}
 
 
 class AllColumns(Abstract):

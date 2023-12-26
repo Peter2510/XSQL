@@ -801,7 +801,8 @@ def p_dot_table_opt1(t):
 #     """
 #     variable_id : ID_DECLARE
 #     """
-#     t[0] = Primitivo(t.lineno(1), find_column(input, t.slice[1]), str(t[1]), Type.IDDECLARE)
+#       variable_declarator = Variable(fila, col, id)
+#     t[0] = SQLUnaryExpression(fila=t.lineno(1), columna=find_column(input, t.slice[1]), argument=variable_declarator)
 #     # TODO: CHECK IF ADD
 
 def p_call_function(t):
