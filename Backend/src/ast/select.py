@@ -83,7 +83,6 @@ class Select(Abstract):
         self.data = []
 
     def get_data_joined(self):
-        # TODO: Implement
         tables = []
         for record in self.data:
             name = record["name"]

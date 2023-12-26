@@ -34,7 +34,6 @@ class ValidateColumnVisitor(Visitor):
         attribute_1 = column_tb.get("Atributo1", {})
         tipo = attribute_1.get("tipo", None)
         tipo = tipo.lower() if tipo is not None else None
-        print('tipo', tipo, name_tb)
         column_type = None
         if 'nvarchar' in tipo:
             column_type = Type.TEXT
@@ -52,7 +51,6 @@ class ValidateColumnVisitor(Visitor):
             column_type = Type.DATETIME
         node.tipo = column_type
         node.table = name_tb
-        print('column', node.tipo)
 
 
 class TablesValidVisitor(Visitor):

@@ -1,4 +1,3 @@
-<?xml version='1.0' encoding='utf-8'?>
 <Database name="gen">
     <Table name="tbfactura">
         <Estructura>
@@ -47,39 +46,11 @@
                 <precio>23</precio>
             </DatosEspecifico>
             <DatosEspecifico>
-                <idfactura>123456789</idfactura>
-                <fechafactura>2023-12-23</fechafactura>
-                <nit>123456789</nit>
-                <cantidad>2</cantidad>
-                <precio>233</precio>
-            </DatosEspecifico>
-            <DatosEspecifico>
                 <idfactura>2</idfactura>
                 <fechafactura>2023-12-23</fechafactura>
                 <nit>123456788</nit>
                 <cantidad>3</cantidad>
                 <precio>20</precio>
-            </DatosEspecifico>
-            <DatosEspecifico>
-                <idfactura>3</idfactura>
-                <fechafactura>2023-12-23</fechafactura>
-                <nit>123456789</nit>
-                <cantidad>4</cantidad>
-                <precio>23</precio>
-            </DatosEspecifico>
-            <DatosEspecifico>
-                <idfactura>4</idfactura>
-                <fechafactura>2023-12-23</fechafactura>
-                <nit>123456789</nit>
-                <cantidad>5</cantidad>
-                <precio>100</precio>
-            </DatosEspecifico>
-            <DatosEspecifico>
-                <idfactura>5</idfactura>
-                <fechafactura>2023-12-23</fechafactura>
-                <nit>123456789</nit>
-                <cantidad>6</cantidad>
-                <precio>200</precio>
             </DatosEspecifico>
         </Datos>
     </Table>
