@@ -507,6 +507,8 @@ def p_value(t):
     value : STR
           | DECIMAL
           | ENTERO
+          | DATEPRIM
+          | DATETIMEPRIM
     '''
     t[0] = t[1]
 

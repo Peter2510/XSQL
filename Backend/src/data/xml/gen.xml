@@ -157,14 +157,12 @@
             <Principal name="idfactura">
                 <Atributo1 tipo="int">1</Atributo1>
                 <Atributo2 nulidad="2">2</Atributo2>
-                <Atributo3
-                    restricciones="{'nombreTabla': 'tbfactura', 'nombreAtributo': 'idfactura'}">3</Atributo3>
+                <Atributo3 restricciones="{'nombreTabla': 'tbfactura', 'nombreAtributo': 'idfactura'}">3</Atributo3>
             </Principal>
             <Principal name="product_no">
                 <Atributo1 tipo="int">1</Atributo1>
                 <Atributo2 nulidad="2">2</Atributo2>
-                <Atributo3
-                    restricciones="{'nombreTabla': 'products', 'nombreAtributo': 'product_no'}">3</Atributo3>
+                <Atributo3 restricciones="{'nombreTabla': 'products', 'nombreAtributo': 'product_no'}">3</Atributo3>
             </Principal>
             <Principal name="price">
                 <Atributo1 tipo="decimal">1</Atributo1>
@@ -188,14 +186,12 @@
             <Principal name="idfactura">
                 <Atributo1 tipo="int">1</Atributo1>
                 <Atributo2 nulidad="2">2</Atributo2>
-                <Atributo3
-                    restricciones="{'nombreTabla': 'tbfactura', 'nombreAtributo': 'idfactura'}">3</Atributo3>
+                <Atributo3 restricciones="{'nombreTabla': 'tbfactura', 'nombreAtributo': 'idfactura'}">3</Atributo3>
             </Principal>
             <Principal name="product_no">
                 <Atributo1 tipo="int">1</Atributo1>
                 <Atributo2 nulidad="2">2</Atributo2>
-                <Atributo3
-                    restricciones="{'nombreTabla': 'products', 'nombreAtributo': 'product_no'}">3</Atributo3>
+                <Atributo3 restricciones="{'nombreTabla': 'products', 'nombreAtributo': 'product_no'}">3</Atributo3>
             </Principal>
             <Principal name="price">
                 <Atributo1 tipo="decimal">1</Atributo1>
@@ -284,4 +280,39 @@
             </Principal>
         </Estructura>
     </Table>
+    <Table name="pruebafinal">
+        <Estructura>
+            <Principal name="iddetallefac">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="1">1</Atributo3>
+            </Principal>
+            <Principal name="idfactura">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="2">
+                    <nombreTabla>tbfactura</nombreTabla>
+                    <nombreAtributo>idfactura</nombreAtributo>
+                </Atributo3>
+            </Principal>
+            <Principal name="product_no">
+                <Atributo1 tipo="int">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="2">
+                    <nombreTabla>products</nombreTabla>
+                    <nombreAtributo>product_no</nombreAtributo>
+                </Atributo3>
+            </Principal>
+            <Principal name="price">
+                <Atributo1 tipo="decimal">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="0">0</Atributo3>
+            </Principal>
+            <Principal name="cantidad">
+                <Atributo1 tipo="decimal">1</Atributo1>
+                <Atributo2 nulidad="0">2</Atributo2>
+                <Atributo3 restricciones="0">0</Atributo3>
+            </Principal>
+        </Estructura>
+        <Datos name="nuevo_registro"><DatosEspecifico><iddetallefac>queso</iddetallefac><price>11</price><cantidad>3.0</cantidad></DatosEspecifico><DatosEspecifico><iddetallefac>queso</iddetallefac><price>11</price><cantidad>3.0</cantidad></DatosEspecifico><DatosEspecifico><iddetallefac>queso</iddetallefac><price>11</price><cantidad>3.0</cantidad><product_no>34</product_no></DatosEspecifico><DatosEspecifico><iddetallefac>queso</iddetallefac><precio>150</precio><price>1</price><idunidad>2</idunidad></DatosEspecifico><DatosEspecifico><iddetallefac>1</iddetallefac><price>3.0</price><cantidad>104.4</cantidad></DatosEspecifico></Datos></Table>
 </Database>

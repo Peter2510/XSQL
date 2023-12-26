@@ -2,6 +2,8 @@ from ...abstract.abstractas import Abstract
 from ...manejadorXml import manejo, Estructura 
 import json
 import pandas as pd
+import datetime
+
 class insertInstruccion(Abstract):
     
     def __init__(self, fila, columna, nombreTabla, atributos, parametros):
@@ -25,9 +27,11 @@ class insertInstruccion(Abstract):
         elementosNoNulos =[]
         tipoElemento = []
         nombresElementos = []
+        nombreAtributosPrimarios = []
         cantidadValidaElementos =0
         cantidadValidaElementosGeneral =0
         validaciones = False
+        validacionUnicoPrimario = False
 
         for indice in Estructura.Databases:
             if (indice["name"]==Estructura.nombreActual):
@@ -44,10 +48,13 @@ class insertInstruccion(Abstract):
                     tipoElemento.append(value["caracteristicas"])
                     nombresElementos.append(key)
                     ## busqueda de elementos que sean no nulos y primary key.
-                    print(value["caracteristicas"]["Atributo3"], "---", key)
-                    if (value["caracteristicas"]["Atributo3"]['restricciones']=='1' or
+                    print(value["caracteristicas"]["Atributo3"]['tipo']['restricciones'], "---", key)
+                    if (value["caracteristicas"]["Atributo3"]['tipo']['restricciones']=='1' or
                         value["caracteristicas"]["Atributo2"]['nulidad']=='0'):
                         elementosNoNulos.append(key)
+                    ## si es primario
+                    if (value["caracteristicas"]["Atributo3"]['tipo']['restricciones']=='1'):
+                        nombreAtributosPrimarios.append(key)
                     ## busqueda de parametros  con el mismo nombre
                     for cantidad in range(len(self.parametros)):
                         if (key == self.atributos[cantidad]):
@@ -87,8 +94,21 @@ class insertInstruccion(Abstract):
             validaciones = True
             print("Error semantico, atributos incorrectos, hay alguno que no existe en tabla")
 
+        #################
+        ###validacion que exista ya la tabla primaria
+        for elementos in Estructura.Databases[indiceBaseDatos]["tables"]:
+                if(elementos['name']== self.nombreTabla):
+                    ### para atributos generales de tabla 
+                    for datos in elementos['data']['datos']:
+                        indice=0
+                        for key, value in datos.items():
+                            if key in nombreAtributosPrimarios:
+                                for nombreAtributo in self.atributos:
+                                    if key == nombreAtributo and value == str(self.parametros[indice]):
+                                            validacionUnicoPrimario = True
+                                            break
+                                    indice+=1
 
-    
 
 
    
@@ -96,67 +116,78 @@ class insertInstruccion(Abstract):
         #################
         #################
         #################
-        # genearcion de json si todo bien jala el json
-        if(validaciones == False):
-        #### otra validacion, ir a buscar que correspondan los datos 
-        ### para ver el tipo en xml
-        ### actualizado problema a ver, que si lo hago en desorden ya no reconoceSS
-            validacionTipo = True 
-            indiceAtributo =0
-            cantidadElementoCorrectos = 0
+        ##validacion de primario
+        if (validacionUnicoPrimario == False):
+            # genearcion de json si todo bien jala el json
+            if(validaciones == False):
+            #### otra validacion, ir a buscar que correspondan los datos 
+            ### para ver el tipo en xml
+            ### actualizado problema a ver, que si lo hago en desorden ya no reconoceSS
+                validacionTipo = True 
+                indiceAtributo =0
+                cantidadElementoCorrectos = 0
 
-            for elementos in self.atributos:
-                posicion =0
-                for tipoElementos in nombresElementos:
-                    if elementos == tipoElementos:
-                        print(tipoElemento[posicion]['Atributo1']['tipo'], "---JALO---", indiceAtributo, type(self.parametros[indiceAtributo]))
-                        valorCadena = ''
-                        
-                        if(isinstance(self.parametros[indiceAtributo], int)):
-                            valorCadena = "int"
-                        elif (isinstance(self.parametros[indiceAtributo], float)):
-                            valorCadena = "decimal"
-                        elif (isinstance(self.parametros[indiceAtributo], str)):
-                            valorCadena = "varchar"
-                        
-                        if (valorCadena== tipoElemento[posicion]['Atributo1']['tipo']):
-                            print("encotrado",tipoElemento[posicion]['Atributo1']['tipo'], "---JALO---", indiceAtributo)
-                            cantidadElementoCorrectos+=1
-                        break
-                    posicion+=1
-                
-                indiceAtributo+=1
+                for elementos in self.atributos:
+                    posicion =0
+                    for tipoElementos in nombresElementos:
+                        if elementos == tipoElementos:
+                            print(tipoElemento[posicion]['Atributo1']['tipo'], "---JALO---", indiceAtributo, type(self.parametros[indiceAtributo]))
+                            valorCadena = ''
+                            
+                            if(isinstance(self.parametros[indiceAtributo], int)):
+                                valorCadena = "int"
+                            elif (isinstance(self.parametros[indiceAtributo], float)):
+                                valorCadena = "decimal"
+                            elif (isinstance(self.parametros[indiceAtributo], str)):
+                                valorCadena = "varchar"
+                            elif (isinstance(self.parametros[indiceAtributo], datetime.date)):
+                                valorCadena = "date"
+                            elif (isinstance(self.parametros[indiceAtributo], datetime.datetime)):
+                                valorCadena = "datetime"
+                            
+                            if (valorCadena== tipoElemento[posicion]['Atributo1']['tipo']):
+                                print("encotrado",tipoElemento[posicion]['Atributo1']['tipo'], "---JALO---", indiceAtributo)
+                                cantidadElementoCorrectos+=1
+                            elif (valorCadena == "varchar"):
+                                comprobacion = tipoElemento[posicion]['Atributo1']['tipo'].split("NVARCHAR")
+                                if (len(comprobacion)==2):
+                                    print("encotrado",tipoElemento[posicion]['Atributo1']['tipo'], "---JALO---", indiceAtributo)
+                                    cantidadElementoCorrectos+=1
+                            break
+                        posicion+=1
+                    
+                    indiceAtributo+=1
 
 
 
-            if (cantidadElementoCorrectos == len(self.parametros)):
-                validacionTipo = False
+                if (cantidadElementoCorrectos == len(self.parametros)):
+                    validacionTipo = False
 
-            if (not validacionTipo):
+                if (not validacionTipo):
 
-                finAtrinutos = []
-                for atributo, valor in zip(self.atributos, self.parametros):
-                    jsonEstructura_data = {
-                        'valor': atributo,
-                        'nulidad': valor
-                    }
-                    finAtrinutos.append(jsonEstructura_data)
+                    finAtrinutos = []
+                    for atributo, valor in zip(self.atributos, self.parametros):
+                        jsonEstructura_data = {
+                            'valor': atributo,
+                            'nulidad': valor
+                        }
+                        finAtrinutos.append(jsonEstructura_data)
 
-                diccionario_combinado = {}
-                for diccionario in finAtrinutos:
-                    diccionario_combinado[diccionario['valor']] = diccionario['nulidad']
-                print(diccionario_combinado)
-                print( type(diccionario_combinado))
+                    diccionario_combinado = {}
+                    for diccionario in finAtrinutos:
+                        diccionario_combinado[diccionario['valor']] = diccionario['nulidad']
+                    print(diccionario_combinado)
+                    print( type(diccionario_combinado))
 
-                print({'todo': 'bien'})
-            ## regresar a antes despues de pruebas
-                Estructura.insertTabla(f"./src/data/xml/{Estructura.nombreActual}.xml", self.nombreTabla, diccionario_combinado)
+                    print({'todo': 'bien'})
+                ## regresar a antes despues de pruebas
+                    Estructura.insertTabla(f"./src/data/xml/{Estructura.nombreActual}.xml", self.nombreTabla, diccionario_combinado)
+                else:
+                    print({'error': 'Error semantico, tipo de datos para los parametros son incorrectos'})
             else:
-                print({'error': 'Error semantico, tipo de datos para los parametros son incorrectos'})
-
-            
+                print({'error': 'Error semantico, no concuerda'})
         else:
-            print({'error': 'Error semantico, no concuerda'})
+                print({'error': 'Error semantico, llave primaria ya existente'})
 
         return nombre
         
