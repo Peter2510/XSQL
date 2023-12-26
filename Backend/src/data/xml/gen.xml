@@ -253,6 +253,11 @@
                 <price>3.0</price>
                 <cantidad>104.4</cantidad>
             </DatosEspecifico>
+            <DatosEspecifico>
+                <iddetallefac>10</iddetallefac>
+                <cantidad>3.4</cantidad>
+                <price>5.6</price>
+            </DatosEspecifico>
         </Datos>
     </Table>
     <Table name="tbestado">
@@ -272,6 +277,14 @@
             <DatosEspecifico>
                 <idestado>1</idestado>
                 <estado>s</estado>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idestado>2</idestado>
+                <estado>inactivo</estado>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idestado>3</idestado>
+                <estado>eliminado</estado>
             </DatosEspecifico>
         </Datos>
     </Table>
