@@ -294,6 +294,7 @@ class SymbolTableVisitor(Visitor):
                         environment.addError("Semantico", "" ,f"No es posible asignar a {node.id} un {valor.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
                         self.correct = False
                 else:
+                    environment.addError("Semantico", "" ,f"El valor de la variable {node.id} no pudo setearse, la invocacion de la funcion no retorna un valor", node.fila,node.columna)
                     self.correct = False
             else:
                 value = node.valor.interpretar(environment)    
