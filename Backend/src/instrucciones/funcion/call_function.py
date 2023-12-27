@@ -10,12 +10,12 @@ class CallFunction(Abstract):
         super().__init__(row, column)
         
     def accept(self, visitor, environment):
-        visitor.visit(self, environment)
+        return visitor.visit(self, environment)
 
     def interpretar(self, environment):
         from src.visitor.tableVisitor import SymbolTableVisitor
         visit = SymbolTableVisitor(environment)
-        self.accept(visit, environment)
+        return self.accept(visit, environment)
         # if visit.correct == True:
             #self.accept(visit, environment)
             # print("Ejecutando llamda de una funcion")

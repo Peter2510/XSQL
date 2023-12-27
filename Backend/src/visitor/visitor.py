@@ -56,10 +56,10 @@ class Visitor(ABC):
             self.visitAlterFunction(node,environment)
             
         elif isinstance(node,CallFunction):
-            self.visitCallFunction(node,environment)
+            return self.visitCallFunction(node,environment)
 
         elif isinstance(node,Return_):
-            self.visitReturn(node,environment)
+           self.visitReturn(node,environment)
                 
         elif isinstance(node,Set_):
             self.visitSet(node,environment)

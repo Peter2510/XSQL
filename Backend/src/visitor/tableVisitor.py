@@ -1,3 +1,4 @@
+from src.instrucciones.funcion.call_function import CallFunction
 from src.instrucciones.funcion.return_ import Return_
 from src.ejecucion.type import Type
 from src.instrucciones.funcion.string_ import String_
@@ -206,32 +207,8 @@ class SymbolTableVisitor(Visitor):
                 print("EJECUTAR EL VISITOR DE LAS INSTRUCCIONES EN LA LLAMADA")
                 
                 env1 = Environment()
-                a = funcion.interpretar(env1)
-                
-                #realizar la validacion del tipo de variable actual y retornadana
-                
-                print(a.value,"<<<<<<")
-                print (env.getErrores())
-                for i in env:
-                    print(i.id,i.value,i.type)
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
+                valorEjecucion = funcion.interpretar(env1)
+                return valorEjecucion
                 
                         
             else:
@@ -287,7 +264,7 @@ class SymbolTableVisitor(Visitor):
             else:
 
                 if not valorRetorno.type == self.tipo:
-                    environment.addError("Semantico", valorRetorno.value ,f"El tipo de retorno no coincide con el tipo de la funcion", node.fila,node.columna)
+                    environment.addError("Semantico", valorRetorno.value ,f"No es posible retornar un {valorRetorno.type.name}, el tipo de dato de la funcion es {self.tipo.name}", node.fila,node.columna)
                     self.correct = False
                 else: 
                     return valorRetorno
@@ -302,7 +279,26 @@ class SymbolTableVisitor(Visitor):
         
         if(environment.existeVariable(node.id)):
             variable = environment.getVariable(node.id)
-            value = node.valor.interpretar(environment)
+            
+            value = None
+            
+            if isinstance(node.valor,CallFunction):
+                valor = node.valor.interpretar(environment)
+                                
+                if valor != None:
+
+                    if variable.type == valor.type:
+                        variable.value = valor.value
+                                            
+                    else:
+                        environment.addError("Semantico", "" ,f"No es posible asignar a {node.id} un {valor.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
+                        self.correct = False
+                else:
+                    self.correct = False
+            else:
+                value = node.valor.interpretar(environment)    
+            
+            
             if value != None:
                 
                 if isinstance(variable.type,String_):
@@ -360,7 +356,9 @@ class SymbolTableVisitor(Visitor):
                 self.correct = False               
         else:
              environment.addError("Semantico", node.id ,f"La variable no ha sido declarada", node.fila,node.columna)
-             self.correct = False               
+             self.correct = False    
+        for i in environment:
+            print(i.id,i.value,i.type)               
                  
     def visitAlterProcedure(self,node,environment):
         pass
