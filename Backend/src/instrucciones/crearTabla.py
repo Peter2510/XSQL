@@ -24,7 +24,7 @@ class crearTabla(Abstract):
             if (indice["name"]==Estructura.nombreActual):
                 break
             indiceBaseDatos+=1
-        print("---------------------------------------------------------------",Estructura.Databases[0]["tables"],"----------")
+        # print("---------------------------------------------------------------",Estructura.Databases[0]["tables"],"----------")
         
         ## VER SI NO SE REPITE EL NOMBRE DE LA TABLA 
         if (len(Estructura.Databases)> indiceBaseDatos):

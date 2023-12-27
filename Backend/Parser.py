@@ -222,7 +222,7 @@ def p_nulidad_parametro(t): # si es null es 1
 
 def p_nulidad_parametro2(t): # si es not null es 2
     '''
-    nulidad_parametro : NOT NULL
+    nulidad_parametro : SQL_NOT NULL
     '''
     t[0] = '0'
 

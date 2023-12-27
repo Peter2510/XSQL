@@ -112,32 +112,32 @@ def importAllXMLsInDirectory(directory):
                     table_data = {'estructura': {}, 'datos': []}
 
                     # Obtener la información de la estructura
-                structure_info = table.find("./Estructura")
-                if structure_info is not None:
-                    structure_data = {}
-                    for principal in structure_info.findall("Principal"):
-                        principal_name = principal.get("name")
-                        attributes = {}
-                        attrib3_info = principal.find("./Atributo3")  
+                    structure_info = table.find("./Estructura")
+                    if structure_info is not None:
+                        structure_data = {}
+                        for principal in structure_info.findall("Principal"):
+                            principal_name = principal.get("name")
+                            attributes = {}
+                            attrib3_info = principal.find("./Atributo3")
 
-                        if attrib3_info is not None:
-                            attrib3_data = {}
-                            attrib3_data['tipo'] = attrib3_info.attrib
-                            for sub_element in attrib3_info.iter():
-                                if sub_element.tag != 'Atributo3':
-                                    attrib3_data[sub_element.tag] = sub_element.text
-                            attributes['Atributo3'] = attrib3_data
-                        else:
-                            # No se encontró la etiqueta Atributo3 en este Principal
-                            attributes['Atributo3'] = None
-                        
-                        # Obtener los otros atributos de la estructura
-                        for attribute in principal.findall("*"):
-                            if attribute.tag != 'Atributo3':
-                                attributes[attribute.tag] = attribute.attrib
-                        
-                        structure_data[principal_name] = {"nombre": principal_name, "caracteristicas": attributes}
-                    table_data['estructura'] = structure_data
+                            if attrib3_info is not None:
+                                attrib3_data = {}
+                                attrib3_data['tipo'] = attrib3_info.attrib
+                                for sub_element in attrib3_info.iter():
+                                    if sub_element.tag != 'Atributo3':
+                                        attrib3_data[sub_element.tag] = sub_element.text
+                                attributes['Atributo3'] = attrib3_data
+                            else:
+                                # No se encontró la etiqueta Atributo3 en este Principal
+                                attributes['Atributo3'] = None
+
+                            # Obtener los otros atributos de la estructura
+                            for attribute in principal.findall("*"):
+                                if attribute.tag != 'Atributo3':
+                                    attributes[attribute.tag] = attribute.attrib
+
+                            structure_data[principal_name] = {"nombre": principal_name, "caracteristicas": attributes}
+                        table_data['estructura'] = structure_data
 
 
                     # Obtener los datos específicos
