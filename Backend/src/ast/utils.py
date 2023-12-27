@@ -71,3 +71,12 @@ def cartesian_product(*tables):
     result_dicts = [dict(item for sublist in row for item in sublist.items()) for row in result]
 
     return result_dicts
+
+
+def get_table_form(data: list[dict]):
+    columns = list(data[0].keys())
+    rows = []
+    for record in data:
+        rows.append(list(record.values()))
+
+    return [columns, *rows]

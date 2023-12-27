@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { table } from 'table';
 import { TabHeaderComponent } from '../tab-header/tab-header.component';
 import { TextEditorComponent } from '../text-editor/text-editor.component';
 import { EditorItem } from './editor-item';
@@ -40,12 +41,12 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
 
   @ViewChild('logger') logger: any;
 
-  errores:ErrorSQL[] = [];
+  errores: ErrorSQL[] = [];
 
   codeMirrorOptions: any = {
     theme: 'dracula',
     lineNumbers: true,
-    lineWrapping: true,
+    lineWrapping: false,
     matchBrackets: true,
     autofocus: false,
     readOnly: true,
@@ -64,11 +65,9 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.compilar.saludo().subscribe(
-      info => {
-        console.log(info);
-      }
-    )
+    this.compilar.saludo().subscribe((info) => {
+      console.log(info);
+    });
   }
 
   /*graphvizImg(dot: string) {
@@ -114,33 +113,45 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       }
 
       //EJECUTAR EL ARCHIVO ACTUAL
-      this.compilar.ejecutarSQL(main.content).subscribe((data)=>{
-        
-        if(data.errores){
-          
+      this.compilar.ejecutarSQL(main.content).subscribe((data) => {
+        console.log(data);
+        if (data.errores) {
           let errores = data.errores;
-          let erroresJson =  JSON.parse(errores);
-          
-          for(let i = 0; i < erroresJson.length; i++){
+          let erroresJson = JSON.parse(errores);
+
+          for (let i = 0; i < erroresJson.length; i++) {
             let error = erroresJson[i];
-            let errorSQL = new ErrorSQL(error.tipo, error.token ,error.descripcion, error.linea, error.columna);
+            let errorSQL = new ErrorSQL(
+              error.tipo,
+              error.token,
+              error.descripcion,
+              error.linea,
+              error.columna
+            );
             this.errores.push(errorSQL);
           }
 
           this.showErrorsConsole(this.errores);
-
-
-        }else{
-          console.log("nenenel rrores")
         }
+        if (data.resultados && data.resultados.length > 0) {
+          const logs: string[] = [];
+          data.resultados.forEach((res: any) => {
+            if (res.tipo === 'select') {
+              logs.push(this.getSelectFormat(res.resultado));
+            } else {
+              logs.push(res.resultado);
+            }
+          });
+          this.showLogs(logs);
+        }
+      });
 
-      })
-
-      
       //this.resultHost.viewContainerRef.clear();
-      
-
     }
+  }
+
+  getSelectFormat(results: [][]) {
+    return table(results);
   }
 
   showLogs(logs: any[]) {
@@ -169,8 +180,6 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       resultComponent.instance.data = resultItem.data;
     });
   }
-
-
 
   addBlankEditor(name: string, content: string = '') {
     let nameTab = `${name}-tab`;
@@ -253,12 +262,12 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       // console.log(files);
       for (const file of files) {
         let name = file.name.replace('.sql', '');
-        console.log(name)
+        console.log(name);
         if (!this.isRepeatedName(name)) {
           let reader = new FileReader();
           const freader = () => {
             this.actualCode = reader.result as string;
-            console.log(this.actualCode,"jhs")
+            console.log(this.actualCode, 'jhs');
             if (this.actualCode) {
               reader.removeEventListener('load', freader);
               this.addBlankEditor(name, this.actualCode);

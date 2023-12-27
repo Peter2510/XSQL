@@ -50,21 +50,25 @@ def compilar():
             env.errors.clear()
             return {'errores':json_string}
         
-        else: 
+        else:
+            response = {'errores': '', 'resultados': []}
             iniciarEjecucion = Ejec(pars.statements)
             _res = iniciarEjecucion.execute(env)
             if len(env.errors) > 0:
-                    errores_dict_list = [error.to_dict() for error in env.errors]        
+                    errores_dict_list = [error.to_dict() for error in env.errors]
                     json_string = json.dumps(errores_dict_list, indent=2)
                     Estructura.nombreActual = ""
                     env.errors.clear()
-                    return {'errores':json_string}
-            else:
+                    response['errores'] = json_string
+            if len(_res) > 0:
                 # print("Compilación exitosa")
                 print("",Estructura.nombreActual)
                 Estructura.nombreActual = ""
                 env.errors.clear()
-                return {'result':entrada}
+
+                response['resultados'] = _res
+
+            return response
     
         
         
