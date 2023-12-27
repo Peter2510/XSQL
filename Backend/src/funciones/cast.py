@@ -1,12 +1,16 @@
-
 from ..abstract import Abstract
+from src.ejecucion.type import Type
 
 
 class Cas(Abstract):
     def __init__(self, fila, columna, expr, new_type):
         super().__init__(fila, columna)
-        self.expr = expr  # TODO: expr debería ser un nodo y es necesario validar variables
+        self.expr = expr
         self.new_type = new_type
+        self.tipo = new_type
+
+    def __str__(self):
+        return "CAS"
 
     def accept(self, visitor, environment):
         self.expr.accept(visitor, environment)
@@ -14,4 +18,16 @@ class Cas(Abstract):
 
     # no se si le enviamos el tipo de dato asi com date
     def interpretar(self, environment):
-        return 0
+        result = self.expr.interpretar(environment)
+        try:
+            if self.new_type == Type.INT:
+                return int(result)
+            if self.new_type == Type.DECIMAL:
+                return float(result)
+            if self.new_type == Type.BIT:
+                return bool(result)
+        except ValueError:
+            if self.new_type == Type.INT or self.new_type == Type.DECIMAL:
+                return 0
+
+        return str(result)

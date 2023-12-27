@@ -26,7 +26,7 @@ keywords = {
     "delete":"DELETE",
     
     "concatena":"CONCATENA",
-    "subtraer":"SUBSTRAER",
+    "substraer":"SUBSTRAER",
     "hoy":"HOY",
     "contar":"CONTAR",
     "suma":"SUMA",
@@ -69,7 +69,10 @@ keywords = {
     'foreign': 'FOREIGN',
 
     'into': 'INTO',
-    'values': 'VALUES'
+    'values': 'VALUES',
+    'and': 'SQL_AND',
+    'or': 'SQL_OR',
+    'not': 'SQL_NOT'
 }
 
 
@@ -109,7 +112,7 @@ tokens = [
     'ID_DECLARE',
     'ID',
     'ARROBA',
-    'COMILLASIMPLE'
+    'COMILLASIMPLE',
 ]+ list(keywords.values())
 
 
@@ -228,8 +231,8 @@ def t_BITPRIM(t):
 
 ##Nueva linea
 
-def newline(t):
-    r'\n'
+def t_newline(t):
+    r'\n+'
     t.lexer.lineno +=len(t.value)
     
 def t_STR(t):
@@ -244,7 +247,7 @@ def t_STR(t):
 
         
 # WHIT_SPACE
-t_ignore = " \t\f\v\n"
+t_ignore = " \t\f\v"
 def t_error(t):   
     errors.append(T_error("Lexico",lexer.lexdata,"No se reconoce el token", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
     t.lexer.skip(1)
