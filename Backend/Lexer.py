@@ -32,7 +32,7 @@ keywords = {
     "suma":"SUMA",
     "cas":"CAS",
     
-    'not': 'NOTT',
+    'not': 'SQL_NOT',
     'null': 'NULL',
     'primary': 'PRIMARY',
     'foreing': 'FOREING',
