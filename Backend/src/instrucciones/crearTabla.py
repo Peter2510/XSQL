@@ -24,7 +24,6 @@ class crearTabla(Abstract):
             if (indice["name"]==Estructura.nombreActual):
                 break
             indiceBaseDatos+=1
-        print("---------------------------------------------------------------",Estructura.Databases[0]["tables"],"----------")
         
         ## VER SI NO SE REPITE EL NOMBRE DE LA TABLA 
         if (len(Estructura.Databases)> indiceBaseDatos):
@@ -51,9 +50,10 @@ class crearTabla(Abstract):
                             return
                     ## si no existe nombre de la tabla genera el ingreso 
                     if (not existeNombre):
+                        #print(">>>prueba",row[1].value, int(row[2]), type(row[1].value), type(row[2]))
                         if (isinstance(row[3], list)):
                             json_data = {
-                                'tipo': row[1],
+                                'tipo':str(row[1].value),
                                 'nulidad': int(row[2]),
                                 'restricciones': {
                                     'nombreTabla':row[3][0],
@@ -68,9 +68,9 @@ class crearTabla(Abstract):
                             )
                         else:
                             json_data = {
-                                'tipo': row[1],
+                                'tipo':str(row[1].type),
                                 'nulidad': int(row[2]),
-                                'restricciones': (row[3])  # Convierte '0' a False y cualquier otro valor a True
+                                'restricciones': int(row[3])  # Convierte '0' a False y cualquier otro valor a True
                             }
                             atributosFinales.append(
                                 {

@@ -222,7 +222,7 @@ def p_nulidad_parametro(t): # si es null es 1
 
 def p_nulidad_parametro2(t): # si es not null es 2
     '''
-    nulidad_parametro : NOT NULL
+    nulidad_parametro : NOTT NULL
     '''
     t[0] = '0'
 
@@ -593,6 +593,8 @@ def p_value(t):
     value : STR
           | DECIMAL
           | ENTERO
+          | DATEPRIM
+          | DATETIMEPRIM
     '''
     t[0] = t[1]
 
