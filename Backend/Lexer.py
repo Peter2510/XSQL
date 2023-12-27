@@ -72,7 +72,8 @@ keywords = {
     'into': 'INTO',
     'values': 'VALUES',
     'and': 'SQL_AND',
-    'or': 'SQL_OR'
+    'or': 'SQL_OR',
+    'not': 'SQL_NOT'
 }
 
 
