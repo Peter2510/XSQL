@@ -40,4 +40,4 @@ class createDB(Abstract):
 
 
     def accept(self, visitor, environment):
-        pass
+        visitor.visit(self, environment)

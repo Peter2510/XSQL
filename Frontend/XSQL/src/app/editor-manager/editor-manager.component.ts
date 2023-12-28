@@ -58,6 +58,7 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   names: string[] = [];
   filesToUpload: any[] = [];
   actualCode: any = null;
+  currentDot: string = '';
   constructor(
     private service: GraphvizService,
     private sanitizer: DomSanitizer,
@@ -70,30 +71,28 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
     });
   }
 
-  /*graphvizImg(dot: string) {
-    const viewContainerRef = this.resultHost.viewContainerRef;
+  graphvizImg(dot: string) {
     this.service.getImage(dot).subscribe({
       next: (response: any) => {
         let url = URL.createObjectURL(response);
-        let srcImg = this.sanitizer.bypassSecurityTrustUrl(url);
-        const resultItem = new ResultItem(ResultImgComponent, {
-          src: srcImg,
-        });
-        const resultComponent =
-          viewContainerRef.createComponent<ResultComponent>(
-            resultItem.component
-          );
-        resultComponent.instance.data = resultItem.data;
+        window.open(url, '_blank');
+        URL.revokeObjectURL(url);
       },
       error: (e) => {
         console.error(e);
       },
     });
-  }*/
+  }
 
   ngOnDestroy(): void {}
 
   ngAfterViewInit() {}
+
+  onGetImage() {
+    if (this.currentDot) {
+      this.graphvizImg(this.currentDot);
+    }
+  }
 
   onCompile() {
     let index = this.getActiveIndex();
@@ -142,11 +141,18 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
               logs.push(res.resultado);
             }
           });
-          this.showLogs(logs);
+
+          this.showLogs(logs)
+        }
+
+        if (data.dot) {
+          this.currentDot = data.dot;
+        } else {
+          this.currentDot = '';
         }
       });
 
-      //this.resultHost.viewContainerRef.clear();
+      // this.resultHost.viewContainerRef.clear();
     }
   }
 
@@ -164,6 +170,7 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
 
   clearLogger() {
     this.contentLogger = '';
+    this.currentDot = '';
   }
 
   clearResults() {
@@ -200,7 +207,7 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
     componentRef.instance.data = editorItem.data;
     let element = componentRef.location.nativeElement;
 
-    element.setAttribute('aria-labelledby', editorItem.data.label);
+    // element.setAttribute('aria-labelledby', editorItem.data.label);
     element.id = editorItem.data.id;
     const tabViewContainerRef = this.tabHost.viewContainerRef;
     const tabItem = new TabItem(TabHeaderComponent, {

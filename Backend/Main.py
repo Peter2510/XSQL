@@ -8,6 +8,8 @@ from flask.helpers import url_for
 from werkzeug.utils import redirect
 from Lexer import tokens, lexer, errors, find_column
 from src.manejadorXml import  Estructura
+from src.visitor import GenerateASTVisitor
+import io
 
 global env
 env = None
@@ -67,6 +69,15 @@ def compilar():
                 env.errors.clear()
 
                 response['resultados'] = _res
+
+            if len(_res) > 0 and len(env.errors) < 1:
+                ast_visitor = GenerateASTVisitor(env)
+                pars.accept(ast_visitor, env)
+                f = io.StringIO()
+                ast_visitor.get_graph().dot(f)
+                dot_string = f.getvalue()
+
+                response['dot'] = dot_string
 
             return response
     

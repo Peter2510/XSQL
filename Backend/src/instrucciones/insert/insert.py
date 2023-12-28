@@ -13,7 +13,7 @@ class insertInstruccion(Abstract):
         super().__init__(fila, columna)
 
     def accept(self, visitor, environment):
-        pass
+        visitor.visit(self, environment)
 
     def interpretar(self,environment):
         nombre = self.nombreTabla
