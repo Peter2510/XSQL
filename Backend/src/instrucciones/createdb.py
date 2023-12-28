@@ -10,9 +10,11 @@ class createDB(Abstract):
         super().__init__(fila, columna)
 
     def interpretar(self,environment):
+
         nombre = self.nombre
 
         if not isinstance(nombre,str):
+            environment.addError("Semantico", "" ,f"El nombre indicado de la base de datos no es una cadena", self.fila, self.columna )
             return {'Error': 'El nombre indicado de la base de datos no es una cadena.', 'Fila':self.fila, 'Columna': self.columna }
        
         Estructura.load();
@@ -27,13 +29,17 @@ class createDB(Abstract):
             return 'La base de datos ' + self.nombre + ' ha sido creada.' 
         elif resultado == 1:
             #Error al crear
+            environment.addError("Semantico", {nombre} ,f"Ocurrió un error. La base de datos {nombre} no pudo ser creada", self.fila, self.columna)
             print( 'Ocurrió un error. La base de datos' + nombre + ' no pudo ser creada.' )
             return {'Error':'Ocurrió un error. La base de datos' + nombre + ' no pudo ser creada.', 'Fila':self.fila, 'Columna':self.columna}
         elif resultado == 2:
             #Ya creada
             print ( "La base de datos " + nombre + " ya existe" )
+            environment.addError("Semantico", {nombre} ,f"La base de datos { nombre}   ya existe",  self.fila, self.columna)
+
             return {'Error': "La base de datos " + nombre + " ya existe.", 'Fila': self.fila, 'Columna': self.columna}
         else:
+            environment.addError("Semantico", "" ,f"Error en el almacenamiento", self.fila, self.columna)
             print('Error', "Error en el almacenamiento.", 'Fila', self.fila, 'Columna', self.columna)
             return {'Error': "Error en el almacenamiento.", 'Fila': self.fila, 'Columna': self.columna}
             

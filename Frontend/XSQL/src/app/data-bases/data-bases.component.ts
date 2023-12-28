@@ -48,37 +48,14 @@ export class DataBasesComponent implements OnInit {
 
   }
   generarNodos(){
-    this.nodes = [
-      {
-        id: 1,
-        name: this.arregloDB[0]["name"],
-        children: [
-          { id: 2, name: this.arregloDB[0]["tables"][0]["name"] },
-          { id: 3, name: this.arregloDB[0]["tables"][1]["name"] },
-          {
-            id: 4,
-            name: this.arregloDB[0]["tables"][0]["data"]["estructura"]["nombrecliente"]["nombre"],
-            children: [
-              { id: 5, name: this.arregloDB[0]["tables"][0]["data"]["estructura"]["nombrecliente"]["caracteristicas"]["Atributo1"]["tipo"]}
-            ]
-          }
-        ]
-      },
-      {
-        id: 6,
-        name: 'root2',
-        children: [
-          { id: 7, name: 'child2.1' },
-          {
-            id: 8,
-            name: 'child2.2',
-            children: [
-              { id: 9, name: 'subsub' }
-            ]
-          }
-        ]
-      }
-    ];
+    const jsonObjects = this.arregloDB.map((element: any, index: number) => ({
+      id: index + 1, // Se puede utilizar el índice + 1 como ID
+      name: element['name'] // Suponiendo que cada elemento tiene una propiedad 'name'
+  }));
+
+  // El arreglo 'jsonObjects' contendrá un JSON por cada elemento en 'this.arregloDB'
+  console.log(jsonObjects);
+    this.nodes = jsonObjects;
   }
 
 

@@ -131,28 +131,32 @@ class insertInstruccion(Abstract):
                     posicion =0
                     for tipoElementos in nombresElementos:
                         if elementos == tipoElementos:
-                            print(tipoElemento[posicion]['Atributo1']['tipo'], "---JALO---", indiceAtributo, type(self.parametros[indiceAtributo]))
                             valorCadena = ''
-                            
+                            print(type(self.parametros[indiceAtributo]), tipoElemento[posicion]['Atributo1']['tipo'])
                             if(isinstance(self.parametros[indiceAtributo], int)):
-                                valorCadena = "int"
+                                valorCadena = 0
                             elif (isinstance(self.parametros[indiceAtributo], float)):
-                                valorCadena = "decimal"
+                                valorCadena = 2
                             elif (isinstance(self.parametros[indiceAtributo], str)):
                                 valorCadena = "varchar"
                             elif (isinstance(self.parametros[indiceAtributo], datetime.date)):
-                                valorCadena = "date"
+                                valorCadena = 3
                             elif (isinstance(self.parametros[indiceAtributo], datetime.datetime)):
-                                valorCadena = "datetime"
+                                valorCadena = 4
+                            elif (isinstance(self.parametros[indiceAtributo], bit)):
+                                valorCadena = 1
+                     
                             
-                            if (valorCadena== tipoElemento[posicion]['Atributo1']['tipo']):
+                            if (str(valorCadena)== str(tipoElemento[posicion]['Atributo1']['tipo'])):
                                 print("encotrado",tipoElemento[posicion]['Atributo1']['tipo'], "---JALO---", indiceAtributo)
                                 cantidadElementoCorrectos+=1
                             elif (valorCadena == "varchar"):
                                 comprobacion = tipoElemento[posicion]['Atributo1']['tipo'].split("NVARCHAR")
+                                print(comprobacion)
                                 if (len(comprobacion)==2):
                                     print("encotrado",tipoElemento[posicion]['Atributo1']['tipo'], "---JALO---", indiceAtributo)
                                     cantidadElementoCorrectos+=1
+                       
                             break
                         posicion+=1
                     
@@ -163,10 +167,11 @@ class insertInstruccion(Abstract):
                 if (cantidadElementoCorrectos == len(self.parametros)):
                     validacionTipo = False
 
-                if (not validacionTipo):
+                if (validacionTipo == False ):
 
                     finAtrinutos = []
                     for atributo, valor in zip(self.atributos, self.parametros):
+                        print(atributo, valor)
                         jsonEstructura_data = {
                             'valor': atributo,
                             'nulidad': valor

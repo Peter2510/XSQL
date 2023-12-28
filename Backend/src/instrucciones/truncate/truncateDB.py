@@ -10,13 +10,13 @@ class truncateDB(Abstract):
     def interpretar(self,environment):
         nombre = self.nombre
         tree = ET.parse(f'./src/data/xml/{nombre}.xml')
-        if (tree != null):
+        if (tree != None):
             root = tree.getroot()
 
             # Obtener todas las etiquetas <Table> 
             for table in root.findall(".//Table"):
-                for principal in table.findall("Datos"):
-                    table.remove(principal)
+               # for principal in table.findall("Data"):
+                    root.remove(table)
 
             # Guardar el resultado en un nuevo archivo XML
             tree.write(f'./src/data/xml/{nombre}.xml', encoding='utf-8', xml_declaration=True)

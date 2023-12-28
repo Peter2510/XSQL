@@ -115,12 +115,12 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
 
       //EJECUTAR EL ARCHIVO ACTUAL
       this.compilar.ejecutarSQL(main.content).subscribe((data)=>{
-        
+
         if(data.errores){
-          
+
           let errores = data.errores;
           let erroresJson =  JSON.parse(errores);
-          
+
           for(let i = 0; i < erroresJson.length; i++){
             let error = erroresJson[i];
             let errorSQL = new ErrorSQL(error.tipo, error.token ,error.descripcion, error.linea, error.columna);
@@ -136,9 +136,9 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
 
       })
 
-      
+
       //this.resultHost.viewContainerRef.clear();
-      
+
 
     }
   }
@@ -303,5 +303,31 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       return editorRef.location.nativeElement.classList.contains('active');
     });
     return index;
+  }
+
+
+  generarDump(){
+    let index = this.getActiveIndex();
+if (index !== -1) {
+  this.compilar.generaDump().subscribe(
+    (text: any) => {
+      console.log(text);
+
+      let name = this.names[index] + '.sql';
+      let file = new Blob([text], { type: 'text' });
+      let a = document.createElement('a'),
+        url = URL.createObjectURL(file);
+      a.href = url;
+      a.download = name;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }, 0);
+    }
+  );
+}
+
   }
 }

@@ -200,3 +200,68 @@ def import_xml_db(db_name):
         return None
     except Exception:
         return None
+
+
+## para el dump
+
+def dumpXMl():
+        tree = ET.parse(f'./src/data/xml/prueba.xml')
+        root = tree.getroot()
+
+        # Inicializar las instrucciones SQL
+        sql_queries = []
+        name = 'name'
+        creataDatabaseQuery = f'CREATE DATA BASE {root.get(name)};'      
+        sql_queries.append(creataDatabaseQuery)
+
+        # Recorrer las tablas en el archivo XML
+        for table in root.findall('Table'):
+            table_name = table.get('name')
+            create_table_query = f"CREATE TABLE {table_name} ("
+
+            # Recorrer la estructura de la tabla
+            for principal in table.findall('./Estructura/Principal'):
+                principal_name = principal.get('name')
+
+                # Construir la definición de la columna en SQL
+                tipoAtributo = ''
+                if(str(principal.find('Atributo1').get('tipo'))==str(0)):
+                    tipoAtributo = 'int'
+                elif (str(principal.find('Atributo1').get('tipo'))==str(1)):
+                    tipoAtributo = 'bit'
+                
+                elif (str(principal.find('Atributo1').get('tipo'))==str(2)):
+                    tipoAtributo = 'decimal'
+                elif (str(principal.find('Atributo1').get('tipo'))==str(3)):
+                    tipoAtributo = 'date'
+                elif (str(principal.find('Atributo1').get('tipo'))==str(4)):
+                    tipoAtributo = 'datetime'
+                else:
+                    tipoAtributo = principal.find('Atributo1').get('tipo')
+                
+                column_definition = f"{principal_name} {tipoAtributo}"
+
+                # Agregar restricciones si existen
+                attrib3 = principal.find('Atributo3')
+                if attrib3 is not None:
+                    if attrib3.get('restricciones') == '1':
+                        column_definition += " PRIMARY KEY"
+                    elif attrib3.get('restricciones') == '2':
+                        atributps = attrib3.find('nombreTabla')
+                        nombreAtributo = attrib3.find('nombreAtributo')
+                        column_definition += " REFERENCE "+atributps.text+f" ({nombreAtributo.text})"
+
+                    
+
+                # Agregar la definición de la columna a la consulta de creación de tabla
+                create_table_query += column_definition + ", "
+
+            # Eliminar la última coma y agregar el cierre de paréntesis en la consulta de creación de tabla
+            create_table_query = create_table_query.rstrip(", ") + ");"
+            sql_queries.append(create_table_query)
+
+        # Imprimir las consultas SQL generadas
+        textoGeneral =''
+        for query in sql_queries:
+            textoGeneral+=(query)+"\n"
+        return textoGeneral

@@ -29,4 +29,8 @@ export class CompilacionService {
   saludo():Observable<any>{
      return this.http.get<any>(`${baseURL}`+"/saludo");
    }
+
+   generaDump():Observable<string>{
+    return this.http.get<string>(`${baseURL}`+"/generaDump");
+    }
 }

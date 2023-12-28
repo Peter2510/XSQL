@@ -8,6 +8,7 @@ from flask.helpers import url_for
 from werkzeug.utils import redirect
 from Lexer import tokens, lexer, errors, find_column
 from src.manejadorXml import  Estructura
+from src.manejadorXml import  obtener
 
 global env
 env = None
@@ -20,6 +21,14 @@ CORS(app)
 def saludo():
     Estructura.load()
     return Estructura.Databases
+
+@app.route('/generaDump', methods = ['GET'])
+def generaDump():
+        Estructura.load()
+        datos =[]
+        datos.append( obtener.dumpXMl())
+        return datos
+
 
 @app.route('/ejecutar',methods=["POST","GET"])
 
