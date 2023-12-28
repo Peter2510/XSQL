@@ -119,3 +119,163 @@ class GenerateASTVisitor(Visitor):
         self.graph.newLink(from_node, node_id)
         self.graph.newLink(node.nd, from_node)
         self.graph.newLink(node.nd, node.where_clause.nd)
+
+    def visitCrearTabla(self, node: crearTabla, environment):
+        node.nd = self.graph.newItem(f"CREAR TABLA: {node.nombre}")
+        self.graph.newLink(self.root, node.nd)
+        for column in node.listaAtributos:
+            column_str = [str(item) for item in column]
+            node_column = self.graph.newItem(" ".join(column_str))
+            self.graph.newLink(node.nd, node_column)
+
+    def visitCreateDB(self, node: createDB, environment):
+        node.nd = self.graph.newItem(f"CREAR DB: {node.nombre}")
+        self.graph.newLink(self.root, node.nd)
+
+    def visitFunctionDeclaration(self, node: FunctionDeclaration, environment):
+        node.nd = self.graph.newItem(f"DECL {node.id}()")
+        self.graph.newLink(self.root, node.nd)
+
+        node_params = self.graph.newItem("PARAMS")
+        self.graph.newLink(node.nd, node_params)
+        for param in node.params:
+            node_param = self.graph.newItem(str(param))
+            self.graph.newLink(node_params, node_param)
+
+        node_body = self.graph.newItem("BODY")
+        self.graph.newLink(node.nd, node_body)
+
+    def visitAlterFunction(self, node: AlterFunction, environment):
+        node.nd = self.graph.newItem(f"ALTER {node.id}")
+        self.graph.newLink(self.root, node.nd)
+
+        node_params = self.graph.newItem("PARAMS")
+        self.graph.newLink(node.nd, node_params)
+        for param in node.params:
+            node_param = self.graph.newItem(str(param))
+            self.graph.newLink(node_params, node_param)
+
+        node_body = self.graph.newItem("BODY")
+        self.graph.newLink(node.nd, node_body)
+
+    def visitCreateProcedure(self, node: ProcedureDeclaration, environment):
+        node.nd = self.graph.newItem(f"PROCEDURE {node.nombre}")
+        self.graph.newLink(self.root, node.nd)
+
+        node_params = self.graph.newItem("PARAMS")
+        self.graph.newLink(node.nd, node_params)
+        for param in node.listaParametros:
+            node_param = self.graph.newItem(str(param))
+            self.graph.newLink(node_params, node_param)
+
+        node_body = self.graph.newItem("INSTRUCCIONES")
+        self.graph.newLink(node.nd, node_body)
+
+    def visitCallProcedure(self, node: CallProcedure, environment):
+        node.nd = self.graph.newItem(f"CALL PROCEDURE {node.nombre}")
+        self.graph.newLink(self.root, node.nd)
+
+        node_params = self.graph.newItem("PARAMS")
+        self.graph.newLink(node.nd, node_params)
+        for _param in node.listaParametros:
+            node_param = self.graph.newItem("PARAM")
+            self.graph.newLink(node_params, node_param)
+
+    def visitAlterProcedure(self, node: AlterProcedure, environment):
+        node.nd = self.graph.newItem(f"ALTER {node.nombre}")
+        self.graph.newLink(self.root, node.nd)
+
+        node_params = self.graph.newItem("PARAMS")
+        self.graph.newLink(node.nd, node_params)
+        for param in node.listaParametros:
+            node_param = self.graph.newItem(str(param))
+            self.graph.newLink(node_params, node_param)
+
+        node_body = self.graph.newItem("BODY")
+        self.graph.newLink(node.nd, node_body)
+
+    def visitTruncateDB(self, node: truncateDB, environment):
+        node.nd = self.graph.newItem("TRUNCATE DB")
+        self.graph.newLink(self.root, node.nd)
+        node_id = self.graph.newItem(f"{node.nombre}")
+        self.graph.newLink(node.nd, node_id)
+
+    def visitTruncateTabla(self, node: truncateTabla, environment):
+        node.nd = self.graph.newItem("TRUNCATE TABLA")
+        self.graph.newLink(self.root, node.nd)
+        node_id = self.graph.newItem(f"{node.nombre}")
+        self.graph.newLink(node.nd, node_id)
+
+    def visitDropDB(self, node: dropDB, environment):
+        node.nd = self.graph.newItem("TRUNCATE DB")
+        self.graph.newLink(self.root, node.nd)
+        node_id = self.graph.newItem(f"{node.nombre}")
+        self.graph.newLink(node.nd, node_id)
+
+    def visitDropTable(self, node: dropTable, environment):
+        node.nd = self.graph.newItem("TRUNCATE TABLA")
+        self.graph.newLink(self.root, node.nd)
+        node_id = self.graph.newItem(f"{node.nombre}")
+        self.graph.newLink(node.nd, node_id)
+
+    def visitAlterTable(self, node: alterTable, environment):
+        node.nd = self.graph.newItem("ALTER TABLA")
+        self.graph.newLink(self.root, node.nd)
+        node_id = self.graph.newItem(f"{node.nombre}")
+        self.graph.newLink(node.nd, node_id)
+        op = node.opcionAlter
+        text = "ADD COLUMN" if isinstance(op, list) else "DROP COLUMN"
+        name = op[0] if isinstance(op, list) else op
+        node_op = self.graph.newItem(f"{text} {name}")
+        self.graph.newLink(node.nd, node_op)
+
+    def visitUsar(self, node: usarDB, environment):
+        node.nd = self.graph.newItem("USAR DB")
+        self.graph.newLink(self.root, node.nd)
+        node_id = self.graph.newItem(f"{node.nombre}")
+        self.graph.newLink(node.nd, node_id)
+
+    def visitInsertInstruccion(self, node: insertInstruccion, environment):
+        node.nd = self.graph.newItem("INSERT")
+        self.graph.newLink(self.root, node.nd)
+        node_columns = self.graph.newItem("COLUMNAS")
+        self.graph.newLink(node.nd, node_columns)
+        try:
+            for column in node.atributos:
+                node_col = self.graph.newItem(str(column))
+                self.graph.newLink(node.nd, node_col)
+
+            node_valores = self.graph.newItem("VALORES")
+            for value in node.parametros:
+                node_value = self.graph.newItem(str(value))
+                self.graph.newLink(node_valores, node_value)
+        except Exception as e:
+            print('insert ast', e)
+
+    def visitUpdateInstruccion(self, node: updateInstruccion, environment):
+        node.nd = self.graph.newItem("UPDATE")
+        self.graph.newLink(self.root, node.nd)
+        node_id = self.graph.newItem(node.nombreTabla)
+        self.graph.newLink(node.nd, node_id)
+        try:
+            node_set = self.graph.newItem("SET")
+            self.graph.newLink(node.nd, node_set)
+            for assign in node.atributos:
+                node_assign = self.graph.newItem("=")
+                node_id = self.graph.newItem(assign[0])
+                node_expr = assign[0].nd.copy()
+                self.graph.newLink(node_set, node_assign)
+                self.graph.newLink(node_assign, node_id)
+                self.graph.newLink(node_assign, node_expr)
+
+            node_where = self.graph.newItem("WHERE")
+            node_eq = self.graph.newItem("=")
+            node_id = self.graph.newItem(node.parametros[0])
+            node_expr = node.parametros[0].nd.copy()
+            self.graph.newLink(node.nd, node_where)
+            self.graph.newLink(node_where, node_eq)
+            self.graph.newLink(node_eq, node_id)
+            self.graph.newLink(node_eq, node_expr)
+
+        except Exception as e:
+            print('update ast', e)

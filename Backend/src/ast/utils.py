@@ -74,7 +74,9 @@ def cartesian_product(*tables):
 
 
 def get_table_form(data: list[dict]):
-    columns = list(data[0].keys())
+    data_len = len(data)
+
+    columns = list(data[0].keys()) if data_len > 0 else ["No results"]
     rows = []
     for record in data:
         rows.append(list(record.values()))
