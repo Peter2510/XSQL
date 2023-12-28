@@ -10,10 +10,15 @@ class Primitivo(Expression):
 
     def accept(self, visitor, environment):
         visitor.visit(self, environment)
-        pass
+        
 
     def interpretar(self, environment):
         variable = Variable()
+        
+        val = str(self.valor)
+        if(val.startswith("@")):
+            self.tipo = Type.IDDECLARE
+            
         
         if self.tipo == Type.INT:
             variable.type = Type.INT

@@ -16,9 +16,5 @@ class FunctionDeclaration(Abstract):
         
         from src.visitor.tableVisitor import SymbolTableVisitor
         visit = SymbolTableVisitor(environment)
-                
-        if visit.correct == True:
-            self.accept(visit, environment)
-            return self
+        self.accept(visit, environment)
         
-              

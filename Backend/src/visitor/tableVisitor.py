@@ -1,3 +1,4 @@
+from src.expresiones.binaria import Binaria
 from src.instrucciones.funcion.call_function import CallFunction
 from src.instrucciones.funcion.return_ import Return_
 from src.ejecucion.type import Type
@@ -74,7 +75,7 @@ class SymbolTableVisitor(Visitor):
                 v = Variable()
                 v.id = param.id
                 v.type = param.type
-                v.valor = None
+                v.value = v.value
                 environment.agregarVariable(v)
     
     def visitInstrucciones(self,node,environment):
@@ -221,7 +222,7 @@ class SymbolTableVisitor(Visitor):
     def visitReturn(self,node,environment):
         
         valorRetorno = node.instruction.interpretar(environment)
-
+        print(valorRetorno,valorRetorno.type,valorRetorno.value,valorRetorno.id)
         
         if valorRetorno != None:
             
@@ -235,7 +236,7 @@ class SymbolTableVisitor(Visitor):
                     if self.tipo.type == Type.NVARCHAR:
                         
                         if not (len(valorRetorno.value) <= tamanio.value):
-                            environment.addError("Semantico", valorRetorno.value ,f"No es posible retornar una cadena de longitud {len(valorRetorno.value)}, el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
+                            environment.addError("Semantico", valorRetorno.value ,f"No es posible retornar una cadena de longitud {len(valorRetorno.value)}, el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)
                             self.correct = False                      
                         else:
                             return valorRetorno
@@ -250,6 +251,7 @@ class SymbolTableVisitor(Visitor):
                                                                                
                 else: 
                     environment.addError("Semantico", valorRetorno.value ,f"El tipo de dato retornado debe ser de tipo {self.tipo.type.name}", node.fila,node.columna)
+                    print("Retorna esto",valorRetorno.type)
                     self.correct = False
     
             #validar si es de tipo bit
@@ -275,9 +277,11 @@ class SymbolTableVisitor(Visitor):
             self.correct = False
                     
     def visitSet(self,node,environment):
-        print("visitando set")
+        
+        
         
         if(environment.existeVariable(node.id)):
+            
             variable = environment.getVariable(node.id)
             
             value = None
@@ -287,18 +291,69 @@ class SymbolTableVisitor(Visitor):
                                 
                 if valor != None:
 
-                    if variable.type == valor.type:
-                        variable.value = valor.value
-                                            
+                    if isinstance(variable.type,String_):
+                        
+                        tamanio = variable.type.size.interpretar(environment)
+                        
+                        if valor.type == Type.TEXT:
+                    
+                            if variable.type.type == Type.NVARCHAR:
+                                if len(valor.value) <= tamanio.value:
+                                    variable.value = valor.value
+                                    variable.type = Type.TEXT
+                                
+                                else:
+                                    environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(valor.value)}, la variable es de tipo {variable.type.name}({tamanio.value}), el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
+                                    self.correct = False
+                            else:
+                        
+                                if len(valor.value) <= tamanio.value and len(valor.value) > 0:
+                                    variable.value = valor.value
+                                    variable.type = Type.TEXT
+                                else:
+                                    environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(valor.value)}, la variable es de tipo {variable.type.name}({tamanio.value}), el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)
+                                    self.correct = False    
+                                                       
+                        else: 
+                            environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} un {valor.type}, la variable es de tipo {variable.type}({tamanio.value})", node.fila,node.columna)                        
+                            self.correct = False
+                    
                     else:
-                        environment.addError("Semantico", "" ,f"No es posible asignar a {node.id} un {valor.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
-                        self.correct = False
-                else:
-                    environment.addError("Semantico", "" ,f"El valor de la variable {node.id} no pudo setearse, la invocacion de la funcion no retorna un valor", node.fila,node.columna)
-                    self.correct = False
-            else:
-                value = node.valor.interpretar(environment)    
+                        
+                        #validar las asignaciones de tipo bit
+                    
+                        if variable.type == Type.BIT:
+                    
+                            if valor.type == Type.INT:
+                                if valor.value == 0 or valor.value == 1:
+                                    variable.value = valor.value
+                                else:
+                                    environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} un {valor.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
+                                    self.correct = False
+                                             
+                            elif valor.type == Type.BIT:
+                                variable.value = valor.value
+                    
+                            else:
+                                environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} un {valor.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
+                                self.correct = False                            
+                    
+                        else: 
+                        
+                            if variable.type == valor.type:
+                                variable.value = valor.value
+                            else:
+                                environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} un {valor.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
+                                self.correct = False
             
+                else:
+                    self.correct = False  
+            
+            
+            else:
+                print("Entra")
+                value = node.valor.interpretar(environment)    
+                print("sale",value)
             
             if value != None:
                 
@@ -309,6 +364,7 @@ class SymbolTableVisitor(Visitor):
                         if variable.type.type == Type.NVARCHAR:
                             if len(value.value) <= tamanio.value:
                                 variable.value = value.value
+                                variable.type = Type.TEXT
                             else:
                                 environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(value.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
                                 self.correct = False
@@ -316,12 +372,13 @@ class SymbolTableVisitor(Visitor):
                         
                             if len(value.value) <= tamanio.value and len(value.value) > 0:
                                 variable.value = value.value
+                                variable.type = Type.TEXT
                             else:
                                 environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(value.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)
                                 self.correct = False    
                                                        
                     else: 
-                        environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)                        
+                        environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.type.name}({tamanio.value})", node.fila,node.columna)                        
                         self.correct = False
                     
                 else:

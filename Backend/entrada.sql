@@ -252,3 +252,40 @@ AS
     SET @enLlamado = retornaSuma();
          
 END;
+
+
+
+------------------------------- LLAMADO DE FUNCIONES SIMPLES-------------------
+
+CREATE FUNCTION sp_calculacuota ()
+RETURNs decimal
+AS
+BEGIN
+		DECLARE @cuota decimal,@saldo decimal, @plazo int, @diasmora int;
+		DECLARE @ajuste decimal;
+        set @cuota = 2.2;
+        set @saldo = 1.2;
+        set @plazo = 1;
+        set @diasmora = 45;
+        set @ajuste = 2.3;
+        
+        set @cuota = (@saldo/@plazo)*0.45;
+		
+			
+		RETURN @cuota;	
+		
+		
+END;
+
+
+CREATE FUNCTION llamado()
+RETURNS int 
+AS 
+
+ BEGIN 
+    DECLARE @enLlamado decimal; 
+    SET @enLlamado = sp_calculacuota();
+         
+END;
+
+-------------------------------------------------------------------------

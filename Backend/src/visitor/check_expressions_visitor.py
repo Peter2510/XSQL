@@ -1,4 +1,5 @@
 from enum import Enum
+from src.instrucciones.funcion.string_ import String_
 from src.ejecucion.type import Type
 from src.visitor.visitor import Visitor, SQLBinaryExpression, SQLLogicalExpression, SQLUnaryExpression
 
@@ -546,13 +547,43 @@ def get_binary_type(left, op, right):
         casting_list = EQUAL_CAST
     elif op == '!=':
         casting_list = NOT_EQUAL_CAST
-
-    left_type = left.tipo.name if left.tipo is not None else None
-    right_type = right.tipo.name if right.tipo is not None else None
-    index = find_in_array(f'{left_type}-{right_type}', COMBINATIONS)
-    index = index if index != -1 else find_in_array(f'{right_type}-{left_type}', COMBINATIONS)
-    new_type = casting_list[index] if index != -1 else None
-    return new_type
+        
+    print(type(left.tipo), type(right.tipo),"auqiqiqiqiqi")    
+    
+    if isinstance(left.tipo,String_) and (isinstance(right.tipo,String_)):
+        
+        left_type = Type.TEXT.name
+        right_type = Type.TEXT.name
+        index = find_in_array(f'{left_type}-{right_type}', COMBINATIONS)
+        index = index if index != -1 else find_in_array(f'{right_type}-{left_type}', COMBINATIONS)
+        new_type = casting_list[index] if index != -1 else None
+        return new_type
+    
+    elif isinstance(left.tipo,String_) and (not isinstance(right,String_)):
+        left_type = Type.TEXT.name
+        right_type = right.tipo.name if right.tipo is not None else None
+        index = find_in_array(f'{left_type}-{right_type}', COMBINATIONS)
+        index = index if index != -1 else find_in_array(f'{right_type}-{left_type}', COMBINATIONS)
+        new_type = casting_list[index] if index != -1 else None
+        return new_type
+    
+    elif (not isinstance(left,String_)) and (isinstance(right.tipo,String_)):
+        
+        left_type = left.tipo.name if left.tipo is not None else None
+        right_type = Type.TEXT.name
+        index = find_in_array(f'{left_type}-{right_type}', COMBINATIONS)
+        index = index if index != -1 else find_in_array(f'{right_type}-{left_type}', COMBINATIONS)
+        new_type = casting_list[index] if index != -1 else None
+        return new_type
+                
+    else:
+        
+        left_type = left.tipo.name if left.tipo is not None else None
+        right_type = right.tipo.name if right.tipo is not None else None
+        index = find_in_array(f'{left_type}-{right_type}', COMBINATIONS)
+        index = index if index != -1 else find_in_array(f'{right_type}-{left_type}', COMBINATIONS)
+        new_type = casting_list[index] if index != -1 else None
+        return new_type
 
 
 class ExpressionsVisitor(Visitor):

@@ -14,15 +14,20 @@ class Return_(Abstract):
         var = Variable()
         print("<<<< ESTE ES EL TIPO",type(self.instruction))
         import src.expresiones.binaria as bin
+        
         if isinstance(self.instruction,bin.Binaria):
+            
             opDer = self.instruction.opDer
             opDVal = str(opDer.valor)
             opIzq = self.instruction.opIzq
             opIVal = str(opIzq.valor)
+            
+        
             if opDVal.startswith("@"):
                 opDer.tipo = Type.IDDECLARE
             if opIVal.startswith("@"):
                 opIzq.tipo = Type.IDDECLARE           
+                
             inst = self.instruction.interpretar(environment)
             var.value = inst.value
             var.type = inst.type
@@ -32,9 +37,11 @@ class Return_(Abstract):
             variable = environment.getVariable(self.instruction.valor)
             var.type = variable.type
             var.value = variable.value
+            print("REtuirn",variable)
             return var
         else:
             inst = self.instruction.interpretar(environment)
+            
             var.value = inst.value
             var.type = inst.type
             return var
