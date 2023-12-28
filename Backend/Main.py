@@ -71,13 +71,16 @@ def compilar():
                 response['resultados'] = _res
 
             if len(_res) > 0 and len(env.errors) < 1:
-                ast_visitor = GenerateASTVisitor(env)
-                pars.accept(ast_visitor, env)
-                f = io.StringIO()
-                ast_visitor.get_graph().dot(f)
-                dot_string = f.getvalue()
+                try:
+                    ast_visitor = GenerateASTVisitor(env)
+                    pars.accept(ast_visitor, env)
+                    f = io.StringIO()
+                    ast_visitor.get_graph().dot(f)
+                    dot_string = f.getvalue()
 
-                response['dot'] = dot_string
+                    response['dot'] = dot_string
+                except Exception as e:
+                    print(e)
 
             return response
     
