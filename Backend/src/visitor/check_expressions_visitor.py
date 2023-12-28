@@ -548,8 +548,7 @@ def get_binary_type(left, op, right):
     elif op == '!=':
         casting_list = NOT_EQUAL_CAST
         
-    print(type(left.tipo), type(right.tipo),"auqiqiqiqiqi")    
-    
+   
     if isinstance(left.tipo,String_) and (isinstance(right.tipo,String_)):
         
         left_type = Type.TEXT.name

@@ -8,6 +8,7 @@ class Abstract(ABC):
 
     def __str__(self):
         return ""
+    
     @abstractmethod
     def accept(self, visitor, environment):
         pass

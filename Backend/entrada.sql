@@ -288,4 +288,28 @@ AS
          
 END;
 
--------------------------------------------------------------------------
+---------------------------ERROR POR EL TAMAÑO DE LA CADENA----------------------------------------------
+
+CREATE FUNCTION fn_retornaalturamora ()
+RETURNs nchar(1500)
+AS
+BEGIN
+	DECLARE @alturamora nvarchar(100);
+    
+    set @alturamora = "asaaaaaaaaaaa";
+	RETURN @alturamora;
+    
+    end ;
+    
+CREATE FUNCTION llamado()
+RETURNS int 
+AS 
+
+ BEGIN 
+    DECLARE @enLlamado nvarchar(3); 
+    SET @enLlamado = fn_retornaalturamora();
+         
+END;    
+
+
+--------------------------------------------

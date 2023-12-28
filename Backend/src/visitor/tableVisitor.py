@@ -76,6 +76,7 @@ class SymbolTableVisitor(Visitor):
                 v.id = param.id
                 v.type = param.type
                 v.value = v.value
+                print(type(v.value))
                 environment.agregarVariable(v)
     
     def visitInstrucciones(self,node,environment):
@@ -100,6 +101,23 @@ class SymbolTableVisitor(Visitor):
             v = Variable()
             v.id = node.id
             v.type = node.type
+            if node.type == Type.INT:
+                v.value = 0        
+            elif node.type == Type.DECIMAL:
+                v.value = 0.0
+            elif isinstance(node.type,String_):
+                v.value = ""
+            elif node.type == Type.TEXT:
+                v.value = ""
+            elif node.type == Type.BIT:
+                v.value = False
+            elif node.type == Type.DATE:
+                v.value = "1999-01-01"
+            elif node.type == Type.DATETIME:
+                v.value = "1999-01-01 00:00:00"
+            elif node.type == Type.NULL:
+                v.value = ""
+            print("agrego variable",v.id,v.type)
             environment.agregarVariable(v)
            
     def visitAlterFunction(self,node,environment):
@@ -204,11 +222,10 @@ class SymbolTableVisitor(Visitor):
                          break
                 
                 #ejecutar instrucciones
-
-                print("EJECUTAR EL VISITOR DE LAS INSTRUCCIONES EN LA LLAMADA")
-                
+               
                 env1 = Environment()
                 valorEjecucion = funcion.interpretar(env1)
+                print("desde visitCallFunction",valorEjecucion.value,valorEjecucion.type)
                 return valorEjecucion
                 
                         
@@ -222,7 +239,7 @@ class SymbolTableVisitor(Visitor):
     def visitReturn(self,node,environment):
         
         valorRetorno = node.instruction.interpretar(environment)
-        print(valorRetorno,valorRetorno.type,valorRetorno.value,valorRetorno.id)
+        print("valor retorno",valorRetorno,type(valorRetorno.type),valorRetorno.value,valorRetorno.id)
         
         if valorRetorno != None:
             
@@ -231,7 +248,7 @@ class SymbolTableVisitor(Visitor):
                 
                 tamanio = self.tipo.size.interpretar(environment)
                 
-                if valorRetorno.type == Type.TEXT:
+                if isinstance(valorRetorno.type,String_):
                     
                     if self.tipo.type == Type.NVARCHAR:
                         
@@ -251,7 +268,6 @@ class SymbolTableVisitor(Visitor):
                                                                                
                 else: 
                     environment.addError("Semantico", valorRetorno.value ,f"El tipo de dato retornado debe ser de tipo {self.tipo.type.name}", node.fila,node.columna)
-                    print("Retorna esto",valorRetorno.type)
                     self.correct = False
     
             #validar si es de tipo bit
@@ -278,45 +294,42 @@ class SymbolTableVisitor(Visitor):
                     
     def visitSet(self,node,environment):
         
-        
-        
         if(environment.existeVariable(node.id)):
             
             variable = environment.getVariable(node.id)
             
-            value = None
+            print(variable.toString(),"jkajka")
             
             if isinstance(node.valor,CallFunction):
+                
                 valor = node.valor.interpretar(environment)
-                                
+                
+                print("Esto retorna desde la llamada",valor)
+                
                 if valor != None:
 
                     if isinstance(variable.type,String_):
-                        
+                        print("SI ES DE TIPO STRING_")
                         tamanio = variable.type.size.interpretar(environment)
                         
-                        if valor.type == Type.TEXT:
-                    
-                            if variable.type.type == Type.NVARCHAR:
+                        if variable.type.type == Type.NVARCHAR:
                                 if len(valor.value) <= tamanio.value:
                                     variable.value = valor.value
-                                    variable.type = Type.TEXT
+                                    #variable.type = Type.TEXT
                                 
                                 else:
-                                    environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(valor.value)}, la variable es de tipo {variable.type.name}({tamanio.value}), el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
+                                    environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(valor.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
                                     self.correct = False
-                            else:
+                        else:
                         
                                 if len(valor.value) <= tamanio.value and len(valor.value) > 0:
                                     variable.value = valor.value
-                                    variable.type = Type.TEXT
+                                    #variable.type = Type.TEXT
                                 else:
-                                    environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(valor.value)}, la variable es de tipo {variable.type.name}({tamanio.value}), el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)
+                                    environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(valor.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)
                                     self.correct = False    
                                                        
-                        else: 
-                            environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} un {valor.type}, la variable es de tipo {variable.type}({tamanio.value})", node.fila,node.columna)                        
-                            self.correct = False
+                        
                     
                     else:
                         
@@ -349,74 +362,73 @@ class SymbolTableVisitor(Visitor):
                 else:
                     self.correct = False  
             
-            
             else:
+                
                 print("Entra")
                 value = node.valor.interpretar(environment)    
                 print("sale",value)
             
-            if value != None:
-                
-                if isinstance(variable.type,String_):
-                    tamanio = variable.type.size.interpretar(environment)
-                    if value.type == Type.TEXT:
-                    
-                        if variable.type.type == Type.NVARCHAR:
-                            if len(value.value) <= tamanio.value:
-                                variable.value = value.value
-                                variable.type = Type.TEXT
-                            else:
-                                environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(value.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
-                                self.correct = False
-                        else:
+                if value != None:
+
+                    if isinstance(variable.type,String_):
                         
-                            if len(value.value) <= tamanio.value and len(value.value) > 0:
-                                variable.value = value.value
-                                variable.type = Type.TEXT
+                        tamanio = variable.type.size.interpretar(environment)
+                        if value.type == Type.TEXT:
+                        
+                            if variable.type.type == Type.NVARCHAR:
+                                if len(value.value) <= tamanio.value:
+                                    variable.value = value.value
+                                    #variable.type = Type.TEXT
+                                else:
+                                    environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(value.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
+                                    self.correct = False
                             else:
-                                environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(value.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)
-                                self.correct = False    
-                                                       
-                    else: 
-                        environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.type.name}({tamanio.value})", node.fila,node.columna)                        
-                        self.correct = False
-                    
-                else:
-                    
-                    #validar las asignaciones de tipo bit
-                    
-                    if variable.type == Type.BIT:
-                    
-                        if value.type == Type.INT:
-                            if value.value == 0 or value.value == 1:
+                            
+                                if len(value.value) <= tamanio.value and len(value.value) > 0:
+                                    variable.value = value.value
+                                    #variable.type = Type.TEXT
+                                else:
+                                    environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(value.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)
+                                    self.correct = False    
+
+                        else: 
+                            environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.type.name}({tamanio.value})", node.fila,node.columna)                        
+                            self.correct = False
+
+                    else:
+
+                        #validar las asignaciones de tipo bit
+
+                        if variable.type == Type.BIT:
+                        
+                            if value.type == Type.INT:
+                                if value.value == 0 or value.value == 1:
+                                    variable.value = value.value
+                                else:
+                                    environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
+                                    self.correct = False
+
+
+                            elif value.type == Type.BIT:
+                                variable.value = value.value
+
+                            else:
+                                environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
+                                self.correct = False                            
+
+                        else: 
+
+                            if variable.type == value.type:
                                 variable.value = value.value
                             else:
                                 environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
                                 self.correct = False
-                                                       
-                            
-                        elif value.type == Type.BIT:
-                            variable.value = value.value
-                    
-                        else:
-                            environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
-                            self.correct = False                            
-                    
-                    else: 
-                        
-                        if variable.type == value.type:
-                            variable.value = value.value
-                        else:
-                            environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
-                            self.correct = False
-            
-            else:
-                self.correct = False               
+
+                else:
+                    self.correct = False               
         else:
              environment.addError("Semantico", node.id ,f"La variable no ha sido declarada", node.fila,node.columna)
              self.correct = False    
-        for i in environment:
-            print(i.id,i.value,i.type)               
                  
     def visitAlterProcedure(self,node,environment):
         pass

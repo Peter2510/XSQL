@@ -1,3 +1,4 @@
+from src.instrucciones.funcion.string_ import String_
 from src.ejecucion.type import Type
 from src.expresiones.variable import Variable
 from src.abstract.abstractas import Abstract
@@ -19,6 +20,8 @@ class VariableDeclaration(Abstract):
             var.value = 0        
         elif self.type == Type.DECIMAL:
             var.value = 0.0
+        elif isinstance(self.type,String_):
+            var.value = ""
         elif self.type == Type.TEXT:
             var.value = ""
         elif self.type == Type.BIT:
