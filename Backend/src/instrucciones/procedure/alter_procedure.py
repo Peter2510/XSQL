@@ -10,6 +10,7 @@ class AlterProcedure(Abstract):
 
     def accept(self, visitor, environment):
         print("ALTER ACCEPT procedure",self.nombre,self.listaParametros)
+        visitor.visit(self, environment)
         ##visitor.visitProcedure(self,environment)
 
     def interpretar(self, environment):

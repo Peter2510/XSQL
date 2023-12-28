@@ -8,6 +8,8 @@ from flask.helpers import url_for
 from werkzeug.utils import redirect
 from Lexer import tokens, lexer, errors, find_column
 from src.manejadorXml import  Estructura
+from src.visitor import GenerateASTVisitor
+import io
 from src.manejadorXml import  obtener
 
 global env
@@ -59,21 +61,37 @@ def compilar():
             env.errors.clear()
             return {'errores':json_string}
         
-        else: 
+        else:
+            response = {'errores': '', 'resultados': []}
             iniciarEjecucion = Ejec(pars.statements)
             _res = iniciarEjecucion.execute(env)
             if len(env.errors) > 0:
-                    errores_dict_list = [error.to_dict() for error in env.errors]        
+                    errores_dict_list = [error.to_dict() for error in env.errors]
                     json_string = json.dumps(errores_dict_list, indent=2)
                     Estructura.nombreActual = ""
                     env.errors.clear()
-                    return {'errores':json_string}
-            else:
+                    response['errores'] = json_string
+            if len(_res) > 0:
                 # print("Compilación exitosa")
                 print("",Estructura.nombreActual)
                 Estructura.nombreActual = ""
                 env.errors.clear()
-                return {'result':entrada}
+
+                response['resultados'] = _res
+
+            if len(_res) > 0 and len(env.errors) < 1:
+                try:
+                    ast_visitor = GenerateASTVisitor(env)
+                    pars.accept(ast_visitor, env)
+                    f = io.StringIO()
+                    ast_visitor.get_graph().dot(f)
+                    dot_string = f.getvalue()
+
+                    response['dot'] = dot_string
+                except Exception as e:
+                    print(e)
+
+            return response
     
         
         
