@@ -1,3 +1,17 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Database name="nuevo">
-    </Database>
+    <Table name="ggg">
+        <Estructura>
+            <Principal name="idestado">
+                <Atributo1 tipo="0">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="1">1</Atributo3>
+            </Principal>
+            <Principal name="estado">
+                <Atributo1 tipo="NVARCHAR(4)">1</Atributo1>
+                <Atributo2 nulidad="2">2</Atributo2>
+                <Atributo3 restricciones="0">0</Atributo3>
+            </Principal>
+        </Estructura>
+    </Table>
+</Database>
