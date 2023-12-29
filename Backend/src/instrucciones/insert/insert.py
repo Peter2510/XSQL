@@ -19,7 +19,7 @@ class insertInstruccion(Abstract):
         nombre = self.nombreTabla
         nuevosParametros =[]
         nuevosAtributos = []
-
+ 
 
         ### obtencion de archivps
         Estructura.load();
