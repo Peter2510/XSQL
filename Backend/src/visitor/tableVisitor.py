@@ -39,7 +39,6 @@ class SymbolTableVisitor(Visitor):
                         print(variable.id,variable.value,variable.type)
                     funcion = Funcion(node.id,node.type,node.params,node.body)
                     environment.agregarFuncion(nombre,funcion)
-                    #environment.getFuncion(nombre).interpretar(environmentFuncion)
                         
             else:
                 environment.errors = environment.getErrores() + environmentFuncion.getErrores()

@@ -10,7 +10,7 @@ class Ejec(object):
     def execute(self, environment):
         if isinstance(self.queryArray,list):
             for item in self.queryArray:
-              item.interpretar(environment)
+              print(item.interpretar(environment))
               
               
 

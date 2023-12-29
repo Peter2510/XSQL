@@ -17,4 +17,6 @@ class FunctionDeclaration(Abstract):
         from src.visitor.tableVisitor import SymbolTableVisitor
         visit = SymbolTableVisitor(environment)
         self.accept(visit, environment)
+        if self.accept:
+            return "Se creo la funcion: '" + self.id + "' correctamente"
         
