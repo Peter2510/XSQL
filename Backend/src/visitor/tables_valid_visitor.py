@@ -39,15 +39,15 @@ class ValidateColumnVisitor(Visitor):
             column_type = Type.TEXT
         elif 'nchar' in tipo:
             column_type = Type.TEXT
-        elif 'int' in tipo:
+        elif 'int' in tipo or '0' == tipo:
             column_type = Type.INT
-        elif 'bit' in tipo:
+        elif 'bit' in tipo or '1' == tipo:
             column_type = Type.BIT
-        elif 'decimal' in tipo:
+        elif 'decimal' in tipo or '2' == tipo:
             column_type = Type.DECIMAL
-        elif 'date' in tipo:
+        elif 'date' in tipo or '3' == tipo:
             column_type = Type.DATE
-        elif 'datetime' in tipo:
+        elif 'datetime' in tipo or '4' == tipo:
             column_type = Type.DATETIME
         node.tipo = column_type
         node.table = name_tb

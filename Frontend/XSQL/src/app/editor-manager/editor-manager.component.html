@@ -62,6 +62,11 @@
             <button (click)="onCompile()" type="button" class="btn btn-outline-warning me-1 mt-2 text-center">
               Ejecutar
             </button>
+            @if (currentDot) {
+              <button type="button" class="btn btn-outline-primary ms-3 mt-2 text-center" (click)="onGetImage()">
+                AST
+              </button>
+            }
           </div>
 
         </div>
@@ -95,3 +100,13 @@
   </div>
 
 </div>
+
+<!-- <div
+  class="mt-2 container-sm d-flex flex-column align-items-center justify-content-center border border-primary rounded"
+>
+  <h1 class="mb-3">Resultados</h1>
+  <button type="button" class="btn btn-warning m-2" (click)="clearResults()">
+    Limpiar
+  </button>
+  <ng-template resultHost></ng-template>
+</div> -->

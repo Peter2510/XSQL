@@ -23,4 +23,4 @@ class truncateDB(Abstract):
         else:
             print({'Error': 'error semantico - no se existe la base de datos'})
     def accept(self, visitor, environment):
-        pass
+        visitor.visit(self, environment)

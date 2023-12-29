@@ -11,7 +11,7 @@ class updateInstruccion(Abstract):
         super().__init__(fila, columna)
 
     def accept(self, visitor, environment):
-        pass
+        visitor.visit(self, environment)
 
     def interpretar(self,environment):
 
