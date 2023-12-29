@@ -18,4 +18,4 @@ class dropDB(Abstract):
         return nombre
 
     def accept(self, visitor, environment):
-        pass
+        visitor.visit(self, environment)

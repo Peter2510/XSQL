@@ -1,6 +1,7 @@
 import pprint
 from ..abstract import Abstract
-from .utils import add_prefix_to_keys, filter_where_clause, apply_column_expressions, cartesian_product
+from .utils import (add_prefix_to_keys, filter_where_clause, apply_column_expressions, cartesian_product,
+                    get_table_form, get_column_expressions)
 from src.ejecucion.type import Type
 
 
@@ -123,8 +124,7 @@ class Select(Abstract):
                 print('expr: ', str(column))
                 result += f"{column.interpretar(environment)}\n"
 
-            print('result: ', result)
-            return result
+            return {'tipo': 'select_expr', 'resultado': result}
 
         data = self.get_data_joined()
         # Apply where expr
@@ -135,16 +135,21 @@ class Select(Abstract):
         environment.record = {}
         environment.select_records = data_filtered
         final_data = list(map(apply_column_expressions(self.columns, environment), data_filtered))
+        if len(final_data) == 0:
+            final_data = get_column_expressions(self.columns)
+
         if environment.one_record and len(final_data) > 0:
             final_data = [final_data[0]]
+
+        final_result = get_table_form(final_data)
 
         environment.record = {}
         environment.select_records = []
         environment.one_record = False
         pp = pprint.PrettyPrinter(indent=2, compact=False, depth=10)
-        pp.pprint(final_data)
+        pp.pprint(final_result)
 
-        return {'tipo': 'select', 'resultado': final_data}
+        return {'tipo': 'select', 'resultado': final_result}
 
 
 class AllColumns(Abstract):

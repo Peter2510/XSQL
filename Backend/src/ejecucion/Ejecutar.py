@@ -10,16 +10,6 @@ class Ejec(object):
     def execute(self, environment):
         if isinstance(self.queryArray,list):
             for item in self.queryArray:
-              item.interpretar(environment)
+                self.valores.append(item.interpretar(environment))
               
-              
-
-              
-              
-               
-        
-        
-            
-
-
-
+        return [valor for valor in self.valores if valor is not None]

@@ -13,7 +13,18 @@ from src.instrucciones.funcion.variable_declaration import VariableDeclaration
 from src.instrucciones.usarDB import usarDB
 from ..expresiones import binaria
 from ..instrucciones.funcion import function_declaration
-
+from src.instrucciones.crearTabla import crearTabla
+from src.instrucciones.createdb import createDB
+from src.instrucciones.procedure.create_procedure import ProcedureDeclaration
+from src.instrucciones.procedure.call_procedure import CallProcedure
+from src.instrucciones.procedure.alter_procedure import AlterProcedure
+from src.instrucciones.truncate.truncateDB import truncateDB
+from src.instrucciones.truncate.truncateTabla import truncateTabla
+from src.instrucciones.drop.dropDB import dropDB
+from src.instrucciones.drop.dropTabla import dropTable
+from src.instrucciones.Alter.alterTable import alterTable
+from src.instrucciones.insert.insert import insertInstruccion
+from src.instrucciones.update.update import updateInstruccion
 
 
 from src.ast import (
@@ -42,7 +53,6 @@ class Visitor(ABC):
     def visit(self, node, environment):
         if not self.correct:
             return
-
         if isinstance(node, SQLUnaryExpression):
             self.visitSQLUnaryExpression(node, environment)
         elif isinstance(node, SQLBinaryExpression):
@@ -63,7 +73,24 @@ class Visitor(ABC):
             self.visitSubstraer(node, environment)
         elif isinstance(node, Suma):
             self.visitSuma(node, environment)
-
+        elif isinstance(node, crearTabla):
+            self.visitCrearTabla(node, environment)
+        elif isinstance(node, createDB):
+            self.visitCreateDB(node, environment)
+        elif isinstance(node, truncateDB):
+            self.visitTruncateDB(node, environment)
+        elif isinstance(node, truncateTabla):
+            self.visitTruncateTabla(node, environment)
+        elif isinstance(node, dropDB):
+            self.visitDropDB(node, environment)
+        elif isinstance(node, dropTable):
+            self.visitDropTable(node, environment)
+        elif isinstance(node, alterTable):
+            self.visitAlterTable(node, environment)
+        elif isinstance(node, insertInstruccion):
+            self.visitInsertInstruccion(node, environment)
+        elif isinstance(node, updateInstruccion):
+            self.visitUpdateInstruccion(node, environment)
 
         elif isinstance(node, binaria.Binaria):
             self.visitLogico(node, environment)
@@ -95,15 +122,15 @@ class Visitor(ABC):
         elif isinstance(node,VariableDeclaration):
             self.visitVariableDeclaration(node,environment)
     
-        # elif isinstance(node,AlterProcedure):
-            # self.visitAlterProcedure(node,environment)
-                # 
-        # elif isinstance(node,CallProcedure):
-            # self.visitCallProcedure(node,environment)
-                # 
-        # elif isinstance(node,ProcedureDeclaration):
-            # self.visitCreateProcedure(node,environment)
-                # 
+        elif isinstance(node, AlterProcedure):
+            self.visitAlterProcedure(node, environment)
+
+        elif isinstance(node, CallProcedure):
+            self.visitCallProcedure(node,environment)
+
+        elif isinstance(node, ProcedureDeclaration):
+            self.visitCreateProcedure(node, environment)
+
         elif isinstance(node,Else_):
             self.visitElse(node,environment)
              
@@ -288,4 +315,31 @@ class Visitor(ABC):
         pass
 
     def visitSuma(self, node, environment):
+        pass
+
+    def visitCrearTabla(self, node, environment):
+        pass
+
+    def visitCreateDB(self, node, environment):
+        pass
+
+    def visitTruncateTabla(self, node, environment):
+        pass
+
+    def visitTruncateDB(self, node, environment):
+        pass
+
+    def visitDropDB(self, node, environment):
+        pass
+
+    def visitDropTable(self, node, environment):
+        pass
+
+    def visitAlterTable(self, node, environment):
+        pass
+
+    def visitInsertInstruccion(self, node, environment):
+        pass
+
+    def visitUpdateInstruccion(self, node, environment):
         pass

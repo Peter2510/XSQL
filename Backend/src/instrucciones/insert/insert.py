@@ -76,8 +76,8 @@ class insertInstruccion(Abstract):
 
             ## ver si ya se nombro la base de datos 
             if (existeTabla == False):
-                environment.addError("Semantico", "" ,f"no existe tabla en la BD", self.fila,self.columna)
-
+               # environment.addError("Semantico", "" ,f"no existe tabla en la BD", self.fila,self.columna)
+                print("a")
             #### ver si son iguales 
             if (len(self.atributos) != len(self.parametros)):
                 validaciones = True
@@ -116,8 +116,11 @@ class insertInstruccion(Abstract):
                         for datos in elementos['data']['datos']:
                             indice=0
                             for key, value in datos.items():
+                                print(key, value, "<<<----")
                                 if key in nombreAtributosPrimarios:
+                                    print(self.atributos)
                                     for nombreAtributo in self.atributos:
+                                        print(nombreAtributo)
                                         if key == nombreAtributo and value == str(self.parametros[indice]):
                                                 validacionUnicoPrimario = True
                                                 break
