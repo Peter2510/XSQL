@@ -6,8 +6,8 @@ class Abstract(ABC):
         self.fila = fila
         self.columna = columna
 
-    def __str__(self):
-        return ""
+    # def __str__(self):
+    #     return ""
     
     @abstractmethod
     def accept(self, visitor, environment):

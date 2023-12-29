@@ -12,7 +12,7 @@ class Return_(Abstract):
         
     def interpretar(self,environment):
         var = Variable()
-        print("<<<< ESTE ES EL TIPO",type(self.instruction),self.instruction.valor)
+        #print("<<<< ESTE ES EL TIPO",type(self.instruction),self.instruction.valor)
         for i in environment:
             print(i.value,i.type,i.id)
         import src.expresiones.binaria as bin 
@@ -39,9 +39,6 @@ class Return_(Abstract):
             variable = environment.getVariable(self.instruction.valor)
             var.type = variable.type
             var.value = variable.value
-            
-            for i in environment:
-                print("variable ",i.value,i.type,i.id)
             
             return var
         else:
