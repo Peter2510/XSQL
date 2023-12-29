@@ -29,6 +29,13 @@ def generaDump():
         datos.append( obtener.dumpXMl())
         return datos
 
+@app.route('/generaExport', methods = ['GET'])
+def generaExport():
+        Estructura.load()
+        datos =[]
+        datos.append( obtener.exportTablaInserts())
+        return datos
+
 
 @app.route('/ejecutar',methods=["POST","GET"])
 

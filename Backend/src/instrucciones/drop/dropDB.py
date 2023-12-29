@@ -13,6 +13,7 @@ class dropDB(Abstract):
         if os.path.exists(f'./src/data/xml/{nombre}.xml'):
             os.remove(f'./src/data/xml/{nombre}.xml')
         else:
+            environment.addError("Semantico", {self.nombre} ,f"no existe la  base de datos",  self.fila, self.columna)
             print("No existe la base de datos")
         return nombre
 

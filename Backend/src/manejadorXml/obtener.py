@@ -202,6 +202,35 @@ def import_xml_db(db_name):
         return None
 
 
+## para el export 
+
+def exportTablaInserts():
+        tree = ET.parse(f'./src/data/xml/prueba.xml')
+        root = tree.getroot()
+
+        sql_queries = []
+        for table in root.findall('Table'):
+            table_name = table.get('name')
+            create_table_query = f"INSERT INTO {table_name} ("
+
+            ## busac en datos especificos
+            for principal in table.findall("./Datos[@name='nuevo_registro']/DatosEspecifico"):
+                    values = []
+                    data_query = f"INSERT INTO {table_name} ("
+
+                    for element in principal:
+                        column_name = element.tag
+                        column_value = element.text if element.text else ""
+                        data_query += f"{column_name}, "
+                        values.append(column_value)
+                        # ver
+                        print(column_name, column_value)
+                    data_query = data_query.rstrip(", ") + ") VALUES (" + ", ".join([f"'{val}'" for val in values]) + ");"
+                    sql_queries.append(data_query)
+
+        textoGeneral = '\n'.join(sql_queries)
+        return textoGeneral
+
 ## para el dump
 
 def dumpXMl():

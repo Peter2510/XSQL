@@ -9,7 +9,7 @@ class crearTabla(Abstract):
         self.listaAtributos = listaAtributos
         super().__init__(fila, columna)
 
-    def interpretar(self, tablaSimbolos):
+    def interpretar(self, environment):
         ### datos de bandera
         ##hacer validacion con la variable global de Estructura
         existeNombre = False
@@ -32,6 +32,7 @@ class crearTabla(Abstract):
                 if (nombreRepetido["name"] == self.nombre):
                     nombreTablaRepetido = True
                     print("repetido")
+                    environment.addError("Semantico", "" ,f"Esta tabla esta repetida en la BD", self.fila,self.columna)
                     break
 
             if (nombreTablaRepetido == False):
@@ -46,7 +47,7 @@ class crearTabla(Abstract):
                         if (row[0] != valoresRepetidos):
                             valoresRepetidos.append(row[0])
                         else:
-                            environment.addError("Semantico", "" ,f"ya existe nombre de esa tabla", node.fila,node.columna)
+                            environment.addError("Semantico", "" ,f"ya existe nombre de esa tabla", self.fila,self.columna)
                             existeNombre = True
                             return
                     ## si no existe nombre de la tabla genera el ingreso 
@@ -96,6 +97,8 @@ class crearTabla(Abstract):
                     nombre = atributo["nombre"]
                     if nombre in valoresTabla:
                         atributoRepetido= True
+                        environment.addError("Semantico", "" ,f"ya existe un atributo con este nombre en esta tabla como referencia", self.fila,self.columna)
+
                         print({"error": 'Error semántico, ya existe un atributo con este nombre en esta tabla como referencia'})
                         break
                     else:
@@ -114,6 +117,7 @@ class crearTabla(Abstract):
                    Estructura.crearTabla(Estructura.nombreActual, self.nombre, atributosFinales)
         else:
             print({"error": 'error semantico, no existe la base de datos que hace referencia'})
+            environment.addError("Semantico", "" ,f"no existe la base de datos que hace referencia", self.fila,self.columna)
 
 
         return 

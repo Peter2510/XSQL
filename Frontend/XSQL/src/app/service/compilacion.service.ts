@@ -33,4 +33,7 @@ export class CompilacionService {
    generaDump():Observable<string>{
     return this.http.get<string>(`${baseURL}`+"/generaDump");
     }
+    generaExport():Observable<string>{
+      return this.http.get<string>(`${baseURL}`+"/generaExport");
+    }
 }

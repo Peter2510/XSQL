@@ -3,6 +3,7 @@ from ...abstract.abstractas import Abstract
 import pandas as pd
 import os 
 from ...manejadorXml import manejo, Estructura, obtener
+from enum import Enum
 
 class alterTable(Abstract):
     def __init__(self, fila, columna, nombre, opcionAlter):
@@ -18,7 +19,6 @@ class alterTable(Abstract):
             indiceBaseDatos =0
             sinProblemaAlter = False
             ## emtpmces es add
-            print("add");
             Estructura.load()
             for indice in Estructura.Databases:
                 if (indice["name"]==Estructura.nombreActual):
@@ -35,7 +35,11 @@ class alterTable(Abstract):
                             break
 
             if (not sinProblemaAlter):
-                Estructura.alterColumnadd(f'./src/data/xml/{Estructura.nombreActual}.xml',self.nombre,self.opcionAlter[0],self.opcionAlter[1].value);
+                if (isinstance(self.opcionAlter[1], Enum)):
+                    Estructura.alterColumnadd(f'./src/data/xml/{Estructura.nombreActual}.xml',self.nombre,self.opcionAlter[0],self.opcionAlter[1].value);
+                else:
+                    Estructura.alterColumnadd(f'./src/data/xml/{Estructura.nombreActual}.xml',self.nombre,self.opcionAlter[0],f'{self.opcionAlter[1].type.name}({self.opcionAlter[1].size.valor})');
+
             else:
                 environment.addError("Semantico", {self.nombre} ,f"ERROR SEMANTICO, existe ya la columna",  self.fila, self.columna)
                 print({'error': 'ERROR SEMANTICO, existe ya la columna '})

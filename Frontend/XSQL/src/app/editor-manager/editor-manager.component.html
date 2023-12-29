@@ -16,6 +16,9 @@
       <button type="button" class="btn btn-outline-primary me-3" (click)="generarDump()">
         Generar Dump
       </button>
+      <button type="button" class="btn btn-outline-primary me-3" (click)="expotarInserts()">
+        Exportar
+      </button>
       <div class="mb-3 mt-3 me-3">
         <input (change)="uploadFile($event)" class="form-control form-control-sm" type="file" id="formFile" accept=".sql"
           multiple />

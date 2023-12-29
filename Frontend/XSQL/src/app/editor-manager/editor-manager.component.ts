@@ -40,7 +40,7 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
 
   @ViewChild('logger') logger: any;
 
-  errores:ErrorSQL[] = [];
+  errores: ErrorSQL[] = [];
 
   codeMirrorOptions: any = {
     theme: 'dracula',
@@ -64,11 +64,9 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.compilar.saludo().subscribe(
-      info => {
-        console.log(info);
-      }
-    )
+    this.compilar.saludo().subscribe((info) => {
+      console.log(info);
+    });
   }
 
   /*graphvizImg(dot: string) {
@@ -114,32 +112,30 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       }
 
       //EJECUTAR EL ARCHIVO ACTUAL
-      this.compilar.ejecutarSQL(main.content).subscribe((data)=>{
-
-        if(data.errores){
-
+      this.compilar.ejecutarSQL(main.content).subscribe((data) => {
+        if (data.errores) {
           let errores = data.errores;
-          let erroresJson =  JSON.parse(errores);
+          let erroresJson = JSON.parse(errores);
 
-          for(let i = 0; i < erroresJson.length; i++){
+          for (let i = 0; i < erroresJson.length; i++) {
             let error = erroresJson[i];
-            let errorSQL = new ErrorSQL(error.tipo, error.token ,error.descripcion, error.linea, error.columna);
+            let errorSQL = new ErrorSQL(
+              error.tipo,
+              error.token,
+              error.descripcion,
+              error.linea,
+              error.columna
+            );
             this.errores.push(errorSQL);
           }
 
           this.showErrorsConsole(this.errores);
-
-
-        }else{
-          console.log("nenenel rrores")
+        } else {
+          console.log('nenenel rrores');
         }
-
-      })
-
+      });
 
       //this.resultHost.viewContainerRef.clear();
-
-
     }
   }
 
@@ -169,8 +165,6 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       resultComponent.instance.data = resultItem.data;
     });
   }
-
-
 
   addBlankEditor(name: string, content: string = '') {
     let nameTab = `${name}-tab`;
@@ -253,12 +247,12 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       // console.log(files);
       for (const file of files) {
         let name = file.name.replace('.sql', '');
-        console.log(name)
+        console.log(name);
         if (!this.isRepeatedName(name)) {
           let reader = new FileReader();
           const freader = () => {
             this.actualCode = reader.result as string;
-            console.log(this.actualCode,"jhs")
+            console.log(this.actualCode, 'jhs');
             if (this.actualCode) {
               reader.removeEventListener('load', freader);
               this.addBlankEditor(name, this.actualCode);
@@ -305,29 +299,47 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
     return index;
   }
 
-
-  generarDump(){
+  generarDump() {
     let index = this.getActiveIndex();
-if (index !== -1) {
-  this.compilar.generaDump().subscribe(
-    (text: any) => {
-      console.log(text);
+    if (index !== -1) {
+      this.compilar.generaDump().subscribe((text: any) => {
+        console.log(text);
 
-      let name = this.names[index] + '.sql';
-      let file = new Blob([text], { type: 'text' });
-      let a = document.createElement('a'),
-        url = URL.createObjectURL(file);
-      a.href = url;
-      a.download = name;
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(function () {
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      }, 0);
+        let name = this.names[index] + '.sql';
+        let file = new Blob([text], { type: 'text' });
+        let a = document.createElement('a'),
+          url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        }, 0);
+      });
     }
-  );
-}
+  }
 
+  expotarInserts() {
+    let index = this.getActiveIndex();
+    if (index !== -1) {
+      this.compilar.generaExport().subscribe((text: any) => {
+        console.log(text);
+
+        let name = this.names[index] + '.sql';
+        let file = new Blob([text], { type: 'text' });
+        let a = document.createElement('a'),
+          url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        }, 0);
+      });
+    }
   }
 }
