@@ -1,5 +1,7 @@
 from ...abstract.abstractas import Abstract
 from ...manejadorXml import manejo, Estructura 
+from ...ast.sql_expression import SQLUnaryExpression, SQLBinaryExpression
+
 import json
 import pandas as pd
 class updateInstruccion(Abstract):
@@ -11,7 +13,7 @@ class updateInstruccion(Abstract):
         super().__init__(fila, columna)
 
     def accept(self, visitor, environment):
-        pass
+        visitor.visit(self, environment)
 
     def interpretar(self,environment):
 
@@ -59,14 +61,28 @@ class updateInstruccion(Abstract):
 
                         for key, value in datos.items():
                                 indiceEspecifico+=1
-                                if (self.parametros[0] == key and str(self.parametros[1].valor) == value):
+                                if (self.parametros[0] == key and str(self.parametros[1]) == value):
                             ## busqueda de elementos que sean no nulos y primary key.
                                     indicesModificar.append(indicesIdeales)
                                     print( "---", key, value, indiceEspecifico-1, indicesIdeales)
                         
                         indicesIdeales+=1
 
-                ### como validacion ir a ver si estan todos los atributos
+            for nombres in self.atributos:
+                if isinstance(nombres[1], (SQLUnaryExpression, SQLBinaryExpression)):
+                    print(nombres[1].valor)
+                    texto = str(nombres[1])  
+                    partes = texto.split("None.", 1) 
+                    partes2 = texto.split("None.") 
+
+                    texto_puro = partes[-1]  
+                    print(partes, texto_puro, partes2)
+
+
+
+                print(nombres[0],nombres[1], type(nombres[1]), nombres[1].tipo, nombres[1].valor, "<<<<<<<")
+
+            ### como validacion ir a ver si estan todos los atributos
             for nombreAtributo in self.atributos:
                 if nombreAtributo[0] in nombresGlobalesdeAtributos:
                     cantidadElementosPeticion+=1
@@ -91,10 +107,10 @@ class updateInstruccion(Abstract):
                         for nombrePeticion in self.atributos:
                             if (datos == nombrePeticion[0]):
                                 nombresElementosEncontrados.append(datos)
-                                elementosaCambiar.append(nombrePeticion[1].valor)
-                                elementos['data']['datos'][indices][f'{datos}'] = nombrePeticion[1].valor
+                                elementosaCambiar.append(nombrePeticion[1])
+                                elementos['data']['datos'][indices][f'{datos}'] = nombrePeticion[1]
                                 elementosEncontrados.append( elementos['data']['datos'][indices][f'{datos}'])
-                                print('si esta ', datos,nombrePeticion[1].valor,elementos['data']['datos'][indices] )
+                                print('si esta ', datos,nombrePeticion[1],elementos['data']['datos'][indices] )
                         print("ccc",datos,nombrePeticion[0])
 
                     print("bbb", elementos['data']['datos'][indices])
@@ -116,11 +132,7 @@ class updateInstruccion(Abstract):
             ## aqui mejor buscar bien ingresado el tipo de dato
             for elementosCambiar in elementosEncontrados:
                 print(elementosCambiar)
-            ### ir a buscar que los elemenentos esten acorde a lo que viene e ingresar
-            for nombresIndividual in nombresElementosEncontrados:
-                print(nombresIndividual) 
-            for nombresIndividual in elementosaCambiar:
-                print(nombresIndividual) 
+
             for nombresIndividual in nombresCompletos:
                 print(nombresIndividual) 
 
@@ -133,29 +145,13 @@ class updateInstruccion(Abstract):
 
             if (esValido):
                 ### generacion grupal CREACION GENERAL Y ELIMINACION DE TODo 
-                ## estos son de 
-                finAtrinutos = []
-                for atributo in zip(self.atributos):
-                    jsonEstructura_data = {
-                            'nombre': atributo[0][0],
-                            "tipo":atributo[0][1].valor
-                        }
-                    finAtrinutos.append(jsonEstructura_data)
-
-                diccionario_combinado = {}
-                for diccionario in finAtrinutos:
-                        diccionario_combinado[diccionario['nombre']] = diccionario['tipo']
-                print("a>>", diccionario_combinado)
-                print( type(diccionario_combinado))
-
-
                 ### truncar todo
-                Estructura.truncateTable(f'./src/data/xml/{Estructura.nombreActual}.xml',self.nombreTabla)
+                #Estructura.truncateTable(f'./src/data/xml/{Estructura.nombreActual}.xml',self.nombreTabla)
 
                 ### ciclo para ingresar todo:
-                for diccionario in (nombresCompletos):
-                    Estructura.insertTabla(f"./src/data/xml/{Estructura.nombreActual}.xml", self.nombreTabla, diccionario)
-
+                #for diccionario in (nombresCompletos):
+                   # Estructura.insertTabla(f"./src/data/xml/{Estructura.nombreActual}.xml", self.nombreTabla, diccionario)
+                print("volver a quitar el comentario")
             else: 
                 print({'error':'error semantico, atributos no existen en la base de datos'})
 

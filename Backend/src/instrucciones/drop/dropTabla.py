@@ -13,7 +13,9 @@ class dropTable(Abstract):
             os.remove(f'./src/data/xml/{nombre}.xml')
         else:
             print("No existe la base de datos")
+            environment.addError("Semantico", {self.nombre} ,f"no existe la  base de datos",  self.fila, self.columna)
+
         return nombre
 
     def accept(self, visitor, environment):
-        pass
+        visitor.visit(self, environment)

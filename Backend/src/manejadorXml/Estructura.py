@@ -118,7 +118,11 @@ def alterColumnadd(xmlArchivo, nombreTabla, nombreColumna, tipoColumna):
         existing_data = table.find("./Estructura")
         nuevaColumna = ET.SubElement(existing_data,"Principal", name=nombreColumna)
         atributo1=ET.SubElement(nuevaColumna, "Atributo1")
-        atributo1.text = tipoColumna
+        atributo1.set ('tipo',str(tipoColumna))
+        atributo2=ET.SubElement(nuevaColumna, "Atributo2")
+        atributo2.set ('nulidad',str(2))
+        atributo3=ET.SubElement(nuevaColumna, "Atributo3")
+        atributo3.set ('restricciones',str(0))
     tree.write(xmlArchivo, encoding="utf-8", xml_declaration=True)
 
 

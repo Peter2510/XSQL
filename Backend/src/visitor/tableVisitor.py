@@ -44,7 +44,7 @@ class SymbolTableVisitor(Visitor):
                 environment.errors = environment.getErrores() + environmentFuncion.getErrores()
                 return None
         else:
-            print("La funcion ya existe")
+            self.correct = False
             environment.addError("Semantico", node.id ,f"La funcion '{node.id}' ya está definida en la base de datos "+Estructura.nombreActual, node.fila,node.columna)
             return None
             
@@ -145,7 +145,7 @@ class SymbolTableVisitor(Visitor):
             
         
         else:
-            environment.addError("Semantico", node.id ,f"La funcion '{node.id}' no existe en la base de datos "+Estructura.nombreActual, node.fila,node.columna)
+            environment.addError("Semantico", node.id ,f"La función '{node.id}' no existe en la base de datos: "+Estructura.nombreActual, node.fila,node.columna)
             self.correct = False
         
     
@@ -251,7 +251,7 @@ class SymbolTableVisitor(Visitor):
                          
                     #ejecutar instrucciones
                 else:
-                    environment.addError("Semantico", node.id ,f"La invocacion de la funcion '{node.id}' no tiene la misma cantidad de parametros que la funcion almacenada", node.fila,node.columna)
+                    environment.addError("Semantico", node.id ,f"La invocacion de la función '{node.id}' no tiene la misma cantidad de parametros que la función almacenada", node.fila,node.columna)
                     self.correct = False
                
             else:

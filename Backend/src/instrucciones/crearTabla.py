@@ -1,6 +1,7 @@
 from ..abstract.abstractas import Abstract
 from ..manejadorXml import manejo, Estructura, obtener
 import json
+from enum import Enum
 
 class crearTabla(Abstract):
     def __init__(self, fila, columna, nombre, listaAtributos):
@@ -8,7 +9,7 @@ class crearTabla(Abstract):
         self.listaAtributos = listaAtributos
         super().__init__(fila, columna)
 
-    def interpretar(self, tablaSimbolos):
+    def interpretar(self, environment):
         ### datos de bandera
         ##hacer validacion con la variable global de Estructura
         existeNombre = False
@@ -31,6 +32,7 @@ class crearTabla(Abstract):
                 if (nombreRepetido["name"] == self.nombre):
                     nombreTablaRepetido = True
                     print("repetido")
+                    environment.addError("Semantico", "" ,f"Esta tabla esta repetida en la BD", self.fila,self.columna)
                     break
 
             if (nombreTablaRepetido == False):
@@ -45,15 +47,22 @@ class crearTabla(Abstract):
                         if (row[0] != valoresRepetidos):
                             valoresRepetidos.append(row[0])
                         else:
-                            print({"error": 'error semantico, ya existe nombre de esa tabla'})
+                            environment.addError("Semantico", "" ,f"ya existe nombre de esa tabla", self.fila,self.columna)
                             existeNombre = True
                             return
                     ## si no existe nombre de la tabla genera el ingreso 
                     if (not existeNombre):
-                        #print(">>>prueba",row[1].value, int(row[2]), type(row[1].value), type(row[2]))
+                        ## deternina si lo que viene es varchar o un enum
+                        tipoAtributo = ''
+                        if (isinstance(row[1], Enum) ):
+                            tipoAtributo = str(row[1].value)
+                        else:
+                            print(row[1], "<<")
+                            tipoAtributo = str(row[1].type.name)+f"({str(row[1].size.valor)})"
+
                         if (isinstance(row[3], list)):
                             json_data = {
-                                'tipo':str(row[1].value),
+                                'tipo':tipoAtributo,
                                 'nulidad': int(row[2]),
                                 'restricciones': {
                                     'nombreTabla':row[3][0],
@@ -68,7 +77,7 @@ class crearTabla(Abstract):
                             )
                         else:
                             json_data = {
-                                'tipo':str(row[1].type),
+                                'tipo':tipoAtributo,
                                 'nulidad': int(row[2]),
                                 'restricciones': int(row[3])  # Convierte '0' a False y cualquier otro valor a True
                             }
@@ -88,6 +97,8 @@ class crearTabla(Abstract):
                     nombre = atributo["nombre"]
                     if nombre in valoresTabla:
                         atributoRepetido= True
+                        environment.addError("Semantico", "" ,f"ya existe un atributo con este nombre en esta tabla como referencia", self.fila,self.columna)
+
                         print({"error": 'Error semántico, ya existe un atributo con este nombre en esta tabla como referencia'})
                         break
                     else:
@@ -106,10 +117,11 @@ class crearTabla(Abstract):
                    Estructura.crearTabla(Estructura.nombreActual, self.nombre, atributosFinales)
         else:
             print({"error": 'error semantico, no existe la base de datos que hace referencia'})
+            environment.addError("Semantico", "" ,f"no existe la base de datos que hace referencia", self.fila,self.columna)
 
 
-        return self.nombre
+        return 
 
 
     def accept(self, visitor, environment):
-        pass
+        visitor.visit(self, environment)

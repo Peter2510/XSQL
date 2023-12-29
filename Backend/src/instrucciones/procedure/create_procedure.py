@@ -10,6 +10,7 @@ class ProcedureDeclaration(Abstract):
 
     def accept(self, visitor, environment):
         print("aceptando procedure",self.nombre,self.listaParametros)
+        visitor.visit(self, environment)
         ##visitor.visitProcedure(self,environment)
 
     def interpretar(self, environment):
