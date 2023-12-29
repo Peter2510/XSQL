@@ -63,6 +63,10 @@ def apply_column_expressions(expr_lst, environment):
     return alter_record
 
 
+def get_column_expressions(expr_lst):
+    return [dict((str(expr), '---') for expr in expr_lst)]
+
+
 def cartesian_product(*tables):
     # Obtener todas las combinaciones posibles de filas entre las tablas
     result = list(product(*tables))

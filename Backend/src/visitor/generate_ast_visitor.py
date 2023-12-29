@@ -243,9 +243,10 @@ class GenerateASTVisitor(Visitor):
         try:
             for column in node.atributos:
                 node_col = self.graph.newItem(str(column))
-                self.graph.newLink(node.nd, node_col)
+                self.graph.newLink(node_columns, node_col)
 
             node_valores = self.graph.newItem("VALORES")
+            self.graph.newLink(node.nd, node_valores)
             for value in node.parametros:
                 node_value = self.graph.newItem(str(value))
                 self.graph.newLink(node_valores, node_value)
