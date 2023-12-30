@@ -18,4 +18,26 @@ class StmCase(Abstract):
         visitor.visit(self,environment)
             
     def interpretar(self, environment):
-        print("interpretando case general")
+        whenValido = False
+        env = Environment(environment)
+        for when in self.list_when:
+            if when.condition.interpretar(environment).value:
+                
+                for i in when.instructions:
+                    if isinstance(i,list):
+                        for j in i:
+                            j.interpretar(env)
+                    else:
+                        i.interpretar(env)
+                whenValido = True
+                break
+        if not whenValido:
+            if self.else_case != None:
+                
+                for i in self.else_case.instructions:
+                    if isinstance(i,list):
+                        for j in i:
+                            j.interpretar(env)
+                    else:
+                        i.interpretar(env)
+            

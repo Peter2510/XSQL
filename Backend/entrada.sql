@@ -333,3 +333,133 @@ BEGIN
 end ;
 
 -----------------------------------------------------
+
+--------------------if-------------------------------
+CREATE FUNCTION fn_retornaalturamora ()
+RETURNs nvarchar(15)
+AS
+BEGIN
+	DECLARE @alturamora nvarchar(100);
+    declare @diasmora int;
+    set @diasmora = 5;
+    SET @alturamora = "entre0 y 29";
+
+		IF ((@diasmora > 0 && @diasmora < 30)+(1>1)) 
+		BEGIN
+			SET @alturamora = "entre0 y 29";
+		END;
+        	
+		ELSEIF (@diasmora >= 30 && @diasmora < 60) 
+		BEGIN 
+			SET @alturamora = "entre 30 y 59";
+		END;
+        
+        ELSE
+        BEGIN
+            SET @alturamora = "Nada de nada";
+        END;
+	
+		
+	
+		
+	RETURN @alturamora;
+    
+    end ;
+    
+CREATE FUNCTION llamado()
+RETURNS int 
+AS 
+
+ BEGIN 
+    DECLARE @enLlamado nvarchar(20); 
+    SET @enLlamado = fn_retornaalturamora();
+         
+END;    
+
+
+------------------------------------------------------
+
+
+---------------- IF ANIDADO ----------------------
+CREATE FUNCTION fn_retornaalturamora ()
+RETURNs nvarchar(15)
+AS
+BEGIN
+	DECLARE @alturamora nvarchar(100);
+    declare @diasmora int;
+    set @diasmora = 10;
+
+        IF ((@diasmora > 0 && @diasmora < 30)+(1>1)) 
+		BEGIN
+			IF (@diasmora == 1)
+            BEGIN
+                SET @alturamora = "es uno";
+            END;
+            ELSE
+            BEGIN
+                SET @alturamora = "es mayor a uno menor a 30";
+            END;
+		END;
+        	
+		ELSEIF (@diasmora >= 30 && @diasmora < 60) 
+		BEGIN 
+			SET @alturamora = "entre 30 y 59";
+		END;
+        
+        ELSE
+        BEGIN
+            SET @alturamora = "Nada de nada";
+        END;
+
+		
+	RETURN @alturamora;
+    
+    end ;
+    
+CREATE FUNCTION llamado()
+RETURNS int 
+AS 
+
+ BEGIN 
+    DECLARE @enLlamado nvarchar(20); 
+    SET @enLlamado = fn_retornaalturamora();
+         
+END;    
+
+
+-------------------------------------------------
+
+---------------- WHEN ------------------------------
+CREATE FUNCTION fn_retornaalturamora ()
+RETURNs nvarchar(15)
+AS
+BEGIN
+	DECLARE @alturamora nvarchar(100);
+    declare @diasmora int;
+    set @diasmora = 551;
+
+    CASE 
+    WHEN (@diasmora > 0 && @diasmora < 30)+(1>1)
+	   THEN SET @alturamora = "entre0 y 29";
+	WHEN (@diasmora >= 30 && @diasmora < 60) 
+	   THEN SET @alturamora = "entre 30 y 59";
+	ELSE 
+	   THEN SET @alturamora = "Nada de nada";
+	END;
+
+		
+	RETURN @alturamora;
+    
+    end ;
+    
+CREATE FUNCTION llamado()
+RETURNS int 
+AS 
+
+ BEGIN 
+    DECLARE @enLlamado nvarchar(20); 
+    SET @enLlamado = fn_retornaalturamora();
+         
+END;    
+
+------------------------------------------------
