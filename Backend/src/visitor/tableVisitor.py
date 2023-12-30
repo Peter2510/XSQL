@@ -40,6 +40,8 @@ class SymbolTableVisitor(Visitor):
                 else:
                     funcion = Funcion(node.id,node.type,node.params,node.body)
                     environment.agregarFuncion(nombre,funcion)
+                    for i in environmentFuncion:
+                        print(i.toString())
                     print("se agrego la funcion",nombre)
                         
             else:

@@ -13,5 +13,10 @@ class ElseIf_(Abstract):
         visitor.visit(self, environment)
         
     def interpretar(self, environment):
-        print("interpretando elseif")
+        for i in self.instructions:
+            if isinstance(i,list):
+                for j in i:
+                    j.interpretar(environment)
+            else:
+                i.interpretar(environment)
         

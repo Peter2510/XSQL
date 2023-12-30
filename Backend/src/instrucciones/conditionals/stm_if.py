@@ -19,4 +19,46 @@ class StmIf(Abstract):
  
             
     def interpretar(self, environment):
-        print("interpretando if general")
+        print("SON IF",self._if,self.list_elseif,self.else_)
+        env = Environment(environment)
+        if self._if.condition.interpretar(environment).value:
+            print("entro a if")
+            for i in self._if.instructions:
+                if isinstance(i,list):
+                    for j in i:
+                        j.interpretar(env)
+                else:
+                    i.interpretar(env)
+        elif self.list_elseif != None:
+            elseValido = False
+            for elseif in self.list_elseif:
+                print("entro a else if")
+                if elseif.condition.interpretar(environment).value:
+                    
+                    for i in elseif.instructions:
+                        if isinstance(i,list):
+                            for j in i:
+                                j.interpretar(env)
+                        else:
+                            i.interpretar(env)
+                    elseValido = True
+                    break
+            if not elseValido:
+                if self.else_ != None:
+                    print("entro a else ")
+                    for i in self.else_.instructions:
+                        if isinstance(i,list):
+                            for j in i:
+                                j.interpretar(env)
+                        else:
+                            i.interpretar(env)
+                
+        else:
+            if self.else_ != None:
+                print("entro a else ")
+                for i in self.else_.instructions:
+                    if isinstance(i,list):
+                        for j in i:
+                            j.interpretar(env)
+                    else:
+                        i.interpretar(env)
