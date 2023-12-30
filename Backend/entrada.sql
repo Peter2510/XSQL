@@ -313,3 +313,23 @@ END;
 
 
 --------------------------------------------
+
+----- ERROR EN EL TAMAÑO DE LOS LAS CADENAS----------
+CREATE FUNCTION a (@hola nvarchar(1))
+RETURNs int
+AS
+BEGIN
+    declare @alturamora int;
+	RETURN @alturamora;
+end ;
+
+CREATE FUNCTION b ()
+RETURNs decimal
+AS
+BEGIN
+    declare @llamada int;
+    set @llamada = a("aaa");
+	RETURN @llamada;
+end ;
+
+-----------------------------------------------------
