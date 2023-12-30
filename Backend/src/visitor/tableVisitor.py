@@ -230,11 +230,11 @@ class SymbolTableVisitor(Visitor):
                                      environment.errors = environment.getErrores() + env.getErrores()
 
                                  else:
-                                             variable = Variable()
-                                             variable.value = argumento.value
-                                             variable.type = parametro.type
-                                             variable.id = parametro.id
-                                             env.agregarVariable(variable)
+                                        variable = Variable()
+                                        variable.value = argumento.value
+                                        variable.type = parametro.type
+                                        variable.id = parametro.id
+                                        env.agregarVariable(variable)
 
                             else:
                                  
@@ -246,11 +246,11 @@ class SymbolTableVisitor(Visitor):
                                      environment.errors = environment.getErrores() + env.getErrores()
                                      
                                  else:
-                                             variable = Variable()
-                                             variable.value = argumento.value
-                                             variable.type = parametro.type
-                                             variable.id = parametro.id
-                                             env.agregarVariable(variable)
+                                        variable = Variable()
+                                        variable.value = argumento.value
+                                        variable.type = parametro.type
+                                        variable.id = parametro.id
+                                        env.agregarVariable(variable)
                                         
                         else:
                              self.correct = False
