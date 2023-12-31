@@ -557,6 +557,33 @@ class SymbolTableVisitor(Visitor):
             environment.addError("Semantico", "" ,f"Error en la condicion de la sentencia if", node.fila,node.columna)
             self.correct = False
         
+        
+    def visitWhile(self,node,environment):
+        condicion = node.condicion.interpretar(environment)
+        env = Environment(environment)
+        if condicion != None:
+            
+            if condicion.type == Type.BIT:
+                for inst in node.instructions:
+                    if isinstance(inst,list):
+                        for instruccion in inst:
+                            if self.correct:
+                                instruccion.accept(self,env)
+                            else: 
+                                self.correct = False
+                                break
+                    else:
+                        inst.accept(self,env)
+                
+                environment.errors = environment.getErrores() + env.getErrores()
+            else: 
+                environment.addError("Semantico", "" ,f"La condicion de la sentencia while debe ser de tipo BIT", node.fila,node.columna)
+                self.correct = False
+                
+        else: 
+            environment.addError("Semantico", "" ,f"Error en la condicion de la sentencia while", node.fila,node.columna)
+            self.correct = False
+        
     
     def visitStmIf(self,node,environment):
         print("visitando ifSTM")

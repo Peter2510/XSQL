@@ -43,6 +43,7 @@ keywords = {
     'exec': 'EXEC',
     'function': 'FUNCTION',
     'if': 'IF',
+    'while': 'WHILE',
     'then': 'THEN',
     'else': 'ELSE',
     'elseif': 'ELSEIF',

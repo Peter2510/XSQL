@@ -1,4 +1,5 @@
 from Lexer import tokens, lexer, errors, find_column
+from src.instrucciones.while_.stm_while import StmWhile
 from src.expresiones.negacion import Negacion
 from src.ejecucion.error import T_error
 from src.expresiones.negativa import Negativa
@@ -1043,6 +1044,7 @@ def p_sentencia_funcion(t):
                     | return
                     | expresion_if
                     | expresion_case
+                    | expresion_while
     '''
     t[0] = t[1]
 
@@ -1357,14 +1359,18 @@ def p_when_clauses(t):
     t[1].append(when)
     t[0] = t[1]
 
-
-
 def p_when_clauses2(t):
     '''
     when_clauses : WHEN expresion THEN sentencia_funcion
     '''
     when = When(t.lineno(1), find_column(input, t.slice[1]), t[2], t[4])
     t[0] = [when]
+    
+def p_while(t):
+    '''
+    expresion_while : WHILE PARENTESIS_IZQ expresion PARENTESIS_DER BEGIN sentencias_funciones END PUNTO_Y_COMA
+    '''
+    t[0] = StmWhile(t.lineno(1), find_column(input, t.slice[1]), t[3], t[6])
 
 
 ## metodo de error
