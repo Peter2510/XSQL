@@ -1,6 +1,7 @@
 from src.abstract import Abstract
 from abc import abstractmethod
 from src.ejecucion.type import Type
+from src.expresiones.variable import Variable
 
 
 class SQLExpression(Abstract):
@@ -136,5 +137,8 @@ class SQLUnaryExpression(SQLExpression):
             self.valor = self.argument.interpretar(environment)
         else:
             self.valor = self.argument
+
+        if isinstance(self.valor, Variable):
+            self.valor = self.valor.value
 
         return self.valor

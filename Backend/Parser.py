@@ -717,6 +717,7 @@ def p_unary_expression(t):
     unary_expression : value_literal
                     | column_id
                     | call_function
+                    | variable_id
     """
     t[0] = t[1]
 
@@ -801,14 +802,13 @@ def p_dot_table_opt1(t):
     pass
 
 
-# id variable
-# def p_variable_id(t):
-#     """
-#     variable_id : ID_DECLARE
-#     """
-#       variable_declarator = Variable(fila, col, id)
-#     t[0] = SQLUnaryExpression(fila=t.lineno(1), columna=find_column(input, t.slice[1]), argument=variable_declarator)
-#     # TODO: CHECK IF ADD
+def p_variable_id(t):
+    """
+    variable_id : ID_DECLARE
+    """
+    variable_primitivo = Primitivo(t.lineno(1), find_column(input, t.slice[1]), str(t[1]), Type.IDDECLARE)
+    t[0] = SQLUnaryExpression(fila=t.lineno(1), columna=find_column(input, t.slice[1]), argument=variable_primitivo)
+
 
 def p_call_function(t):
     """
