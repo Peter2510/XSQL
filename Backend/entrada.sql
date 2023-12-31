@@ -462,4 +462,37 @@ AS
          
 END;    
 
+------------------WHILE---------------------------
+CREATE FUNCTION fn_retornaalturamora ()
+RETURNs nvarchar(15)
+AS
+BEGIN
+	DECLARE @alturamora nvarchar(100);
+    declare @diasmora int;
+    set @diasmora = 1;
+
+    
+    While (@diasmora > 0 && @diasmora < 30)
+    begin
+    
+	   SET @alturamora = "termino" + @diasmora + "ejecu" ;
+	   set @diasmora = @diasmora +1;
+	END;
+
+		
+	RETURN @alturamora;
+    
+    end ;
+    
+CREATE FUNCTION llamado()
+RETURNS int 
+AS 
+
+ BEGIN 
+    DECLARE @enLlamado nvarchar(20); 
+    SET @enLlamado = fn_retornaalturamora();
+         
+END;    
+
+
 ------------------------------------------------
