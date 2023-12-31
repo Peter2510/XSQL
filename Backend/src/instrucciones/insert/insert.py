@@ -132,7 +132,7 @@ class insertInstruccion(Abstract):
                                         if key == nombreAtributo and value == str(self.parametros[indice]):
                                                 validacionUnicoPrimario = True
                                                 break
-                                        indice+=1
+                                    indice+=1
 
 
 
