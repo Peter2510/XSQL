@@ -5,9 +5,9 @@ from ..manejadorXml import manejo, Estructura
 
 class createDB(Abstract):
     
-    def _init_(self, fila, columna, nombre):
+    def __init__(self, fila, columna, nombre):
         self.nombre = nombre
-        super()._init_(fila, columna)
+        super().__init__(fila, columna)
 
     def interpretar(self,environment):
 

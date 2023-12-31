@@ -4,10 +4,10 @@ import json
 from enum import Enum
 
 class crearTabla(Abstract):
-    def _init_(self, fila, columna, nombre, listaAtributos):
+    def __init__(self, fila, columna, nombre, listaAtributos):
         self.nombre = nombre
         self.listaAtributos = listaAtributos
-        super()._init_(fila, columna)
+        super().__init__(fila, columna)
 
     def interpretar(self, environment):
         ### datos de bandera
