@@ -5,9 +5,9 @@ from ..manejadorXml import manejo, Estructura
 
 class createDB(Abstract):
     
-    def __init__(self, fila, columna, nombre):
+    def _init_(self, fila, columna, nombre):
         self.nombre = nombre
-        super().__init__(fila, columna)
+        super()._init_(fila, columna)
 
     def interpretar(self,environment):
 
@@ -26,7 +26,7 @@ class createDB(Abstract):
             #LO GUARDA EN MEMORIA
           #  environment.createDataBase(nombre)#Guardamos la metadata en el entorno global.
             print( 'La base de datos ' + self.nombre + ' ha sido creada.' )
-            return { 'La base de datos ' + self.nombre + ' ha sido creada.'} 
+            return {'tipo': 'bd', 'resultado': f"La base de datos ha sido creada"}
         elif resultado == 1:
             #Error al crear
             environment.addError("Semantico", {nombre} ,f"Ocurrió un error. La base de datos {nombre} no pudo ser creada", self.fila, self.columna)

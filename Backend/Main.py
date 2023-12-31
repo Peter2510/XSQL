@@ -19,6 +19,8 @@ app = Flask(__name__)
 CORS(app)
 
 
+# SOLO PRUEBA AQUI
+
 @app.route('/saludo',methods=["GET"])
 def saludo():
     Estructura.load()
