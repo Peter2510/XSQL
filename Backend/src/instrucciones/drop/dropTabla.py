@@ -10,7 +10,11 @@ class dropTable(Abstract):
     def interpretar(self,environment):
         nombre = self.nombre
         if os.path.exists(f'./src/data/xml/{nombre}.xml'):
-            os.remove(f'./src/data/xml/{nombre}.xml')
+            tree = ET.parse(f'./src/data/xml/{nombre}.xml')
+            root = tree.getroot()
+            for table in root.findall(".//Table[@name='{}']".format(nombreTabla)):
+                for valores in table.findall("Estrucutura"):
+                    table.remove(valores)
         else:
             print("No existe la base de datos")
             environment.addError("Semantico", {self.nombre} ,f"no existe la  base de datos",  self.fila, self.columna)

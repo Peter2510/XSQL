@@ -13,5 +13,23 @@
                 <Atributo3 restricciones="0">0</Atributo3>
             </Principal>
         </Estructura>
+        <Datos name="nuevo_registro">
+            <DatosEspecifico>
+                <idestado>3</idestado>
+                <estado>Queso * None.persona + None.simon</estado>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idestado>1</idestado>
+                <estado>Activo</estado>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idestado>2</idestado>
+                <estado>Inactivo</estado>
+            </DatosEspecifico>
+            <DatosEspecifico>
+                <idestado>4</idestado>
+                <estado>Activo2</estado>
+            </DatosEspecifico>
+        </Datos>
     </Table>
 </Database>
