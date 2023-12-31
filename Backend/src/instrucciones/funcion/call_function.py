@@ -7,6 +7,7 @@ class CallFunction(Abstract):
     def __init__(self, row, column, nombre ,listaParametros):
         self.id = nombre
         self.parametros = listaParametros
+        self.tipo = None
         super().__init__(row, column)
         
     def accept(self, visitor, environment):

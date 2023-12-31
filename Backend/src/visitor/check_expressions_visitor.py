@@ -1,6 +1,9 @@
 from enum import Enum
 from src.ejecucion.type import Type
 from src.visitor.visitor import Visitor, SQLBinaryExpression, SQLLogicalExpression, SQLUnaryExpression
+from src.instrucciones.funcion.call_function import CallFunction
+from src.ejecucion.environment import Environment
+from src.expresiones.primitivos import Primitivo
 
 COMBINATIONS = [
 
@@ -594,3 +597,23 @@ class SqlExpressionsVisitor(Visitor):
         if node.value.tipo != Type.TEXT:
             self.log_error(msg="Valor no válido para Substraer()", row=node.fila, column=node.columna,
                            lexeme="SUBSTRAER")
+
+    def visitCallFunction(self, node: CallFunction, environment: Environment):
+        existe = environment.existeFuncion(node.id)
+        if not existe:
+            self.log_error(msg=f"La función {node.id} no existe", row=node.fila, column=node.columna,
+                           lexeme="LLAMADA_FUNCION")
+            return
+
+        funcion = environment.getFuncion(node.id)
+        node.tipo = funcion.tipo
+
+    def visitPrimitivo(self, node: Primitivo, environment: Environment):
+        existe = environment.existeVariable(node.valor)
+        if not existe:
+            self.log_error(msg=f"La variable {node.valor} no existe", row=node.fila, column=node.columna,
+                           lexeme="VARIABLE")
+            return
+
+        variable_id = environment.getVariable(node.valor)
+        node.tipo = variable_id.type
