@@ -1,3 +1,5 @@
+from src.ast.select import Select
+from src.manejadorXml import Estructura
 from src.instrucciones.funcion.param_function import FunctionParam
 from src.abstract.abstractas import Abstract
 from src.ejecucion.environment import Environment
@@ -27,6 +29,8 @@ class StmIf(Abstract):
                 if isinstance(i,list):
                     for j in i:
                         j.interpretar(env)
+                elif isinstance(i,Select):
+                    Estructura.selectFunciones.append(i.interpretar(environment))
                 else:
                     i.interpretar(env)
         elif self.list_elseif != None:
@@ -39,6 +43,8 @@ class StmIf(Abstract):
                         if isinstance(i,list):
                             for j in i:
                                 j.interpretar(env)
+                        elif isinstance(i,Select):
+                            Estructura.selectFunciones.append(i.interpretar(environment))
                         else:
                             i.interpretar(env)
                     elseValido = True
@@ -50,6 +56,8 @@ class StmIf(Abstract):
                         if isinstance(i,list):
                             for j in i:
                                 j.interpretar(env)
+                        elif isinstance(i,Select):
+                            Estructura.selectFunciones.append(i.interpretar(environment))
                         else:
                             i.interpretar(env)
                 
@@ -60,5 +68,7 @@ class StmIf(Abstract):
                     if isinstance(i,list):
                         for j in i:
                             j.interpretar(env)
+                    elif isinstance(i,Select):
+                        Estructura.selectFunciones.append(i.interpretar(environment))
                     else:
                         i.interpretar(env)

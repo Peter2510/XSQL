@@ -1,3 +1,4 @@
+from src.manejadorXml import Estructura
 from src.ast.select import Select
 from src.instrucciones.funcion.return_ import Return_
 
@@ -22,13 +23,15 @@ class Funcion():
                 for instr in instruccion:
                     if isinstance(instr,Return_):
                         return instr.interpretar(environment)                    
+                    if isinstance(instr,Select):
+                        Estructura.selectFunciones.append(instr.interpretar(environment))
                     else:
-                        print(instr.interpretar(environment))
+                        instr.interpretar(environment)
             else:
                 if isinstance(instruccion,Return_):
                     return instruccion.interpretar(environment)
                 if isinstance(instruccion,Select):
-                    print(instruccion.interpretar(environment)["resultado"]) #lo guardo
+                    Estructura.selectFunciones.append(instruccion.interpretar(environment))
                 else:
                     instruccion.interpretar(environment)
                 

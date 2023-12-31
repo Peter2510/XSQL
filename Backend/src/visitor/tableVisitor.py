@@ -416,7 +416,11 @@ class SymbolTableVisitor(Visitor):
                 print("Entra")
                 value = node.valor.interpretar(environment)    
                 print("sale",value)
-            
+                
+                #validar tipo de dato sale
+                    
+                
+                
                 if value != None:
 
                     if isinstance(variable.type,String_):

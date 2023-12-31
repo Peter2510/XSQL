@@ -1,4 +1,5 @@
 from abc import ABC
+from src.expresiones.primitivos import Primitivo
 from src.instrucciones.funcion.call_function import CallFunction
 from src.instrucciones.funcion.alter_function import AlterFunction
 from src.instrucciones.funcion.return_ import Return_
@@ -95,7 +96,7 @@ class Visitor(ABC):
         elif isinstance(node, binaria.Binaria):
             self.visitLogico(node, environment)
 
-        elif isinstance(node, binaria.Binaria):
+        elif isinstance(node, Primitivo):
             self.visitPrimitivo(node, environment)
 
         elif isinstance(node, binaria.Binaria):

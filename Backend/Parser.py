@@ -943,8 +943,12 @@ def p_exp_llamada_funcion(t):
     '''
     t[0] = t[1]
 
-
-
+def p_funciones_sistema_expresion(t):
+    '''
+    expresion : funciones_sistema
+    '''
+    t[0] = t[1]
+                
                 ########################## SSL
 
 #FUNCIONES

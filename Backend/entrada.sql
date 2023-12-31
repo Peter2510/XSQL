@@ -496,3 +496,62 @@ END;
 
 
 ------------------------------------------------
+
+
+
+CREATE FUNCTION fn_retornaalturamora ()
+RETURNs nvarchar(15)
+AS
+BEGIN
+	-- int
+    declare @diasmora int;
+    set @diasmora = 1800;
+    
+    -- varchar
+    declare @app nvarchar(15);
+    set @app = "es un varchar";
+        
+    -- char
+    declare @char nchar(15);
+    set @char = "es un char";
+    
+    -- date
+    declare @date date;
+    set @date = '2014-12-15';
+    
+    -- datetime
+    declare @dt datetime;
+    set @dt = '2014-12-15 14:14:14';
+    
+    -- decimal
+    declare @dec decimal;
+    set @dec = 14.12;
+    -- bit
+    declare @bit bit;
+    set @bit = 1;
+    
+    declare @bit2 bit;
+    set @bit2 = 1;
+    
+    declare @bit3 bit;
+    set @bit3 = (@bit * @bit2)+1;
+    
+    select @diasmora+1;
+    
+    
+    
+	RETURN @app;
+    
+    end ;
+    
+CREATE FUNCTION llamado()
+RETURNS int 
+AS 
+
+ BEGIN 
+    DECLARE @enLlamado nvarchar(20); 
+    SET @enLlamado = fn_retornaalturamora();
+         
+END;    
+
+

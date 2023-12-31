@@ -1,4 +1,5 @@
 import sys
+from src.manejadorXml import Estructura
 from src.ejecucion.environment import Environment
 from prettytable import PrettyTable
 
@@ -11,5 +12,8 @@ class Ejec(object):
         if isinstance(self.queryArray,list):
             for item in self.queryArray:
                 self.valores.append(item.interpretar(environment))
-              
+            for i in Estructura.selectFunciones:
+                self.valores.append(i)
+            Estructura.selectFunciones=[]
+                
         return [valor for valor in self.valores if valor is not None]

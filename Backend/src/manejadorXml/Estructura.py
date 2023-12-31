@@ -1,6 +1,7 @@
 from ..manejadorXml import obtener
 
 Databases = []
+selectFunciones = []
 nombreActual = ""
 import json
 import xml.etree.ElementTree as ET
