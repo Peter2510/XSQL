@@ -1,3 +1,4 @@
+from instrucciones.procedure.procedure import Procedure
 from src.expresiones.binaria import Binaria
 from src.instrucciones.funcion.call_function import CallFunction
 from src.instrucciones.funcion.return_ import Return_
@@ -485,7 +486,40 @@ class SymbolTableVisitor(Visitor):
         pass
     
     def visitCreateProcedure(self,node,environment):
-        pass    
+      
+        nombre = Estructura.nombreActual + "-" + str(node.nombre)
+        
+        if(not environment.existeProcedimiento(nombre)):
+            print(self.correct)
+            print("creando nuevo environment para procedimiento")
+            environmentProcedimiento = Environment(environment)
+            #validar argumentos y agregarlos al proc
+            self.visitParamFunction(node,environmentProcedimiento)
+            
+            #validar las declaraciones en la funcion
+            print("correcto procedimientos",self.correct)
+            if self.correct:
+                
+                self.visitInstrucciones(node,environmentProcedimiento)
+                
+                if not self.correct:
+                    environment.errors = environment.getErrores() + environmentProcedimiento.getErrores()
+                    
+                else:
+                    procedimiento = Procedure(node.nombre,node.params,node.body)
+                    environment.agregarProcedimiento(nombre,procedimiento)
+                    for i in environmentProcedimiento:
+                        print(i.toString())
+                    print("se agrego el procedimiento",nombre)
+                        
+            else:
+                environment.errors = environment.getErrores() + environmentProcedimiento.getErrores()
+                
+        else:
+            self.correct = False
+            environment.addError("Semantico", node.id ,f"El procedimiento '{node.nombre}' ya está definido en la base de datos: "+Estructura.nombreActual, node.fila,node.columna)
+        
+        
     
     def visitElse(self,node,environment):
         print("visitando esle")
