@@ -1,4 +1,4 @@
-from instrucciones.procedure.procedure import Procedure
+from src.instrucciones.procedure.procedure import Procedure
 from src.expresiones.binaria import Binaria
 from src.instrucciones.funcion.call_function import CallFunction
 from src.instrucciones.funcion.return_ import Return_

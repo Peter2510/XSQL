@@ -1045,6 +1045,7 @@ def p_sentencia_funcion(t):
                     | expresion_if
                     | expresion_case
                     | expresion_while
+                    | select PUNTO_Y_COMA
     '''
     t[0] = t[1]
 
