@@ -11,8 +11,8 @@ class ColumnAssignments(Abstract):
         self.expr = expr
 
     def accept(self, visitor, environment):
-        self.expr.accept(visitor, environment)
         self.column_ref.accept(visitor, environment)
+        self.expr.accept(visitor, environment)
         visitor.visit(self, environment)
 
     def interpretar(self, environment):

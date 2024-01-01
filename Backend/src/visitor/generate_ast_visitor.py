@@ -14,7 +14,7 @@ from src.instrucciones.drop.dropTabla import dropTable
 from src.instrucciones.Alter.alterTable import alterTable
 from src.instrucciones.usarDB import usarDB
 from src.ast import (Select, Delete, FromClause, WhereClause, SQLUnaryExpression, SQLBinaryExpression,
-                     SQLLogicalExpression, AliasSelect, TableColumn)
+                     SQLLogicalExpression, AliasSelect, TableColumn, Update)
 from src.funciones import (Cas, Concatenar, Contar, Hoy, Substraer, Suma)
 from src.instrucciones.insert.insert import insertInstruccion
 from src.instrucciones.update.update import updateInstruccion
@@ -23,7 +23,7 @@ from src.instrucciones.update.update import updateInstruccion
 class GenerateASTVisitor(Visitor):
     def __init__(self, environment):
         super().__init__(environment)
-        self.graph = gvgen.GvGen()
+        self.graph = gvgen.GvGen(options="ordering=in;")
         self.root = self.graph.newItem("XSQL")
 
     def get_graph(self):
@@ -253,30 +253,24 @@ class GenerateASTVisitor(Visitor):
         except Exception as e:
             print('insert ast', e)
 
-    def visitUpdateInstruccion(self, node: updateInstruccion, environment):
+    def visitUpdate(self, node: Update, environment):
         node.nd = self.graph.newItem("UPDATE")
         self.graph.newLink(self.root, node.nd)
-        node_id = self.graph.newItem(node.nombreTabla)
+        node_id = self.graph.newItem(node.table)
         self.graph.newLink(node.nd, node_id)
         try:
             node_set = self.graph.newItem("SET")
             self.graph.newLink(node.nd, node_set)
-            for assign in node.atributos:
+            for assign in node.assignments:
                 node_assign = self.graph.newItem("=")
-                node_id = self.graph.newItem(assign[0])
-                node_expr = assign[0].nd.copy()
+                node_id = assign.column_ref.nd
+                node_expr = assign.expr.nd
                 self.graph.newLink(node_set, node_assign)
                 self.graph.newLink(node_assign, node_id)
                 self.graph.newLink(node_assign, node_expr)
 
-            node_where = self.graph.newItem("WHERE")
-            node_eq = self.graph.newItem("=")
-            node_id = self.graph.newItem(node.parametros[0])
-            node_expr = node.parametros[0].nd.copy()
+            node_where = node.where_clause.nd
             self.graph.newLink(node.nd, node_where)
-            self.graph.newLink(node_where, node_eq)
-            self.graph.newLink(node_eq, node_id)
-            self.graph.newLink(node_eq, node_expr)
 
         except Exception as e:
             print('update ast', e)
