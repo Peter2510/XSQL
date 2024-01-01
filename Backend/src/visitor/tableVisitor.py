@@ -1,3 +1,5 @@
+from datetime import date
+import datetime
 from src.instrucciones.procedure.procedure import Procedure
 from src.expresiones.binaria import Binaria
 from src.instrucciones.funcion.call_function import CallFunction
@@ -418,33 +420,16 @@ class SymbolTableVisitor(Visitor):
                 print("sale",value)
                 
                 #validar tipo de dato sale
-                    
-                
                 
                 if value != None:
+                
+                    if type(value) in (str, int, float, date, datetime,bool):
+                        value = self.tipoFuncionSistema(value)
 
                     if isinstance(variable.type,String_):
                         
                         tamanio = variable.type.size.interpretar(environment)
-                        
-                        if isinstance(value,str):
-                            if variable.type.type == Type.NVARCHAR:
-                                if len(value) <= tamanio.value:
-                                    variable.value = value
-                                    #variable.type = Type.TEXT
-                                else:
-                                    environment.addError("Semantico", value ,f"No es posible asignar a {node.id} una cadena de longitud {len(value.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
-                                    self.correct = False
-                            else:
-                            
-                                if len(value.value) <= tamanio.value and len(value.value) > 0:
-                                    variable.value = value.value
-                                    #variable.type = Type.TEXT
-                                else:
-                                    environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(value.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)
-                                    self.correct = False    
-                        
-                        elif value.type == Type.TEXT:
+                        if value.type == Type.TEXT:
                         
                             if variable.type.type == Type.NVARCHAR:
                                 if len(value.value) <= tamanio.value:
@@ -500,6 +485,35 @@ class SymbolTableVisitor(Visitor):
         else:
              environment.addError("Semantico", node.id ,f"La variable no ha sido declarada", node.fila,node.columna)
              self.correct = False    
+    
+    def tipoFuncionSistema(self,valor):
+        variable = Variable()
+        
+        print("tipo de dato",type(valor))
+        
+        if isinstance(valor,str):
+            variable.value = str(valor)
+            variable.type = Type.TEXT
+        elif isinstance(valor,int):
+            variable.value = int(valor)
+            variable.type = Type.INT
+        elif isinstance(valor,float):
+            variable.value = float(valor)
+            variable.type = Type.DECIMAL
+        elif isinstance(valor,date):
+            variable.value = valor
+            variable.type = Type.DATE
+        elif isinstance(valor,datetime):
+            variable.value = valor
+            variable.type = Type.DATETIME
+        elif isinstance(valor,bool):
+            variable.type = Type.BIT
+            if valor:
+                variable.value = int(1)
+            else:
+                variable.value = int(0)
+        return variable
+        
                  
     def visitAlterProcedure(self,node,environment):
         pass
