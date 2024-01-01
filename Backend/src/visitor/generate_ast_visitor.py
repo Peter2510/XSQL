@@ -177,7 +177,7 @@ class GenerateASTVisitor(Visitor):
 
         node_params = self.graph.newItem("PARAMS")
         self.graph.newLink(node.nd, node_params)
-        for _param in node.listaParametros:
+        for _param in node.parametros:
             node_param = self.graph.newItem("PARAM")
             self.graph.newLink(node_params, node_param)
 
