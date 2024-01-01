@@ -68,19 +68,56 @@ class updateInstruccion(Abstract):
                         
                         indicesIdeales+=1
 
-            for nombres in self.atributos:
-                if isinstance(nombres[1], (SQLUnaryExpression, SQLBinaryExpression)):
-                    print(nombres[1].valor)
-                    texto = str(nombres[1])  
-                    partes = texto.split("None.", 1) 
-                    partes2 = texto.split("None.") 
 
-                    texto_puro = partes[-1]  
-                    print(partes, texto_puro, partes2)
+            ### obtencion de los parametros
+            valoresAtributosTS = []
+            diccionarioAtributos = {}
+            diccionarioAtributos["parametros"] = []
+            indiceAtributo = 0
+            for nombre in self.atributos:
+                if isinstance(nombre[1], (SQLUnaryExpression, SQLBinaryExpression)):
+                    #buscar todos los valores que no sean simples cadenas
+                    if hasattr(nombre[1], 'valor'):
+                        if (nombre[1].valor == None):
+                            print((nombre[1]))
+                            valor_parametro = nombre[1].valor
+                            print(valor_parametro)
+                            valoreIndividual = str(nombre[1]).split(' ');
+                            diccionarioIndividual = {}
+                            diccionarioIndividual["valores"] = []
+                            for valor in valoreIndividual:
+                                #print(valor.replace("None.", ""),"<><>")
+                                diccionarioIndividual["valores"].append(valor.replace("None.", "\\"))
+                            
+                            diccionarioAtributos["parametros"].append( diccionarioIndividual)
+                    else:
+                        print("No se pudo encontrar el valor del parámetro.")
+
+
+            ## ahora con el ciclo que busque cuales son iguales en la primera
+            ## casilla con // y mire si hay algun valor con algun valor antes y lo cambie
+            ### sino de una que tire error
+            for nombresParametros in self.atributos:
+                indiceValoresReferenciados = 0
+                for nombresDiccionario in diccionarioAtributos["parametros"]:
+                    indiceAtributoEncontrado =0
+                    for nombreIndividualDiccionario in nombresDiccionario["valores"]:
+                        if(nombreIndividualDiccionario.startswith( "\\")
+                        and nombreIndividualDiccionario.replace( "\\", "") ==nombresParametros[0]):
+                                print(nombresParametros[0],nombreIndividualDiccionario)
+                                if (nombresParametros[1].tipo != None):
+                                    print("si distinto", nombresParametros[1].tipo, nombresParametros[1])
+
+                                    ## ver bien eso del tipo
+                                    diccionarioAtributos["parametros"][indiceValoresReferenciados]["valores"][indiceAtributoEncontrado]=(nombresParametros[1])
+                        indiceAtributoEncontrado+=1
+
+
+            print(diccionarioAtributos["parametros"][0]["valores"][2], diccionarioAtributos)
 
 
 
-                print(nombres[0],nombres[1], type(nombres[1]), nombres[1].tipo, nombres[1].valor, "<<<<<<<")
+
 
             ### como validacion ir a ver si estan todos los atributos
             for nombreAtributo in self.atributos:
@@ -104,6 +141,12 @@ class updateInstruccion(Abstract):
                  if(elementos['name']== self.nombreTabla):
                     for datos in elementos['data']['datos'][indices]:
                         datosCompletos.append(elementos['data']['datos'][indices][f'{datos}'])
+
+                        ### aqui cada nombre le debo de enviar su parametro
+                        ### esto en base a lo que genere arriba
+                        ## en dado caso haya uno que se construya con otro 
+                        ### no deberia haber problema porque deberian de ser
+                        ## del mismo tamanio
                         for nombrePeticion in self.atributos:
                             if (datos == nombrePeticion[0]):
                                 nombresElementosEncontrados.append(datos)
@@ -146,7 +189,7 @@ class updateInstruccion(Abstract):
             if (esValido):
                 ### generacion grupal CREACION GENERAL Y ELIMINACION DE TODo 
                 ### truncar todo
-                #Estructura.truncateTable(f'./src/data/xml/{Estructura.nombreActual}.xml',self.nombreTabla)
+                #SEstructura.truncateTable(f'./src/data/xml/{Estructura.nombreActual}.xml',self.nombreTabla)
 
                 ### ciclo para ingresar todo:
                 #for diccionario in (nombresCompletos):

@@ -26,7 +26,7 @@ class createDB(Abstract):
             #LO GUARDA EN MEMORIA
           #  environment.createDataBase(nombre)#Guardamos la metadata en el entorno global.
             print( 'La base de datos ' + self.nombre + ' ha sido creada.' )
-            return {'tipo': 'bd', 'resultado': f"La base de datos ha sido creada"}
+            return { 'tipo':'','resultado':'La base de datos ' + self.nombre + ' ha sido creada.'} 
         elif resultado == 1:
             #Error al crear
             environment.addError("Semantico", {nombre} ,f"Ocurrió un error. La base de datos {nombre} no pudo ser creada", self.fila, self.columna)
