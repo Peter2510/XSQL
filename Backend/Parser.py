@@ -531,10 +531,12 @@ def p_table_1(t):
 ### cambio a assign pprqie tenemos que meterle algo 
 def p_update(t):
     '''
-    update : UPDATE ID SET assign_list WHERE assign
+    update : UPDATE ID SET assign_list WHERE sql_expression
     '''
     ## no actualizar PK, FK
-    t[0] =updateInstruccion(t.lineno(2), find_column(input, t.slice[2]),  t[2], t[4], t[6])
+    where_clause = WhereClause(fila=t.lineno(5), columna=find_column(input, t.slice[5]), expr=t[6])
+    t[0] = Update(fila=t.lineno(1), columna=find_column(input, t.slice[1]), table=t[2],
+                  assignments=t[4], where_clause=where_clause)
 
 
 def p_assing_list1(t):
@@ -554,7 +556,8 @@ def p_assing(t):
     '''
     assign : ID ASIGNACION sql_expression
     '''
-    t[0]= [t[1], t[3]]
+    column_ref = TableColumn(t.lineno(1), columna=find_column(input, t.slice[1]), id=t[1])
+    t[0] = ColumnAssignments(fila=t.lineno(1), columna=find_column(input, t.slice[1]), column_ref=column_ref, expr=t[3])
 
 
 def p_insert(t):
