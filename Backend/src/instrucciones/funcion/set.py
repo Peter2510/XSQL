@@ -15,6 +15,9 @@ class Set_(Abstract):
                 
         variable = environment.getVariable(self.id)
         
-        variable.value = value.value
+        if isinstance(value,str):
+            variable.value = value
+        else:
+            variable.value = value.value
         
         return self

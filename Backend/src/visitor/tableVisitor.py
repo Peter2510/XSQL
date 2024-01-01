@@ -426,7 +426,25 @@ class SymbolTableVisitor(Visitor):
                     if isinstance(variable.type,String_):
                         
                         tamanio = variable.type.size.interpretar(environment)
-                        if value.type == Type.TEXT:
+                        
+                        if isinstance(value,str):
+                            if variable.type.type == Type.NVARCHAR:
+                                if len(value) <= tamanio.value:
+                                    variable.value = value
+                                    #variable.type = Type.TEXT
+                                else:
+                                    environment.addError("Semantico", value ,f"No es posible asignar a {node.id} una cadena de longitud {len(value.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
+                                    self.correct = False
+                            else:
+                            
+                                if len(value.value) <= tamanio.value and len(value.value) > 0:
+                                    variable.value = value.value
+                                    #variable.type = Type.TEXT
+                                else:
+                                    environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(value.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)
+                                    self.correct = False    
+                        
+                        elif value.type == Type.TEXT:
                         
                             if variable.type.type == Type.NVARCHAR:
                                 if len(value.value) <= tamanio.value:
