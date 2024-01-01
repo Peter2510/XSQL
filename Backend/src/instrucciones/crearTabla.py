@@ -1,6 +1,7 @@
 from ..abstract.abstractas import Abstract
 from ..manejadorXml import manejo, Estructura, obtener
 import json
+from enum import Enum
 
 class crearTabla(Abstract):
     def __init__(self, fila, columna, nombre, listaAtributos):
@@ -8,98 +9,119 @@ class crearTabla(Abstract):
         self.listaAtributos = listaAtributos
         super().__init__(fila, columna)
 
-    def interpretar(self, tablaSimbolos):
+    def interpretar(self, environment):
         ### datos de bandera
         ##hacer validacion con la variable global de Estructura
         existeNombre = False
+        nombreTablaRepetido = False
+        atributoRepetido = False
+
         columnas = []
+        indiceBaseDatos = 0
+
         ##primero llamo a que me traigan todos los archivos
         Estructura.load();
-        print("---------------------------------------------------------------",Estructura.Databases[0]["tables"],"----------")
-        ## lo que hace de interfaz regresa el valor
-        print("crear Tabla: ",self.nombre)
-        print("DBB: ",Estructura.Databases)
-
-        json_data = {}
-        atributosFinales = []
-        for row in self.listaAtributos:
-            json_data = {
-                'tipo': row[1],
-                'nulidad': int(row[2]),
-                'restricciones': bool(row[3])  # Convierte '0' a False y cualquier otro valor a True
-            }
-            atributosFinales.append(
-                {
-                'nombre': row[0],
-                'data': json_data      
-                }
-            )
-        print("Contenido de atributosFinales:")
-        print(type(atributosFinales))
-
-
-
-        for atributos in self.listaAtributos:
-            print(atributos)
-            columnas.append(atributos)
-
-        print("con esto: ")
-
-        json_output = json.dumps(atributosFinales, indent=2)
-        print(atributosFinales)
-        print("Contenido de json_output:")
-        print(type(json_output))
-
-        ## primero determinar si no hay problemas con las filas
-  
+        for indice in Estructura.Databases:
+            if (indice["name"]==Estructura.nombreActual):
+                break
+            indiceBaseDatos+=1
         
-        
-        print(columnas)
+        ## VER SI NO SE REPITE EL NOMBRE DE LA TABLA 
+        if (len(Estructura.Databases)> indiceBaseDatos):
+            for nombreRepetido in Estructura.Databases[indiceBaseDatos]["tables"]:
+                if (nombreRepetido["name"] == self.nombre):
+                    nombreTablaRepetido = True
+                    print("repetido")
+                    environment.addError("Semantico", "" ,f"Esta tabla esta repetida en la BD", self.fila,self.columna)
+                    break
 
-        if (existeNombre==False):
-            print(type(self.listaAtributos))
+            if (nombreTablaRepetido == False):
+                ## lo que hace de interfaz regresa el valor
+                print("crear Tabla: ",self.nombre)
+                ##creacion de la forma que tenemos para las tablas
+                json_data = {}
+                atributosFinales = []
+                for row in self.listaAtributos:
+                    ## primero ver si no hay repetidos
+                    for valoresRepetidos in columnas:
+                        if (row[0] != valoresRepetidos):
+                            valoresRepetidos.append(row[0])
+                        else:
+                            environment.addError("Semantico", "" ,f"ya existe nombre de esa tabla", self.fila,self.columna)
+                            existeNombre = True
+                            return
+                    ## si no existe nombre de la tabla genera el ingreso 
+                    if (not existeNombre):
+                        ## deternina si lo que viene es varchar o un enum
+                        tipoAtributo = ''
+                        if (isinstance(row[1], Enum) ):
+                            tipoAtributo = str(row[1].value)
+                        else:
+                            print(row[1], "<<")
+                            tipoAtributo = str(row[1].type.name)+f"({str(row[1].size.valor)})"
 
-            valoresTabla = []
-            ## para ver si se reptie
-            for i in self.listaAtributos:
-                for j in i:
-                    print(j)
-                    
-        #Estructura.crearTabla("miDB", self.nombre, json_output[0] )
-        datos = [
-            {
-                "nombre": "id",
-                "data": {
-                    "tipo": "int",
-                    "nulidad": 0,
-                    "restricciones": True
-                }
-            },
-               {
-                "nombre": "id2",
-                "data": {
-                    "tipo": "var",
-                    "nulidad": 0,
-                    "restricciones": False
-                }
-            },
-             {
-                "nombre": "id3",
-                "data": {
-                    "tipo": "var",
-                    "nulidad": 0,
-                    "restricciones": False
-                }
-            }
-            # ... otros datos
-        ]
+                        if (isinstance(row[3], list)):
+                            json_data = {
+                                'tipo':tipoAtributo,
+                                'nulidad': int(row[2]),
+                                'restricciones': {
+                                    'nombreTabla':row[3][0],
+                                    'nombreAtributo':row[3][1]
+                                } 
+                            }
+                            atributosFinales.append(
+                                {
+                                'nombre': row[0],
+                                'data': json_data      
+                                }
+                            )
+                        else:
+                            json_data = {
+                                'tipo':tipoAtributo,
+                                'nulidad': int(row[2]),
+                                'restricciones': int(row[3])  # Convierte '0' a False y cualquier otro valor a True
+                            }
+                            atributosFinales.append(
+                                {
+                                'nombre': row[0],
+                                'data': json_data      
+                                }
+                            )
 
-        #obtener.exportDataToXML(datos, "nuevoTabla")
-        print(type(datos), type(datos[0]))
-        Estructura.crearTabla(Estructura.nombreActual, self.nombre, atributosFinales)
+                print("Contenido de atributosFinales:")
+                print(type(atributosFinales))
 
-        return self.nombre
+
+                valoresTabla = []
+                for atributo in atributosFinales:
+                    nombre = atributo["nombre"]
+                    if nombre in valoresTabla:
+                        atributoRepetido= True
+                        environment.addError("Semantico", "" ,f"ya existe un atributo con este nombre en esta tabla como referencia", self.fila,self.columna)
+
+                        print({"error": 'Error semántico, ya existe un atributo con este nombre en esta tabla como referencia'})
+                        break
+                    else:
+                        valoresTabla.append(nombre)
+
+                ## ver que no se repitan los nombres de los atributos
+
+
+                ## primero determinar si no hay problemas con las filas
+                #if (existeNombre==False):
+                 #   valoresTabla = []
+                    ## para ver si se reptie
+           
+                            ## CREACION FINAL
+                if(atributoRepetido == False):
+                   Estructura.crearTabla(Estructura.nombreActual, self.nombre, atributosFinales)
+        else:
+            print({"error": 'error semantico, no existe la base de datos que hace referencia'})
+            environment.addError("Semantico", "" ,f"no existe la base de datos que hace referencia", self.fila,self.columna)
+
+
+        return 
 
 
     def accept(self, visitor, environment):
-        pass
+        visitor.visit(self, environment)

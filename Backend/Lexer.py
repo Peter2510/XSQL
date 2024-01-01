@@ -1,8 +1,8 @@
-import re 
+import re
+from src.ejecucion.error import T_error 
 import ply.lex as lex
 import datetime
 
-errores = []
 errors = []
 
 # Conjunto palabras reservadas
@@ -26,13 +26,12 @@ keywords = {
     "delete":"DELETE",
     
     "concatena":"CONCATENA",
-    "subtraer":"SUBSTRAER",
+    "substraer":"SUBSTRAER",
     "hoy":"HOY",
     "contar":"CONTAR",
     "suma":"SUMA",
     "cas":"CAS",
     
-    'not': 'NOT',
     'null': 'NULL',
     'primary': 'PRIMARY',
     'foreing': 'FOREING',
@@ -44,6 +43,7 @@ keywords = {
     'exec': 'EXEC',
     'function': 'FUNCTION',
     'if': 'IF',
+    'while': 'WHILE',
     'then': 'THEN',
     'else': 'ELSE',
     'elseif': 'ELSEIF',
@@ -70,7 +70,10 @@ keywords = {
     'foreign': 'FOREIGN',
 
     'into': 'INTO',
-    'values': 'VALUES'
+    'values': 'VALUES',
+    'and': 'SQL_AND',
+    'or': 'SQL_OR',
+    'not': 'SQL_NOT'
 }
 
 
@@ -97,6 +100,7 @@ tokens = [
     'LLAVE_DER',
     'OR',
     'AND',
+    'NOT',
     'NEGACION',
     'CORCHETE_IZQ',
     'CORCHETE_DER',
@@ -109,7 +113,7 @@ tokens = [
     'ID_DECLARE',
     'ID',
     'ARROBA',
-    'COMILLASIMPLE'
+    'COMILLASIMPLE',
 ]+ list(keywords.values())
 
 
@@ -120,7 +124,7 @@ t_DIVISION = r'\/'
 t_MENOS = r'\-'
 t_ASIGNACION = r'\='
 t_COMPARACION = r'\=\='
-t_DISTINTO = r'\!\=\='
+t_DISTINTO = r'\!\='
 t_PUNTO = r'\.'
 t_COMA = r'\,'
 t_PUNTO_Y_COMA = r'\;'
@@ -135,6 +139,7 @@ t_LLAVE_IZQ = r'\{'
 t_LLAVE_DER = r'\}'
 t_OR = r'\|\|'
 t_AND = r'\&\&'
+t_NOT = r'\!'
 t_NEGACION = r'\!'
 t_CORCHETE_IZQ = r'\['
 t_CORCHETE_DER = r'\]'
@@ -145,19 +150,10 @@ t_COMILLASIMPLE = r"\'"
 
 def t_comment(t):
     r'\-\-.*'
-    t.lexer.lineno += 1
+    t.lexer.lineno += 2
 
-# IDENTIFICAR CADENAS DE TEXTO CON  COMILLAS DOBLES Y SIMPLES    
+# IDENTIFICAR CADENAS DE TEXTO CON  COMILLAS DOBLES
 
-def t_STR(t):
-    r'(\"[\s\S]*?\")|(\'[\s\S]*?\')|(\`[\s\S]*?\`)'
-    t.value = t.value[1:-1]
-    t.value = t.value.replace('\\"', '\"')
-    t.value = t.value.replace("\\'", "\'")
-    t.value = t.value.replace('\\\\', '\\')
-    t.value = t.value.replace('\\t', '\t')
-    t.value = t.value.replace('\\n', '\n')
-    return t
 
 # ID NORMAL
 
@@ -178,21 +174,22 @@ def t_ID_DECLARE(t):
 
 # Token DATETIME
 def t_DATETIMEPRIM(t):
-    r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+    r'\'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\''
     try:
-        t.value = datetime.datetime.strptime(t.value, '%Y-%m-%d %H:%M:%S')
+        t.value = datetime.datetime.strptime(t.value[1:-1], '%Y-%m-%d %H:%M:%S')
     except ValueError:
         print("Error en la fecha y hora")
+        errors.append(T_error("Lexico",t.value,"Error en la fecha u hora", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
         t.value = None
     return t
 
-
 def t_DATEPRIM(t):
-    r'\d{4}-\d{2}-\d{2}'
+    r'\'\d{4}-\d{2}-\d{2}\''
     try:
-        t.value = datetime.datetime.strptime(t.value, '%Y-%m-%d').date()
+        t.value = datetime.datetime.strptime(t.value[1:-1], '%Y-%m-%d').date()
     except ValueError:
         print("Error en la fecha")
+        errors.append(T_error("Lexico",t.value,"Error en la fecha", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
         t.value = None
     return t
 
@@ -203,6 +200,7 @@ def t_DECIMAL(t):
         t.value = float(t.value)
     except ValueError:
         print("error en el decimal %d", t.value)
+        errors.append(T_error("Lexico",t.value,"Valor del decimal demasiado grande", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
         t.value = 0
     return t
 
@@ -213,6 +211,7 @@ def t_ENTERO(t):
         t.value = int(t.value)
     except ValueError:
          print("Valor del entero demasiado grande %d", t.value)
+         errors.append(T_error("Lexico",t.value,"Valor del entero demasiado grande", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
          t.value = 0
     return t
 
@@ -226,57 +225,42 @@ def t_BITPRIM(t):
             t.value = 'null'
     except ValueError:
         print("Valor del entero demasiado grande %d", t.value)
+        errors.append(T_error("Lexico",t.value,"Valor del entero demasiado grande", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
         t.value = 0
     return t 
 
 
 ##Nueva linea
 
-def newline(t):
-    r'\n'
+def t_newline(t):
+    r'\n+'
     t.lexer.lineno +=len(t.value)
+    
+def t_STR(t):
+    r'\"[\s\S]*?\"'
+    t.value = t.value[1:-1]
+    t.value = t.value.replace('\\"', '\"')
+    t.value = t.value.replace("\\'", "\'")
+    t.value = t.value.replace('\\\\', '\\')
+    t.value = t.value.replace('\\t', '\t')
+    t.value = t.value.replace('\\n', '\n')
+    return t
 
-
-## PARA LOS TAGS DEL XML
-# def t_TAGABIERTO(t):
-#     r'<[A-Za-z]+>'
-#     return t
-
-# def t_TAGCERRADO(t):
-#     r'</[A-Za-z]+>'
-#     return t
-
-# def t_ATRIBUTOSTAG(t):
-#     r'[A-Za-z]+="[^"]*"'
-#     return t
-
-
-        #ignora lo demas
         
 # WHIT_SPACE
 t_ignore = " \t\f\v"
-def t_error(t):
-    
+def t_error(t):   
+    errors.append(T_error("Lexico",lexer.lexdata,"No se reconoce el token", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
     t.lexer.skip(1)
     
 ##para columna
-def find_column(inp, tk):
-    line_start = inp.rfind('\n', 0, tk.lexpos)+1
-    return (tk.lexpos-line_start)+1
-
+def find_column(input_text, token):
+    last_cr = input_text.rfind('\n', 0, token.lexpos)
+    if last_cr < 0:
+        last_cr = 0
+    column = (token.lexpos - last_cr) + 1
+    return column
 
 # Crear instancia del lexer
 lexer = lex.lex(reflags=re.IGNORECASE)
 
-# # Ingresar la cadena de texto para analizar
-# texto = 'SELECT : '
-
-# # Configurar la entrada del lexer
-# lexer.input(texto)
-
-# # Iterar sobre los tokens generados
-# while True:
-#     token = lexer.token()
-#     if not token:
-#         break
-#     print(token)

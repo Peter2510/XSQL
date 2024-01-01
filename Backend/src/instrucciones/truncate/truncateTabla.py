@@ -11,11 +11,12 @@ class truncateTabla(Abstract):
 
     def interpretar(self,environment):
         nombre = self.nombre
-
-        Estructura.truncateTable(f'./src/data/xml/{Estructura.nombreActual}.xml',self.nombre)
-
+        if (Estructura.nombreActual != None):
+            Estructura.truncateTable(f'./src/data/xml/{Estructura.nombreActual}.xml',self.nombre)
+        else:
+            print({'Error': 'error semantico - no se seleccion DB'})
 
 
 
     def accept(self, visitor, environment):
-        pass
+        visitor.visit(self, environment)

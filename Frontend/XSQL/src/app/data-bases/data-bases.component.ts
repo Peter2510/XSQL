@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { TreeNode, TreeModel, TREE_ACTIONS, KEYS, IActionMapping, ITreeOptions } from '@bugsplat/angular-tree-component';
+import { CompilacionService } from '../service/compilacion.service';
 
 const actionMapping: IActionMapping = {
   mouse: {
     contextMenu: (tree, node, $event) => {
       $event.preventDefault();
       //SELECCION DEL TEXTO DEL NODO
-      
-      
+
+
     },
     dblClick: (tree, node, $event) => {
       if (node.hasChildren) {
@@ -29,35 +30,35 @@ const actionMapping: IActionMapping = {
 })
 export class DataBasesComponent implements OnInit {
 
-  constructor() { }
+  arregloDB:any
+  valor:any
+  nodes: any[] = [];
+  constructor(private obtenerDBservicio: CompilacionService) { }
 
   ngOnInit(): void {
-  }
-  
-  nodes = [
-    {
-      id: 1,
-      name: 'root1',
-      children: [
-        { id: 2, name: 'child1' },
-        { id: 3, name: 'child2' }
-      ]
-    },
-    {
-      id: 4,
-      name: 'root2',
-      children: [
-        { id: 5, name: 'child2.1' },
-        {
-          id: 6,
-          name: 'child2.2',
-          children: [
-            { id: 7, name: 'subsub' }
-          ]
+    this.obtenerDBservicio.saludo().subscribe(
+        elementos => {
+          this.arregloDB = elementos
+          console.log(this.arregloDB[0]?.tables[0]?.data?.estructura?.idfactura);
+
+          this.generarNodos()
         }
-      ]
-    }
-  ];
+      )
+
+
+  }
+  generarNodos(){
+    const jsonObjects = this.arregloDB.map((element: any, index: number) => ({
+      id: index + 1, // Se puede utilizar el índice + 1 como ID
+      name: element['name'] // Suponiendo que cada elemento tiene una propiedad 'name'
+  }));
+
+  // El arreglo 'jsonObjects' contendrá un JSON por cada elemento en 'this.arregloDB'
+  console.log(jsonObjects);
+    this.nodes = jsonObjects;
+  }
+
+
 
 
 

@@ -1,3 +1,6 @@
+import json
+
+
 class T_error():
     def __init__(self, tipo, token, descripcion, row, column):
         self.tipo = tipo
@@ -10,13 +13,17 @@ class T_error():
         valor = self.token
         if not isinstance(self.token, str):
             valor = str(valor)
-        return "Tipo: " + self.tipo + " Token: " + valor  + " Descripcion: " + self.description + " Linea: " + self.row + " Columna: " + self.column
+        return "Tipo: {} Token: {} Descripcion: {} Linea: {} Columna: {}".format(self.tipo, valor, self.description, self.row, self.column)
 
-    def getTipo(self):
-        return self.tipo
+    def to_dict(self):
+        return {
+            "tipo": self.tipo,
+            "token": str(self.token) if not isinstance(self.token, str) else self.token,
+            "descripcion": self.description,
+            "linea": self.row,
+            "columna": self.column
+        }
 
-    def getLinea(self):
-        return self.row
+    def to_json(self):
+        return json.dumps(self.to_dict(), indent=2)
 
-    def getDescripcion(self):
-        return self.description

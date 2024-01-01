@@ -1,13 +1,19 @@
-from src.abstract.abstractas import Abstract
-from src.manejadorXml import Estructura
-
-class Procedure(Abstract):
-    def __init__(self, fila, columna, nombre, listaParametros,instrucciones):
+class Procedure():
+    def __init__(self,nombre,parametros,instrucciones):
         self.nombre = nombre
-        self.listaParametros = listaParametros
+        self.parametros = parametros
         self.instrucciones = instrucciones
-        super().__init__(fila, columna)
-
-    def interpretar(self, tablaSimbolos):
-        print("Ejecutar Procedure",self.nombre,self.listaParametros)
-
+        
+    def interpretar(self, environment):
+        
+        for parametro in self.parametros:
+            parametro.interpretar(environment)
+        print("termino de ejecutar parametros procedimiento")
+        
+        for instruccion in self.instrucciones:
+            if isinstance(instruccion,list):
+                for instr in instruccion:
+                    instr.interpretar(environment)
+            else:
+                instruccion.interpretar(environment)
+                

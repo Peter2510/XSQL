@@ -282,3 +282,5 @@ pyrightconfig.json
 parser.out
 parsetab.py
 **/__pycache__/**
+.idea/
+src/data/*

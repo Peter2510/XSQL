@@ -1,122 +1,77 @@
+from src.instrucciones.funcion.funcion import Funcion
+from src.ejecucion.error import T_error
 from src.ejecucion.database import Database
 from src.ejecucion.symbol import Symbol
 from prettytable import PrettyTable
 from src.ejecucion.type import *
 from datetime import datetime
 
-class Environment:
-    def __init__(self, father):
-        self.father = father
-        self.db = None
-        self.bases = []
-        self.simbolos = []
-        self.tablaSimbolos = []
+class Environment(list):
+       
+    def __init__(self, padre=None):
+        super().__init__()
+        self.funciones = {}
+        self.procedimientos = {}
+        self.errors = []
+        self.record = {}
+        self.select_records = []
+        self.altered_records = 0
+        self.one_record = False
+        if padre is not None:
+            for variable in padre:
+                self.append(variable)
+            self.funciones = padre.funciones
+            self.procedimientos = padre.procedimientos
 
-    def getActualDataBase(self):
-        #Buscamos la base de datos 
-        env = self
-        while env.father != None:
-            env = env.father
-        if env.db != None:
-            return env.db
-        else:
-            return {'Error':'Aún no se ha referenciado a una base de datos, utilice el comando "USE dbname".', 'Fila': 0, 'Columna':0 }
+    def addError(self,tipo,token,descripcion,fila,columna):
+        self.errors.append(T_error(tipo,token,descripcion,fila,columna))
     
-    def setActualDataBase(self, name):
-        env = self
-        while env.father !=None:
-            env = env.father
-        env.db = name
-    
-    def createDataBase(self, name):
-        env = self
-        while env.father != None:
-            env = env.father
-        env.bases.append(Database(name))
+    def getErrores(self):
+        return self.errors
+               
+    def agregarFuncion(self, name, funcion):
+        self.funciones[name] = funcion
         
-    def readDataBase(self, name):
-        #Recorrer hasta el entorno global
-        env = self
-        while env.father != None:
-            env = env.father
-        #Retornar la base deseada en el entorno.
-        for value in env.bases:
-            if value.name == name:
-                return value
+    def actualizarFuncion(self, name, funcion):
+        self.funciones.update({name: funcion})
+
+    def existeFuncion(self, name):
+        return name in self.funciones
+
+    def cantidadParametrosFuncion(self, name):
+        return self.funciones[name].getSizeParameters()
+
+    def tipoFuncion(self, name):
+        return self.funciones[name].getType()
+
+    def getFuncion(self, name):
+        return self.funciones[name]
+               
+    def agregarProcedimiento(self, name, procedimiento):
+        self.procedimientos[name] = procedimiento
         
-    def updateDataBase(self, name, newName):
-        env = self
-        while env.father != None:
-            env = env.father
-        for i in range(0,len(env.bases)):
-            if env.bases[i].name == name:
-                env.bases[i].name = newName
-                break
+    def actualizarProcedimiento(self, name, procedimiento):
+        self.procedimientos.update({name: procedimiento})
 
-    def deleteDataBase(self, name):
-        env = self
-        while env.father != None:
-            env = env.father
-        for i in range(0,len(env.bases)):
-            if env.bases[i].name == name:
-                del env.bases[i]
-                break
+    def existeProcedimiento(self, name):
+        return name in self.procedimientos
 
-    def clearTablaSimbolos(self):
-        self.tablaSimbolos = []
-        
-    def guardarVariable(self,name,tipo,value,father):
-        valuee = value
-        if tipo == Type.DATE:
-           valuee = datetime.strptime(value, '%Y-%m-%d %H:%M:%S')
-        self.simbolos.append(Symbol(name,tipo,valuee, father))
-        env = self
-        while env.father != None:
-            env = env.father 
-        env.tablaSimbolos.append(Symbol(name,tipo,value, father))
+    def cantidadParametrosProcedimiento(self, name):
+        return self.procedimientos[name].getSizeParameters()
 
-    def guardarVariableins(self,name,tipo,value,father):            
-        self.simbolos.append(Symbol(name,tipo,value, father))
-        env = self
-        while env.father != None:
-            env = env.father 
-        env.tablaSimbolos.append(Symbol(name,tipo,str(value), father))
+    def getProcedimiento(self, name):
+        return self.procedimientos[name]
+   
+    def agregarVariable(self, variable):
+        self.append(variable)
 
-    def deleteVariable(self, name):
-        env = self
-        while env.father != None:
-            for i in range(0,len(env.simbolos)):
-                if env.simbolos[i].name == name:
-                    del env.simbolos[i]
-                    break
-            env = env.father    
+    def getVariable(self, id):
+        for variable in self:
+            if variable.id == id:
+                return variable
 
-    def vaciarVariables(self):
-        env = self
-        env.simbolos = []
-
-    
-    def buscarVariable(self, name, father):
-        env = self
-        while env.father != None:
-            for i in range(0,len(env.simbolos)):
-                if env.simbolos[i].name == name and env.simbolos[i].father == father:
-                    return {'value': env.simbolos[i].value , 'tipo':env.simbolos[i].tipo,'name':env.simbolos[i].name}
-            env = env.father
-        env = self
-        while env.father != None:
-            for i in range(0,len(env.simbolos)):
-                if env.simbolos[i].name == name:
-                    return {'value': env.simbolos[i].value , 'tipo':env.simbolos[i].tipo,'name':env.simbolos[i].name}
-            env = env.father
-    
-    def tsString(self):
-        arreglo = []
-        for simbolo in self.tablaSimbolos:
-            arreglo.append([simbolo.name, simbolo.tipo.name, simbolo.value, simbolo.father] )
-        encabezado = [ 'ID','TIPO','VALOR','AMBITO']
-        x = PrettyTable()
-        x.field_names = encabezado
-        x.add_rows(arreglo)
-        return x.get_string()
-        
+    def existeVariable(self, id):
+        for variable in self:
+            if variable.id == id:
+                return True
+        return False

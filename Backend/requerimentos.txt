@@ -93,3 +93,5 @@ Werkzeug==3.0.1
 # zipp==1.0.0
 prettytable==3.9.0
 pandas==2.1.4
+GvGen==1.0
+requests==2.31.0

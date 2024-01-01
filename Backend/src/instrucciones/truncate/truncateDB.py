@@ -10,14 +10,17 @@ class truncateDB(Abstract):
     def interpretar(self,environment):
         nombre = self.nombre
         tree = ET.parse(f'./src/data/xml/{nombre}.xml')
-        root = tree.getroot()
+        if (tree != None):
+            root = tree.getroot()
 
-        # Obtener todas las etiquetas <Table> y eliminar las etiquetas <Principal> dentro de ellas
-        for table in root.findall(".//Table"):
-            for principal in table.findall("Principal"):
-                table.remove(principal)
+            # Obtener todas las etiquetas <Table> 
+            for table in root.findall(".//Table"):
+               # for principal in table.findall("Data"):
+                    root.remove(table)
 
-        # Guardar el resultado en un nuevo archivo XML
-        tree.write(f'./src/data/xml/{nombre}.xml', encoding='utf-8', xml_declaration=True)
+            # Guardar el resultado en un nuevo archivo XML
+            tree.write(f'./src/data/xml/{nombre}.xml', encoding='utf-8', xml_declaration=True)
+        else:
+            print({'Error': 'error semantico - no se existe la base de datos'})
     def accept(self, visitor, environment):
-        pass
+        visitor.visit(self, environment)

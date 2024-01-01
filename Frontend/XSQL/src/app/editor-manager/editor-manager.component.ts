@@ -5,6 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { table } from 'table';
 import { TabHeaderComponent } from '../tab-header/tab-header.component';
 import { TextEditorComponent } from '../text-editor/text-editor.component';
 import { EditorItem } from './editor-item';
@@ -26,6 +27,7 @@ import { ResultImgComponent } from './result.component';
 import { TableResultComponent } from './tableResult.component';
 import { ThisReceiver } from '@angular/compiler';
 import { CompilacionService } from '../service/compilacion.service';
+import { ErrorSQL } from '../data-bases/models/Errors';
 
 @Component({
   selector: 'app-editor-manager',
@@ -39,10 +41,12 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
 
   @ViewChild('logger') logger: any;
 
+  errores: ErrorSQL[] = [];
+
   codeMirrorOptions: any = {
     theme: 'dracula',
     lineNumbers: true,
-    lineWrapping: true,
+    lineWrapping: false,
     matchBrackets: true,
     autofocus: false,
     readOnly: true,
@@ -54,6 +58,7 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   names: string[] = [];
   filesToUpload: any[] = [];
   actualCode: any = null;
+  currentDot: string = '';
   constructor(
     private service: GraphvizService,
     private sanitizer: DomSanitizer,
@@ -61,37 +66,33 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.compilar.saludo().subscribe(
-      info => {
-        console.log(info);
-      }
-    )
+    this.compilar.saludo().subscribe((info) => {
+      console.log(info);
+    });
   }
 
-  /*graphvizImg(dot: string) {
-    const viewContainerRef = this.resultHost.viewContainerRef;
+  graphvizImg(dot: string) {
     this.service.getImage(dot).subscribe({
       next: (response: any) => {
         let url = URL.createObjectURL(response);
-        let srcImg = this.sanitizer.bypassSecurityTrustUrl(url);
-        const resultItem = new ResultItem(ResultImgComponent, {
-          src: srcImg,
-        });
-        const resultComponent =
-          viewContainerRef.createComponent<ResultComponent>(
-            resultItem.component
-          );
-        resultComponent.instance.data = resultItem.data;
+        window.open(url, '_blank');
+        URL.revokeObjectURL(url);
       },
       error: (e) => {
         console.error(e);
       },
     });
-  }*/
+  }
 
   ngOnDestroy(): void {}
 
   ngAfterViewInit() {}
+
+  onGetImage() {
+    if (this.currentDot) {
+      this.graphvizImg(this.currentDot);
+    }
+  }
 
   onCompile() {
     let index = this.getActiveIndex();
@@ -111,24 +112,65 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       }
 
       //EJECUTAR EL ARCHIVO ACTUAL
-      this.compilar.ejecutarSQL(main.content).subscribe(data=>{
+      this.compilar.ejecutarSQL(main.content).subscribe((data) => {
         console.log(data);
-      })
+        if (data.errores) {
+          let errores = data.errores;
+          let erroresJson = JSON.parse(errores);
 
-      this.resultHost.viewContainerRef.clear();
+          for (let i = 0; i < erroresJson.length; i++) {
+            let error = erroresJson[i];
+            let errorSQL = new ErrorSQL(
+              error.tipo,
+              error.token,
+              error.descripcion,
+              error.linea,
+              error.columna
+            );
+            this.errores.push(errorSQL);
+          }
 
+          this.showErrorsConsole(this.errores);
+        }
+        if (data.resultados && data.resultados.length > 0) {
+          const logs: string[] = [];
+          data.resultados.forEach((res: any) => {
+            if (res.tipo === 'select') {
+              logs.push(this.getSelectFormat(res.resultado));
+            } else {
+              logs.push(res.resultado);
+            }
+          });
+
+          this.showLogs(logs);
+        }
+
+        if (data.dot) {
+          this.currentDot = data.dot;
+        } else {
+          this.currentDot = '';
+        }
+      });
+
+      // this.resultHost.viewContainerRef.clear();
     }
   }
 
-  showLogs(logs: string[]) {
+  getSelectFormat(results: [][]) {
+    return table(results);
+  }
+
+  showLogs(logs: any[]) {
     logs.forEach((l) => (this.contentLogger += l + '\n'));
   }
-  showErrorsConsole(errors: string[]) {
-    errors.forEach((e) => (this.contentLogger += e + '\n'));
+  showErrorsConsole(errors: any[]) {
+    errors.forEach((e) => (this.contentLogger += e.toString() + '\n'));
+    this.errores = [];
   }
 
   clearLogger() {
     this.contentLogger = '';
+    this.currentDot = '';
   }
 
   clearResults() {
@@ -145,8 +187,6 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       resultComponent.instance.data = resultItem.data;
     });
   }
-
-
 
   addBlankEditor(name: string, content: string = '') {
     let nameTab = `${name}-tab`;
@@ -165,9 +205,10 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       editorItem.component
     );
     componentRef.instance.data = editorItem.data;
-    let element = componentRef.location.nativeElement;
+    const element = componentRef.location.nativeElement;
 
-    element.setAttribute('aria-labelledby', editorItem.data.label);
+    // element.setAttribute('aria-labelledby', editorItem.data.label);
+    element.classList.add('active');
     element.id = editorItem.data.id;
     const tabViewContainerRef = this.tabHost.viewContainerRef;
     const tabItem = new TabItem(TabHeaderComponent, {
@@ -179,7 +220,19 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
     const componentRefTab = tabViewContainerRef.createComponent<TabComponent>(
       tabItem.component
     );
+
+    const elementTab = componentRefTab.location.nativeElement;
+    elementTab.firstChild.classList.add('active');
     componentRefTab.instance.data = tabItem.data;
+
+    // Remove class list
+    this.tabs.forEach((t) =>
+      t.location.nativeElement.firstChild.classList.remove('active')
+    );
+    this.editors.forEach((t) =>
+      t.location.nativeElement.classList.remove('active')
+    );
+    //
 
     this.tabs.push(componentRefTab);
     this.editors.push(componentRef);
@@ -229,12 +282,12 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       // console.log(files);
       for (const file of files) {
         let name = file.name.replace('.sql', '');
-        console.log(name)
+        console.log(name);
         if (!this.isRepeatedName(name)) {
           let reader = new FileReader();
           const freader = () => {
             this.actualCode = reader.result as string;
-            console.log(this.actualCode,"jhs")
+            console.log(this.actualCode, 'jhs');
             if (this.actualCode) {
               reader.removeEventListener('load', freader);
               this.addBlankEditor(name, this.actualCode);
@@ -279,5 +332,49 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       return editorRef.location.nativeElement.classList.contains('active');
     });
     return index;
+  }
+
+  generarDump() {
+    let index = this.getActiveIndex();
+    if (index !== -1) {
+      this.compilar.generaDump().subscribe((text: any) => {
+        console.log(text);
+
+        let name = this.names[index] + '.sql';
+        let file = new Blob([text], { type: 'text' });
+        let a = document.createElement('a'),
+          url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        }, 0);
+      });
+    }
+  }
+
+  expotarInserts() {
+    let index = this.getActiveIndex();
+    if (index !== -1) {
+      this.compilar.generaExport().subscribe((text: any) => {
+        console.log(text);
+
+        let name = this.names[index] + '.sql';
+        let file = new Blob([text], { type: 'text' });
+        let a = document.createElement('a'),
+          url = URL.createObjectURL(file);
+        a.href = url;
+        a.download = name;
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(function () {
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        }, 0);
+      });
+    }
   }
 }

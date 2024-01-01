@@ -1,8 +1,6 @@
 from ..abstract.abstractas import Abstract
 from ..manejadorXml import manejo, Estructura 
 
-
-
 class usarDB(Abstract):
     
     def __init__(self, fila, columna, nombre):
@@ -10,10 +8,11 @@ class usarDB(Abstract):
         super().__init__(fila, columna)
 
     def accept(self, visitor, environment):
-        pass
+        visitor.visit(self,environment)
 
     def interpretar(self,environment):
         nombre = self.nombre
         Estructura.nombreActual = nombre
-        print(Estructura.nombreActual)
-        return nombre
+        msg = f"CAMBIANDO BASE DE DATOS A: {nombre}"
+        print(msg)
+        return {'tipo': 'usarDB', 'resultado': msg}

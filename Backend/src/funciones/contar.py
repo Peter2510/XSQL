@@ -1,16 +1,20 @@
-
-from ..abstract.funcion import Funcion
-from datetime import date
-from datetime import datetime
+from ..abstract import Abstract
+from src.ejecucion.type import Type
 
 
-class Contar(Funcion):
-    def __init__(self, fila, columna, tabla):
+class Contar(Abstract):
+    def __init__(self, fila, columna, tabla=None):
         super().__init__(fila, columna)
         self.tabla = tabla
+        self.tipo = Type.INT
 
+    def __str__(self):
+        return "Contar"
 
-    ## no se si le enviamos el tipo de dato asi com date
-    def interpretar(self, environment):    
-        return datetime.now()
+    def accept(self, visitor, environment):
+        visitor.visit(self, environment)
 
+    def interpretar(self, environment):
+        environment.one_record = True
+        records = environment.select_records
+        return len(records)
