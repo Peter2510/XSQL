@@ -1154,7 +1154,7 @@ def p_procedure(t):
     '''
     crear_procedure : CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END 
     '''
-    t[0] = ProcedureDeclaration(t.lineno(1), find_column(input, t.slice[1]),t[3],t[5],t[8])
+    t[0] = ProcedureDeclaration(t.lineno(1), find_column(input, t.slice[1]),t[3],t[5],t[9])
 
 
 
@@ -1163,7 +1163,7 @@ def p_procedure2(t):
     '''
     crear_procedure : CREATE PROCEDURE ID PARENTESIS_IZQ PARENTESIS_DER AS BEGIN sentencias_funciones END 
     '''
-    t[0] = ProcedureDeclaration(t.lineno(1), find_column(input, t.slice[1]),t[3],None,t[7])
+    t[0] = ProcedureDeclaration(t.lineno(1), find_column(input, t.slice[1]),t[3],[],t[8])
 
 #ALTER PROCEDURE
 def p_alter_procedure(t):
@@ -1171,6 +1171,12 @@ def p_alter_procedure(t):
     alter_procedure : ALTER PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END 
     '''
     t[0] = AlterProcedure(t.lineno(1), find_column(input, t.slice[1]),t[3],t[5],t[9])
+    
+def p_alter_procedure(t):
+    '''
+    alter_procedure : ALTER PROCEDURE ID PARENTESIS_IZQ PARENTESIS_DER AS BEGIN sentencias_funciones END 
+    '''
+    t[0] = AlterProcedure(t.lineno(1), find_column(input, t.slice[1]),t[3],[],t[8])
 
 #parametros de los procedures
 def p_parametros_procedure(t):

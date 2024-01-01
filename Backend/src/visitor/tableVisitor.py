@@ -523,7 +523,7 @@ class SymbolTableVisitor(Visitor):
     
     def visitCreateProcedure(self,node,environment):
       
-        nombre = Estructura.nombreActual + "-" + str(node.nombre)
+        nombre = Estructura.nombreActual + "-" + str(node.id)
         
         if(not environment.existeProcedimiento(nombre)):
             print(self.correct)
@@ -542,7 +542,7 @@ class SymbolTableVisitor(Visitor):
                     environment.errors = environment.getErrores() + environmentProcedimiento.getErrores()
                     
                 else:
-                    procedimiento = Procedure(node.nombre,node.params,node.body)
+                    procedimiento = Procedure(node.id,node.params,node.body)
                     environment.agregarProcedimiento(nombre,procedimiento)
                     for i in environmentProcedimiento:
                         print(i.toString())
@@ -553,7 +553,7 @@ class SymbolTableVisitor(Visitor):
                 
         else:
             self.correct = False
-            environment.addError("Semantico", node.id ,f"El procedimiento '{node.nombre}' ya está definido en la base de datos: "+Estructura.nombreActual, node.fila,node.columna)
+            environment.addError("Semantico", node.id ,f"El procedimiento '{node.id}' ya está definido en la base de datos: "+Estructura.nombreActual, node.fila,node.columna)
         
         
     
