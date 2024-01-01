@@ -77,7 +77,7 @@ as BEGIN
 END;
     
 
-CREATE PROCEDURE proc (@PROD int, @CANT int)
+CREATE PROCEDURE proc (@PROD as int, @CANT int)
 as BEGIN 
     DECLARE @id int;
 END;

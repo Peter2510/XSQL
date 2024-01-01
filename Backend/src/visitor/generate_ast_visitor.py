@@ -159,12 +159,12 @@ class GenerateASTVisitor(Visitor):
         self.graph.newLink(node.nd, node_body)
 
     def visitCreateProcedure(self, node: ProcedureDeclaration, environment):
-        node.nd = self.graph.newItem(f"PROCEDURE {node.nombre}")
+        node.nd = self.graph.newItem(f"PROCEDURE {node.id}")
         self.graph.newLink(self.root, node.nd)
 
         node_params = self.graph.newItem("PARAMS")
         self.graph.newLink(node.nd, node_params)
-        for param in node.listaParametros:
+        for param in node.params:
             node_param = self.graph.newItem(str(param))
             self.graph.newLink(node_params, node_param)
 
@@ -172,7 +172,7 @@ class GenerateASTVisitor(Visitor):
         self.graph.newLink(node.nd, node_body)
 
     def visitCallProcedure(self, node: CallProcedure, environment):
-        node.nd = self.graph.newItem(f"CALL PROCEDURE {node.nombre}")
+        node.nd = self.graph.newItem(f"CALL PROCEDURE {node.id}")
         self.graph.newLink(self.root, node.nd)
 
         node_params = self.graph.newItem("PARAMS")
@@ -182,7 +182,7 @@ class GenerateASTVisitor(Visitor):
             self.graph.newLink(node_params, node_param)
 
     def visitAlterProcedure(self, node: AlterProcedure, environment):
-        node.nd = self.graph.newItem(f"ALTER {node.nombre}")
+        node.nd = self.graph.newItem(f"ALTER {node.id}")
         self.graph.newLink(self.root, node.nd)
 
         node_params = self.graph.newItem("PARAMS")

@@ -2,8 +2,8 @@ from src.abstract.abstractas import Abstract
 from src.manejadorXml import Estructura
 
 class ProcedureDeclaration(Abstract):
-    def __init__(self, fila, columna, nombre, listaParametros,instrucciones):
-        self.id = nombre
+    def __init__(self, fila, columna, id, listaParametros,instrucciones):
+        self.id = id
         self.params = listaParametros
         self.body = instrucciones
         super().__init__(fila, columna)

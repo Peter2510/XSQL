@@ -149,8 +149,7 @@ class SymbolTableVisitor(Visitor):
             
             del environment.funciones[nombre]
             self.visitFunctionDeclaration(node,environment)
-            
-        
+
         else:
             environment.addError("Semantico", node.id ,f"La función '{node.id}' no existe en la base de datos: "+Estructura.nombreActual, node.fila,node.columna)
             self.correct = False
@@ -516,7 +515,16 @@ class SymbolTableVisitor(Visitor):
         
                  
     def visitAlterProcedure(self,node,environment):
-        pass
+        print("visitando alter procedure")
+        nombre = Estructura.nombreActual + "-" + str(node.id)
+        if environment.existeProcedimiento(nombre):
+            
+            del environment.procedimientos[nombre]
+            self.visitCreateProcedure(node,environment)
+
+        else:
+            environment.addError("Semantico", node.id ,f"El procedimiento '{node.id}' no existe en la base de datos: "+Estructura.nombreActual, node.fila,node.columna)
+            self.correct = False
     
     def visitCallProcedure(self,node,environment):
         pass

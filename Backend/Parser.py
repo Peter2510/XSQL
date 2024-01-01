@@ -1001,6 +1001,11 @@ def p_parametro_funcion(t): # @id tipoDato
     '''
     t[0] = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
 
+def p_parametro_funcion2(t): # @id tipoDato
+    '''
+    parametro_funcion : ID_DECLARE AS tipo_dato_parametro 
+    '''
+    t[0] = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[3],t[1])
 
 #tipo de dato del parametro
 def p_tipo_dato_parametro(t):
@@ -1172,7 +1177,7 @@ def p_alter_procedure(t):
     '''
     t[0] = AlterProcedure(t.lineno(1), find_column(input, t.slice[1]),t[3],t[5],t[9])
     
-def p_alter_procedure(t):
+def p_alter_procedure2(t):
     '''
     alter_procedure : ALTER PROCEDURE ID PARENTESIS_IZQ PARENTESIS_DER AS BEGIN sentencias_funciones END 
     '''
@@ -1183,7 +1188,7 @@ def p_parametros_procedure(t):
     '''
     parametros_procedure : parametros_procedure COMA parametro_procedure
     '''
-    t[1].append(t[3])
+    t[1] + [t[3]]
     t[0] = t[1]
 
 def p_parametros_procedure2(t):
@@ -1197,16 +1202,14 @@ def p_parametro_procedure(t): # @id AS tipoDato
     '''
     parametro_procedure : ID_DECLARE tipo_dato 
     '''
-    param = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
-    t[0] = [param]
+    t[0] = param = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
 
 
 def p_parametro_procedure2(t): # @id AS tipoDato
     '''
     parametro_procedure : ID_DECLARE AS tipo_dato 
     '''
-    param = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
-    t[0] = [param]
+    t[0] = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
 
 
 #llamada procedure
