@@ -48,6 +48,7 @@ class SymbolTableVisitor(Visitor):
                     for i in environmentFuncion:
                         print(i.toString())
                     print("se agrego la funcion",nombre)
+                    print(node.body)
                         
             else:
                 environment.errors = environment.getErrores() + environmentFuncion.getErrores()

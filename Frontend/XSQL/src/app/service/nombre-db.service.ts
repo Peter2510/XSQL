@@ -16,7 +16,6 @@ export class NombreDBService {
 
 
   constructor(private router: Router,private http:HttpClient) {
-    // Al inicializar el servicio, verifica si hay un usuario en LocalStorage y cárgalo si es así.
     const usuarioString = localStorage.getItem('nombre');
     if (usuarioString) {
       this.nombre = JSON.parse(usuarioString);
