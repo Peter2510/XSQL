@@ -11,6 +11,9 @@ class StmIf(Abstract):
         self.list_elseif = list_elseif
         self.else_ = else_
 
+    def get_if(self):
+        return self._if
+
     def accept(self, visitor, environment = None):
         self._if.accept(visitor,environment)
         if self.list_elseif != None:
