@@ -463,7 +463,7 @@ AS
 END;    
 
 ------------------WHILE---------------------------
-CREATE FUNCTION fn_retornaalturamora ()
+CREATE FUNCTION fn_retornaalturamora1 ()
 RETURNs nvarchar(15)
 AS
 BEGIN
@@ -484,13 +484,13 @@ BEGIN
     
     end ;
     
-CREATE FUNCTION llamado()
+CREATE FUNCTION llamado2()
 RETURNS int 
 AS 
 
  BEGIN 
     DECLARE @enLlamado nvarchar(20); 
-    SET @enLlamado = fn_retornaalturamora();
+    SET @enLlamado = fn_retornaalturamora1();
          
 END;    
 
@@ -499,60 +499,60 @@ END;
 
 
 
-CREATE FUNCTION fn_retornaalturamora ()
-RETURNs nvarchar(15)
-AS
-BEGIN
-	-- int
-    declare @diasmora int;
-    set @diasmora = 1800;
-    
-    -- varchar
-    declare @app nvarchar(15);
-    set @app = "es un varchar";
+    CREATE FUNCTION fn_retornaalturamora ()
+    RETURNs nvarchar(15)
+    AS
+    BEGIN
+        -- int
+        declare @diasmora int;
+        set @diasmora = 1800;
         
-    -- char
-    declare @char nchar(15);
-    set @char = "es un char";
-    
-    -- date
-    declare @date date;
-    set @date = '2014-12-15';
-    
-    -- datetime
-    declare @dt datetime;
-    set @dt = '2014-12-15 14:14:14';
-    
-    -- decimal
-    declare @dec decimal;
-    set @dec = 14.12;
-    -- bit
-    declare @bit bit;
-    set @bit = 1;
-    
-    declare @bit2 bit;
-    set @bit2 = 1;
-    
-    declare @bit3 bit;
-    set @bit3 = (@bit * @bit2);
-    
-    select @diasmora+1;
-    
-    
-    
-	RETURN @app;
-    
-    end ;
-    
-CREATE FUNCTION llamado()
-RETURNS int 
-AS 
+        -- varchar
+        declare @app nvarchar(15);
+        set @app = "es un varchar";
+            
+        -- char
+        declare @char nchar(15);
+        set @char = "es un char";
+        
+        -- date
+        declare @date date;
+        set @date = '2014-12-15';
+        
+        -- datetime
+        declare @dt datetime;
+        set @dt = '2014-12-15 14:14:14';
+        
+        -- decimal
+        declare @dec decimal;
+        set @dec = 14.12;
+        -- bit
+        declare @bit bit;
+        set @bit = 1;
+        
+        declare @bit2 bit;
+        set @bit2 = 1;
+        
+        declare @bit3 bit;
+        set @bit3 = (@bit * @bit2);
+        
+        select @diasmora+1;
+        
+        
+        
+        RETURN @app;
+        
+        end ;
+        
+    CREATE FUNCTION llamado()
+    RETURNS int 
+    AS 
 
- BEGIN 
-    DECLARE @enLlamado nvarchar(20); 
-    SET @enLlamado = fn_retornaalturamora();
-         
-END;    
+    BEGIN 
+        DECLARE @enLlamado nvarchar(20); 
+        SET @enLlamado = fn_retornaalturamora();
+            
+    END;    
 
 
 --------------- invocacion de procedure ------------------
@@ -569,3 +569,21 @@ END;
 
 exec sp @val = "123", @decimal = 1;
 
+--------------------------
+usar nuevo;
+
+select * from ggg;
+
+alter procedure a(@n nchar(12))  as begin
+
+declare @nm int;
+set @nm = 14;
+
+
+update ggg set estado = @n  where idestado = 15;
+
+end;
+
+exec a "ab";
+
+select * from ggg;

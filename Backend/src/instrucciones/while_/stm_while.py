@@ -1,3 +1,5 @@
+from src.ast.delete import Delete
+from src.ast.update import Update
 from src.instrucciones.generarTablaSimbolos import GenerateSymbolTable
 from src.ast.select import Select
 from src.manejadorXml import Estructura
@@ -34,9 +36,13 @@ class StmWhile(Abstract):
                         j.interpretar(env)
                 elif isinstance(i,Select):
                     Estructura.selectFunciones.append(i.interpretar(environment))
+                elif isinstance(i,Update):
+                    Estructura.selectFunciones.append(i.interpretar(environment))
+                elif isinstance(i,Delete):
+                    Estructura.selectFunciones.append(i.interpretar(environment))
                 else:
                     i.interpretar(env)  
-            GST = GenerateSymbolTable("while",env)
-            GST.saveST()
+            #GST = GenerateSymbolTable("while",env)
+            #GST.saveST()
         
         
