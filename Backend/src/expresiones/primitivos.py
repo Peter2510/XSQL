@@ -1,7 +1,6 @@
 from src.ejecucion.type import Type
 from src.expresiones.variable import Variable
 from ..abstract.expresion import Expression
-from ..C3D.c3d import C3D
 
 class Primitivo(Expression):
     def __init__(self, fila, columna, valor, tipo):

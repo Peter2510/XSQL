@@ -1,7 +1,6 @@
 from src.abstract import Abstract
 from abc import abstractmethod
 from src.ejecucion.type import Type
-from ..C3D.c3d import C3D
 
 
 class SQLExpression(Abstract):

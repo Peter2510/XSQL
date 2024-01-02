@@ -47,12 +47,4 @@ class createDB(Abstract):
 
     def accept(self, visitor, environment):
         visitor.visit(self, environment)
-
-
-    def generar_3d(self, environment, controlador):
-        codigo =''
-        controlador.cont_temp = controlador.cont_temp + 1
-        temp_resultado = C3D(controlador.cont_temp,None)
-        codigo = '    '+str(temp_resultado.get_temp()) + ' = ' + str(nombre)
-        controlador.append_3d(codigo)
-        return temp_resultado            
+    
