@@ -93,6 +93,9 @@ def insertTabla(xml_file, table_name, values):
         # Guarda los cambios en el archivo XML
         tree.write(xml_file, encoding="utf-8", xml_declaration=True)
         print(f"Inserción exitosa en la tabla '{table_name}' del archivo {xml_file}.")
+        return {'tipo':'error', 'mensaje':f'Inserción exitosa en la tabla {table_name} del archivo {xml_file}.'}
+
+        
     except Exception as e:
         print(f"Error al insertar datos en el XML: {str(e)}")
 
