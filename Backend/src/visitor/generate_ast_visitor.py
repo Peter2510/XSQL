@@ -32,7 +32,7 @@ from src.instrucciones.conditionals.stm_if import StmIf
 from src.instrucciones.while_.stm_while import StmWhile
 from src.instrucciones.funcion.string_ import String_
 from src.expresiones.primitivos import Primitivo
-
+import datetime
 
 # from src.expresiones.binaria import Binaria
 
@@ -82,7 +82,7 @@ class GenerateASTVisitor(Visitor):
         self.visitSQLBinaryExpression(node, environment)
 
     def visitSQLUnaryExpression(self, node: SQLUnaryExpression, environment):
-        if not isinstance(node.argument, (int, str, float, bool)):
+        if not isinstance(node.argument, (int, str, float, bool, datetime.date)):
             node.nd = node.argument.nd if (
                     node.argument is not None and node.argument.nd is not None) else self.graph.newItem(
                 "Call")
@@ -424,7 +424,7 @@ class GenerateASTVisitor(Visitor):
         self.graph.newLink(node.nd, self.node_none(node.opDer))
 
     def visitPrimitivo(self, node: Primitivo, environment):
-        if not isinstance(node.valor, (int, str, float, bool)):
+        if not isinstance(node.valor, (int, str, float, bool, datetime.date)):
             node.valor.accept(self, environment)
             node.nd = node.valor.nd if (
                     node.valor is not None and node.valor.nd is not None) else self.graph.newItem(

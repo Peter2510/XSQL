@@ -42,6 +42,7 @@ from src.instrucciones.conditionals.if_ import If_
 from src.instrucciones.conditionals.stm_if import StmIf
 from src.instrucciones.while_.stm_while import StmWhile
 from src.expresiones.primitivos import Primitivo
+import datetime
 
 
 class C3DVisitor(Visitor):
@@ -283,7 +284,7 @@ class C3DVisitor(Visitor):
         return t
 
     def visitPrimitivo(self, node: Primitivo, environment):
-        if not isinstance(node.valor, (int, str, float, bool)):
+        if not isinstance(node.valor, (int, str, float, bool, datetime.date)):
             node.valor.accept(self, environment)
             return node.valor.code if node.valor is not None else ""
         else:

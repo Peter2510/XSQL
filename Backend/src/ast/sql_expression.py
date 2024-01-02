@@ -1,3 +1,5 @@
+import datetime
+
 from src.abstract import Abstract
 from abc import abstractmethod
 from src.ejecucion.type import Type
@@ -119,29 +121,32 @@ class SQLUnaryExpression(SQLExpression):
         self.argument = argument
 
     def __str__(self):
-        if not isinstance(self.argument, (int, str, float, bool)):
+        if not isinstance(self.argument, (int, str, float, bool, datetime.date)):
             return str(self.argument)
 
         return f"({self.argument})" if self.in_paren else str(self.argument)
 
     def get_tipo(self):
-        if not isinstance(self.argument, (int, str, float, bool)):
+        if not isinstance(self.argument, (int, str, float, bool, datetime.date)):
             return self.argument.tipo
 
         return self.tipo
 
     def accept(self, visitor, environment):
-        if not isinstance(self.argument, (int, str, float, bool)):
+        if not isinstance(self.argument, (int, str, float, bool, datetime.date)):
             self.argument.accept(visitor, environment)
         visitor.visit(self, environment)
 
     def interpretar(self, environment):
-        if not isinstance(self.argument, (int, str, float, bool)):
+        if not isinstance(self.argument, (int, str, float, bool, datetime.date)):
             self.valor = self.argument.interpretar(environment)
         else:
             self.valor = self.argument
 
         if isinstance(self.valor, Variable):
             self.valor = self.valor.value
+
+        if isinstance(self.valor, datetime.date):
+            self.valor = str(self.valor)
 
         return self.valor
