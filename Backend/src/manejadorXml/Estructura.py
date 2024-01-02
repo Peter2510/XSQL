@@ -65,7 +65,6 @@ def crearTabla(nombreDB, nombreTabla, parametros):
 
 def insertFunction(xml_file,functionName, text):
     try:
-        print(functionName, "sss")
         tree = ET.parse(xml_file)
         root = tree.getroot()
         existing_data = root.find("./Funcion[@name='funciones']")
@@ -91,6 +90,33 @@ def insertFunction(xml_file,functionName, text):
     except Exception as e:
         print(f"Error al insertar datos en el XML: {str(e)}")
 
+
+def insertProcedure(xml_file,functionName, text):
+    try:
+        tree = ET.parse(xml_file)
+        root = tree.getroot()
+        existing_data = root.find("./Procedimiento[@name='procedimientos']")
+        if existing_data is not None:
+            datosEtiqueta = ET.SubElement(existing_data, "ProcedimientoEspecifico")
+            datosEtiqueta.set("name", functionName)
+            data_element = ET.SubElement(datosEtiqueta, "contenido")
+            data_element.text = str(text)
+        else:
+            # Crea una nueva etiqueta 'Datos' con los valores proporcionados
+            principal = ET.SubElement(root, "Procedimiento")
+            principal.set("name", "procedimientos")
+            datosEtiqueta = ET.SubElement(principal, "ProcedimientoEspecifico")
+            datosEtiqueta.set("name", functionName)
+            # Agrega los valores proporcionados a los atributos
+            data_element = ET.SubElement(datosEtiqueta, "contenido")
+            data_element.text = (text)
+
+        tree.write(xml_file, encoding="utf-8", xml_declaration=True)
+        print(f"Inserción exitosa en la procedimiento '{functionName}' del archivo {xml_file}.")
+        return {'tipo':'error', 'mensaje':f'Inserción exitosa en la tabla {functionName} del archivo {xml_file}.'}
+
+    except Exception as e:
+        print(f"Error al insertar datos en el XML: {str(e)}")
 
 
 def insertTabla(xml_file, table_name, values):

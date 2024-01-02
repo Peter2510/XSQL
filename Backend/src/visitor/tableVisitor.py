@@ -50,10 +50,12 @@ class SymbolTableVisitor(Visitor):
                     for i in environmentFuncion:
                         print(i.toString())
                     print("se agrego la funcion",nombre)
+                    valor = ""
                     for texto in node.body:
                         for valores in texto:
                             print(str(valores))
-                    Estructura.insertFunction(f"./src/data/xml/{Estructura.nombreActual}.xml", nombre, str(valores))
+                            valor +=str(valores)
+                    Estructura.insertFunction(f"./src/data/xml/{Estructura.nombreActual}.xml", nombre, str(valor))
                         
             else:
                 environment.errors = environment.getErrores() + environmentFuncion.getErrores()
@@ -813,6 +815,12 @@ class SymbolTableVisitor(Visitor):
                     for i in environmentProcedimiento:
                         print(i.toString())
                     print("se agrego el procedimiento normal",nombre)
+                    valor = ""
+                    for texto in node.body:
+                       
+                            valor +=str(texto)
+
+                    Estructura.insertProcedure(f"./src/data/xml/{Estructura.nombreActual}.xml", nombre, str(valor))
                     
                         
             else:
