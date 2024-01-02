@@ -62,6 +62,7 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   filesToUpload: any[] = [];
   actualCode: any = null;
   currentDot: string = '';
+  currentTac: string = '';
   name = ''
   animal = ''
   constructor(
@@ -109,6 +110,10 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
     if (this.currentDot) {
       this.graphvizImg(this.currentDot);
     }
+  }
+
+  onGetTac() {
+    this.contentLogger += this.currentTac;
   }
 
   onCompile() {
@@ -166,6 +171,12 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
           this.currentDot = data.dot;
         } else {
           this.currentDot = '';
+        }
+
+        if(data.tac) {
+          this.currentTac = data.tac
+        } else {
+          this.currentTac = '';
         }
 
         if (data.tablas) {
