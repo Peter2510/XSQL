@@ -56,6 +56,7 @@ class insertInstruccion(Abstract):
                 if(elementos['name']== self.nombreTabla):
                     ### existe la tabla en ld BD
                     existeTabla = False
+                    indiceAtributosPrimarios =0
                     #print("aaaa", elementos['data']['estructura'])
                     for key, value in elementos['data']['estructura'].items():
                         ## todo los elementos 
@@ -68,7 +69,9 @@ class insertInstruccion(Abstract):
                             elementosNoNulos.append(key)
                         ## si es primario
                         if (value["caracteristicas"]["Atributo3"]['tipo']['restricciones']=='1'):
+                            print(indiceAtributosPrimarios, "8888")
                             nombreAtributosPrimarios.append(key)
+                        indiceAtributosPrimarios+=1
                         ## busqueda de parametros  con el mismo nombre
                         for cantidad in range(len(self.parametros)):
                             if (key == self.atributos[cantidad]):
@@ -126,12 +129,25 @@ class insertInstruccion(Abstract):
                         ### para atributos generales de tabla 
                         for datos in elementos['data']['datos']:
                             indice=0
+                            cantidad =0
+
                             for key, value in datos.items():
+                                indice2=0
                                 if key in nombreAtributosPrimarios:
                                     for nombreAtributo in self.atributos:
-                                        if key == nombreAtributo and value == str(self.parametros[indice]):
-                                                validacionUnicoPrimario = True
-                                                break
+                                        print(key, value, "PK", nombreAtributo, self.parametros[indice2])
+                                        if (key == nombreAtributo):
+                                            print(self.parametros[indice2],"+++++")
+                                            if(value == str(self.parametros[indice2])):
+                                                print("ya existe",cantidad, value, key)
+                                                cantidad+=1
+                                                if (cantidad == len(nombreAtributosPrimarios)):
+                                                    print("ya existe final", cantidad, value, key)
+                                                    validacionUnicoPrimario=True
+                                        indice2+=1
+                                       # if key == nombreAtributo and value == str(self.parametros[indice]):
+                                            #    validacionUnicoPrimario = True
+                                           #     break
                                     indice+=1
 
 
@@ -142,7 +158,7 @@ class insertInstruccion(Abstract):
             #################
             #################
             ##validacion de primario
-            if (validacionUnicoPrimario == False):
+            if (validacionUnicoPrimario==False ):
                 # genearcion de json si todo bien jala el json
                 if(validaciones == False):
                   #### otra validacion, ir a buscar que correspondan los datos 
@@ -159,8 +175,11 @@ class insertInstruccion(Abstract):
                                 valorCadena = ''
                                 print(type(self.parametros[indiceAtributo]), tipoElemento[posicion]['Atributo1']['tipo'])
                                 if(isinstance(self.parametros[indiceAtributo], int)):
-                                    valorCadena = 0
-                                elif (isinstance(self.parametros[indiceAtributo], float)):
+                                    if(str(tipoElemento[posicion]['Atributo1']['tipo'])==str(2)):
+                                        valorCadena = 2
+                                    else:
+                                        valorCadena = 0
+                                elif (isinstance(self.parametros[indiceAtributo], float) ):
                                     valorCadena = 2
                                 elif (isinstance(self.parametros[indiceAtributo], str)):
                                     valorCadena = "varchar"
@@ -168,7 +187,7 @@ class insertInstruccion(Abstract):
                                     valorCadena = 3
                                 elif (isinstance(self.parametros[indiceAtributo], datetime.datetime)):
                                     valorCadena = 4
-                                elif (isinstance(self.parametros[indiceAtributo], bit)):
+                                elif (isinstance(self.parametros[indiceAtributo], bool)):
                                     valorCadena = 1
                         
                                 if (str(valorCadena)== str(tipoElemento[posicion]['Atributo1']['tipo'])):
@@ -215,16 +234,20 @@ class insertInstruccion(Abstract):
                         print({'error': 'Error semantico, tipo de datos para los parametros son incorrectos'})
                         environment.addError("Semantico", "" ,f"tipo de datos para los parametros son incorrectos", self.fila,self.columna)
                 else:
-                    print({'error': 'Error semantico, no concuerda'})
+                    environment.addError("Semantico", "" ,f" no concuerda", self.fila,self.columna)
+
             else:
                     print({'error': 'Error semantico, llave primaria ya existente'})
                     environment.addError("Semantico", "" ,f"llave primaria ya existente", self.fila,self.columna)
 
 
-            return {'tipo':'insert'}
+            return {'tipo':'insert', 'mensaje':'insertado'}
         else:
             environment.addError("Semantico","" ,f"no se ha seleccionado una BD",  self.fila, self.columna)
+            return {'tipo':'error', 'resultado':'error'}
 
+        
+        return {'tipo':'insert', 'resultado':'correcto'}
         
         
 

@@ -48,7 +48,7 @@ class dropTable(Abstract):
                 print("No existe la base de datos")
                 environment.addError("Semantico", {self.nombre} ,f"no existe la  base de datos",  self.fila, self.columna)
 
-            return nombre
+            return {'tipo':'drop', 'mensaje':'se elimino correctamente'}
         else:
             environment.addError("Semantico", {self.nombre} ,f"no se puede eliminar la DB porque depende de otra",  self.fila, self.columna)
 
