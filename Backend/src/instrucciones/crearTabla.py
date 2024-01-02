@@ -12,6 +12,7 @@ class crearTabla(Abstract):
     def interpretar(self, environment):
         ### datos de bandera
         ##hacer validacion con la variable global de Estructura
+        print(self.listaAtributos)
         existeNombre = False
         nombreTablaRepetido = False
         atributoRepetido = False
@@ -56,25 +57,52 @@ class crearTabla(Abstract):
                         tipoAtributo = ''
                         if (isinstance(row[1], Enum) ):
                             tipoAtributo = str(row[1].value)
+                        elif(isinstance(row[1], list)):
+                            if (isinstance(row[1], Enum) ):
+                                tipoAtributo = str(row[1][0].value)
+                            else:
+                                tipoAtributo = str(row[1][0].value)
                         else:
                             print(row[1], "<<")
                             tipoAtributo = str(row[1].type.name)+f"({str(row[1].size.valor)})"
 
                         if (isinstance(row[3], list)):
-                            json_data = {
-                                'tipo':tipoAtributo,
-                                'nulidad': int(row[2]),
-                                'restricciones': {
-                                    'nombreTabla':row[3][0],
-                                    'nombreAtributo':row[3][1]
-                                } 
-                            }
-                            atributosFinales.append(
-                                {
-                                'nombre': row[0],
-                                'data': json_data      
+                            ## en dado caso sea pk fk
+                            if (isinstance(row[3][1], list)):
+                                print(row[3][0], (row[3][1][0]), (row[3][1][1]))
+                                json_data = {
+                                    'tipo':tipoAtributo,
+                                    'nulidad': int(row[2]),
+                                    'restricciones': {
+                                        'nombreTabla':(row[3][1][0]),
+                                        'nombreAtributo':(row[3][1][1])
+                                    },
+                                    'primariaForanea': (row[3][0])
                                 }
-                            )
+                                atributosFinales.append(
+                                    {
+                                    'nombre': row[0],
+                                    'data': json_data      
+                                    }
+                                )
+                            #sino pues si lo obtiene
+                            else:
+                                json_data = {
+                                    'tipo':tipoAtributo,
+                                    'nulidad': int(row[2]),
+                                    'restricciones': {
+                                        'nombreTabla':row[3][0],
+                                        'nombreAtributo':row[3][1]
+                                    },
+                                    'primariaForanea': 2
+                                }
+                                atributosFinales.append(
+                                    {
+                                    'nombre': row[0],
+                                    'data': json_data      
+                                    }
+                                )
+            
                         else:
                             json_data = {
                                 'tipo':tipoAtributo,
@@ -89,13 +117,15 @@ class crearTabla(Abstract):
                             )
 
                 print("Contenido de atributosFinales:")
-                print(type(atributosFinales))
+                print(type(atributosFinales), atributosFinales)
 
 
                 valoresTabla = []
                 for atributo in atributosFinales:
+                    print(atributo)
                     nombre = atributo["nombre"]
                     if nombre in valoresTabla:
+                        print(nombre, atributo)
                         atributoRepetido= True
                         environment.addError("Semantico", "" ,f"ya existe un atributo con este nombre en esta tabla como referencia", self.fila,self.columna)
 

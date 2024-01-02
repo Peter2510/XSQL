@@ -1,0 +1,8 @@
+if 1 == 1 goto L1
+goto L2
+
+L1:
+ETIQUETA_VERDADERA
+
+L2:
+ETIQUETA_FALSA

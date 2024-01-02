@@ -47,10 +47,13 @@ export class DataBasesComponent implements OnInit {
 
 
   }
+
+
   generarNodos(){
     const jsonObjects = this.arregloDB.map((element: any, index: number) => ({
       id: index + 1, // Se puede utilizar el índice + 1 como ID
       name: element['name'] // Suponiendo que cada elemento tiene una propiedad 'name'
+      //
   }));
 
   // El arreglo 'jsonObjects' contendrá un JSON por cada elemento en 'this.arregloDB'

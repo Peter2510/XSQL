@@ -1,6 +1,7 @@
 from src.abstract import Abstract
 from abc import abstractmethod
 from src.ejecucion.type import Type
+from ..C3D.c3d import C3D
 
 
 class SQLExpression(Abstract):
@@ -52,6 +53,9 @@ class SQLBinaryExpression(SQLExpression):
         self.right.accept(visitor, environment)
         visitor.visit(self, environment)
 
+
+                
+ 
     def interpretar(self, environment):
         self.left.interpretar(environment)
         self.right.interpretar(environment)

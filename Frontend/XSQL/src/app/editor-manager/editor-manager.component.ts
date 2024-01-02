@@ -28,6 +28,9 @@ import { TableResultComponent } from './tableResult.component';
 import { ThisReceiver } from '@angular/compiler';
 import { CompilacionService } from '../service/compilacion.service';
 import { ErrorSQL } from '../data-bases/models/Errors';
+import { MatDialog } from '@angular/material/dialog';
+import { ObtencionDBdumpComponent } from '../obtencion-dbdump/obtencion-dbdump.component';
+import { NombreDBService } from '../service/nombre-db.service';
 
 @Component({
   selector: 'app-editor-manager',
@@ -59,17 +62,31 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   filesToUpload: any[] = [];
   actualCode: any = null;
   currentDot: string = '';
+  name = ''
+  animal = ''
   constructor(
     private service: GraphvizService,
     private sanitizer: DomSanitizer,
-    private compilar: CompilacionService
+    private compilar: CompilacionService,
+    private dialog: MatDialog,
+    private servicioNombre: NombreDBService
   ) {}
 
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ObtencionDBdumpComponent, {
+      data: {name: this.name, animal: this.animal},
+      width:'50%',
+      height:"300px"
+    });
+    console.log(this.servicioNombre.getUsuario());
+
+  }
   ngOnInit(): void {
     this.compilar.saludo().subscribe((info) => {
       console.log(info);
     });
   }
+
 
   graphvizImg(dot: string) {
     this.service.getImage(dot).subscribe({
@@ -324,7 +341,7 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   generarDump() {
     let index = this.getActiveIndex();
     if (index !== -1) {
-      this.compilar.generaDump().subscribe((text: any) => {
+      this.compilar.generaDump(this.servicioNombre.getUsuario()).subscribe((text: any) => {
         console.log(text);
 
         let name = this.names[index] + '.sql';
@@ -346,7 +363,7 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   expotarInserts() {
     let index = this.getActiveIndex();
     if (index !== -1) {
-      this.compilar.generaExport().subscribe((text: any) => {
+      this.compilar.generaExport(this.servicioNombre.getUsuario()).subscribe((text: any) => {
         console.log(text);
 
         let name = this.names[index] + '.sql';

@@ -1,12 +1,20 @@
 from src.ejecucion.type import Type
 from src.expresiones.variable import Variable
 from ..abstract.expresion import Expression
+from ..C3D.c3d import C3D
 
 class Primitivo(Expression):
     def __init__(self, fila, columna, valor, tipo):
         self.valor = valor
         self.tipo = tipo
         super().__init__(fila, columna)
+
+
+    def generar_3d(self, tabla, controlador):
+        return self
+
+    def get_temp(self):
+        return self.valor
 
     def accept(self, visitor, environment):
         visitor.visit(self, environment)
@@ -60,3 +68,4 @@ class Primitivo(Expression):
                 environment.addError("Semántico", str(self.valor), "La variable no está definida", self.fila, self.columna)
                 return None
         
+         

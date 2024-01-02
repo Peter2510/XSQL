@@ -12,6 +12,8 @@ from src.instrucciones.crearTabla import crearTabla
 from src.ejecucion.type import Type
 from src.instrucciones.usarDB import usarDB
 from src.instrucciones.drop.dropDB import dropDB
+from src.instrucciones.drop.dropTabla import dropTable
+
 from src.instrucciones.truncate.truncateDB import truncateDB
 from src.instrucciones.funcion.function_declaration import FunctionDeclaration
 from src.instrucciones.funcion.param_function import FunctionParam
@@ -232,6 +234,12 @@ def p_nulidad_parametro3(t):# si es vacio puede ser null entonces es 1
     '''
     t[0] = '2'
 
+def p_restriccion_parametro4(t): #primary reference  -> 1
+    '''
+    restriccion_parametro : PRIMARY KEY restriccion_parametro
+    '''
+    t[0] = [1, t[3]]
+
 def p_restriccion_parametro(t): #primary -> 1
     '''
     restriccion_parametro : PRIMARY KEY
@@ -282,9 +290,9 @@ def p_drop(t):
 
 def p_drop2(t):
     '''
-    opcionDrop : DROP TABLE expresion
+    opcionDrop : DROP TABLE ID
     '''
-    t[0] = t[3]
+    t[0] = dropTable(t.lineno(3), find_column(input, t.slice[3]), t[3])
 ### seccion para el truncate creo que solo se puede en tablas
 
 def p_truncate(t):
