@@ -72,6 +72,9 @@
               <button type="button" class="btn btn-outline-primary ms-3 mt-2 text-center" (click)="onGetImage()">
                 AST
               </button>
+              <button type="button" class="btn btn-outline-primary ms-3 mt-2 text-center" (click)="showSymbolTables()">
+                Tabla de simbolos
+              </button>
             }
           </div>
 
@@ -99,7 +102,35 @@
             </div>
           </div>
         </div>
-
+        
+        <div *ngIf="tablas && mostrarTS">
+          <h2 class="text text-bg-danger mt-2 text-center text-white">Tablas de simbolos</h2>
+          <table class="table table-bordered border-primary mb-3" *ngFor="let tabla of tablas">
+            <thead>
+              <tr>
+                <th colspan="3" class = "fs-4 text-light text-center">{{ tabla.entorno }}</th>
+              </tr>
+              <tr>
+                <th class="text-light">Id</th>
+                <th class="text-light">Tipo</th>
+                <th class="text-light">Valor</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngIf="tabla.datos && tabla.datos.length > 0">
+                <tr *ngFor="let simbolo of tabla.datos">
+                  <td class="text-light">{{ simbolo.id }}</td>
+                  <td class="text-light">{{ simbolo.tipo }}</td>
+                  <td class="text-light">{{ simbolo.valor }}</td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+        
+        
+        
+        
 
     </div>
 

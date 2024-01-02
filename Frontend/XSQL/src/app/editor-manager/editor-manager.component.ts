@@ -31,6 +31,7 @@ import { ErrorSQL } from '../data-bases/models/Errors';
 import { MatDialog } from '@angular/material/dialog';
 import { ObtencionDBdumpComponent } from '../obtencion-dbdump/obtencion-dbdump.component';
 import { NombreDBService } from '../service/nombre-db.service';
+import { Simbolo, TablaSimbolo } from '../data-bases/models/TablaSimbolo';
 
 @Component({
   selector: 'app-editor-manager',
@@ -45,6 +46,8 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   @ViewChild('logger') logger: any;
 
   errores: ErrorSQL[] = [];
+  tablas: TablaSimbolo[];
+  mostrarTS = false
 
   codeMirrorOptions: any = {
     theme: 'dracula',
@@ -111,6 +114,10 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
     }
   }
 
+  showSymbolTables(){
+    this.mostrarTS = ! this.mostrarTS
+  }
+
   onCompile() {
     let index = this.getActiveIndex();
     if (index !== -1) {
@@ -130,6 +137,7 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
 
       //EJECUTAR EL ARCHIVO ACTUAL
       this.compilar.ejecutarSQL(main.content).subscribe((data) => {
+        this.tablas = []
         console.log(data);
         if (data.errores) {
           let errores = data.errores;
@@ -169,7 +177,31 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
         }
 
         if (data.tablas) {
-          console.log(data.tablas);
+          let tbl = data.tablas;
+          let tablasJson = JSON.parse(tbl);
+
+          for (let i = 0; i < tablasJson.length; i++) {
+            
+            let tabla = tablasJson[i];
+            let TS = new TablaSimbolo(tabla.Entorno,[])
+            let datos = []
+            
+            for (let j = 0; j < tabla.datos.length; j++) {
+
+              let simbolo = tabla.datos[j]
+              let sim = new Simbolo(simbolo.id,simbolo.tipo,simbolo.valor)
+              datos.push(sim)
+
+            }
+            TS.datos = datos
+            this.tablas.push(TS)
+            
+            
+          }
+
+          console.log(this.tablas)
+
+          
         }
 
         if (data.funciones) {
@@ -197,6 +229,7 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   clearLogger() {
     this.contentLogger = '';
     this.currentDot = '';
+    this.tablas = []
   }
 
   clearResults() {
