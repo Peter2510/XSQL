@@ -174,9 +174,9 @@ def t_ID_DECLARE(t):
 
 # Token DATETIME
 def t_DATETIMEPRIM(t):
-    r'\'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\''
+    r'\'\d{2}-\d{2}-\d{4} \d{2}:\d{2}:\d{2}\''
     try:
-        t.value = datetime.datetime.strptime(t.value[1:-1], '%Y-%m-%d %H:%M:%S')
+        t.value = datetime.datetime.strptime(t.value[1:-1], '%d-%m-%Y %H:%M:%S')
     except ValueError:
         print("Error en la fecha y hora")
         errors.append(T_error("Lexico",t.value,"Error en la fecha u hora", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
@@ -184,9 +184,9 @@ def t_DATETIMEPRIM(t):
     return t
 
 def t_DATEPRIM(t):
-    r'\'\d{4}-\d{2}-\d{2}\''
+    r'\'\d{2}-\d{2}-\d{4}\''
     try:
-        t.value = datetime.datetime.strptime(t.value[1:-1], '%Y-%m-%d').date()
+        t.value = datetime.datetime.strptime(t.value[1:-1], '%d-%m-%Y').date()
     except ValueError:
         print("Error en la fecha")
         errors.append(T_error("Lexico",t.value,"Error en la fecha", t.lexer.lineno, t.lexpos - lexer.lexdata.rfind('\n', 0, t.lexpos)))
@@ -237,7 +237,7 @@ def t_newline(t):
     t.lexer.lineno +=len(t.value)
     
 def t_STR(t):
-    r'\"[\s\S]*?\"'
+    r'(\"[\s\S]*?\")|(\'[\s\S]*?\')|(\`[\s\S]*?\`)'
     t.value = t.value[1:-1]
     t.value = t.value.replace('\\"', '\"')
     t.value = t.value.replace("\\'", "\'")

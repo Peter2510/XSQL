@@ -1,11 +1,11 @@
 from ...abstract.abstractas import Abstract
-from ...manejadorXml import manejo, Estructura 
+from ...manejadorXml import manejo, Estructura
 import json
 import pandas as pd
 import datetime
 
 class insertInstruccion(Abstract):
-    
+
     def __init__(self, fila, columna, nombreTabla, atributos, parametros):
         self.nombreTabla = nombreTabla
         self.atributos = atributos
@@ -22,7 +22,7 @@ class insertInstruccion(Abstract):
             nombre = self.nombreTabla
             nuevosParametros =[]
             nuevosAtributos = []
-    
+
 
             ### obtencion de archivps
             Estructura.load();
@@ -37,14 +37,15 @@ class insertInstruccion(Abstract):
             validacionUnicoPrimario = False
             existeTabla= True
             yaSellamoDB = False
+            error = False
 
 
-            ## ver si ya se llamo a la DB 
+            ## ver si ya se llamo a la DB
             if (Estructura.nombreActual != None):
                 yaSellamoDB = True
-            
 
-            ### busca el indice de la BD 
+
+            ### busca el indice de la BD
             for indice in Estructura.Databases:
                 if (indice["name"]==Estructura.nombreActual):
                     break
@@ -59,7 +60,7 @@ class insertInstruccion(Abstract):
                     indiceAtributosPrimarios =0
                     #print("aaaa", elementos['data']['estructura'])
                     for key, value in elementos['data']['estructura'].items():
-                        ## todo los elementos 
+                        ## todo los elementos
                         tipoElemento.append(value["caracteristicas"])
                         nombresElementos.append(key)
                         ## busqueda de elementos que sean no nulos y primary key.
@@ -80,18 +81,19 @@ class insertInstruccion(Abstract):
 
             ## vistass
             ## not null
-            #### validaciones 
+            #### validaciones
 
-            ## ver si ya se nombro la base de datos 
+            ## ver si ya se nombro la base de datos
             if (existeTabla == True):
                 environment.addError("Semantico", "" ,f"no existe tabla en la BD",  self.fila, self.columna)
+                error = True
 
-
-            #### ver si son iguales 
+            #### ver si son iguales
             if (len(self.atributos) != len(self.parametros)):
                 validaciones = True
                 print("Error semantico, no son del mismo tamanio")
                 environment.addError("Semantico", "" ,f"no son del mismo tamanio los atributos y parametros",  self.fila, self.columna)
+                error = True
 
 
             ### determina si lo que viene al menos sean atributos no nulos
@@ -116,17 +118,19 @@ class insertInstruccion(Abstract):
                 validaciones = True
                 print("Error semantico, atributos incompletos no nulos")
                 environment.addError("Semantico", "" ,f"atributos incompletos no nulos", self.fila,self.columna)
+                error = True
 
             if (cantidadValidaElementosGeneral<len(self.atributos)):
                 validaciones = True
                 print("Error semantico, atributos incorrectos, hay alguno que no existe en tabla")
                 environment.addError("Semantico", "" ,f"atributos incorrectos, hay alguno que no existe en tabla", self.fila,self.columna)
+                error = True
 
             #################
             ###validacion que exista ya la tabla primaria
             for elementos in Estructura.Databases[indiceBaseDatos]["tables"]:
                     if(elementos['name']== self.nombreTabla):
-                        ### para atributos generales de tabla 
+                        ### para atributos generales de tabla
                         for datos in elementos['data']['datos']:
                             indice=0
                             cantidad =0
@@ -152,8 +156,8 @@ class insertInstruccion(Abstract):
 
 
 
-    
-            
+
+
             #################
             #################
             #################
@@ -161,10 +165,10 @@ class insertInstruccion(Abstract):
             if (validacionUnicoPrimario==False ):
                 # genearcion de json si todo bien jala el json
                 if(validaciones == False):
-                  #### otra validacion, ir a buscar que correspondan los datos 
+                  #### otra validacion, ir a buscar que correspondan los datos
                   ### para ver el tipo en xml
                   ### actualizado problema a ver, que si lo hago en desorden ya no reconoceSS
-                    validacionTipo = True 
+                    validacionTipo = True
                     indiceAtributo =0
                     cantidadElementoCorrectos = 0
 
@@ -177,6 +181,10 @@ class insertInstruccion(Abstract):
                                 if(isinstance(self.parametros[indiceAtributo], int)):
                                     if(str(tipoElemento[posicion]['Atributo1']['tipo'])==str(2)):
                                         valorCadena = 2
+                                    elif ((self.parametros[indiceAtributo] == 1 or self.parametros[
+                                        indiceAtributo] == 0) and str(
+                                            tipoElemento[posicion]['Atributo1']['tipo']) == str(1)):
+                                        valorCadena = 1
                                     else:
                                         valorCadena = 0
                                 elif (isinstance(self.parametros[indiceAtributo], float) ):
@@ -189,7 +197,7 @@ class insertInstruccion(Abstract):
                                     valorCadena = 4
                                 elif (isinstance(self.parametros[indiceAtributo], bool)):
                                     valorCadena = 1
-                        
+
                                 if (str(valorCadena)== str(tipoElemento[posicion]['Atributo1']['tipo'])):
                                     print("encotrado",tipoElemento[posicion]['Atributo1']['tipo'], "---JALO---", indiceAtributo)
                                     cantidadElementoCorrectos+=1
@@ -199,10 +207,10 @@ class insertInstruccion(Abstract):
                                     if (len(comprobacion)==2):
                                         print("encotrado",tipoElemento[posicion]['Atributo1']['tipo'], "---JALO---", indiceAtributo)
                                         cantidadElementoCorrectos+=1
-                        
+
                                 break
                             posicion+=1
-                        
+
                         indiceAtributo+=1
 
 
@@ -233,19 +241,22 @@ class insertInstruccion(Abstract):
                     else:
                         print({'error': 'Error semantico, tipo de datos para los parametros son incorrectos'})
                         environment.addError("Semantico", "" ,f"tipo de datos para los parametros son incorrectos", self.fila,self.columna)
+                        error = True
                 else:
                     environment.addError("Semantico", "" ,f" no concuerda", self.fila,self.columna)
+                    error = True
 
             else:
                     print({'error': 'Error semantico, llave primaria ya existente'})
                     environment.addError("Semantico", "" ,f"llave primaria ya existente", self.fila,self.columna)
+                    error = True
 
-
-            return {'tipo':'insert', 'mensaje':'insertado'}
+            if error:
+                return None
+            return {'tipo':'insert', 'resultado':'insertado'}
         else:
             environment.addError("Semantico","" ,f"no se ha seleccionado una BD",  self.fila, self.columna)
             return {'tipo':'error', 'resultado':'error'}
 
-        
+
         return {'tipo':'insert', 'resultado':'correcto'}
-    

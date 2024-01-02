@@ -37,7 +37,7 @@ class createDB(Abstract):
             print ( "La base de datos " + nombre + " ya existe" )
             environment.addError("Semantico", {nombre} ,f"La base de datos { nombre}   ya existe",  self.fila, self.columna)
 
-            return {'Error': "La base de datos " + nombre + " ya existe.", 'Fila': self.fila, 'Columna': self.columna}
+            return {'Error': "La base de datos " + nombre + " ya existe.", 'Fila': self.fila, 'Columna': self.columna, 'resultado': "La base de datos " + nombre + " ya existe."}
         else:
             environment.addError("Semantico", "" ,f"Error en el almacenamiento", self.fila, self.columna)
             print('Error', "Error en el almacenamiento.", 'Fila', self.fila, 'Columna', self.columna)

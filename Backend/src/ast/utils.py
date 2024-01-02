@@ -55,9 +55,11 @@ def apply_column_expressions(expr_lst, environment):
             return record
         environment.record = record
         new_dict = {}
+        colum_index = 0
         for expr in expr_lst:
-            name = str(expr)
+            name = f"({colum_index}){str(expr)}"
             new_dict[name] = expr.interpretar(environment)
+            colum_index += 1
 
         return new_dict
 

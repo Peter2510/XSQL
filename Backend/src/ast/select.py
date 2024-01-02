@@ -40,7 +40,8 @@ class TableColumn(Abstract):
             return bool(int(value))
         elif self.tipo == Type.DECIMAL:
             return float(value)
-
+        elif self.tipo == Type.TEXT and value == 0:
+            return ""
         return value
 
 

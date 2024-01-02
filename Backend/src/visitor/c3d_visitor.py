@@ -166,16 +166,10 @@ class C3DVisitor(Visitor):
         self.append("END")
 
     def visitAlterFunction(self, node: AlterFunction, environment):
-        # node.nd = self.graph.newItem(f"ALTER {node.id}")
-        #
-        # node_params = self.graph.newItem("PARAMS")
-        # self.graph.newLink(node.nd, node_params)
-        # for param in node.params:
-        #     node_param = self.set_param(param, environment)
-        #     self.graph.newLink(node_params, node_param)
-        #
-        # self.body_node(node.nd, node.body, environment, True)
-        pass
+        self.append(f"{node.id}:")
+        self.append("BEGIN")
+        self.body_code(node.body, environment)
+        self.append("END")
 
     def visitVariableDeclaration(self, node: VariableDeclaration, environment):
         # variable_type = node.type

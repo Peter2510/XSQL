@@ -9,8 +9,17 @@ class CallFunction(Abstract):
         self.parametros = listaParametros
         self.tipo = None
         super().__init__(row, column)
-        
+
+    def __str__(self):
+        return f"{self.id}()"
     def accept(self, visitor, environment):
+        from src.visitor import ValidateColumnVisitor
+        from src.ast import TableColumn
+        from src.expresiones.primitivos import Primitivo
+        if isinstance(visitor, ValidateColumnVisitor):
+            for column in self.parametros:
+                if isinstance(column, Primitivo) and isinstance(column.valor, TableColumn):
+                    column.valor.accept(visitor, environment)
         return visitor.visit(self, environment)
 
     def interpretar(self, environment):

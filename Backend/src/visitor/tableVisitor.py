@@ -52,6 +52,8 @@ class SymbolTableVisitor(Visitor):
                     print("se agrego la funcion",nombre)
                     valor = ""
                     for texto in node.body:
+                        if not isinstance(texto, list):
+                            texto = [texto]
                         for valores in texto:
                             print(str(valores))
                             valor +=str(valores)
@@ -179,8 +181,8 @@ class SymbolTableVisitor(Visitor):
 
                     print("tiene la misma cantidad de parametros")
                     
-                    env = Environment()     
-
+                    env = Environment()
+                    env.record = environment.record
                     #ejecutar parametros   
                     #comparar el tipo, si son iguales agregar la variable
                     #luego ejeuctar las instrucciones
@@ -446,6 +448,27 @@ class SymbolTableVisitor(Visitor):
                 print("Entra")
                 value = node.valor.interpretar(environment)    
                 print("sale",value)
+                if isinstance(value, dict):
+                    print("Entra dict")
+                    lista_resultado = value.get('resultado', [])
+
+                    if len(lista_resultado) >= 2:
+                        segundo_resultado = lista_resultado[1]
+                        print(segundo_resultado[0])
+                        if segundo_resultado[0] == "---":
+                            if variable.type == Type.INT:
+                                segundo_resultado[0] = 0
+                            elif variable.type == Type.DECIMAL:
+                                segundo_resultado[0] = 0.0
+                            elif variable.type == Type.TEXT:
+                                segundo_resultado[0] = ""
+                            elif variable.type == Type.DATE:
+                                segundo_resultado[0] = date.today()
+                            elif variable.type == Type.DATETIME:
+                                segundo_resultado[0] = datetime.datetime.now()
+                            elif variable.type == Type.BIT:
+                                segundo_resultado[0] = False
+                        value = self.tipoFuncionSistema(segundo_resultado[0])
                 
                 #validar tipo de dato sale
                 
@@ -500,13 +523,19 @@ class SymbolTableVisitor(Visitor):
                                 environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
                                 self.correct = False                            
 
-                        else: 
+                        else:
 
                             if variable.type == value.type:
                                 variable.value = value.value
                             else:
-                                environment.addError("Semantico", value.value ,f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
-                                self.correct = False
+
+                                if variable.type == Type.DECIMAL and value.type == Type.INT:
+                                    variable.value = value.value
+                                else:
+                                    environment.addError("Semantico", value.value,
+                                                         f"No es posible asignar a {node.id} un {value.type.name}, la variable es de tipo {variable.type.name}",
+                                                         node.fila, node.columna)
+                                    self.correct = False
 
                 else:
                     self.correct = False               

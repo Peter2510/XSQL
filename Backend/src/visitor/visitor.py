@@ -54,8 +54,6 @@ class Visitor(ABC):
         self.environment.addError("Semántico", lexeme, msg, row, column - 1)
 
     def visit(self, node, environment):
-        if not self.correct:
-            return
         if isinstance(node, SQLUnaryExpression):
             self.visitSQLUnaryExpression(node, environment)
         elif isinstance(node, SQLBinaryExpression):

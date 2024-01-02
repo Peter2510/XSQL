@@ -960,7 +960,19 @@ def p_funciones_sistema_expresion(t):
     expresion : funciones_sistema
     '''
     t[0] = t[1]
-                
+
+def p_column_id_expresion(t):
+    '''
+    expresion : column_id
+    '''
+    table = t[1].argument
+    t[0] = Primitivo(t[1].fila, t[1].columna, table, Type.TABLE_COLUMN)
+
+def p_funciones_sele(t):
+    '''
+    expresion : select
+    '''
+    t[0] = t[1]
                 ########################## SSL
 
 #FUNCIONES
@@ -1066,7 +1078,7 @@ def p_sentencia_funcion(t):
                     | expresion_if
                     | expresion_case
                     | expresion_while
-                    | select PUNTO_Y_COMA
+                    | dml PUNTO_Y_COMA
     '''
     t[0] = t[1]
 

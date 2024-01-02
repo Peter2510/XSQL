@@ -146,7 +146,7 @@ def comprobarTexto(entrada):
     enComillas = False
 
     for char in entrada:
-        if char == '"':
+        if char == '"' or char == "'":
             enComillas = not enComillas
         result += char.lower() if not enComillas else char
     return result

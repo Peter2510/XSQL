@@ -19,6 +19,9 @@ class Concatenar(Abstract):
     def interpretar(self, environment):
         result = ""
         for expr in self.expr_lst:
-            result = f"{result}{expr.interpretar(environment)}"
+            value = expr.interpretar(environment)
+            if value is None:
+                return None
+            result = f"{result}{value}"
 
         return result

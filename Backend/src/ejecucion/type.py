@@ -15,4 +15,5 @@ class Type(Enum):
     TEXT = 11
     VOID = 12
     BOOLEAN = 13
+    TABLE_COLUMN = 14
 

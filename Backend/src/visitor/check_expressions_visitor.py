@@ -5,6 +5,7 @@ from src.visitor.visitor import Visitor, SQLBinaryExpression, SQLLogicalExpressi
 from src.instrucciones.funcion.call_function import CallFunction
 from src.ejecucion.environment import Environment
 from src.expresiones.primitivos import Primitivo
+from src.manejadorXml import Estructura
 
 COMBINATIONS = [
 
@@ -629,13 +630,13 @@ class SqlExpressionsVisitor(Visitor):
                            lexeme="SUBSTRAER")
 
     def visitCallFunction(self, node: CallFunction, environment: Environment):
-        existe = environment.existeFuncion(node.id)
+        existe = environment.existeFuncion(f"{Estructura.nombreActual}-{node.id}")
         if not existe:
             self.log_error(msg=f"La función {node.id} no existe", row=node.fila, column=node.columna,
                            lexeme="LLAMADA_FUNCION")
             return
 
-        funcion = environment.getFuncion(node.id)
+        funcion = environment.getFuncion(f"{Estructura.nombreActual}-{node.id}")
         node.tipo = funcion.tipo
 
     def visitPrimitivo(self, node: Primitivo, environment: Environment):

@@ -55,9 +55,10 @@ class Primitivo(Expression):
             variable.type = Type.NULL
             variable.value = None
             return variable
-        elif self.tipo == Type.ID:
-            #buscar si existe la tabla
-            pass
+        elif self.tipo == Type.TABLE_COLUMN:
+            variable.type = self.valor.tipo
+            variable.value = self.valor.interpretar(environment)
+            return variable
         elif self.tipo == Type.IDDECLARE:
             tmp = environment.existeVariable(str(self.valor))
             if tmp == True:
