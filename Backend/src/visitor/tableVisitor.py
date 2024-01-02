@@ -13,6 +13,8 @@ from src.ejecucion.environment import Environment
 from src.expresiones.variable import Variable
 from src.manejadorXml import Estructura
 from src.visitor.visitor import Visitor
+from ..manejadorXml import manejo, Estructura 
+
 
 
 class SymbolTableVisitor(Visitor):
@@ -48,6 +50,10 @@ class SymbolTableVisitor(Visitor):
                     for i in environmentFuncion:
                         print(i.toString())
                     print("se agrego la funcion",nombre)
+                    for texto in node.body:
+                        for valores in texto:
+                            print(str(valores))
+                    Estructura.insertFunction(f"./src/data/xml/{Estructura.nombreActual}.xml", nombre, str(valores))
                         
             else:
                 environment.errors = environment.getErrores() + environmentFuncion.getErrores()
