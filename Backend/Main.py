@@ -87,6 +87,11 @@ def compilar():
                 env.errors.clear()
 
                 response['resultados'] = _res
+                
+            if len(Estructura.tablasSimbolos) > 0:
+                print("Tabla de simbolos")
+                print(Estructura.tablasSimbolos)
+                Estructura.tablasSimbolos = []
 
             if len(_res) > 0 and len(env.errors) < 1:
                 try:

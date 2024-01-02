@@ -2,6 +2,7 @@ from ..manejadorXml import obtener
 
 Databases = []
 selectFunciones = []
+tablasSimbolos = []
 nombreActual = ""
 import json
 import xml.etree.ElementTree as ET
