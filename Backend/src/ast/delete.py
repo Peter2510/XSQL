@@ -51,4 +51,4 @@ class Delete(Abstract):
             environment.addError("Semántico", "Delete", "Error al eliminar", self.fila, self.columna)
             return None
 
-        return {'tipo': 'delete', 'resultado': f"Columnas alteradas {len(data) - len(data_filtered)}"}
+        return {'tipo': 'delete', 'resultado': f"Registros alterados {len(data) - len(data_filtered)}"}

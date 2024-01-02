@@ -43,6 +43,7 @@ keywords = {
     'exec': 'EXEC',
     'function': 'FUNCTION',
     'if': 'IF',
+    'while': 'WHILE',
     'then': 'THEN',
     'else': 'ELSE',
     'elseif': 'ELSEIF',
@@ -149,7 +150,7 @@ t_COMILLASIMPLE = r"\'"
 
 def t_comment(t):
     r'\-\-.*'
-    t.lexer.lineno += 2
+    pass
 
 # IDENTIFICAR CADENAS DE TEXTO CON  COMILLAS DOBLES
 

@@ -11,3 +11,4 @@ class String_(Abstract):
         
     def interpretar(self,environment):
         print("interpretando ind")
+        

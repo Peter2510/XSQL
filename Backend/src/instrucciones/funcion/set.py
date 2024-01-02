@@ -10,7 +10,14 @@ class Set_(Abstract):
         visitor.visit(self,environment)
         
     def interpretar(self,environment):
+        
         value = self.valor.interpretar(environment)
+                
         variable = environment.getVariable(self.id)
-        variable.value = value.value
+        
+        if isinstance(value,str):
+            variable.value = value
+        else:
+            variable.value = value.value
+        
         return self

@@ -1,4 +1,6 @@
 from Lexer import tokens, lexer, errors, find_column
+from src.instrucciones.procedure.param_procedure import ParamProcedure
+from src.instrucciones.while_.stm_while import StmWhile
 from src.expresiones.negacion import Negacion
 from src.ejecucion.error import T_error
 from src.expresiones.negativa import Negativa
@@ -538,10 +540,12 @@ def p_table_1(t):
 ### cambio a assign pprqie tenemos que meterle algo 
 def p_update(t):
     '''
-    update : UPDATE ID SET assign_list WHERE assign
+    update : UPDATE ID SET assign_list WHERE sql_expression
     '''
     ## no actualizar PK, FK
-    t[0] =updateInstruccion(t.lineno(2), find_column(input, t.slice[2]),  t[2], t[4], t[6])
+    where_clause = WhereClause(fila=t.lineno(5), columna=find_column(input, t.slice[5]), expr=t[6])
+    t[0] = Update(fila=t.lineno(1), columna=find_column(input, t.slice[1]), table=t[2],
+                  assignments=t[4], where_clause=where_clause)
 
 
 def p_assing_list1(t):
@@ -561,7 +565,8 @@ def p_assing(t):
     '''
     assign : ID ASIGNACION sql_expression
     '''
-    t[0]= [t[1], t[3]]
+    column_ref = TableColumn(t.lineno(1), columna=find_column(input, t.slice[1]), id=t[1])
+    t[0] = ColumnAssignments(fila=t.lineno(1), columna=find_column(input, t.slice[1]), column_ref=column_ref, expr=t[3])
 
 
 def p_insert(t):
@@ -724,6 +729,7 @@ def p_unary_expression(t):
     unary_expression : value_literal
                     | column_id
                     | call_function
+                    | variable_id
     """
     t[0] = t[1]
 
@@ -808,14 +814,13 @@ def p_dot_table_opt1(t):
     pass
 
 
-# id variable
-# def p_variable_id(t):
-#     """
-#     variable_id : ID_DECLARE
-#     """
-#       variable_declarator = Variable(fila, col, id)
-#     t[0] = SQLUnaryExpression(fila=t.lineno(1), columna=find_column(input, t.slice[1]), argument=variable_declarator)
-#     # TODO: CHECK IF ADD
+def p_variable_id(t):
+    """
+    variable_id : ID_DECLARE
+    """
+    variable_primitivo = Primitivo(t.lineno(1), find_column(input, t.slice[1]), str(t[1]), Type.IDDECLARE)
+    t[0] = SQLUnaryExpression(fila=t.lineno(1), columna=find_column(input, t.slice[1]), argument=variable_primitivo)
+
 
 def p_call_function(t):
     """
@@ -950,8 +955,12 @@ def p_exp_llamada_funcion(t):
     '''
     t[0] = t[1]
 
-
-
+def p_funciones_sistema_expresion(t):
+    '''
+    expresion : funciones_sistema
+    '''
+    t[0] = t[1]
+                
                 ########################## SSL
 
 #FUNCIONES
@@ -981,7 +990,7 @@ def p_alter_funcion_usuario2(t):  #sin parametros
     '''
     alter_funcion_usuario : ALTER FUNCTION ID PARENTESIS_IZQ PARENTESIS_DER RETURNS tipo_dato_parametro AS BEGIN sentencias_funciones END 
     '''
-    t[0] = AlterFunction(t.lineno(1), find_column(input, t.slice[1]), t[3], None, t[7],t[10])
+    t[0] = AlterFunction(t.lineno(1), find_column(input, t.slice[1]), t[3], [], t[7],t[10])
     
 ##PARAMETROS DE LAS FUNCIONES
 def p_parametros_funcion(t):
@@ -1004,6 +1013,11 @@ def p_parametro_funcion(t): # @id tipoDato
     '''
     t[0] = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
 
+def p_parametro_funcion2(t): # @id tipoDato
+    '''
+    parametro_funcion : ID_DECLARE AS tipo_dato_parametro 
+    '''
+    t[0] = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[3],t[1])
 
 #tipo de dato del parametro
 def p_tipo_dato_parametro(t):
@@ -1051,6 +1065,8 @@ def p_sentencia_funcion(t):
                     | return
                     | expresion_if
                     | expresion_case
+                    | expresion_while
+                    | select PUNTO_Y_COMA
     '''
     t[0] = t[1]
 
@@ -1153,32 +1169,67 @@ def p_parametro_llamada_funcion(t): # id
 #CREAR PROCEDURE Parametros
 def p_procedure(t):
     '''
-    crear_procedure : CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END 
+    crear_procedure : CREATE PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_procedimientos END 
     '''
-    t[0] = ProcedureDeclaration(t.lineno(1), find_column(input, t.slice[1]),t[3],t[5],t[8])
-
-
+    t[0] = ProcedureDeclaration(t.lineno(1), find_column(input, t.slice[1]),t[3],t[5],t[9])
 
 #PROCEDURE PARAMETROS
 def p_procedure2(t):
     '''
-    crear_procedure : CREATE PROCEDURE ID PARENTESIS_IZQ PARENTESIS_DER AS BEGIN sentencias_funciones END 
+    crear_procedure : CREATE PROCEDURE ID PARENTESIS_IZQ PARENTESIS_DER AS BEGIN sentencias_procedimientos END 
     '''
-    t[0] = ProcedureDeclaration(t.lineno(1), find_column(input, t.slice[1]),t[3],None,t[7])
+    t[0] = ProcedureDeclaration(t.lineno(1), find_column(input, t.slice[1]),t[3],[],t[8])
+    
+
+#sentencias de los procedimientos
+def p_sentencias_procedimientos(t):
+    '''
+    sentencias_procedimientos : sentencias_procedimientos sentencia_procedimiento
+    '''
+    t[1].append(t[2])
+    t[0] = t[1]
+
+#sentencia de las funciones
+def p_sentencias_procedimientos1(t):
+    '''
+    sentencias_procedimientos : sentencia_procedimiento
+    '''
+    t[0] = [t[1]]
+
+#sentecias dentro de las funciones
+def p_sentencia_procedimiento(t):
+    '''
+    sentencia_procedimiento : declaracion_variables
+                              | set_variable_funcion
+                              | expresion_if
+                              | expresion_case
+                              | expresion_while
+                              | dml PUNTO_Y_COMA
+                              | opcionTruncate PUNTO_Y_COMA
+                              | opcionDrop PUNTO_Y_COMA
+                              | alterTable PUNTO_Y_COMA
+    '''
+    t[0] = t[1]
 
 #ALTER PROCEDURE
 def p_alter_procedure(t):
     '''
-    alter_procedure : ALTER PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_funciones END 
+    alter_procedure : ALTER PROCEDURE ID PARENTESIS_IZQ parametros_procedure PARENTESIS_DER AS BEGIN sentencias_procedimientos END 
     '''
     t[0] = AlterProcedure(t.lineno(1), find_column(input, t.slice[1]),t[3],t[5],t[9])
+    
+def p_alter_procedure2(t):
+    '''
+    alter_procedure : ALTER PROCEDURE ID PARENTESIS_IZQ PARENTESIS_DER AS BEGIN sentencias_procedimientos END 
+    '''
+    t[0] = AlterProcedure(t.lineno(1), find_column(input, t.slice[1]),t[3],[],t[8])
 
 #parametros de los procedures
 def p_parametros_procedure(t):
     '''
     parametros_procedure : parametros_procedure COMA parametro_procedure
     '''
-    t[1].append(t[3])
+    t[1] = t[1] + [t[3]]
     t[0] = t[1]
 
 def p_parametros_procedure2(t):
@@ -1192,68 +1243,19 @@ def p_parametro_procedure(t): # @id AS tipoDato
     '''
     parametro_procedure : ID_DECLARE tipo_dato 
     '''
-    param = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
-    t[0] = [param]
+    t[0] = param = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
 
 
 def p_parametro_procedure2(t): # @id AS tipoDato
     '''
     parametro_procedure : ID_DECLARE AS tipo_dato 
     '''
-    param = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
-    t[0] = [param]
+    t[0] = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
 
-
-#llamada procedure
+                                                  ## llamada procedure
+    
+#llamada procedure v1
 def p_llamada_procedure(t):
-    '''
-    llamada_procedure : EXEC ID lista_variables_procedure
-    '''
-    t[0] = CallProcedure(t.lineno(1), find_column(input, t.slice[1]),t[2],t[3])
-
-
-#lista_variables_procedure
-def p_lista_variables_procedure(t):
-    '''
-    lista_variables_procedure : lista_variables_procedure COMA variable_procedure
-    '''
-    t[1].append(t[3])
-    t[0] = t[1]
-
-#lista_variables_procedure
-def p_lista_variables_procedure3(t):
-    '''
-    lista_variables_procedure : variable_procedure
-    '''
-    param = FunctionParam(t.lineno(1), find_column(input, t.slice[1]),t[2],t[1])
-    t[0] = [param]
-
-#variable_procedure
-def p_variable_procedure(t):
-    '''
-    variable_procedure : valor_variable_procedure
-    '''
-    t[0] = [t[1]]
-    #print("variable_procedure",t[1])
-
-#valor_variable_procedure
-def p_valor_variable_procedure(t):
-    '''
-    valor_variable_procedure : ID_DECLARE ASIGNACION expresion
-    '''
-    t[0] = t[1]
-    #print("valor_variable_procedure",t[3])
-
-#valor_variable_procedure
-def p_valor_variable_procedure2(t):
-    '''
-    valor_variable_procedure : expresion
-    '''
-    t[0] = t[1]
-    #print("valor_variable_procedure",t[1])
-
-#llamada procedure2
-def p_llamada_procedure2(t):
     '''
     llamada_procedure : EXEC ID lista_variables_procedure2
     '''
@@ -1263,7 +1265,7 @@ def p_lista_variables_procedure2(t):
     '''
     lista_variables_procedure2 : lista_variables_procedure2 COMA expresion
     '''
-    t[1].append(t[3])
+    t[1] = t[1] + [t[3]]
     t[0] = t[1]
 
 
@@ -1272,6 +1274,41 @@ def p_lista_variables_procedure4(t):
     lista_variables_procedure2 : expresion
     '''
     t[0] = [t[1]]
+    
+#llamada procedure v2
+def p_llamada_procedure2(t):
+    '''
+    llamada_procedure : EXEC ID
+    '''
+    t[0] = CallProcedure(t.lineno(1), find_column(input, t.slice[1]),t[2],[])
+    
+##llamada procedure v3
+def p_llamada_procedure3(t):
+    '''
+    llamada_procedure : EXEC ID asignaciones_procedure
+    '''
+    t[0] = CallProcedure(t.lineno(1), find_column(input, t.slice[1]),t[2],t[3])
+
+
+def p_asignaciones_procedure(t):
+    '''
+    asignaciones_procedure :  asignaciones_procedure COMA asignacion_procedure
+    '''
+    t[1] = t[1] + [t[3]]
+    t[0] = t[1]
+    
+def p_asignaciones_procedure2(t):
+    '''
+    asignaciones_procedure : asignacion_procedure
+    '''
+    t[0] = [t[1]]
+    
+def p_asignacion_procedure(t):
+    '''
+    asignacion_procedure : ID_DECLARE ASIGNACION expresion
+    '''
+    t[0] = ParamProcedure(t.lineno(1), find_column(input, t.slice[1]),t[1],t[3])
+
                 
 #solo if
 def p_if(t):
@@ -1365,14 +1402,18 @@ def p_when_clauses(t):
     t[1].append(when)
     t[0] = t[1]
 
-
-
 def p_when_clauses2(t):
     '''
     when_clauses : WHEN expresion THEN sentencia_funcion
     '''
     when = When(t.lineno(1), find_column(input, t.slice[1]), t[2], t[4])
     t[0] = [when]
+    
+def p_while(t):
+    '''
+    expresion_while : WHILE PARENTESIS_IZQ expresion PARENTESIS_DER BEGIN sentencias_funciones END PUNTO_Y_COMA
+    '''
+    t[0] = StmWhile(t.lineno(1), find_column(input, t.slice[1]), t[3], t[6])
 
 
 ## metodo de error

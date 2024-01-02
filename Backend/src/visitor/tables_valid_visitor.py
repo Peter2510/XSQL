@@ -4,6 +4,16 @@ from src.manejadorXml import Estructura
 from src.ejecucion.type import Type
 
 
+def get_nchar_len(str_value):
+    try:
+        start = str_value.index("(") + 1
+        end = str_value.index(")")
+        value = int(str_value[start:end])
+        return value
+    except (ValueError, IndexError, TypeError):
+        return 0
+
+
 class ValidateColumnVisitor(Visitor):
 
     def __init__(self, environment, tables):
@@ -51,6 +61,10 @@ class ValidateColumnVisitor(Visitor):
             column_type = Type.DATETIME
         node.tipo = column_type
         node.table = name_tb
+
+        if 'nvarchar' in tipo or 'nchar' in tipo:
+            max_len = get_nchar_len(tipo)
+            node.limit = max_len
 
 
 class TablesValidVisitor(Visitor):

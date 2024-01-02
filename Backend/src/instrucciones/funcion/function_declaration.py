@@ -1,3 +1,4 @@
+from src.manejadorXml import Estructura
 from src.abstract.abstractas import Abstract
 
 
@@ -16,9 +17,7 @@ class FunctionDeclaration(Abstract):
         
         from src.visitor.tableVisitor import SymbolTableVisitor
         visit = SymbolTableVisitor(environment)
-                
-        if visit.correct == True:
-            self.accept(visit, environment)
-            return self
+        self.accept(visit, environment)
+        if visit.correct:
+            return {'tipo': 'funcion', 'resultado': f"Se guardó la función '{self.id}' en la base de datos: {Estructura.nombreActual} "}
         
-              

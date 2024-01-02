@@ -1,3 +1,4 @@
+from src.manejadorXml import Estructura
 from src.instrucciones.funcion.param_function import FunctionParam
 from src.abstract.abstractas import Abstract
 from src.ejecucion.environment import Environment
@@ -18,5 +19,6 @@ class AlterFunction(Abstract):
         visit = SymbolTableVisitor(environment)
         if visit.correct == True:
             self.accept(visit, environment)
-            return self
+        if visit.correct:
+            return {'tipo': 'funcion', 'resultado': f"Se actualizó correctamente la función '{self.id}' de la base de datos: {Estructura.nombreActual} "}
 

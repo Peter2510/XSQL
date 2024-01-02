@@ -1,6 +1,10 @@
 from enum import Enum
+from src.instrucciones.funcion.string_ import String_
 from src.ejecucion.type import Type
 from src.visitor.visitor import Visitor, SQLBinaryExpression, SQLLogicalExpression, SQLUnaryExpression
+from src.instrucciones.funcion.call_function import CallFunction
+from src.ejecucion.environment import Environment
+from src.expresiones.primitivos import Primitivo
 
 COMBINATIONS = [
 
@@ -546,13 +550,42 @@ def get_binary_type(left, op, right):
         casting_list = EQUAL_CAST
     elif op == '!=':
         casting_list = NOT_EQUAL_CAST
-
-    left_type = left.tipo.name if left.tipo is not None else None
-    right_type = right.tipo.name if right.tipo is not None else None
-    index = find_in_array(f'{left_type}-{right_type}', COMBINATIONS)
-    index = index if index != -1 else find_in_array(f'{right_type}-{left_type}', COMBINATIONS)
-    new_type = casting_list[index] if index != -1 else None
-    return new_type
+        
+   
+    if isinstance(left.tipo,String_) and (isinstance(right.tipo,String_)):
+        
+        left_type = Type.TEXT.name
+        right_type = Type.TEXT.name
+        index = find_in_array(f'{left_type}-{right_type}', COMBINATIONS)
+        index = index if index != -1 else find_in_array(f'{right_type}-{left_type}', COMBINATIONS)
+        new_type = casting_list[index] if index != -1 else None
+        return new_type
+    
+    elif isinstance(left.tipo,String_) and (not isinstance(right,String_)):
+        left_type = Type.TEXT.name
+        right_type = right.tipo.name if right.tipo is not None else None
+        index = find_in_array(f'{left_type}-{right_type}', COMBINATIONS)
+        index = index if index != -1 else find_in_array(f'{right_type}-{left_type}', COMBINATIONS)
+        new_type = casting_list[index] if index != -1 else None
+        return new_type
+    
+    elif (not isinstance(left,String_)) and (isinstance(right.tipo,String_)):
+        
+        left_type = left.tipo.name if left.tipo is not None else None
+        right_type = Type.TEXT.name
+        index = find_in_array(f'{left_type}-{right_type}', COMBINATIONS)
+        index = index if index != -1 else find_in_array(f'{right_type}-{left_type}', COMBINATIONS)
+        new_type = casting_list[index] if index != -1 else None
+        return new_type
+                
+    else:
+        
+        left_type = left.tipo.name if left.tipo is not None else None
+        right_type = right.tipo.name if right.tipo is not None else None
+        index = find_in_array(f'{left_type}-{right_type}', COMBINATIONS)
+        index = index if index != -1 else find_in_array(f'{right_type}-{left_type}', COMBINATIONS)
+        new_type = casting_list[index] if index != -1 else None
+        return new_type
 
 
 class ExpressionsVisitor(Visitor):
@@ -594,3 +627,30 @@ class SqlExpressionsVisitor(Visitor):
         if node.value.tipo != Type.TEXT:
             self.log_error(msg="Valor no válido para Substraer()", row=node.fila, column=node.columna,
                            lexeme="SUBSTRAER")
+
+    def visitCallFunction(self, node: CallFunction, environment: Environment):
+        existe = environment.existeFuncion(node.id)
+        if not existe:
+            self.log_error(msg=f"La función {node.id} no existe", row=node.fila, column=node.columna,
+                           lexeme="LLAMADA_FUNCION")
+            return
+
+        funcion = environment.getFuncion(node.id)
+        node.tipo = funcion.tipo
+
+    def visitPrimitivo(self, node: Primitivo, environment: Environment):
+        existe = environment.existeVariable(node.valor)
+        if not existe:
+            self.log_error(msg=f"La variable {node.valor} no existe", row=node.fila, column=node.columna,
+                           lexeme="VARIABLE")
+            return
+
+        variable_id = environment.getVariable(node.valor)
+        variable_type = variable_id.type
+        if isinstance(variable_type, String_):
+            variable_type = variable_type.type
+
+        if variable_type in [Type.NCHAR, Type.NVARCHAR]:
+            variable_type = Type.TEXT
+
+        node.tipo = variable_type

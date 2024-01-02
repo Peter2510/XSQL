@@ -159,7 +159,7 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
             }
           });
 
-          this.showLogs(logs)
+          this.showLogs(logs);
         }
 
         if (data.dot) {
@@ -167,6 +167,15 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
         } else {
           this.currentDot = '';
         }
+
+        if (data.tablas) {
+          console.log(data.tablas);
+        }
+
+        if (data.funciones) {
+          console.log(data.funciones);
+        }
+
       });
 
       // this.resultHost.viewContainerRef.clear();
@@ -222,9 +231,10 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       editorItem.component
     );
     componentRef.instance.data = editorItem.data;
-    let element = componentRef.location.nativeElement;
+    const element = componentRef.location.nativeElement;
 
     // element.setAttribute('aria-labelledby', editorItem.data.label);
+    element.classList.add('active');
     element.id = editorItem.data.id;
     const tabViewContainerRef = this.tabHost.viewContainerRef;
     const tabItem = new TabItem(TabHeaderComponent, {
@@ -236,7 +246,19 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
     const componentRefTab = tabViewContainerRef.createComponent<TabComponent>(
       tabItem.component
     );
+
+    const elementTab = componentRefTab.location.nativeElement;
+    elementTab.firstChild.classList.add('active');
     componentRefTab.instance.data = tabItem.data;
+
+    // Remove class list
+    this.tabs.forEach((t) =>
+      t.location.nativeElement.firstChild.classList.remove('active')
+    );
+    this.editors.forEach((t) =>
+      t.location.nativeElement.classList.remove('active')
+    );
+    //
 
     this.tabs.push(componentRefTab);
     this.editors.push(componentRef);

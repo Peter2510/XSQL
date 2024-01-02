@@ -7,3 +7,5 @@ class Variable():
         self.value = None
         
 
+    def toString(self):
+        return f"{self.id} {self.type} {self.value}"

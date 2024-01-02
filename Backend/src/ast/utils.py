@@ -1,4 +1,5 @@
 from itertools import product
+from src.ejecucion.type import Type
 
 
 def add_prefix_to_keys(list_of_dicts, prefix):
@@ -61,6 +62,30 @@ def apply_column_expressions(expr_lst, environment):
         return new_dict
 
     return alter_record
+
+
+def apply_update_expressions(where_expr, assign_lst: list, environment):
+    def update_columns(record):
+        environment.record = record
+        value = where_expr.interpretar(environment)
+        needs_update = bool(value)
+        if not needs_update:
+            return record
+
+        environment.altered_records += 1
+        for assign in assign_lst:
+            column_ref = assign.column_ref
+            column_name = str(column_ref)
+            expr = assign.expr
+            new_value = str(expr.interpretar(environment))
+            if expr.tipo == Type.TEXT and len(new_value) > column_ref.limit:
+                new_value = new_value[:column_ref.limit]
+
+            environment.record[column_name] = new_value
+
+        return environment.record
+
+    return update_columns
 
 
 def get_column_expressions(expr_lst):

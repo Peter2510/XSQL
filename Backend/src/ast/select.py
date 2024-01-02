@@ -23,6 +23,7 @@ class TableColumn(Abstract):
         self.table = table
         self.id = id
         self.tipo = tipo
+        self.limit = 100
 
     def __str__(self):
         return f"{self.table}.{self.id}"

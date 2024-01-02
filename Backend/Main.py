@@ -90,6 +90,39 @@ def compilar():
                 env.errors.clear()
 
                 response['resultados'] = _res
+                
+            if len(Estructura.tablasSimbolos) > 0:
+                print("Tabla de simbolos")
+                tb = json.dumps(Estructura.tablasSimbolos)
+                Estructura.tablasSimbolos = []
+                
+                response['tablas'] = tb
+            
+            if len(env.funciones) > 0:
+                print("Tabla de funciones")
+                funciones = []
+                nombres_de_funciones = list(env.funciones.keys())
+
+                # Imprimir nombres y tipos de funciones
+                for nombre in nombres_de_funciones:
+                    funcion = env.funciones[nombre]
+
+                    if isinstance(funcion.tipo, String_):
+                        tipo = funcion.tipo.type.name
+                    else:
+                        tipo = funcion.tipo.name
+
+                    funcion_info = {
+                        'nombre': nombre,
+                        'tipo': tipo,
+                    }
+                    funciones.append(funcion_info)
+                
+                tf = json.dumps(funciones)
+                
+                response['funciones'] = tf
+                
+                
 
             if len(_res) > 0 and len(env.errors) < 1:
                 try:

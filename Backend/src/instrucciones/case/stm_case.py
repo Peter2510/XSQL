@@ -1,3 +1,6 @@
+from src.instrucciones.generarTablaSimbolos import GenerateSymbolTable
+from src.ast.select import Select
+from src.manejadorXml import Estructura
 from src.instrucciones.funcion.param_function import FunctionParam
 from src.abstract.abstractas import Abstract
 from src.ejecucion.environment import Environment
@@ -18,4 +21,34 @@ class StmCase(Abstract):
         visitor.visit(self,environment)
             
     def interpretar(self, environment):
-        print("interpretando case general")
+        whenValido = False
+        env = Environment(environment)
+        for when in self.list_when:
+            if when.condition.interpretar(environment).value:
+                
+                for i in when.instructions:
+                    if isinstance(i,list):
+                        for j in i:
+                            j.interpretar(env)
+                    elif isinstance(i,Select):
+                        Estructura.selectFunciones.append(i.interpretar(environment))                            
+                    else:
+                        i.interpretar(env)
+                whenValido = True
+                GST = GenerateSymbolTable("when",env)
+                GST.saveST()
+                break
+        if not whenValido:
+            if self.else_case != None:
+                
+                for i in self.else_case.instructions:
+                    if isinstance(i,list):
+                        for j in i:
+                            j.interpretar(env)
+                    elif isinstance(i,Select):
+                        Estructura.selectFunciones.append(i.interpretar(environment))
+                    else:
+                        i.interpretar(env)
+                GST = GenerateSymbolTable("when",env)
+                GST.saveST()
+            

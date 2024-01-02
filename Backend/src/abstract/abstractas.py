@@ -8,8 +8,9 @@ class Abstract(ABC):
         # node dot
         self.nd = None
 
-    def __str__(self):
-        return ""
+    # def __str__(self):
+    #     return ""
+    
     @abstractmethod
     def accept(self, visitor, environment):
         pass

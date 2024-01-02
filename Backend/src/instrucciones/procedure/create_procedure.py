@@ -2,17 +2,19 @@ from src.abstract.abstractas import Abstract
 from src.manejadorXml import Estructura
 
 class ProcedureDeclaration(Abstract):
-    def __init__(self, fila, columna, nombre, listaParametros,instrucciones):
-        self.nombre = nombre
-        self.listaParametros = listaParametros
-        self.instrucciones = instrucciones
+    def __init__(self, fila, columna, id, listaParametros,instrucciones):
+        self.id = id
+        self.params = listaParametros
+        self.body = instrucciones
         super().__init__(fila, columna)
 
     def accept(self, visitor, environment):
-        print("aceptando procedure",self.nombre,self.listaParametros)
         visitor.visit(self, environment)
-        ##visitor.visitProcedure(self,environment)
 
     def interpretar(self, environment):
-        print("Ejecutar Procedure",self.nombre,self.listaParametros)
+        from src.visitor.tableVisitor import SymbolTableVisitor
+        visit = SymbolTableVisitor(environment)
+        self.accept(visit, environment)
+        if visit.correct:
+            return {'tipo': 'procedure', 'resultado': f"Se guardó el procedimiento '{self.id}' en la base de datos: {Estructura.nombreActual} "}
 
