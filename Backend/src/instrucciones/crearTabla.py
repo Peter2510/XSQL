@@ -18,6 +18,7 @@ class crearTabla(Abstract):
         atributoRepetido = False
 
         columnas = []
+        columnasFk = []
         indiceBaseDatos = 0
 
         ##primero llamo a que me traigan todos los archivos
@@ -30,11 +31,16 @@ class crearTabla(Abstract):
         ## VER SI NO SE REPITE EL NOMBRE DE LA TABLA 
         if (len(Estructura.Databases)> indiceBaseDatos):
             for nombreRepetido in Estructura.Databases[indiceBaseDatos]["tables"]:
+                print(nombreRepetido['name'], "-------")
+                print(nombreRepetido['data']['estructura'], "<------")
+
                 if (nombreRepetido["name"] == self.nombre):
                     nombreTablaRepetido = True
                     print("repetido")
                     environment.addError("Semantico", "" ,f"Esta tabla esta repetida en la BD", self.fila,self.columna)
                     break
+                
+                
 
             if (nombreTablaRepetido == False):
                 ## lo que hace de interfaz regresa el valor
@@ -70,6 +76,7 @@ class crearTabla(Abstract):
                             ## en dado caso sea pk fk
                             if (isinstance(row[3][1], list)):
                                 print(row[3][0], (row[3][1][0]), (row[3][1][1]))
+
                                 json_data = {
                                     'tipo':tipoAtributo,
                                     'nulidad': int(row[2]),

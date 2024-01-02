@@ -13,7 +13,7 @@
             </Principal>
         </Estructura>
         <Datos name="nuevo_registro">
-            <DatosEspecifico><idestado>15</idestado><estado>c</estado></DatosEspecifico><DatosEspecifico><idestado>1</idestado><estado>Activo</estado></DatosEspecifico><DatosEspecifico><idestado>2</idestado><estado>Inactivo</estado></DatosEspecifico><DatosEspecifico><idestado>4</idestado><estado>Activo2</estado></DatosEspecifico></Datos>
+            <DatosEspecifico><idestado>15</idestado><estado>abc</estado></DatosEspecifico><DatosEspecifico><idestado>1</idestado><estado>Activo</estado></DatosEspecifico><DatosEspecifico><idestado>2</idestado><estado>Inactivo</estado></DatosEspecifico><DatosEspecifico><idestado>4</idestado><estado>Activo2</estado></DatosEspecifico></Datos>
     </Table>
     <Table name="tbfacturanuevo">
         <Estructura>

@@ -31,6 +31,8 @@ import { ErrorSQL } from '../data-bases/models/Errors';
 import { MatDialog } from '@angular/material/dialog';
 import { ObtencionDBdumpComponent } from '../obtencion-dbdump/obtencion-dbdump.component';
 import { NombreDBService } from '../service/nombre-db.service';
+import { Simbolo, TablaSimbolo } from '../data-bases/models/TablaSimbolo';
+import { Funcion } from '../data-bases/models/Funcion';
 
 @Component({
   selector: 'app-editor-manager',
@@ -45,6 +47,10 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   @ViewChild('logger') logger: any;
 
   errores: ErrorSQL[] = [];
+  tablas: TablaSimbolo[] = [];
+  funciones: Funcion[] = [];
+  mostrarTS = false
+  mostrarTF = false
 
   codeMirrorOptions: any = {
     theme: 'dracula',
@@ -62,6 +68,7 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   filesToUpload: any[] = [];
   actualCode: any = null;
   currentDot: string = '';
+  currentTac: string = '';
   name = ''
   animal = ''
   constructor(
@@ -111,6 +118,18 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
     }
   }
 
+  showSymbolTables(){
+    this.mostrarTS = ! this.mostrarTS
+  }
+
+  showSymbolFunctions(){
+    this.mostrarTF = ! this.mostrarTF
+  }
+
+  onGetTac() {
+    this.contentLogger += this.currentTac;
+  }
+
   onCompile() {
     let index = this.getActiveIndex();
     if (index !== -1) {
@@ -130,6 +149,8 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
 
       //EJECUTAR EL ARCHIVO ACTUAL
       this.compilar.ejecutarSQL(main.content).subscribe((data) => {
+        this.tablas = []
+        this.funciones = []
         console.log(data);
         if (data.errores) {
           let errores = data.errores;
@@ -168,12 +189,52 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
           this.currentDot = '';
         }
 
+        if(data.tac) {
+          this.currentTac = data.tac
+        } else {
+          this.currentTac = '';
+        }
+
         if (data.tablas) {
-          console.log(data.tablas);
+          let tbl = data.tablas;
+          let tablasJson = JSON.parse(tbl);
+
+          for (let i = 0; i < tablasJson.length; i++) {
+
+            let tabla = tablasJson[i];
+            let TS = new TablaSimbolo(tabla.Entorno,[])
+            let datos = []
+
+            for (let j = 0; j < tabla.datos.length; j++) {
+
+              let simbolo = tabla.datos[j]
+              let sim = new Simbolo(simbolo.id,simbolo.tipo,simbolo.valor)
+              datos.push(sim)
+
+            }
+            TS.datos = datos
+            this.tablas.push(TS)
+
+
+          }
+
+
+
+
         }
 
         if (data.funciones) {
-          console.log(data.funciones);
+
+          let ftcs = data.funciones;
+          let funcinesJson = JSON.parse(ftcs);
+
+          for (let i = 0; i < funcinesJson.length; i++) {
+
+            let funcion = funcinesJson[i];
+
+            this.funciones.push(new Funcion(funcion.nombre,funcion.tipo))
+          }
+          console.log(this.funciones)
         }
 
       });
@@ -197,6 +258,8 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   clearLogger() {
     this.contentLogger = '';
     this.currentDot = '';
+    this.tablas = []
+    this.funciones = []
   }
 
   clearResults() {

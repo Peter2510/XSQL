@@ -13,6 +13,8 @@ from src.ejecucion.environment import Environment
 from src.expresiones.variable import Variable
 from src.manejadorXml import Estructura
 from src.visitor.visitor import Visitor
+from ..manejadorXml import manejo, Estructura 
+
 
 
 class SymbolTableVisitor(Visitor):
@@ -48,6 +50,12 @@ class SymbolTableVisitor(Visitor):
                     for i in environmentFuncion:
                         print(i.toString())
                     print("se agrego la funcion",nombre)
+                    valor = ""
+                    for texto in node.body:
+                        for valores in texto:
+                            print(str(valores))
+                            valor +=str(valores)
+                    Estructura.insertFunction(f"./src/data/xml/{Estructura.nombreActual}.xml", nombre, str(valor))
                         
             else:
                 environment.errors = environment.getErrores() + environmentFuncion.getErrores()
@@ -262,7 +270,7 @@ class SymbolTableVisitor(Visitor):
                          
                     if self.correct:
                         valorEjecucion = funcion.interpretar(env)
-                        GST = GenerateSymbolTable(funcion.nombre,env)
+                        GST = GenerateSymbolTable(nombre,env)
                         GST.saveST()
                         return valorEjecucion
                     
@@ -274,7 +282,7 @@ class SymbolTableVisitor(Visitor):
                 if self.correct:
                     env1 = Environment()
                     valorEjecucion = funcion.interpretar(env1)
-                    GST = GenerateSymbolTable(funcion.nombre,env1)
+                    GST = GenerateSymbolTable(nombre,env1)
                     GST.saveST()
                 
                 for i in env1:
@@ -655,7 +663,7 @@ class SymbolTableVisitor(Visitor):
                             
                         if self.correct:
                             procedimiento.interpretar(env)    
-                            GST = GenerateSymbolTable(procedimiento.nombre,env)
+                            GST = GenerateSymbolTable(nombre,env)
                             GST.saveST()
                     else:
                         #validando que no se repitan id's
@@ -760,7 +768,7 @@ class SymbolTableVisitor(Visitor):
 
                         if self.correct:
                             procedimiento.interpretar(env)                            
-                            GST = GenerateSymbolTable(procedimiento.nombre,env)
+                            GST = GenerateSymbolTable(nombre,env)
                             GST.saveST()
                         
                         environment.errors = environment.getErrores() + env.getErrores()
@@ -772,7 +780,7 @@ class SymbolTableVisitor(Visitor):
             else:
                 env1 = Environment()
                 procedimiento.interpretar(env1)
-                GST = GenerateSymbolTable(procedimiento.nombre,env1)
+                GST = GenerateSymbolTable(nombre,env1)
                 GST.saveST()
                 
         else:
@@ -807,6 +815,12 @@ class SymbolTableVisitor(Visitor):
                     for i in environmentProcedimiento:
                         print(i.toString())
                     print("se agrego el procedimiento normal",nombre)
+                    valor = ""
+                    for texto in node.body:
+                       
+                            valor +=str(texto)
+
+                    Estructura.insertProcedure(f"./src/data/xml/{Estructura.nombreActual}.xml", nombre, str(valor))
                     
                         
             else:

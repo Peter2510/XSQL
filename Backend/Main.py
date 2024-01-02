@@ -8,7 +8,7 @@ from flask.helpers import url_for
 from werkzeug.utils import redirect
 from Lexer import tokens, lexer, errors, find_column
 from src.manejadorXml import  Estructura
-from src.visitor import GenerateASTVisitor
+from src.visitor import GenerateASTVisitor, C3DVisitor
 import io
 from src.manejadorXml import  obtener
 
@@ -121,11 +121,12 @@ def compilar():
                 tf = json.dumps(funciones)
                 
                 response['funciones'] = tf
-                
-                
 
             if len(_res) > 0 and len(env.errors) < 1:
                 try:
+                    tac_visitor = C3DVisitor(env)
+                    pars.accept(tac_visitor, env)
+                    response['tac'] = tac_visitor.code
                     ast_visitor = GenerateASTVisitor(env)
                     pars.accept(ast_visitor, env)
                     f = io.StringIO()
