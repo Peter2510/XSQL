@@ -82,7 +82,7 @@ class GenerateASTVisitor(Visitor):
         self.visitSQLBinaryExpression(node, environment)
 
     def visitSQLUnaryExpression(self, node: SQLUnaryExpression, environment):
-        if not isinstance(node.argument, (int, str, float, bool, datetime.date)):
+        if not isinstance(node.argument, (int, str, float, bool, datetime.date, datetime.datetime)):
             node.nd = node.argument.nd if (
                     node.argument is not None and node.argument.nd is not None) else self.graph.newItem(
                 "Call")
@@ -424,7 +424,7 @@ class GenerateASTVisitor(Visitor):
         self.graph.newLink(node.nd, self.node_none(node.opDer))
 
     def visitPrimitivo(self, node: Primitivo, environment):
-        if not isinstance(node.valor, (int, str, float, bool, datetime.date)):
+        if not isinstance(node.valor, (int, str, float, bool, datetime.date, datetime.datetime)):
             node.valor.accept(self, environment)
             node.nd = node.valor.nd if (
                     node.valor is not None and node.valor.nd is not None) else self.graph.newItem(

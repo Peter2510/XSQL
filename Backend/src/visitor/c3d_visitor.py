@@ -284,7 +284,7 @@ class C3DVisitor(Visitor):
         return t
 
     def visitPrimitivo(self, node: Primitivo, environment):
-        if not isinstance(node.valor, (int, str, float, bool, datetime.date)):
+        if not isinstance(node.valor, (int, str, float, bool, datetime.date, datetime.datetime)):
             node.valor.accept(self, environment)
             return node.valor.code if node.valor is not None else ""
         else:

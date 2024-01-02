@@ -121,24 +121,24 @@ class SQLUnaryExpression(SQLExpression):
         self.argument = argument
 
     def __str__(self):
-        if not isinstance(self.argument, (int, str, float, bool, datetime.date)):
+        if not isinstance(self.argument, (int, str, float, bool, datetime.date, datetime.datetime)):
             return str(self.argument)
 
         return f"({self.argument})" if self.in_paren else str(self.argument)
 
     def get_tipo(self):
-        if not isinstance(self.argument, (int, str, float, bool, datetime.date)):
+        if not isinstance(self.argument, (int, str, float, bool, datetime.date, datetime.datetime)):
             return self.argument.tipo
 
         return self.tipo
 
     def accept(self, visitor, environment):
-        if not isinstance(self.argument, (int, str, float, bool, datetime.date)):
+        if not isinstance(self.argument, (int, str, float, bool, datetime.date, datetime.datetime)):
             self.argument.accept(visitor, environment)
         visitor.visit(self, environment)
 
     def interpretar(self, environment):
-        if not isinstance(self.argument, (int, str, float, bool, datetime.date)):
+        if not isinstance(self.argument, (int, str, float, bool, datetime.date, datetime.datetime)):
             self.valor = self.argument.interpretar(environment)
         else:
             self.valor = self.argument
@@ -146,7 +146,7 @@ class SQLUnaryExpression(SQLExpression):
         if isinstance(self.valor, Variable):
             self.valor = self.valor.value
 
-        if isinstance(self.valor, datetime.date):
+        if isinstance(self.valor, (datetime.date, datetime.datetime)):
             self.valor = str(self.valor)
 
         return self.valor
