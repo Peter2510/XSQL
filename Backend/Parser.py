@@ -1,5 +1,5 @@
 from Lexer import tokens, lexer, errors, find_column
-from instrucciones.procedure.param_procedure import ParamProcedure
+from src.instrucciones.procedure.param_procedure import ParamProcedure
 from src.instrucciones.while_.stm_while import StmWhile
 from src.expresiones.negacion import Negacion
 from src.ejecucion.error import T_error
@@ -1218,7 +1218,7 @@ def p_parametros_procedure(t):
     '''
     parametros_procedure : parametros_procedure COMA parametro_procedure
     '''
-    t[1] + [t[3]]
+    t[1] = t[1] + [t[3]]
     t[0] = t[1]
 
 def p_parametros_procedure2(t):

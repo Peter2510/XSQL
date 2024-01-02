@@ -100,6 +100,7 @@ class SymbolTableVisitor(Visitor):
                     v.value = ""
                             
                 environment.agregarVariable(v)
+                print("agrego variable",v.type,v.id)
     
     def visitInstrucciones(self,node,environment):
         instrucciones = node.body
