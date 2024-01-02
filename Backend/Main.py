@@ -23,21 +23,24 @@ CORS(app)
 
 @app.route('/saludo',methods=["GET"])
 def saludo():
+    
     Estructura.load()
     return Estructura.Databases
 
 @app.route('/generaDump', methods = ['GET'])
 def generaDump():
+        nombre = request.args.get('nombre')
         Estructura.load()
         datos =[]
-        datos.append( obtener.dumpXMl())
+        datos.append( obtener.dumpXMl(nombre))
         return datos
 
 @app.route('/generaExport', methods = ['GET'])
 def generaExport():
+        nombre = request.args.get('nombre')
         Estructura.load()
         datos =[]
-        datos.append( obtener.exportTablaInserts())
+        datos.append(obtener.exportTablaInserts(nombre))
         return datos
 
 

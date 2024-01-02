@@ -53,6 +53,9 @@ class SQLBinaryExpression(SQLExpression):
         self.right.accept(visitor, environment)
         visitor.visit(self, environment)
 
+
+                
+ 
     def interpretar(self, environment):
         self.left.interpretar(environment)
         self.right.interpretar(environment)

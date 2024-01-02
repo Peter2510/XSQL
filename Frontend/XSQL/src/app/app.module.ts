@@ -4,7 +4,7 @@ import { TreeModule } from '@bugsplat/angular-tree-component';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TextEditorComponent } from './text-editor/text-editor.component';
-
+import {MatDialogModule} from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { EditorManagerComponent } from './editor-manager/editor-manager.component';
@@ -16,6 +16,10 @@ import { ResultDirective } from './editor-manager/result.directive';
 import { ResultImgComponent } from './editor-manager/result.component';
 import { TableResultComponent } from './editor-manager/tableResult.component';
 import { DataBasesComponent } from './data-bases/data-bases.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input'
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -36,7 +40,12 @@ import { DataBasesComponent } from './data-bases/data-bases.component';
     FormsModule,
     CodemirrorModule,
     HttpClientModule,
-    TreeModule
+    TreeModule,
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent],
