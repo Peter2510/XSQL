@@ -75,6 +75,9 @@
               <button type="button" class="btn btn-outline-primary ms-3 mt-2 text-center" (click)="showSymbolTables()">
                 Tabla de simbolos
               </button>
+              <button type="button" class="btn btn-outline-primary ms-3 mt-2 text-center" (click)="showSymbolFunctions()">
+                Tabla de funciones
+              </button>
             }
           </div>
 
@@ -103,7 +106,7 @@
           </div>
         </div>
         
-        <div *ngIf="tablas && mostrarTS">
+        <div *ngIf="tablas.length > 0 && mostrarTS">
           <h2 class="text text-bg-danger mt-2 text-center text-white">Tablas de simbolos</h2>
           <table class="table table-bordered border-primary mb-3" *ngFor="let tabla of tablas">
             <thead>
@@ -128,6 +131,25 @@
           </table>
         </div>
         
+        <div *ngIf="funciones.length>0 && mostrarTF">
+          <h2 class="text text-bg-danger mt-2 text-center text-white">Tablas de funciones</h2>
+          <table class="table table-bordered border-primary mb-3">
+            <thead>
+              <tr>
+                <th class="text-light">Nombre</th>
+                <th class="text-light">Tipo</th>
+              </tr>
+            </thead>
+          
+            <tbody>
+              <tr *ngFor="let funcion of funciones">
+                <th class="text-light">{{ funcion.id }}</th>
+                <th class="text-light">{{ funcion.tipo }}</th>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
         
         
         

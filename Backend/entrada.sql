@@ -463,7 +463,7 @@ AS
 END;    
 
 ------------------WHILE---------------------------
-CREATE FUNCTION fn_retornaalturamora ()
+CREATE FUNCTION fn_retornaalturamora1 ()
 RETURNs nvarchar(15)
 AS
 BEGIN
@@ -484,13 +484,13 @@ BEGIN
     
     end ;
     
-CREATE FUNCTION llamado()
+CREATE FUNCTION llamado2()
 RETURNS int 
 AS 
 
  BEGIN 
     DECLARE @enLlamado nvarchar(20); 
-    SET @enLlamado = fn_retornaalturamora();
+    SET @enLlamado = fn_retornaalturamora1();
          
 END;    
 

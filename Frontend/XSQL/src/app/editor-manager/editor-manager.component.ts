@@ -32,6 +32,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ObtencionDBdumpComponent } from '../obtencion-dbdump/obtencion-dbdump.component';
 import { NombreDBService } from '../service/nombre-db.service';
 import { Simbolo, TablaSimbolo } from '../data-bases/models/TablaSimbolo';
+import { Funcion } from '../data-bases/models/Funcion';
 
 @Component({
   selector: 'app-editor-manager',
@@ -46,8 +47,10 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
   @ViewChild('logger') logger: any;
 
   errores: ErrorSQL[] = [];
-  tablas: TablaSimbolo[];
+  tablas: TablaSimbolo[] = [];
+  funciones: Funcion[] = [];
   mostrarTS = false
+  mostrarTF = false
 
   codeMirrorOptions: any = {
     theme: 'dracula',
@@ -118,6 +121,10 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
     this.mostrarTS = ! this.mostrarTS
   }
 
+  showSymbolFunctions(){
+    this.mostrarTF = ! this.mostrarTF
+  }
+
   onCompile() {
     let index = this.getActiveIndex();
     if (index !== -1) {
@@ -138,6 +145,7 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
       //EJECUTAR EL ARCHIVO ACTUAL
       this.compilar.ejecutarSQL(main.content).subscribe((data) => {
         this.tablas = []
+        this.funciones = []
         console.log(data);
         if (data.errores) {
           let errores = data.errores;
@@ -199,13 +207,23 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
             
           }
 
-          console.log(this.tablas)
+          
 
           
         }
 
         if (data.funciones) {
-          console.log(data.funciones);
+          
+          let ftcs = data.funciones;
+          let funcinesJson = JSON.parse(ftcs);
+
+          for (let i = 0; i < funcinesJson.length; i++) {
+            
+            let funcion = funcinesJson[i];
+
+            this.funciones.push(new Funcion(funcion.nombre,funcion.tipo))
+          }    
+          console.log(this.funciones)
         }
 
       });
@@ -230,6 +248,7 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
     this.contentLogger = '';
     this.currentDot = '';
     this.tablas = []
+    this.funciones = []
   }
 
   clearResults() {
