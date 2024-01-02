@@ -7,3 +7,29 @@ se puede visualizar un editor de texto en el cual se pueden realizar distintas f
 * Leer: El usuario podra cargar una base de datos al editor de codigo.
 * Guardar Como: El usuario podra guardar el archivo en el que estaba trabajando.
 ![Alt text](img/image.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Guardar procedimiento
+
+![Alt text](img/i1.png)
+Al ejecutar una instrucciones de tipo procedimiento o funcion, si todo esta correcto se habilita la posibilidad de poder ver las tablas de simbolos de las funciones o procedimientos ejecutados.
+
+![Alt text](img/i3.png)
+Tabla de funciones almacenadas y tabla de simbolos por cada funcion ejecutada exitosamente
