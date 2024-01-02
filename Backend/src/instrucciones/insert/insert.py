@@ -248,6 +248,4 @@ class insertInstruccion(Abstract):
 
         
         return {'tipo':'insert', 'resultado':'correcto'}
-        
-        
-
+    
