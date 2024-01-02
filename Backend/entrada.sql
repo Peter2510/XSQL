@@ -555,3 +555,17 @@ AS
 END;    
 
 
+--------------- invocacion de procedure ------------------
+
+create procedure sp (@val nvarchar(4),@decimal bit)
+AS
+BEGIN
+
+    DECLARE @alturamora int;
+    select @val;
+    select @decimal;
+    
+END;
+
+exec sp @val = "123", @decimal = 1;
+
