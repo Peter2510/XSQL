@@ -569,3 +569,21 @@ END;
 
 exec sp @val = "123", @decimal = 1;
 
+--------------------------
+usar nuevo;
+
+select * from ggg;
+
+alter procedure a(@n nchar(12))  as begin
+
+declare @nm int;
+set @nm = 14;
+
+
+update ggg set estado = @n  where idestado = 15;
+
+end;
+
+exec a "ab";
+
+select * from ggg;
