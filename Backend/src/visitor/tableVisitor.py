@@ -262,7 +262,7 @@ class SymbolTableVisitor(Visitor):
                          
                     if self.correct:
                         valorEjecucion = funcion.interpretar(env)
-                        GST = GenerateSymbolTable(funcion.nombre,env)
+                        GST = GenerateSymbolTable(nombre,env)
                         GST.saveST()
                         return valorEjecucion
                     
@@ -274,7 +274,7 @@ class SymbolTableVisitor(Visitor):
                 if self.correct:
                     env1 = Environment()
                     valorEjecucion = funcion.interpretar(env1)
-                    GST = GenerateSymbolTable(funcion.nombre,env1)
+                    GST = GenerateSymbolTable(nombre,env1)
                     GST.saveST()
                 
                 for i in env1:
@@ -655,7 +655,7 @@ class SymbolTableVisitor(Visitor):
                             
                         if self.correct:
                             procedimiento.interpretar(env)    
-                            GST = GenerateSymbolTable(procedimiento.nombre,env)
+                            GST = GenerateSymbolTable(nombre,env)
                             GST.saveST()
                     else:
                         #validando que no se repitan id's
@@ -760,7 +760,7 @@ class SymbolTableVisitor(Visitor):
 
                         if self.correct:
                             procedimiento.interpretar(env)                            
-                            GST = GenerateSymbolTable(procedimiento.nombre,env)
+                            GST = GenerateSymbolTable(nombre,env)
                             GST.saveST()
                         
                         environment.errors = environment.getErrores() + env.getErrores()
@@ -772,7 +772,7 @@ class SymbolTableVisitor(Visitor):
             else:
                 env1 = Environment()
                 procedimiento.interpretar(env1)
-                GST = GenerateSymbolTable(procedimiento.nombre,env1)
+                GST = GenerateSymbolTable(nombre,env1)
                 GST.saveST()
                 
         else:

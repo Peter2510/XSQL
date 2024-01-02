@@ -1,3 +1,5 @@
+from src.ast.delete import Delete
+from src.ast.update import Update
 from src.instrucciones.generarTablaSimbolos import GenerateSymbolTable
 from src.ast.select import Select
 from src.manejadorXml import Estructura
@@ -35,10 +37,14 @@ class StmIf(Abstract):
                         j.interpretar(env)
                 elif isinstance(i,Select):
                     Estructura.selectFunciones.append(i.interpretar(environment))
+                elif isinstance(i,Update):
+                    Estructura.selectFunciones.append(i.interpretar(environment))
+                elif isinstance(i,Delete):
+                    Estructura.selectFunciones.append(i.interpretar(environment))
                 else:
                     i.interpretar(env)
-            GST = GenerateSymbolTable("if",env)
-            GST.saveST()
+            #GST = GenerateSymbolTable("if",env)
+            #GST.saveST()
         elif self.list_elseif != None:
             elseValido = False
             for elseif in self.list_elseif:
@@ -50,6 +56,10 @@ class StmIf(Abstract):
                             for j in i:
                                 j.interpretar(env)
                         elif isinstance(i,Select):
+                            Estructura.selectFunciones.append(i.interpretar(environment))
+                        elif isinstance(i,Update):
+                            Estructura.selectFunciones.append(i.interpretar(environment))
+                        elif isinstance(i,Delete):
                             Estructura.selectFunciones.append(i.interpretar(environment))
                         else:
                             i.interpretar(env)
@@ -64,10 +74,14 @@ class StmIf(Abstract):
                                 j.interpretar(env)
                         elif isinstance(i,Select):
                             Estructura.selectFunciones.append(i.interpretar(environment))
+                        elif isinstance(i,Update):      
+                            Estructura.selectFunciones.append(i.interpretar(environment))
+                        elif isinstance(i,Delete):
+                            Estructura.selectFunciones.append(i.interpretar(environment))
                         else:
                             i.interpretar(env)
-            GST = GenerateSymbolTable("while",env)
-            GST.saveST()
+            #GST = GenerateSymbolTable("while",env)
+            #GST.saveST()
         else:
             if self.else_ != None:
                 print("entro a else ")
@@ -77,7 +91,11 @@ class StmIf(Abstract):
                             j.interpretar(env)
                     elif isinstance(i,Select):
                         Estructura.selectFunciones.append(i.interpretar(environment))
+                    elif isinstance(i,Update):
+                        Estructura.selectFunciones.append(i.interpretar(environment))
+                    elif isinstance(i,Delete):
+                        Estructura.selectFunciones.append(i.interpretar(environment))
                     else:
                         i.interpretar(env)
-            GST = GenerateSymbolTable("while",env)
-            GST.saveST()
+            #GST = GenerateSymbolTable("while",env)
+            #GST.saveST()
