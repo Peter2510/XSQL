@@ -1,5 +1,6 @@
 from datetime import date
 import datetime
+from src.instrucciones.procedure.param_procedure import ParamProcedure
 from src.instrucciones.procedure.procedure import Procedure
 from src.expresiones.binaria import Binaria
 from src.instrucciones.funcion.call_function import CallFunction
@@ -100,7 +101,6 @@ class SymbolTableVisitor(Visitor):
                     v.value = ""
                             
                 environment.agregarVariable(v)
-                print("agrego variable",v.type,v.id)
     
     def visitInstrucciones(self,node,environment):
         instrucciones = node.body
@@ -550,88 +550,89 @@ class SymbolTableVisitor(Visitor):
 
                         parametro = procedimiento.parametros[i] #definicion
                         argumento = node.parametros[i].interpretar(env)#llamada
-                        print("EN PARAEMTROS",parametro.type,argumento.type)
+                        
 
                         if parametro != None and argumento != None:   
-                            print("PARAMETRO",parametro.type,"ARGUMENTO",type(argumento))
+                           
                             #validar si es de tipo string
-                            # if isinstance(parametro.type, String_):
-                                # 
-                                # tamanio = parametro.type.size.interpretar(env)
-                                # 
-                                # if argumento.type == Type.TEXT:
-                                    # 
-                                    # if parametro.type.type == Type.NVARCHAR:
-                                        # print("TAMANIO ESTO ",len(argumento.value),tamanio.value)
-                                        # if not (len(argumento.value) <= tamanio.value):
-                                            #  env.addError("Semantico", argumento.value ,f"La longitud del argumento es mayor a la permitida en la funcion, el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
-                                            #  environment.errors = environment.getErrores() + env.getErrores()
-                                            #  self.correct = False                      
-                                            #  
-                                        # else:
-                                            #  
-                                            #  variable = Variable()
-                                            #  variable.value = argumento.value
-                                            #  variable.type = parametro.type
-                                            #  variable.id = parametro.id
-                                            #  env.agregarVariable(variable)
-                                            #  
-                                    # else:
-# 
-                                        # if not (len(argumento.value) <= tamanio.value and len(argumento.value) >= 1):
-                                            # env.addError("Semantico", argumento.value ,f"La longitud del argumento es mayor a la permitida en la funcion, el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)                        
-                                            # environment.errors = environment.getErrores() + env.getErrores()
-                                            # self.correct = False
-# 
-                                        # else:
-# 
-                                            #  variable = Variable()
-                                            #  variable.value = argumento.value
-                                            #  variable.type = parametro.type
-                                            #  variable.id = parametro.id
-                                            #  env.agregarVariable(variable)
-# 
-                                # else: 
-                                    #  env.addError("Semantico", argumento.value ,f"Se esperaba un parametro de tipo TEXT, {argumento.value} no cumple con la condicion", node.fila,node.columna)
-                                    #  self.correct = False
-                                    #  environment.errors = environment.getErrores() + env.getErrores()
-# 
-                            # elif argumento.type == Type.BIT:
-                            # 
-                                #  if not(argumento.value == 0 or argumento.value == 1):
-                                    #  env.addError("Semantico", argumento.value ,f"{argumento.type.name}, el argumento debe ser de tipo BIT", node.fila,node.columna)
-                                    #  self.correct = False  
-                                    #  environment.errors = environment.getErrores() + env.getErrores()
-# 
-                                #  else:
-                                        # variable = Variable()
-                                        # variable.value = argumento.value
-                                        # variable.type = parametro.type
-                                        # variable.id = parametro.id
-                                        # env.agregarVariable(variable)
-# 
-                            # else:
-                                #  
-                                #  
-                                #  
-                                #  if not argumento.type == parametro.type:
-                                    #  env.addError("Semantico", argumento.value ,f"Se esperaba un parametro de tipo {parametro.type.name} y se hallo un tipo {argumento.type.name}", node.fila,node.columna)
-                                    #  self.correct = False
-                                    #  environment.errors = environment.getErrores() + env.getErrores()
-                                    #  
-                                #  else:
-                                        # variable = Variable()
-                                        # variable.value = argumento.value
-                                        # variable.type = parametro.type
-                                        # variable.id = parametro.id
-                                        # env.agregarVariable(variable)
+                            if isinstance(parametro.type, String_):
+                                
+                                tamanio = parametro.type.size.interpretar(env)
+                                
+                                if argumento.type == Type.TEXT:
+                                    
+                                    if parametro.type.type == Type.NVARCHAR:
+                                        print("TAMANIO ESTO ",len(argumento.value),tamanio.value)
+                                        if not (len(argumento.value) <= tamanio.value):
+                                            env.addError("Semantico", argumento.value ,f"La longitud del argumento es mayor a la permitida en la funcion, el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
+                                            environment.errors = environment.getErrores() + env.getErrores()
+                                            self.correct = False                      
+                                             
+                                        else:
+                                             
+                                            variable = Variable()
+                                            variable.value = argumento.value
+                                            variable.type = parametro.type
+                                            variable.id = parametro.id
+                                            env.agregarVariable(variable)
+                                             
+                                    else:
+
+                                        if not (len(argumento.value) <= tamanio.value and len(argumento.value) >= 1):
+                                            env.addError("Semantico", argumento.value ,f"La longitud del argumento es mayor a la permitida en la funcion, el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)                        
+                                            environment.errors = environment.getErrores() + env.getErrores()
+                                            self.correct = False
+
+                                        else:
+
+                                            variable = Variable()
+                                            variable.value = argumento.value
+                                            variable.type = parametro.type
+                                            variable.id = parametro.id
+                                            env.agregarVariable(variable)
+
+                                else: 
+                                    env.addError("Semantico", argumento.value ,f"Se esperaba un parametro de tipo TEXT, {argumento.value} no cumple con la condicion", node.fila,node.columna)
+                                    self.correct = False
+                                    environment.errors = environment.getErrores() + env.getErrores()
+
+                            elif argumento.type == Type.BIT:
+                            
+                                 if not(argumento.value == 0 or argumento.value == 1):
+                                    env.addError("Semantico", argumento.value ,f"{argumento.type.name}, el argumento debe ser de tipo BIT", node.fila,node.columna)
+                                    self.correct = False  
+                                    environment.errors = environment.getErrores() + env.getErrores()
+
+                                 else:
+                                    variable = Variable()
+                                    variable.value = argumento.value
+                                    variable.type = parametro.type
+                                    variable.id = parametro.id
+                                    env.agregarVariable(variable)
+
+                            else:
+                                 
+                                 
+                                 
+                                 if not argumento.type == parametro.type:
+                                    env.addError("Semantico", argumento.value ,f"Se esperaba un parametro de tipo {parametro.type.name} y se hallo un tipo {argumento.type.name}", node.fila,node.columna)
+                                    self.correct = False
+                                    environment.errors = environment.getErrores() + env.getErrores()
+                                     
+                                 else:
+                                    variable = Variable()
+                                    variable.value = argumento.value
+                                    variable.type = parametro.type
+                                    variable.id = parametro.id
+                                    env.agregarVariable(variable)
                                         
                         else:
-                             self.correct = False
-                             environment.errors = environment.getErrores() + env.getErrores()
-                             break
+                            self.correct = False
+                            environment.errors = environment.getErrores() + env.getErrores()
+                            break
                          
-                    procedimiento.interpretar(env)
+                    if self.correct:
+                        procedimiento.interpretar(env)    
                     
                     
                 else:
