@@ -4,13 +4,15 @@ from src.manejadorXml import Estructura
 
 class CallProcedure(Abstract):
     def __init__(self, fila, columna, nombre ,listaParametros):
-        self.nombre = nombre
-        self.listaParametros = listaParametros
+        self.id = nombre
+        self.parametros = listaParametros
         super().__init__(fila, columna)
         
     def accept(self, visitor, environment):
         visitor.visit(self, environment)
 
     def interpretar(self, environment):
-        print("Ejecutar Llamada PROCECURE nombre:",self.nombre)
+        from src.visitor.tableVisitor import SymbolTableVisitor
+        visit = SymbolTableVisitor(environment)
+        self.accept(visit, environment)
 

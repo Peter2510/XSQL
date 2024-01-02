@@ -47,20 +47,26 @@ export class DataBasesComponent implements OnInit {
 
 
   }
-  generarNodos(){
-    const jsonObjects = this.arregloDB.map((element: any, index: number) => ({
-      id: index + 1, // Se puede utilizar el índice + 1 como ID
-      name: element['name'] // Suponiendo que cada elemento tiene una propiedad 'name'
-  }));
+
+
+    generarNodos() {
+    const jsonObjects = this.arregloDB.map((db: { tables: any[]; name: any; }, index: number) => {
+      const tables = db.tables.map((table: { name: any; }, tableIndex: number) => ({
+        id: tableIndex + 1,
+        name: table.name
+      }));
+
+      return {
+        id: index + 1,
+        name: db.name,
+        children: tables
+      };
+    });
 
   // El arreglo 'jsonObjects' contendrá un JSON por cada elemento en 'this.arregloDB'
   console.log(jsonObjects);
     this.nodes = jsonObjects;
   }
-
-
-
-
 
   options: ITreeOptions = {
     actionMapping

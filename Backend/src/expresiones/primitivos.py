@@ -8,6 +8,13 @@ class Primitivo(Expression):
         self.tipo = tipo
         super().__init__(fila, columna)
 
+
+    def generar_3d(self, tabla, controlador):
+        return self
+
+    def get_temp(self):
+        return self.valor
+
     def accept(self, visitor, environment):
         visitor.visit(self, environment)
         
@@ -65,3 +72,4 @@ class Primitivo(Expression):
                 environment.addError("Semántico", str(self.valor), "La variable no está definida", self.fila, self.columna)
                 return None
         
+         

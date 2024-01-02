@@ -61,7 +61,10 @@ def exportDataToXML(data, name):
                 elif isinstance(entry['data']['restricciones'], dict):
                     # Se crea el elemento Atributo3
                     data_element3 = ET.SubElement(principal, "Atributo3")
-                    data_element3.set("restricciones", str(2))
+                    if (str(entry['data']['primariaForanea'])== str(1)):
+                        data_element3.set("restricciones", str(1))
+                    else:
+                        data_element3.set("restricciones", str(2))
 
                     # Se desglosa el diccionario y se agregan los subelementos
                     restricciones = entry['data']['restricciones']
@@ -204,8 +207,8 @@ def import_xml_db(db_name):
 
 ## para el export 
 
-def exportTablaInserts():
-        tree = ET.parse(f'./src/data/xml/prueba.xml')
+def exportTablaInserts(nombreDB):
+        tree = ET.parse(f'./src/data/xml/{nombreDB}.xml')
         root = tree.getroot()
 
         sql_queries = []
@@ -233,8 +236,8 @@ def exportTablaInserts():
 
 ## para el dump
 
-def dumpXMl():
-        tree = ET.parse(f'./src/data/xml/prueba.xml')
+def dumpXMl(nombre):
+        tree = ET.parse(f'./src/data/xml/{nombre}.xml')
         root = tree.getroot()
 
         # Inicializar las instrucciones SQL

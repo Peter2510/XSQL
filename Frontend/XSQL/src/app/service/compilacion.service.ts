@@ -30,10 +30,10 @@ export class CompilacionService {
      return this.http.get<any>(`${baseURL}`+"/saludo");
    }
 
-   generaDump():Observable<string>{
-    return this.http.get<string>(`${baseURL}`+"/generaDump");
+   generaDump(nombre:string|null):Observable<string>{
+    return this.http.get<string>(`${baseURL}`+"/generaDump?nombre="+nombre);
     }
-    generaExport():Observable<string>{
-      return this.http.get<string>(`${baseURL}`+"/generaExport");
+    generaExport(nombre:string|null):Observable<string>{
+      return this.http.get<string>(`${baseURL}`+"/generaExport?nombre="+nombre);
     }
 }

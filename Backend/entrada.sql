@@ -534,7 +534,7 @@ BEGIN
     set @bit2 = 1;
     
     declare @bit3 bit;
-    set @bit3 = (@bit * @bit2)+1;
+    set @bit3 = (@bit * @bit2);
     
     select @diasmora+1;
     
@@ -554,4 +554,18 @@ AS
          
 END;    
 
+
+--------------- invocacion de procedure ------------------
+
+create procedure sp (@val nvarchar(4),@decimal bit)
+AS
+BEGIN
+
+    DECLARE @alturamora int;
+    select @val;
+    select @decimal;
+    
+END;
+
+exec sp @val = "123", @decimal = 1;
 

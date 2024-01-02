@@ -1,3 +1,4 @@
+from src.instrucciones.generarTablaSimbolos import GenerateSymbolTable
 from src.ast.select import Select
 from src.manejadorXml import Estructura
 from src.instrucciones.funcion.param_function import FunctionParam
@@ -10,6 +11,9 @@ class StmIf(Abstract):
         self._if = _if
         self.list_elseif = list_elseif
         self.else_ = else_
+
+    def get_if(self):
+        return self._if
 
     def accept(self, visitor, environment = None):
         self._if.accept(visitor,environment)
@@ -33,6 +37,8 @@ class StmIf(Abstract):
                     Estructura.selectFunciones.append(i.interpretar(environment))
                 else:
                     i.interpretar(env)
+            GST = GenerateSymbolTable("if",env)
+            GST.saveST()
         elif self.list_elseif != None:
             elseValido = False
             for elseif in self.list_elseif:
@@ -60,7 +66,8 @@ class StmIf(Abstract):
                             Estructura.selectFunciones.append(i.interpretar(environment))
                         else:
                             i.interpretar(env)
-                
+            GST = GenerateSymbolTable("while",env)
+            GST.saveST()
         else:
             if self.else_ != None:
                 print("entro a else ")
@@ -72,3 +79,5 @@ class StmIf(Abstract):
                         Estructura.selectFunciones.append(i.interpretar(environment))
                     else:
                         i.interpretar(env)
+            GST = GenerateSymbolTable("while",env)
+            GST.saveST()

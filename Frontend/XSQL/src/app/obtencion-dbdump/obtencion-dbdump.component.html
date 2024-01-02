@@ -1,0 +1,29 @@
+<h1 class="justify-content-center">Creacion de Dump</h1>
+<form class="form-container">
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <label for="nombre" class="mt-5 d-flex justify-content-center">
+          Nombre de la Base de datos
+        </label>
+        <input
+          #nombreInput
+          type="text"
+          class="form-control mt-2"
+          placeholder="nombreDB"
+          name="nombreDB"
+        />
+      </div>
+    </div>
+  </div>
+</form>
+
+<hr />
+<div class="row">
+  <div class="col-md-6">
+    <button class="btn btn-primary" (click)="definicionDB()">Crear</button>
+  </div>
+  <div class="col-md-6">
+    <button class="btn btn-warning" (click)="onNoClick()">Cancelar</button>
+  </div>
+</div>

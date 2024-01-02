@@ -2,6 +2,7 @@ from src.visitor import Visitor
 from src.ast import Update, ColumnAssignments
 from src.manejadorXml import Estructura
 from src.visitor import ValidateColumnVisitor
+from src.ejecucion.type import Type
 
 
 class AssignmentsVisitor(Visitor):
@@ -9,7 +10,7 @@ class AssignmentsVisitor(Visitor):
     def visitColumnAssignments(self, node: ColumnAssignments, environment):
         table_column = node.column_ref
         expr = node.expr
-        if table_column.tipo != expr.tipo:
+        if table_column.tipo != expr.tipo and not (table_column.tipo == Type.DECIMAL and expr.tipo == Type.INT):
             self.log_error(
                 msg=f"No se puede realizar la asignación {table_column.id}({table_column.tipo}) = {node.expr.tipo}",
                 column=node.columna, row=node.fila, lexeme="UPDATE")

@@ -1,5 +1,7 @@
 from datetime import date
 import datetime
+from src.instrucciones.generarTablaSimbolos import GenerateSymbolTable
+from src.instrucciones.procedure.param_procedure import ParamProcedure
 from src.instrucciones.procedure.procedure import Procedure
 from src.expresiones.binaria import Binaria
 from src.instrucciones.funcion.call_function import CallFunction
@@ -73,7 +75,7 @@ class SymbolTableVisitor(Visitor):
         #si hay duplicados agregarlos al list de errores si no agregarlos a la tabla de simbolos de la funcion
         if duplicates:
             for duplicate in duplicates:
-                environment.addError("Semantico", duplicate.id ,f"El id '{duplicate.id}' ya está definido como parámetro", duplicate.fila,duplicate.columna)
+                environment.addError("Semantico", duplicate.id ,f"El parametro con id '{duplicate.id}' ya está definido como parámetro", duplicate.fila,duplicate.columna)
                 self.correct = False
         else:
             #Agregar parametros como variables
@@ -224,7 +226,7 @@ class SymbolTableVisitor(Visitor):
                                      self.correct = False
                                      environment.errors = environment.getErrores() + env.getErrores()
 
-                            elif argumento.type == Type.BIT:
+                            elif (argumento.type == Type.BIT or argumento.type == Type.INT) and parametro.type == Type.BIT:
                             
                                  if not(argumento.value == 0 or argumento.value == 1):
                                      env.addError("Semantico", argumento.value ,f"{argumento.type.name}, el argumento debe ser de tipo BIT", node.fila,node.columna)
@@ -240,35 +242,43 @@ class SymbolTableVisitor(Visitor):
 
                             else:
                                  
-                                 
-                                 
-                                 if not argumento.type == parametro.type:
+                                 if argumento.type == parametro.type:
+                                    variable = Variable()
+                                    variable.value = argumento.value
+                                    variable.type = parametro.type
+                                    variable.id = parametro.id
+                                    env.agregarVariable(variable)                                     
+                                     
+                                 else:
                                      env.addError("Semantico", argumento.value ,f"Se esperaba un parametro de tipo {parametro.type.name} y se hallo un tipo {argumento.type.name}", node.fila,node.columna)
                                      self.correct = False
                                      environment.errors = environment.getErrores() + env.getErrores()
-                                     
-                                 else:
-                                        variable = Variable()
-                                        variable.value = argumento.value
-                                        variable.type = parametro.type
-                                        variable.id = parametro.id
-                                        env.agregarVariable(variable)
+
                                         
                         else:
                              self.correct = False
                              environment.errors = environment.getErrores() + env.getErrores()
                              break
                          
-                    valorEjecucion = funcion.interpretar(env)
-                    return valorEjecucion
+                    if self.correct:
+                        valorEjecucion = funcion.interpretar(env)
+                        GST = GenerateSymbolTable(funcion.nombre,env)
+                        GST.saveST()
+                        return valorEjecucion
                     
                 else:
                     environment.addError("Semantico", node.id ,f"La invocacion de la función '{node.id}' no tiene la misma cantidad de parametros que la función almacenada", node.fila,node.columna)
                     self.correct = False
                
             else:
-                env1 = Environment()
-                valorEjecucion = funcion.interpretar(env1)
+                if self.correct:
+                    env1 = Environment()
+                    valorEjecucion = funcion.interpretar(env1)
+                    GST = GenerateSymbolTable(funcion.nombre,env1)
+                    GST.saveST()
+                
+                for i in env1:
+                    print(i.toString())
                 return valorEjecucion
                 
         else:
@@ -323,6 +333,7 @@ class SymbolTableVisitor(Visitor):
                 if not valorRetorno.type == self.tipo:
                     if isinstance(valorRetorno.type,String_):
                         environment.addError("Semantico", valorRetorno.value ,f"No es posible retornar un {valorRetorno.type.type.name}, el tipo de dato de la funcion es {self.tipo.name}", node.fila,node.columna)
+                        self.correct = False
                     else: 
                         environment.addError("Semantico", valorRetorno.value ,f"No es posible retornar un {valorRetorno.type.name}, el tipo de dato de la funcion es {self.tipo.name}", node.fila,node.columna)
                         self.correct = False
@@ -354,27 +365,37 @@ class SymbolTableVisitor(Visitor):
                         
                         tamanio = variable.type.size.interpretar(environment)
                         
+                        if valor.type == Type.TEXT or valor.type.type == Type.NVARCHAR or valor.type.type == Type.NCHAR:
                         
-                        if variable.type.type == Type.NVARCHAR:
-                        
-                                if len(valor.value) <= tamanio.value:
-                                    variable.value = valor.value
-                                    #variable.type = Type.TEXT
-
-                                else:
-                                    environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(valor.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
-                                    self.correct = False
-                        elif variable.type.type == Type.NCHAR:
+                            if variable.type.type == Type.NVARCHAR:
                             
-                                if len(valor.value) <= tamanio.value and len(valor.value) > 0:
-                                    variable.value = valor.value
-                                    #variable.type = Type.TEXT
-                                else:
-                                    environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(valor.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)
+                                    if len(valor.value) <= tamanio.value:
+                                        variable.value = valor.value
+                                        #variable.type = Type.TEXT
+
+                                    else:
+                                        environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(valor.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
+                                        self.correct = False
+                            elif variable.type.type == Type.NCHAR:
+
+                                    if len(valor.value) <= tamanio.value and len(valor.value) > 0:
+                                        variable.value = valor.value
+                                        #variable.type = Type.TEXT
+                                    else:
+                                        environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} una cadena de longitud {len(valor.value)}, la variable es de tipo {variable.type.type.name}({tamanio.value}), el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)
+                                        self.correct = False    
+                            else:
+                                    environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} un valor de tipo {variable.type.name}", node.fila,node.columna)
                                     self.correct = False    
-                        else:
-                                environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} un valor de tipo {variable.type.name}", node.fila,node.columna)
-                                self.correct = False    
+                        else: 
+
+                            if isinstance(valor.type,String_):
+                                environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} un {valor.type.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
+                                self.correct = False
+                            
+                            else:
+                                environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} un {valor.type.name}, la variable es de tipo {variable.type.type.name}", node.fila,node.columna)
+                                self.correct = False                                    
                         
                     else:
                         
@@ -527,7 +548,238 @@ class SymbolTableVisitor(Visitor):
             self.correct = False
     
     def visitCallProcedure(self,node,environment):
-        pass
+        print("visitando call procedure")
+        nombre = Estructura.nombreActual + "-" + str(node.id)
+        #validar si existe el procedimiento
+        if environment.existeProcedimiento(nombre):
+            print("Existe el procedimiento")
+            procedimiento = environment.getProcedimiento(nombre)
+            
+            if len(procedimiento.parametros) > 0:
+            
+                if len(node.parametros) == len(procedimiento.parametros):
+
+                    print("tiene la misma cantidad de parametros")
+                    
+                    env = Environment()     
+
+                    #ejecutar parametros   
+                    #comparar el tipo, si son iguales agregar la variable
+                    #luego ejeuctar las instrucciones
+                    if not isinstance(node.parametros[0],ParamProcedure):
+                    
+                        for i in range(len(node.parametros)):
+
+                            parametro = procedimiento.parametros[i] #definicion
+                            argumento = node.parametros[i].interpretar(env)#llamada
+
+
+                            if parametro != None and argumento != None:   
+                            
+                                #validar si es de tipo string
+                                if isinstance(parametro.type, String_):
+
+                                    tamanio = parametro.type.size.interpretar(env)
+
+                                    if argumento.type == Type.TEXT:
+
+                                        if parametro.type.type == Type.NVARCHAR:
+                                            print("TAMANIO ESTO ",len(argumento.value),tamanio.value)
+                                            if not (len(argumento.value) <= tamanio.value):
+                                                env.addError("Semantico", argumento.value ,f"La longitud del argumento es mayor a la permitida en la funcion, el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
+                                                environment.errors = environment.getErrores() + env.getErrores()
+                                                self.correct = False                      
+
+                                            else:
+
+                                                variable = Variable()
+                                                variable.value = argumento.value
+                                                variable.type = parametro.type
+                                                variable.id = parametro.id
+                                                env.agregarVariable(variable)
+
+                                        else:
+                                        
+                                            if not (len(argumento.value) <= tamanio.value and len(argumento.value) >= 1):
+                                                env.addError("Semantico", argumento.value ,f"La longitud del argumento es mayor a la permitida en la funcion, el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)                        
+                                                environment.errors = environment.getErrores() + env.getErrores()
+                                                self.correct = False
+
+                                            else:
+                                            
+                                                variable = Variable()
+                                                variable.value = argumento.value
+                                                variable.type = parametro.type
+                                                variable.id = parametro.id
+                                                env.agregarVariable(variable)
+
+                                    else: 
+                                        env.addError("Semantico", argumento.value ,f"Se esperaba un parametro de tipo TEXT, {argumento.value} no cumple con la condicion", node.fila,node.columna)
+                                        self.correct = False
+                                        environment.errors = environment.getErrores() + env.getErrores()
+
+                                elif (argumento.type == Type.BIT or argumento.type == Type.INT) and parametro.type == Type.BIT:
+                                
+                                     if not(argumento.value == 0 or argumento.value == 1):
+                                        env.addError("Semantico", argumento.value ,f"{argumento.type.name}, el argumento debe ser de tipo BIT", node.fila,node.columna)
+                                        self.correct = False  
+                                        environment.errors = environment.getErrores() + env.getErrores()
+
+                                     else:
+                                        variable = Variable()
+                                        variable.value = argumento.value
+                                        variable.type = parametro.type
+                                        variable.id = parametro.id
+                                        env.agregarVariable(variable)
+
+                                else:
+
+
+
+                                     if not argumento.type == parametro.type:
+                                        env.addError("Semantico", argumento.value ,f"Se esperaba un parametro de tipo {parametro.type.name} y se hallo un tipo {argumento.type.name}", node.fila,node.columna)
+                                        self.correct = False
+                                        environment.errors = environment.getErrores() + env.getErrores()
+
+                                     else:
+                                        variable = Variable()
+                                        variable.value = argumento.value
+                                        variable.type = parametro.type
+                                        variable.id = parametro.id
+                                        env.agregarVariable(variable)
+
+                            else:
+                                self.correct = False
+                                environment.errors = environment.getErrores() + env.getErrores()
+                                break
+                            
+                        if self.correct:
+                            procedimiento.interpretar(env)    
+                            GST = GenerateSymbolTable(procedimiento.nombre,env)
+                            GST.saveST()
+                    else:
+                        #validando que no se repitan id's
+                        params = node.parametros
+                        seen = set()
+                        duplicates = set()
+
+                        for param in params:
+                            if param.id in seen:
+                                duplicates.add(param)
+                            else:               
+                                seen.add(param.id)
+                                
+                        if duplicates:
+                            for duplicate in duplicates:
+                                environment.addError("Semantico", duplicate.id ,f"El parametro con id '{duplicate.id}' ya está definido como parámetro en la invocacion del procedimiento", duplicate.fila,duplicate.columna)
+                                self.correct = False
+                        else:
+                            #validar el id dentro de la invocacion y lo almacenado
+                            for i in range(len(node.parametros)):
+                                encontro = False
+                                for j in range(len(procedimiento.parametros)):
+                                    
+                                    if node.parametros[i].id == procedimiento.parametros[j].id:
+                                        #encontro el id
+                                        encontro = True
+                                        argumento = node.parametros[i].interpretar(env)
+                                        parametro = procedimiento.parametros[j]
+                                
+                                        
+                                        if isinstance(parametro.type, String_):
+
+                                            tamanio = parametro.type.size.interpretar(env)
+
+                                            if argumento.type == Type.TEXT:
+
+                                                if parametro.type.type == Type.NVARCHAR:
+
+                                                    if not (len(argumento.value) <= tamanio.value):
+                                                         env.addError("Semantico", argumento.value ,f"La longitud del argumento es mayor a la permitida en la funcion, el tamaño debe ser minino 0 y maximo {tamanio.value}", node.fila,node.columna)
+
+                                                         self.correct = False                      
+
+                                                    else:
+
+                                                         variable = Variable()
+                                                         variable.value = argumento.value
+                                                         variable.type = parametro.type
+                                                         variable.id = parametro.id
+                                                         env.agregarVariable(variable)
+
+                                                else:
+                                                
+                                                    if not (len(argumento.value) <= tamanio.value and len(argumento.value) >= 1):
+                                                        env.addError("Semantico", argumento.value ,f"La longitud del argumento es mayor a la permitida en la funcion, el tamaño debe ser minino 1 y maximo {tamanio.value}", node.fila,node.columna)                        
+
+                                                        self.correct = False
+
+                                                    else:
+                                                    
+                                                         variable = Variable()
+                                                         variable.value = argumento.value
+                                                         variable.type = parametro.type
+                                                         variable.id = parametro.id
+                                                         env.agregarVariable(variable)
+
+                                            else: 
+                                                 env.addError("Semantico", argumento.value ,f"Se esperaba un parametro de tipo TEXT, {argumento.value} no cumple con la condicion", node.fila,node.columna)
+                                                 self.correct = False
+
+
+                                        elif (argumento.type == Type.BIT or argumento.type == Type.INT) and parametro.type == Type.BIT:
+                                        
+                                             if not(argumento.value == 0 or argumento.value == 1):
+                                                 env.addError("Semantico", argumento.value ,f"{argumento.type.name}, el argumento debe ser de tipo BIT", node.fila,node.columna)
+                                                 self.correct = False  
+
+
+                                             else:
+                                                    variable = Variable()
+                                                    variable.value = argumento.value
+                                                    variable.type = parametro.type
+                                                    variable.id = parametro.id
+                                                    env.agregarVariable(variable)
+
+                                        else:
+
+                                             if argumento.type == parametro.type:
+                                                variable = Variable()
+                                                variable.value = argumento.value
+                                                variable.type = parametro.type
+                                                variable.id = parametro.id
+                                                env.agregarVariable(variable)                                     
+
+                                             else:
+                                                 env.addError("Semantico", argumento.value ,f"Se esperaba un parametro de tipo {parametro.type.name} y se hallo un tipo {argumento.type.name}", node.fila,node.columna)
+                                                 self.correct = False
+                                                         
+                                if encontro == False:
+                                    environment.addError("Semantico", node.parametros[i].id ,f"El parametro con id '{node.parametros[i].id}' no existe en el procedimiento almacenado", node.fila,node.columna)
+                                    self.correct = False
+
+                        if self.correct:
+                            procedimiento.interpretar(env)                            
+                            GST = GenerateSymbolTable(procedimiento.nombre,env)
+                            GST.saveST()
+                        
+                        environment.errors = environment.getErrores() + env.getErrores()
+                    
+                else:
+                    environment.addError("Semantico", node.id ,f"La invocacion del procedimiento '{node.id}' no tiene la misma cantidad de parametros que el procedimiento almacenado", node.fila,node.columna)
+                    self.correct = False
+               
+            else:
+                env1 = Environment()
+                procedimiento.interpretar(env1)
+                GST = GenerateSymbolTable(procedimiento.nombre,env1)
+                GST.saveST()
+                
+        else:
+            environment.addError("Semantico", node.id ,f"El procedimiento '{node.id}' no existe en la base de datos "+Estructura.nombreActual, node.fila,node.columna)
+            self.correct = False
+            
+    
     
     def visitCreateProcedure(self,node,environment):
       
@@ -554,7 +806,8 @@ class SymbolTableVisitor(Visitor):
                     environment.agregarProcedimiento(nombre,procedimiento)
                     for i in environmentProcedimiento:
                         print(i.toString())
-                    print("se agrego el procedimiento",nombre)
+                    print("se agrego el procedimiento normal",nombre)
+                    
                         
             else:
                 environment.errors = environment.getErrores() + environmentProcedimiento.getErrores()

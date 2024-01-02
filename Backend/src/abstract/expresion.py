@@ -4,6 +4,7 @@ class Expression(ABC):
     def __init__(self, fila, columna):
         self.fila = fila
         self.columna = columna
+        self.nd = None
 
     @abstractmethod
     def interpretar(self, environment):
