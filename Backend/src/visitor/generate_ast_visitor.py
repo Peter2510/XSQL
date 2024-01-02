@@ -151,13 +151,30 @@ class GenerateASTVisitor(Visitor):
     def visitCreateDB(self, node: createDB, environment):
         node.nd = self.graph.newItem(f"CREAR DB: {node.nombre}")
 
+    def set_param(self, param, environment):
+        node_type = param.type
+        node_expr = None
+        if isinstance(node_type, String_):
+            type_str = str(node_type.type)
+            node_type.size.accept(self, environment)
+            node_expr = node_type.size
+            node_type = str(f"{type_str}")
+        else:
+            node_type = str(param.type)
+
+        node_param = self.graph.newItem(f"{param.id} {node_type}")
+        if node_expr is not None and node_expr.nd is not None:
+            self.graph.newLink(node_param, node_expr.nd)
+
+        return node_param
+
     def visitFunctionDeclaration(self, node: FunctionDeclaration, environment):
         node.nd = self.graph.newItem(f"DECL {node.id}()")
 
         node_params = self.graph.newItem("PARAMS")
         self.graph.newLink(node.nd, node_params)
         for param in node.params:
-            node_param = self.graph.newItem(str(param))
+            node_param = self.set_param(param, environment)
             self.graph.newLink(node_params, node_param)
 
         self.body_node(node.nd, node.body, environment, True)
@@ -168,7 +185,7 @@ class GenerateASTVisitor(Visitor):
         node_params = self.graph.newItem("PARAMS")
         self.graph.newLink(node.nd, node_params)
         for param in node.params:
-            node_param = self.graph.newItem(str(param))
+            node_param = self.set_param(param, environment)
             self.graph.newLink(node_params, node_param)
 
         self.body_node(node.nd, node.body, environment, True)
@@ -179,7 +196,7 @@ class GenerateASTVisitor(Visitor):
         node_params = self.graph.newItem("PARAMS")
         self.graph.newLink(node.nd, node_params)
         for param in node.params:
-            node_param = self.graph.newItem(str(param))
+            node_param = self.set_param(param, environment)
             self.graph.newLink(node_params, node_param)
 
         self.body_node(node.nd, node.body, environment, True)
@@ -190,7 +207,8 @@ class GenerateASTVisitor(Visitor):
         node_params = self.graph.newItem("PARAMS")
         self.graph.newLink(node.nd, node_params)
         for _param in node.parametros:
-            node_param = self.graph.newItem("PARAM")
+            _param.accept(self, environment)
+            node_param = self.node_none(_param)
             self.graph.newLink(node_params, node_param)
 
     def visitCallFunction(self, node: CallFunction, environment):
@@ -199,7 +217,8 @@ class GenerateASTVisitor(Visitor):
         node_params = self.graph.newItem("PARAMS")
         self.graph.newLink(node.nd, node_params)
         for _param in node.parametros:
-            node_param = self.graph.newItem("PARAM")
+            _param.accept(self, environment)
+            node_param = self.node_none(_param)
             self.graph.newLink(node_params, node_param)
 
     def visitAlterProcedure(self, node: AlterProcedure, environment):
@@ -208,7 +227,7 @@ class GenerateASTVisitor(Visitor):
         node_params = self.graph.newItem("PARAMS")
         self.graph.newLink(node.nd, node_params)
         for param in node.params:
-            node_param = self.graph.newItem(str(param))
+            node_param = self.set_param(param, environment)
             self.graph.newLink(node_params, node_param)
 
         self.body_node(node.nd, node.body, environment, True)
@@ -322,22 +341,24 @@ class GenerateASTVisitor(Visitor):
 
     def visitIf(self, node: If_, environment):
         node.nd = self.graph.newItem("IF")
+        node.condition.accept(self, environment)
         node_expr = node.condition.nd if node.condition.nd is not None else self.graph.newItem("expr")
         self.graph.newLink(node.nd, node_expr)
 
-        self.body_node(node.nd, node.instructions, environment)
+        self.body_node(node.nd, node.instructions, environment, True)
 
     def visitElseIf(self, node: ElseIf_, environment):
 
         node.nd = self.graph.newItem("ELSE IF")
+        node.condition.accept(self, environment)
         node_expr = node.condition.nd if node.condition.nd is not None else self.graph.newItem("expr")
         self.graph.newLink(node.nd, node_expr)
 
-        self.body_node(node.nd, node.instructions, environment)
+        self.body_node(node.nd, node.instructions, environment, True)
 
     def visitElse(self, node: Else_, environment):
         node.nd = self.graph.newItem("ELSE")
-        self.body_node(node.nd, node.instructions, environment)
+        self.body_node(node.nd, node.instructions, environment, True)
 
     def body_node(self, parent_node, instructions, environment, visit=False):
         node_body = self.graph.newItem("BODY")
@@ -365,20 +386,22 @@ class GenerateASTVisitor(Visitor):
         node.nd = self.graph.newItem("STMT IF")
         self.graph.newLink(node.nd, self.node_none(node.get_if()))
         if node.list_elseif is not None:
-            self.graph.newLink(node.nd, self.node_none(node.list_elseif))
+            for else_lst in node.list_elseif:
+                self.graph.newLink(node.nd, self.node_none(else_lst))
 
         if node.else_ is not None:
             self.graph.newLink(node.nd, self.node_none(node.else_))
 
     def visitWhen(self, node: When, environment):
         node.nd = self.graph.newItem("WHEN")
+        node.condition.accept(self, environment)
         node_expr = node.condition.nd if node.condition.nd is not None else self.graph.newItem("expr")
         self.graph.newLink(node.nd, node_expr)
-        self.body_node(node.nd, node.instructions, environment)
+        self.body_node(node.nd, node.instructions, environment, True)
 
     def visitElseCase(self, node: ElseCase, environment):
         node.nd = self.graph.newItem("ELSE_CASE")
-        self.body_node(node.nd, node.instructions, environment)
+        self.body_node(node.nd, node.instructions, environment, True)
 
     def visitStmCase(self, node: StmCase, environment):
         node.nd = self.graph.newItem("STMT_CASE")
