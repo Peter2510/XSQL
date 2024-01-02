@@ -26,6 +26,8 @@ from src.instrucciones.drop.dropTabla import dropTable
 from src.instrucciones.Alter.alterTable import alterTable
 from src.instrucciones.insert.insert import insertInstruccion
 from src.instrucciones.update.update import updateInstruccion
+from src.instrucciones.while_.stm_while import StmWhile
+from src.instrucciones.conditionals.stm_if import StmIf
 
 
 from src.ast import (
@@ -92,6 +94,8 @@ class Visitor(ABC):
             self.visitInsertInstruccion(node, environment)
         elif isinstance(node, updateInstruccion):
             self.visitUpdateInstruccion(node, environment)
+        elif isinstance(node, StmWhile):
+            self.visitWhile(node, environment)
 
         elif isinstance(node, binaria.Binaria):
             self.visitLogico(node, environment)
@@ -103,26 +107,26 @@ class Visitor(ABC):
             self.visitRelacional(node, environment)
 
         elif isinstance(node, function_declaration.FunctionDeclaration ):
-             self.visitFunctionDeclaration(node,environment)    
-            
+             self.visitFunctionDeclaration(node,environment)
+
         elif isinstance(node,AlterFunction):
             self.visitAlterFunction(node,environment)
-            
+
         elif isinstance(node,CallFunction):
             return self.visitCallFunction(node,environment)
 
         elif isinstance(node,Return_):
            return self.visitReturn(node,environment)
-                
+
         elif isinstance(node,Set_):
             self.visitSet(node,environment)
-             
+
         # elif isinstance(node,String_):
             # self.visitString(node,environment)
-                # 
+                #
         elif isinstance(node,VariableDeclaration):
             self.visitVariableDeclaration(node,environment)
-    
+
         elif isinstance(node, AlterProcedure):
             self.visitAlterProcedure(node, environment)
 
@@ -134,22 +138,22 @@ class Visitor(ABC):
 
         elif isinstance(node,Else_):
             self.visitElse(node,environment)
-             
+
         elif isinstance(node,ElseIf_):
             self.visitElseIf(node,environment)
-            
+
         elif isinstance(node,If_):
             self.visitIf(node,environment)
-            
-        # elif isinstance(node,StmIf):
-            # self.visitStmIf(node,environment)
-                # 
+
+        elif isinstance(node,StmIf):
+            self.visitStmIf(node,environment)
+
         elif isinstance(node,ElseCase):
             self.visitElseCase(node,environment)
-            
+
         elif isinstance(node,StmCase):
             self.visitStmCase(node,environment)
-                
+
         elif isinstance(node,When):
             self.visitWhen(node,environment)
 
@@ -158,37 +162,37 @@ class Visitor(ABC):
 
         elif isinstance(node, Select):
             self.visitSelect(node, environment)
-            
+
         elif isinstance(node, FromClause):
             self.visitFromClause(node, environment)
-            
+
         elif isinstance(node, Table):
             self.visitTable(node, environment)
-            
+
         elif isinstance(node, WhereClause):
             self.visitWhereClause(node, environment)
-            
+
         elif isinstance(node, AllColumns):
             self.visitAllColumns(node, environment)
-            
+
         elif isinstance(node, TableColumn):
             self.visitTableColumn(node, environment)
-            
+
         elif isinstance(node, AliasSelect):
             self.visitAliasSelect(node, environment)
-            
+
         elif isinstance(node, SelectAssign):
             self.visitSelectAssign(node, environment)
-            
+
         elif isinstance(node, Program):
             self.visitProgram(node, environment)
-            
+
         elif isinstance(node, ColumnAssignments):
             self.visitColumnAssignments(node, environment)
-            
+
         elif isinstance(node, Update):
             self.visitUpdate(node, environment)
-            
+
         elif isinstance(node, Delete):
             self.visitDelete(node, environment)
 
@@ -254,7 +258,7 @@ class Visitor(ABC):
 
     def visitStmCase(self, node, environment):
         pass
-    
+
     def visitSelect(self, node, environment):
         pass
 
@@ -343,4 +347,7 @@ class Visitor(ABC):
         pass
 
     def visitUpdateInstruccion(self, node, environment):
+        pass
+
+    def visitWhile(self, node, environment):
         pass
