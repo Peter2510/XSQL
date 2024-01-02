@@ -1,3 +1,4 @@
+from src.instrucciones.generarTablaSimbolos import GenerateSymbolTable
 from src.ast.select import Select
 from src.manejadorXml import Estructura
 from src.instrucciones.funcion.param_function import FunctionParam
@@ -34,6 +35,8 @@ class StmWhile(Abstract):
                 elif isinstance(i,Select):
                     Estructura.selectFunciones.append(i.interpretar(environment))
                 else:
-                    i.interpretar(env)        
+                    i.interpretar(env)  
+            GST = GenerateSymbolTable("while",env)
+            GST.saveST()
         
         

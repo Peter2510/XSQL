@@ -262,6 +262,8 @@ class SymbolTableVisitor(Visitor):
                          
                     if self.correct:
                         valorEjecucion = funcion.interpretar(env)
+                        GST = GenerateSymbolTable(funcion.nombre,env)
+                        GST.saveST()
                         return valorEjecucion
                     
                 else:
@@ -272,8 +274,8 @@ class SymbolTableVisitor(Visitor):
                 if self.correct:
                     env1 = Environment()
                     valorEjecucion = funcion.interpretar(env1)
-                    GTS = GenerateSymbolTable(funcion.nombre,env1)
-                    GTS.saveST()
+                    GST = GenerateSymbolTable(funcion.nombre,env1)
+                    GST.saveST()
                 
                 for i in env1:
                     print(i.toString())
@@ -363,7 +365,7 @@ class SymbolTableVisitor(Visitor):
                         
                         tamanio = variable.type.size.interpretar(environment)
                         
-                        if valor.type == Type.TEXT:
+                        if valor.type == Type.TEXT or valor.type.type == Type.NVARCHAR or valor.type.type == Type.NCHAR:
                         
                             if variable.type.type == Type.NVARCHAR:
                             
@@ -386,11 +388,13 @@ class SymbolTableVisitor(Visitor):
                                     environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} un valor de tipo {variable.type.name}", node.fila,node.columna)
                                     self.correct = False    
                         else: 
+
                             if isinstance(valor.type,String_):
                                 environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} un {valor.type.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
                                 self.correct = False
+                            
                             else:
-                                environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} un {valor.type.name}, la variable es de tipo {variable.type.name}", node.fila,node.columna)
+                                environment.addError("Semantico", valor.value ,f"No es posible asignar a {node.id} un {valor.type.name}, la variable es de tipo {variable.type.type.name}", node.fila,node.columna)
                                 self.correct = False                                    
                         
                     else:
@@ -651,6 +655,8 @@ class SymbolTableVisitor(Visitor):
                             
                         if self.correct:
                             procedimiento.interpretar(env)    
+                            GST = GenerateSymbolTable(procedimiento.nombre,env)
+                            GST.saveST()
                     else:
                         #validando que no se repitan id's
                         params = node.parametros
@@ -753,7 +759,9 @@ class SymbolTableVisitor(Visitor):
                                     self.correct = False
 
                         if self.correct:
-                            procedimiento.interpretar(env)
+                            procedimiento.interpretar(env)                            
+                            GST = GenerateSymbolTable(procedimiento.nombre,env)
+                            GST.saveST()
                         
                         environment.errors = environment.getErrores() + env.getErrores()
                     
@@ -764,6 +772,8 @@ class SymbolTableVisitor(Visitor):
             else:
                 env1 = Environment()
                 procedimiento.interpretar(env1)
+                GST = GenerateSymbolTable(procedimiento.nombre,env1)
+                GST.saveST()
                 
         else:
             environment.addError("Semantico", node.id ,f"El procedimiento '{node.id}' no existe en la base de datos "+Estructura.nombreActual, node.fila,node.columna)

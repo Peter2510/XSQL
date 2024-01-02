@@ -150,6 +150,15 @@ export class EditorManagerComponent implements OnInit, OnDestroy {
         } else {
           this.currentDot = '';
         }
+
+        if (data.tablas) {
+          console.log(data.tablas);
+        }
+
+        if (data.funciones) {
+          console.log(data.funciones);
+        }
+
       });
 
       // this.resultHost.viewContainerRef.clear();

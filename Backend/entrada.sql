@@ -534,7 +534,7 @@ BEGIN
     set @bit2 = 1;
     
     declare @bit3 bit;
-    set @bit3 = (@bit * @bit2)+1;
+    set @bit3 = (@bit * @bit2);
     
     select @diasmora+1;
     

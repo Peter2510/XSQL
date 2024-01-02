@@ -1,3 +1,4 @@
+from src.instrucciones.generarTablaSimbolos import GenerateSymbolTable
 from src.ast.select import Select
 from src.manejadorXml import Estructura
 from src.instrucciones.funcion.param_function import FunctionParam
@@ -34,6 +35,8 @@ class StmCase(Abstract):
                     else:
                         i.interpretar(env)
                 whenValido = True
+                GST = GenerateSymbolTable("when",env)
+                GST.saveST()
                 break
         if not whenValido:
             if self.else_case != None:
@@ -46,4 +49,6 @@ class StmCase(Abstract):
                         Estructura.selectFunciones.append(i.interpretar(environment))
                     else:
                         i.interpretar(env)
+                GST = GenerateSymbolTable("when",env)
+                GST.saveST()
             
