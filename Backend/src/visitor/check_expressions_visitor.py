@@ -646,4 +646,11 @@ class SqlExpressionsVisitor(Visitor):
             return
 
         variable_id = environment.getVariable(node.valor)
-        node.tipo = variable_id.type
+        variable_type = variable_id.type
+        if isinstance(variable_type, String_):
+            variable_type = variable_type.type
+
+        if variable_type in [Type.NCHAR, Type.NVARCHAR]:
+            variable_type = Type.TEXT
+
+        node.tipo = variable_type
